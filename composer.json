@@ -1,0 +1,29 @@
+{
+    "name": "portable/fila-cms",
+    "description": "A basic Filament CMS for use with Laravel",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Portable\\FilaCms\\": "src/",
+            "Portable\\FilaCms\\Database\\": "database/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kath Young",
+            "email": "kath.young@portable.com.au"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Portable\\FilaCms\\Providers\\FilaCmsServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "filament/filament": "^3.2",
+        "spatie/laravel-permission": "^6.3"
+    }
+}
