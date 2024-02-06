@@ -28,8 +28,8 @@ class MakeUser extends Command
         $checkRole = Role::where('name', 'Admin')->first();
 
         if (is_null($checkRole) === TRUE) { // no role, prompt the user to install
-            $this->error('Fila CMS not detected');
-            $this->info('Please install the Fila CMS installation command first');
+            $this->error('Cannot locate Admin role, have you run php artisan fila-cms:install?');
+            return false;
         }
 
         
@@ -54,11 +54,8 @@ class MakeUser extends Command
             $userModel->email_verified_at = now();
         }
 
-        // get the role
-        $role = Role::where('name', 'Admin')->first();
-
         // assign role to user
-        $userModel->assignRole($role);
+        $userModel->assignRole($checkRole);
 
         if ($dryRun) {
             $this->info('User to be created');
