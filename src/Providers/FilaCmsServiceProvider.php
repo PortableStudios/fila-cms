@@ -12,6 +12,7 @@ class FilaCmsServiceProvider extends ServiceProvider
             $this->commands([
                 \Portable\FilaCms\Commands\InstallCommand::class,
                 \Portable\FilaCms\Commands\AddUserConcerns::class,
+                \Portable\FilaCms\Commands\MakeUser::class,
             ]);
         }
 

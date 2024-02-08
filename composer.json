@@ -6,13 +6,18 @@
     "autoload": {
         "psr-4": {
             "Portable\\FilaCms\\": "src/",
-            "Portable\\FilaCms\\Database\\": "database/"
+            "Portable\\FilaCms\\Database\\": "database/",
+            "Portable\\FilaCms\\Tests\\": "tests/"
         }
     },
     "authors": [
         {
             "name": "Kath Young",
             "email": "kath.young@portable.com.au"
+        },
+        {
+            "name": "Jeremy Layson",
+            "email": "jeremy.layson@portable.com.au"
         }
     ],
     "extra": {

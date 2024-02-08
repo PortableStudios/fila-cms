@@ -39,7 +39,7 @@ class InstallCommand extends CommandsInstallCommand
             $this->call('fila-cms:add-user-concerns');
         }
 
-        $this->call('db:seed', ['--class=\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
+        $this->call('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
 
         $this->info('Adding permissions');
 
