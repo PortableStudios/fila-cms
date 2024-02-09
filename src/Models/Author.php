@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Author extends Model
 {
@@ -16,11 +17,10 @@ class Author extends Model
         'is_individual' => 'boolean',
     ];
 
-    public function getDisplayNameAttribute()
+    public function displayName(): Attribute
     {
-        if ($this->is_indiviudal) {
-            return $this->first_name;
-        }
-        return $this->first_name . ' ' . $this->last_name;
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => $attributes['is_individual'] ? $attributes['first_name'] . ' ' . $attributes['last_name'] : $attributes['first_name']
+        );
     }
 }

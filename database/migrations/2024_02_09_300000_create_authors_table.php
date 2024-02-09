@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name')->nullable();
-            $table->unsignedTinyInteger('is_individual')->default(1);
+            $table->boolean('is_individual')->default(TRUE);
             $table->timestamps();
         });
     }
