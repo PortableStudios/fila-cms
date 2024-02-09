@@ -18,6 +18,7 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         //$this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
         //$this->loadViewsFrom(__DIR__.'/../Views', 'fila-cms');
+        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     public function register()
