@@ -16,11 +16,9 @@ class FilaCmsServiceProvider extends ServiceProvider
             ]);
         }
 
-
-
         //$this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
         //$this->loadViewsFrom(__DIR__.'/../Views', 'fila-cms');
-        //$this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     public function register()
@@ -28,6 +26,10 @@ class FilaCmsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../../config/fila-cms.php' => config_path('fila-cms.php'),
         ], 'fila-cms-config');
+
+        $this->publishes([
+            __DIR__.'/../../database/migrations' => database_path('migrations'),
+        ], 'migrations');
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
