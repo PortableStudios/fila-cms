@@ -6,7 +6,8 @@ return [
     'admin_plugins' => [
         \Portable\FilaCms\Plugins\UsersPlugin::class,
         \Portable\FilaCms\Plugins\PermissionsPlugin::class,
-        \Portable\FilaCms\Plugins\AuthorsPlugin::class
+        \Portable\FilaCms\Plugins\AuthorsPlugin::class,
+        \Portable\FilaCms\Plugins\TaxonomyPlugin::class
     ],
     'users' => [
         // The fields that appear in the column listing, and on the edit page
