@@ -32,11 +32,11 @@ class MakeUser extends Command
             return false;
         }
 
-        
+
         $userModelPath = 'App\Models\User';
         $userModel = new $userModelPath;
         $userFieldsRaw = Schema::getColumnListing($userModel->getTable());
-        
+
         $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'email_verified_at' ];
         $userFields = array_diff($userFieldsRaw, $excludeFields);
 
@@ -44,16 +44,11 @@ class MakeUser extends Command
             $userModel->{$field} = $this->ask('Enter admin ' . $field);
         }
 
-        // check for password field
-        if (in_array('password', $userFieldsRaw)) {
-            $userModel->password = Hash::make($userModel->password); // hash the password before saving
-        }
-
         // auto-populate other fields
         if (in_array('email_verified_at', $userFieldsRaw)) {
             $userModel->email_verified_at = now();
         }
-
+        
         // assign role to user
         $userModel->assignRole($checkRole);
 

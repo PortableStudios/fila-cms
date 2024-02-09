@@ -29,6 +29,10 @@ class FilaCmsServiceProvider extends ServiceProvider
             __DIR__.'/../../config/fila-cms.php' => config_path('fila-cms.php'),
         ], 'fila-cms-config');
 
+        $this->publishes([
+            __DIR__.'/../../database/migrations' => database_path('migrations'),
+        ], 'migrations');
+
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/fila-cms.php',
