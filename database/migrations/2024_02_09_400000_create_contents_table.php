@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
-            $table->unsignedTinyIntger('is_draft');
+            $table->boolean('is_draft')->default(TRUE);
             $table->timestamp('publish_at')->nullable();
             $table->timestamp('expire_at')->nullable();
             $table->longText('contents');
 
             $table->foreignId('created_user_id')->constrained('users');
             $table->foreignId('updated_user_id')->constrained('users');
-            $table->foreignId('author_id')->constrained('users');
+            $table->foreignId('author_id')->nullable()->constrained('authors');
 
             $table->timestamps();
             $table->softDeletes();
