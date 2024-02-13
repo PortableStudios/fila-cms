@@ -11,7 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 
-class PermissionResource extends Resource
+class PermissionResource extends AbstractConfigurableResource
 {
     protected static ?string $model = Permission::class;
     protected static ?string $navigationIcon = 'heroicon-o-key';

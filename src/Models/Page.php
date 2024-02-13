@@ -7,5 +7,5 @@ use Portable\FilaCms\Models\AbstractContentResource;
 
 class Page extends AbstractContentResource
 {
-
+    protected $table = 'pages';
 }

@@ -18,6 +18,9 @@ class ContentCreating
     public function __construct( public Page $page ) {
         $page->created_user_id = auth()->user()->id;
         $page->updated_user_id = auth()->user()->id;
-        $page->slug = Str::slug($page->title);
+
+        if ($page->slug === NULL) {
+            $page->slug = Str::slug($page->title);
+        }
     }
 }

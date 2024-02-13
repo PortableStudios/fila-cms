@@ -13,7 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TaxonomyResource extends Resource
+class TaxonomyResource extends AbstractConfigurableResource
 {
     protected static ?string $model = Taxonomy::class;
 

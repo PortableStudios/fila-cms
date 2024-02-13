@@ -28,6 +28,9 @@ class InstallCommand extends CommandsInstallCommand
 
         if ($this->ask('Would you like to public the FilaCMS config?(Y/n)', 'Y')=='Y') {
             $this->call('vendor:publish', ['--tag' => 'fila-cms-config']);
+
+            // we need this for revisionable package
+            $this->call('vendor:publish', ['--tag' => 'migrations']);
         }
 
         if (strtoupper($this->ask('Would you like to run migrations(Y/n)?', 'Y'))=='Y') {
@@ -44,7 +47,7 @@ class InstallCommand extends CommandsInstallCommand
         $this->info('Adding permissions');
 
         $this->info('Creating Custom Filament Theme');
-        $this->call('make:-filament theme');
+        $this->call('make:filament-theme');
         $this->call('vendor:publish', ['--tag' => 'filament-tiptap-editor-config']);
 
         $this->info('Finished');
