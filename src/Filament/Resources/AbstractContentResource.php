@@ -5,27 +5,29 @@ namespace Portable\FilaCms\Filament\Resources;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Author;
+use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Filament\Resources\PageResource\RelationManagers;
 use Portable\FilaCms\Filament\Resources\PageResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Database\Eloquent\Builder;
 
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables;
 
+use Filament\Tables;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Toggle;
+
 use Filament\Forms\Components\TextInput;
-
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\DatePicker;
 
+use Filament\Forms\Components\DatePicker;
 use FilamentTiptapEditor\TiptapEditor;
 
 class AbstractContentResource extends Resource
 {
+    use IsProtectedResource;
     protected static ?string $model = Page::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';

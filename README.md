@@ -33,3 +33,6 @@ By inputting yes, the install command will also execute this command
 
 After installation, you can create a user with the admin role by executing `php artisan fila-cms:make-user`.
 This command will ask for field values present in your users table and automatically assigns the admin role to it.
+
+## Protecting resources
+Add the `IsProtectedResource` trait to your Filament resources to have them automatically obey `view <resource-name>` and `manage <resource-name>` permissions.

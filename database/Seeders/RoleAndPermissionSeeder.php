@@ -28,10 +28,22 @@ class RoleAndPermissionSeeder extends Seeder
         // Create permissions
         $permissions = [
             ['name' => 'access filacms-backend'],
+            ['name' => 'view users'],
+            ['name' => 'manage users'],
+            ['name' => 'view authors'],
+            ['name' => 'manage authors'],
+            ['name' => 'view roles'],
+            ['name' => 'manage roles'],
+            ['name' => 'view permissions'],
+            ['name' => 'manage permissions'],
+            ['name' => 'view taxonomies'],
+            ['name' => 'manage taxonomies'],
+            ['name' => 'view pages'],
+            ['name' => 'manage pages'],
         ];
 
         foreach ($permissions as $permission) {
-            Permission::findOrCreate($permission['name']);
+            $permission = Permission::findOrCreate($permission['name']);
         }
 
         // Assign permissions to roles
@@ -40,6 +52,6 @@ class RoleAndPermissionSeeder extends Seeder
 
         $adminPermissions = Permission::all();
 
-        $adminRole->permissions()->attach($adminPermissions);
+        $adminRole->permissions()->sync($adminPermissions);
     }
 }

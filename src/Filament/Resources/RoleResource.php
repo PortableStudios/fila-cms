@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Filament\Resources;
 
 use Spatie\Permission\Models\Role;
+use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Filament\Resources\RoleResource\Pages;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
@@ -12,10 +13,12 @@ use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\CheckboxList;
 
-class RoleResource extends AbstractConfigurableResource
+class RoleResource extends Resource
 {
+    use IsProtectedResource;
     protected static ?string $model = Role::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static ?string $navigationGroup = 'Security';
 
     public static function form(Form $form): Form
     {
