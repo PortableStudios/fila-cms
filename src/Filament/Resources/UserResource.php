@@ -12,7 +12,7 @@ class UserResource extends AbstractConfigurableResource
 {
     protected static ?string $model = User::class;
     protected static string $configKey = 'fila-cms.users';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
     {

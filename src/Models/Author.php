@@ -17,6 +17,8 @@ class Author extends Model
         'is_individual' => 'boolean',
     ];
 
+    protected $appends = [ 'display_name' ];
+
     public function displayName(): Attribute
     {
         return Attribute::make(

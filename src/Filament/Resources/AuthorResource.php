@@ -18,7 +18,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 
-class AuthorResource extends Resource
+class AuthorResource extends AbstractConfigurableResource
 {
     protected static ?string $model = Author::class;
 

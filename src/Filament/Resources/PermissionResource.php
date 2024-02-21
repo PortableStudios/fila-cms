@@ -11,10 +11,10 @@ use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 
-class PermissionResource extends Resource
+class PermissionResource extends AbstractConfigurableResource
 {
     protected static ?string $model = Permission::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-key';
 
     public static function form(Form $form): Form
     {

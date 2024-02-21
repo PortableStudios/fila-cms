@@ -12,7 +12,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\CheckboxList;
 
-class RoleResource extends Resource
+class RoleResource extends AbstractConfigurableResource
 {
     protected static ?string $model = Role::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

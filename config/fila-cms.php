@@ -7,7 +7,8 @@ return [
         \Portable\FilaCms\Plugins\UsersPlugin::class,
         \Portable\FilaCms\Plugins\PermissionsPlugin::class,
         \Portable\FilaCms\Plugins\AuthorsPlugin::class,
-        \Portable\FilaCms\Plugins\TaxonomyPlugin::class
+        \Portable\FilaCms\Plugins\TaxonomyPlugin::class,
+        \Portable\FilaCms\Plugins\PagesPlugin::class
     ],
     'users' => [
         // The fields that appear in the column listing, and on the edit page
