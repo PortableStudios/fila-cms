@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Filament\Resources;
 
 use Spatie\Permission\Models\Permission;
+use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Filament\Resources\PermissionResource\Pages;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
@@ -11,10 +12,13 @@ use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 
-class PermissionResource extends AbstractConfigurableResource
+class PermissionResource extends Resource
 {
+    use IsProtectedResource;
+
     protected static ?string $model = Permission::class;
     protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static ?string $navigationGroup = 'Security';
 
     public static function form(Form $form): Form
     {
