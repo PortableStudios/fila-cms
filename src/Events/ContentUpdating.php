@@ -1,20 +1,23 @@
 <?php
- 
+
 namespace Portable\FilaCms\Events;
- 
-use Portable\FilaCms\Models\Page;
+
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
- 
+use Portable\FilaCms\Models\Page;
+
 class ContentUpdating
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
- 
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
+
     /**
      * Create a new event instance.
      */
-    public function __construct( public Page $order ) {
+    public function __construct(public Page $order)
+    {
         $order->updated_user_id = auth()->user()->id;
     }
 }

@@ -1,0 +1,120 @@
+<?php
+/** @noinspection ALL */
+
+namespace Spatie\Permission\Models;
+
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
+use Spatie\Permission\Exceptions\RoleDoesNotExist;
+
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $guard_name
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<Role> $roles
+ * @property-read int|null $roles_count
+ */
+abstract class Permission extends Model
+{
+    /**
+     * A permission can be applied to roles.
+     *
+     * @return BelongsToMany<Role>
+     */
+    public function roles(): BelongsToMany;
+
+    /**
+     * Find a permission by its name.
+     *
+     * @param string $name
+     * @param string|null $guardName
+     * @return Permission
+     *
+     * @throws PermissionDoesNotExist
+     */
+    public static function findByName(string $name, $guardName): self;
+
+    /**
+     * Find a permission by its id.
+     *
+     * @param int $id
+     * @param string|null $guardName
+     * @return Permission
+     *
+     * @throws PermissionDoesNotExist
+     */
+    public static function findById(int $id, $guardName): self;
+
+    /**
+     * Find or Create a permission by its name and guard name.
+     *
+     * @param string $name
+     * @param string|null $guardName
+     * @return Permission
+     */
+    public static function findOrCreate(string $name, $guardName): self;
+}
+
+
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $guard_name
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<Permission> $permissions
+ * @property-read int|null $permissions_count
+ */
+abstract class Role extends Model
+{
+    /**
+     * A role may be given various permissions.
+     *
+     * @return BelongsToMany<Permission>
+     */
+    public function permissions(): BelongsToMany;
+
+    /**
+     * Find a role by its name and guard name.
+     *
+     * @param string $name
+     * @param string|null $guardName
+     * @return Role
+     *
+     * @throws RoleDoesNotExist
+     */
+    public static function findByName(string $name, $guardName): self;
+
+    /**
+     * Find a role by its id and guard name.
+     *
+     * @param int $id
+     * @param string|null $guardName
+     * @return Role
+     *
+     * @throws RoleDoesNotExist
+     */
+    public static function findById(int $id, $guardName): self;
+
+    /**
+     * Find or create a role by its name and guard name.
+     *
+     * @param string $name
+     * @param string|null $guardName
+     * @return Role
+     */
+    public static function findOrCreate(string $name, $guardName): self;
+
+    /**
+     * Determine if the user may perform the given permission.
+     *
+     * @param string|Permission $permission
+     * @return bool
+     */
+    public function hasPermissionTo($permission): bool;
+}

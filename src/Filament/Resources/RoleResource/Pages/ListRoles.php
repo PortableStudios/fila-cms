@@ -2,9 +2,9 @@
 
 namespace Portable\FilaCms\Filament\Resources\RoleResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\RoleResource;
-use Filament\Resources\Pages\ListRecords;
 use Filament\Actions;
+use Filament\Resources\Pages\ListRecords;
+use Portable\FilaCms\Filament\Resources\RoleResource;
 
 class ListRoles extends ListRecords
 {

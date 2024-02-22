@@ -1,0 +1,76 @@
+<?php
+
+namespace Staudenmeir\LaravelAdjacencyList\Eloquent;
+
+use Illuminate\Database\Eloquent\Builder as BaseBuilder;
+use Illuminate\Database\Eloquent\Collection as BaseCollection;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * @template TModel of Model
+ */
+abstract class Builder extends BaseBuilder {
+    /**
+     * Get the hydrated models without eager loading.
+     *
+     * @param array $columns
+     * @return TModel[]
+     */
+    abstract public function getModels($columns = ['*']);
+
+    /**
+     * Register all passed global scopes.
+     *
+     * @param array $scopes
+     * @return $this
+     */
+    abstract public function withGlobalScopes(array $scopes);
+}
+
+/**
+ * @template TModel of Model
+ *
+ * @extends BaseCollection<TModel>
+ */
+abstract class Collection extends BaseCollection {
+    /**
+     * @param string $childrenRelation
+     * @return Collection<TModel>
+     */
+    abstract public function toTree($childrenRelation = 'children');
+}
+
+/**
+ * @property-read int|null $depth
+ * @property-read string|null $path
+ * @property-read Collection<static> $ancestors
+ * @property-read int|null $ancestors_count
+ * @property-read Collection<static> $children
+ * @property-read int|null $children_count
+ * @property-read Collection<static> $descendants
+ * @property-read int|null $descendants_count
+ * @property-read Collection<static> $siblings
+ * @property-read int|null $siblings_count
+ * @property-read static|null $parent
+ * @property-read static|null $rootAncestor
+ * @method static Builder<static> ancestors()
+ * @method static Builder<static> children()
+ * @method static Builder<static> descendants()
+ * @method static Builder<static> siblings()
+ * @method static Builder<static> breadthFirst()
+ * @method static Builder<static> depthFirst()
+ * @method static Builder<static> getExpressionGrammar()
+ * @method static Builder<static> hasChildren()
+ * @method static Builder<static> hasParent()
+ * @method static Builder<static> isLeaf()
+ * @method static Builder<static> isRoot()
+ * @method static Builder<static> newModelQuery()
+ * @method static Builder<static> newQuery()
+ * @method static Builder<static> query()
+ * @method static Builder<static> tree($maxDepth = null)
+ * @method static Builder<static> treeOf(callable $constraint, $maxDepth = null)
+ * @method static Builder<static> whereDepth($operator, $value = null)
+ * @method static Builder<static> withGlobalScopes(array $scopes)
+ * @mixin \Eloquent
+ */
+trait HasRecursiveRelationships {}

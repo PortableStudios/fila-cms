@@ -2,9 +2,8 @@
 
 namespace Portable\FilaCms\Filament\Resources\PageResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\PageResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Portable\FilaCms\Filament\Resources\PageResource;
 
 class CreatePage extends CreateRecord
 {

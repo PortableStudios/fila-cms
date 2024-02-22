@@ -2,15 +2,13 @@
 
 namespace Portable\FilaCms\Filament\Resources\PageResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\ViewColumn;
+use Filament\Tables\Table;
+use Portable\FilaCms\Models\Scopes\PublishedScope;
 
 class RevisionsRelationManager extends RelationManager
 {
@@ -45,19 +43,19 @@ class RevisionsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                
+
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make(),
                 Action::make('revert')
                     ->label('Revert')
                     ->button()
-                    ->action(function($record) {
+                    ->action(function ($record) {
                         $model = $record->revisionable()->withoutGlobalScope(PublishedScope::class)->first();
 
                         $model->{$record->key} = $record->old_value;
                         $model->save();
-                    })
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

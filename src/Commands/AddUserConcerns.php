@@ -2,9 +2,9 @@
 
 namespace Portable\FilaCms\Commands;
 
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Console\Command;
 use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Console\Command;
+use Spatie\Permission\Traits\HasRoles;
 
 class AddUserConcerns extends Command
 {
@@ -54,13 +54,13 @@ class AddUserConcerns extends Command
                 $this->info("Adding interface $interface");
                 $hasImplements = false;
 
-                if (strpos($userContents, 'implements')!==false) {
+                if (strpos($userContents, 'implements') !== false) {
                     $part1End = strpos($userContents, '{', strpos($userContents, 'implements '));
                     $hasImplements = true;
                 } else {
                     $part1End = strpos($userContents, '{', strpos($userContents, 'extends '));
                 }
-                $part1 = substr($userContents, 0, $part1End -1);
+                $part1 = substr($userContents, 0, $part1End - 1);
                 $part2 = "\n" .  substr($userContents, $part1End);
 
                 if ($hasImplements) {

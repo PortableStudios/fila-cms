@@ -2,9 +2,8 @@
 
 namespace Portable\FilaCms\Filament\Resources\AuthorResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\AuthorResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Portable\FilaCms\Filament\Resources\AuthorResource;
 
 class CreateAuthor extends CreateRecord
 {
