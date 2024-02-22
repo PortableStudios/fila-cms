@@ -2,32 +2,29 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
-use Portable\FilaCms\Models\Scopes\PublishedScope;
-use Portable\FilaCms\Models\Page;
-use Portable\FilaCms\Models\Author;
-use Portable\FilaCms\Filament\Traits\IsProtectedResource;
-use Portable\FilaCms\Filament\Resources\PageResource\RelationManagers;
-use Portable\FilaCms\Filament\Resources\PageResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
-
-use Filament\Tables;
-use Filament\Resources\Resource;
-use Filament\Forms\Form;
-use Filament\Forms\Components\Toggle;
-
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
-
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use FilamentTiptapEditor\TiptapEditor;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Portable\FilaCms\Filament\Resources\PageResource\Pages;
+use Portable\FilaCms\Filament\Resources\PageResource\RelationManagers;
+use Portable\FilaCms\Filament\Traits\IsProtectedResource;
+use Portable\FilaCms\Models\Author;
+use Portable\FilaCms\Models\Page;
+use Portable\FilaCms\Models\Scopes\PublishedScope;
 
 class AbstractContentResource extends Resource
 {
     use IsProtectedResource;
+
     protected static ?string $model = Page::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
@@ -36,7 +33,7 @@ class AbstractContentResource extends Resource
     {
         return parent::getEloquentQuery()->withoutGlobalScopes([
             SoftDeletingScope::class,
-            PublishedScope::class
+            PublishedScope::class,
         ]);
     }
 
@@ -62,7 +59,7 @@ class AbstractContentResource extends Resource
                 Select::make('author_id')
                     ->label('Author')
                     ->options(Author::all()->pluck('display_name', 'id'))
-                    ->searchable()
+                    ->searchable(),
             ]);
     }
 
@@ -71,17 +68,17 @@ class AbstractContentResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->description(fn (Page $page): string => substr($page->contents, 0, 50) . '...')
+                    ->description(fn (Page $page): string => substr($page->contents, 0, 50).'...')
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
                     ->sortable(),
                 TextColumn::make('status')->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Draft'     => 'gray',
-                        'Pending'   => 'warning',
+                        'Draft' => 'gray',
+                        'Pending' => 'warning',
                         'Published' => 'success',
-                        'Expired'   => 'danger',
+                        'Expired' => 'danger',
                     })
                     ->sortable(),
                 TextColumn::make('createdBy.name')->label('Creator')

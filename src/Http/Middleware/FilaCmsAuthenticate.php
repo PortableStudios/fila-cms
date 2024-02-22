@@ -2,10 +2,9 @@
 
 namespace Portable\FilaCms\Http\Middleware;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use Filament\Models\Contracts\FilamentUser;
 use Filament\Facades\Filament;
+use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Database\Eloquent\Model;
 
 class FilaCmsAuthenticate extends Middleware
 {
@@ -29,7 +28,7 @@ class FilaCmsAuthenticate extends Middleware
 
         $panel = Filament::getCurrentPanel();
 
-        abort_if(!$user->hasPermissionTo('access filacms-backend'), 403);
+        abort_if(! $user->hasPermissionTo('access filacms-backend'), 403);
     }
 
     protected function redirectTo($request): ?string

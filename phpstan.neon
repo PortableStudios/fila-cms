@@ -1,0 +1,96 @@
+includes:
+  - ./vendor/nunomaduro/larastan/extension.neon
+  - ./vendor/archtechx/enums/extension.neon
+
+parameters:
+  paths:
+    - app
+    - helpers
+  stubFiles:
+    - phpstan-stubs/Spatie/Permissions/Models.stub
+    - phpstan-stubs/Spatie/Permissions/Exceptions.stub
+    - phpstan-stubs/Staudenmeir/LaravelAdjacencyList/Relations.stub
+
+  # The level 9 is the highest level
+  level: 6
+
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+
+  # Handle some custom returns that PHP stan can't cope with
+  earlyTerminatingMethodCalls:
+    App\Actions\Fortify\AttemptToAuthenticate:
+      - throwFailedAuthenticationException
+
+  # Ignore known "safe" errors until we can get PHPStan to recognise macros properly
+  ignoreErrors:
+    # Publishable Trait: access to methods that we know exist
+    - messages:
+        - '#Access to undefined constant static\([a-zA-Z0-9\\_<> ]+\)::PUBLISHED_AT#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::withDrafts\(\)#'
+      paths:
+        - app/Models/Support/Publishable.php
+
+    # Publishable Models: access to publishable methods that we know exist
+    - messages:
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Attachment(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withDrafts\(\)#'
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Attachment(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::onlyDrafts\(\)#'
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Attachment(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withoutDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Attachment(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::publish\(\)#'
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Attachment(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::retract\(\)#'
+
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Downloadable(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Downloadable(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::onlyDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Downloadable(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withoutDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Downloadable(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::publish\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Downloadable(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::retract\(\)#'
+
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\LearningItem(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\LearningItem(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::onlyDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\LearningItem(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withoutDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\LearningItem(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::publish\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\LearningItem(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::retract\(\)#'
+
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Page(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Page(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::onlyDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Page(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withoutDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Page(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::publish\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Page(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::retract\(\)#'
+
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Unit(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Unit(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::onlyDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Unit(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withoutDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Unit(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::publish\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\Unit(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::retract\(\)#'
+
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Course(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Course(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::onlyDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Course(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withoutDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Course(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::publish\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Course(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::retract\(\)#'
+
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Lesson(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Lesson(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::onlyDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Lesson(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withoutDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Lesson(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::publish\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Lesson(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::retract\(\)#'
+
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Question(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Question(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::onlyDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Question(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withoutDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Question(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::publish\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\ProfessionalDevelopment\\Question(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::retract\(\)#'
+
+        - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\CalendarEvent(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\CalendarEvent(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::onlyDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\CalendarEvent(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withoutDrafts\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\CalendarEvent(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::publish\(\)#'
+        #- '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\CalendarEvent(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::retract\(\)#'
+      paths:
+        - app/*
+
+      # Authentication guard scopes
+    - messages:
+          - '#Call to an undefined method Illuminate\\Database\\[a-zA-Z0-9\\_]+<App\\Models\\User(,\s*App\\Models\\[a-zA-Z0-9\\_]+)?>::withoutGuards\(\)#'
+      paths:
+          - app/*

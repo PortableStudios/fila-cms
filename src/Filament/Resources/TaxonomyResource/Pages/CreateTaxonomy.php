@@ -2,9 +2,8 @@
 
 namespace Portable\FilaCms\Filament\Resources\TaxonomyResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\TaxonomyResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Portable\FilaCms\Filament\Resources\TaxonomyResource;
 
 class CreateTaxonomy extends CreateRecord
 {

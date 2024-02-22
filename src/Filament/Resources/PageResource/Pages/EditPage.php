@@ -2,10 +2,9 @@
 
 namespace Portable\FilaCms\Filament\Resources\PageResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\PageResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use Portable\FilaCms\Models\Scopes\PublishedScope;
+use Portable\FilaCms\Filament\Resources\PageResource;
 
 class EditPage extends EditRecord
 {

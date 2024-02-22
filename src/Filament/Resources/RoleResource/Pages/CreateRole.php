@@ -2,8 +2,8 @@
 
 namespace Portable\FilaCms\Filament\Resources\RoleResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\RoleResource;
 use Filament\Resources\Pages\CreateRecord;
+use Portable\FilaCms\Filament\Resources\RoleResource;
 
 class CreateRole extends CreateRecord
 {

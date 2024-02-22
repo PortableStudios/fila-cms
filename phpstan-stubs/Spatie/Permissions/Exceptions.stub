@@ -1,0 +1,16 @@
+<?php
+/** @noinspection ALL */
+
+namespace Spatie\Permission\Exceptions;
+
+use InvalidArgumentException;
+
+class PermissionDoesNotExist extends InvalidArgumentException
+{
+    //
+}
+
+class RoleDoesNotExist extends InvalidArgumentException
+{
+    //
+}
