@@ -2,31 +2,29 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
-use Portable\FilaCms\Filament\Resources\PageResource\Pages;
-use Portable\FilaCms\Filament\Resources\PageResource\RelationManagers;
+use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Author;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Portable\FilaCms\Filament\Resources\PageResource\RelationManagers;
+use Portable\FilaCms\Filament\Resources\PageResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Builder;
 
-use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables;
 
-use Filament\Forms\Components\TextInput;
+use Filament\Resources\Resource;
+use Filament\Forms\Form;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Portable\FilaCms\Models\Scopes\PublishedScope;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\DatePicker;
 
 use FilamentTiptapEditor\TiptapEditor;
-use FilamentTiptapEditor\Enums\TiptapOutput;
 
-class AbstractContentResource extends AbstractConfigurableResource
+class AbstractContentResource extends Resource
 {
     protected static ?string $model = Page::class;
 
@@ -71,13 +69,13 @@ class AbstractContentResource extends AbstractConfigurableResource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->description(fn(Page $page): string => substr($page->contents, 0, 50) . '...')
+                    ->description(fn (Page $page): string => substr($page->contents, 0, 50) . '...')
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
                     ->sortable(),
                 TextColumn::make('status')->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'Draft'     => 'gray',
                         'Pending'   => 'warning',
                         'Published' => 'success',

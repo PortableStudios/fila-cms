@@ -23,10 +23,11 @@ class InstallCommand extends CommandsInstallCommand
         $this->info('Installed Filament Base.  Installing Spatie Permissions');
 
         $this->call('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
+        $this->call('vendor:publish', ['--provider' => "Venturecraft\Revisionable\RevisionableServiceProvider"]);
 
         $this->info('Installed Spatie Permissions. Installing Fila CMS Config...');
 
-        if ($this->ask('Would you like to public the FilaCMS config?(Y/n)', 'Y')=='Y') {
+        if ($this->ask('Would you like to publish the FilaCMS config?(Y/n)', 'Y')=='Y') {
             $this->call('vendor:publish', ['--tag' => 'fila-cms-config']);
 
             // we need this for revisionable package
