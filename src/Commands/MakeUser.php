@@ -19,11 +19,6 @@ class MakeUser extends Command
     {
         $dryRun = $this->option('dry-run');
 
-        // check if Role table exists
-        if (Schema::hasTable('role') === FALSE) {
-
-        }
-
         // check first if there's an admin role in place
         $checkRole = Role::where('name', 'Admin')->first();
 
@@ -56,6 +51,7 @@ class MakeUser extends Command
             $this->info('User to be created');
             $this->info($userModel);
         } else {
+            $this->info('User created');
             $userModel->save();
         }
     }

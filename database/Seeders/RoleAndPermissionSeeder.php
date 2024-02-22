@@ -40,6 +40,6 @@ class RoleAndPermissionSeeder extends Seeder
 
         $adminPermissions = Permission::all();
 
-        $adminRole->permissions()->attach($adminPermissions);
+        $adminRole->permissions()->sync($adminPermissions);
     }
 }
