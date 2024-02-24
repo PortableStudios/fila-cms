@@ -2,7 +2,10 @@
 
 namespace Portable\FilaCms\Providers;
 
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
+use Portable\FilaCms\FilaCms;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -23,13 +26,21 @@ class FilaCmsServiceProvider extends ServiceProvider
 
     public function register()
     {
+        $this->app->bind('FilaCms', FilaCms::class);
+        $loader = AliasLoader::getInstance();
+        $loader->alias('FilaCms', FacadesFilaCms::class);
+
+        $this->app->bind('fila-cms', function () {
+            return new FilaCms();
+        });
+
         $this->publishes([
             __DIR__.'/../../config/fila-cms.php' => config_path('fila-cms.php'),
         ], 'fila-cms-config');
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
-            __DIR__ . '/../../config/fila-cms.php',
+            __DIR__.'/../../config/fila-cms.php',
             'fila-cms'
         );
 

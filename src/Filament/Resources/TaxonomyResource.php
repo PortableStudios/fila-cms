@@ -3,10 +3,13 @@
 namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Form;
+use Filament\Navigation\NavigationItem;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource\Pages;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
@@ -20,13 +23,58 @@ class TaxonomyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Taxonomies';
+
+    /**
+     * @return array<NavigationItem>
+     */
+    public static function getNavigationItems(): array
+    {
+        $navItems = [];
+        foreach (Taxonomy::all() as $taxonomy) {
+            $navItems[] =
+                NavigationItem::make($taxonomy->name)
+                    ->group(static::getNavigationGroup())
+                    ->parentItem(static::getNavigationParentItem())
+                    ->icon(static::getNavigationIcon())
+                    ->activeIcon(static::getActiveNavigationIcon())
+                    ->isActiveWhen(fn () => request()->routeIs(route(static::getRouteBaseName().'.edit', $taxonomy)))
+                    ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
+                    ->badgeTooltip(static::getNavigationBadgeTooltip())
+                    ->sort(static::getNavigationSort())
+                    ->url(route(static::getRouteBaseName().'.edit', $taxonomy));
+
+        }
+
+        $navItems[] =
+            NavigationItem::make('Create')
+                ->group(static::getNavigationGroup())
+                ->parentItem(static::getNavigationParentItem())
+                ->icon(static::getNavigationIcon())
+                ->activeIcon(static::getActiveNavigationIcon())
+                ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName().'.create'))
+                ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
+                ->badgeTooltip(static::getNavigationBadgeTooltip())
+                ->sort(static::getNavigationSort())
+                ->url(route(static::getRouteBaseName().'.create'));
+
+        return $navItems;
+
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->columnSpanFull()
                     ->maxLength(255),
+                CheckboxList::make('taxonomy_resources')
+                    ->label('Applies To')
+                    ->options(FilaCms::getContentModels())
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 
