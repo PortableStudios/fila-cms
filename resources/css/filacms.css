@@ -47,7 +47,7 @@ h1 {
 }
 
 .content-listing-card {
-    @apply md:w-1/5 w-full border rounded-lg;
+    @apply md:w-1/5 w-full border rounded-lg inline-block;
 }
 
 .content-listing-card__image {

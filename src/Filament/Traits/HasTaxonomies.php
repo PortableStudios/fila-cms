@@ -16,6 +16,8 @@ trait HasTaxonomies
 
     protected static $_taxonomies = null;
 
+    protected $_saveTaxonomyFields = [];
+
     protected $_virtualTaxonomyFields = [];
 
     public function terms()
@@ -62,16 +64,21 @@ trait HasTaxonomies
     {
         $this->taxonomyable()->delete();
         foreach ($this->_virtualTaxonomyFields as $fieldName) {
-            $items = $this->attributes[$fieldName.'_ids'];
+            $items = $this->_saveTaxonomyFields[$fieldName.'_ids'];
             $this->terms()->attach($items);
-        }        
+        }
     }
 
     protected function undirtyVirtualAttributes()
     {
         foreach ($this->_virtualTaxonomyFields as $field) {
-            $this->original[$field] = $this->attributes[$field];
-            $this->original[$field.'_ids'] = $this->attributes[$field.'_ids'];
+            if (isset($this->attributes[$field])) {
+                unset($this->attributes[$field]);
+            }
+            if (isset($this->attributes[$field.'_ids'])) {
+                $this->_saveTaxonomyFields[$field.'_ids'] = $this->attributes[$field.'_ids'];
+                unset($this->attributes[$field.'_ids']);
+            }
         }
     }
 
@@ -83,6 +90,7 @@ trait HasTaxonomies
             $this->casts[$fieldName.'_ids'] = DynamicTermIds::class.':'.$taxonomyResource->taxonomy_id;
             $this->append($fieldName);
             $this->append($fieldName.'_ids');
+            $this->fillable[] = $fieldName.'_ids';
             $this->_virtualTaxonomyFields[] = $fieldName;
         });
     }
