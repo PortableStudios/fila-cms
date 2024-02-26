@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.main-content {
+    @apply md:pl-12 md:pr-12;
+}
+
+.page-header {
+    @apply bg-gray-200 md:pl-12 md:pr-12 pt-4 pb-4 mb-4;
+}
+
+.logo-wrapper {
+    @apply border bg-white p-4 pt-2 pb-2 inline-block rounded-lg;
+}
+
+.page-footer {
+    @apply bg-gray-200 md:pl-12 md:pr-12 pt-4 pb-4 mt-4 text-center;
+}
+
+h1 {
+    @apply text-3xl font-bold mb-4 pb-2 border-b;
+}
+
+.filters-column {
+    @apply w-1/5;
+}
+
+.listing-column {
+    @apply w-4/5 pl-6 w-full;
+}
+
+.btn-primary {
+    @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+}
+
+.authors {
+    @apply italic mb-2;
+}
+
+.taxonomies {
+    @apply text-sm pt-4;
+}
+
+.taxonomy-term {
+    @apply inline-block rounded bg-gray-100 p-1;
+}
+
+.content-listing-card {
+    @apply md:w-1/5 w-full border rounded-lg;
+}
+
+.content-listing-card__image {
+    @apply w-full h-32 rounded-t-lg overflow-hidden;
+}
+
+.content-listing-card__content {
+    @apply p-4;
+}
+
+.content-listing-card__title {
+    @apply text-lg font-bold mb-2;
+}
+
+.content-listing-card__excerpt {
+    @apply text-sm;
+}
+
+.content-listing-card a {
+    @apply italic;
+}

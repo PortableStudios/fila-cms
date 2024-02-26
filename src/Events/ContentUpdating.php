@@ -18,6 +18,6 @@ class ContentUpdating
      */
     public function __construct(public Page $order)
     {
-        $order->updated_user_id = auth()->user()->id;
+        $order->updated_user_id = auth()->user() ? auth()->user()->id : $order->created_user_id;
     }
 }

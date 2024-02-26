@@ -22,15 +22,21 @@ class EditAbstractContentResource extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        $virtualFields = [];
+        TaxonomyResource::where('resource_class', static::$resource)->get()->each(function (TaxonomyResource $taxonomyResource) use (&$virtualFields, &$data) {
+            $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_').'_ids';
+            $virtualFields[$fieldName] = isset($data[$fieldName]) ? $data[$fieldName] : [];
+            data_forget($data, $fieldName);
+        });
+
         $record = parent::handleRecordUpdate($record, $data);
 
+        return $record;
         $record->terms()->delete();
-        TaxonomyResource::where('resource_class', static::$resource)->get()->each(function (TaxonomyResource $taxonomyResource) use ($record, $data) {
-            $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_');
-
+        foreach ($virtualFields as $fieldName) {
             $items = isset($data[$fieldName]) ? $data[$fieldName] : [];
             $record->terms()->attach($items);
-        });
+        }
 
         return $record;
     }

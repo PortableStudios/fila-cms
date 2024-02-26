@@ -3,7 +3,9 @@
 namespace Portable\FilaCms\Providers;
 
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
 
@@ -19,9 +21,16 @@ class FilaCmsServiceProvider extends ServiceProvider
             ]);
         }
 
+        if (config('fila-cms.publish_content_routes')) {
+            $this->loadRoutesFrom(__DIR__.'/../../routes/frontend-routes.php');
+        }
         //$this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
-        //$this->loadViewsFrom(__DIR__.'/../Views', 'fila-cms');
+
+        $this->loadViewsFrom(__DIR__.'/../../views', 'fila-cms');
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+
+        Livewire::component('portable.fila-cms.livewire.content-resource-list', \Portable\FilaCms\Livewire\ContentResourceList::class);
+        Livewire::component('portable.fila-cms.livewire.content-resource-show', \Portable\FilaCms\Livewire\ContentResourceShow::class);
     }
 
     public function register()
@@ -44,10 +53,22 @@ class FilaCmsServiceProvider extends ServiceProvider
             'fila-cms'
         );
 
-        $this->loadViewsFrom(__DIR__.'/../../views', 'fila-cms');
-
         if (config('fila-cms.use_admin_panel')) {
             $this->app->register(FilaCmsAdminPanelProvider::class);
         }
+
+        Blade::directive('filaCmsStyles', function (string $expression): string {
+            try {
+                // Check if there's a local FilaCMS.css
+                if (file_exists(resource_path('css/filacms.css'))) {
+                    return app('Illuminate\Foundation\Vite')('resources/css/filacms.css');
+                } else {
+                    return app('Illuminate\Foundation\Vite')('vendor/portable/filacms/resources/css/filacms.css');
+                }
+
+            } catch (\Exception $e) {
+                return '';
+            }
+        });
     }
 }
