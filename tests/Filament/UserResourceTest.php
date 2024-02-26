@@ -8,6 +8,7 @@ use Portable\FilaCms\Filament\Resources\UserResource;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Auth;
+use Livewire\Livewire;
 
 class UserResourceTest extends TestCase
 {
@@ -35,5 +36,12 @@ class UserResourceTest extends TestCase
         $user = User::factory()->create();
         $this->be($user);
         $this->get(UserResource::getUrl('index'))->assertForbidden();
+    }
+
+    public function test_can_list_users(): void
+    {
+        $users = User::factory()->count(5)->create();
+
+        Livewire::test(UserResource\Pages\ListUsers::class)->assertCanSeeTableRecords($users);
     }
 }

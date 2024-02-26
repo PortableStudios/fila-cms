@@ -4,14 +4,9 @@
          bootstrap="vendor/autoload.php"
          colors="true"
 >
-    <coverage>
-        <include>
-        <directory suffix=".php">src/</directory>
-        </include>
-    </coverage>
     <testsuites>
-        <testsuite name="FilaCMS">
-            <directory>tests</directory>
+        <testsuite name="Main">
+            <directory>tests/Feature</directory>
         </testsuite>
     </testsuites>
 

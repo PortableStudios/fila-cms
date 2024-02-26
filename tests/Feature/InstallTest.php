@@ -44,7 +44,7 @@ class InstallTest extends TestCase
     {
         $this->artisan('fila-cms:install')
             ->expectsOutputToContain('Installing Filament Base...')
-            ->expectsQuestion('Would you like to public the FilaCMS config?(Y/n)', 'Y')
+            ->expectsQuestion('Would you like to publish the FilaCMS config?(Y/n)', 'Y')
             ->expectsQuestion('Would you like to run migrations(Y/n)?', 'Y')
             ->expectsQuestion('Would you like to add the required trait to your App\\Models\\User model?(Y/n)', 'Y')
             ->expectsOutputToContain('Finished')
