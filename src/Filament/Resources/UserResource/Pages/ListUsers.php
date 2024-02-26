@@ -2,9 +2,9 @@
 
 namespace Portable\FilaCms\Filament\Resources\UserResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\UserResource;
-use Filament\Resources\Pages\ListRecords;
 use Filament\Actions;
+use Filament\Resources\Pages\ListRecords;
+use Portable\FilaCms\Filament\Resources\UserResource;
 
 class ListUsers extends ListRecords
 {

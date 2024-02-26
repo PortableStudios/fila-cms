@@ -2,19 +2,20 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
-use Portable\FilaCms\Filament\Resources\TaxonomyResource\Pages;
-use Portable\FilaCms\Filament\Resources\TaxonomyResource\RelationManagers;
-use Portable\FilaCms\Models\Taxonomy;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Portable\FilaCms\Filament\Resources\TaxonomyResource\Pages;
+use Portable\FilaCms\Filament\Resources\TaxonomyResource\RelationManagers;
+use Portable\FilaCms\Filament\Traits\IsProtectedResource;
+use Portable\FilaCms\Models\Taxonomy;
 
-class TaxonomyResource extends AbstractConfigurableResource
+class TaxonomyResource extends Resource
 {
+    use IsProtectedResource;
+
     protected static ?string $model = Taxonomy::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

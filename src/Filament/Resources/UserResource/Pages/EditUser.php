@@ -2,9 +2,9 @@
 
 namespace Portable\FilaCms\Filament\Resources\UserResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\UserResource;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Actions;
+use Filament\Resources\Pages\EditRecord;
+use Portable\FilaCms\Filament\Resources\UserResource;
 
 class EditUser extends EditRecord
 {

@@ -1,0 +1,48 @@
+<?php
+
+namespace Staudenmeir\LaravelAdjacencyList\Eloquent\Relations;
+
+use Staudenmeir\LaravelAdjacencyList\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+/**
+ * @template TRelatedModel of Model
+ *
+ * @extends HasMany<TRelatedModel>
+ * @mixin Builder<TRelatedModel>
+ */
+class Ancestors extends HasMany {}
+
+/**
+ * @template TRelatedModel of Model
+ *
+ * @extends HasMany<TRelatedModel>
+ * @mixin Builder<TRelatedModel>
+ */
+class Descendants extends HasMany {}
+
+/**
+ * @template TRelatedModel of Model
+ *
+ * @extends Descendants<TRelatedModel>
+ * @mixin Builder<TRelatedModel>
+ */
+class Bloodline extends Descendants {}
+
+/**
+ * @template TRelatedModel of Model
+ *
+ * @extends HasMany<TRelatedModel>
+ * @mixin Builder<TRelatedModel>
+ */
+class Siblings extends HasMany {}
+
+/**
+ * @template TRelatedModel of Model
+ *
+ * @extends HasOne<TRelatedModel>
+ * @mixin Builder<TRelatedModel>
+ */
+class RootAncestor extends HasOne {}

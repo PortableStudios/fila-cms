@@ -2,9 +2,9 @@
 
 namespace Portable\FilaCms\Filament\Resources\PageResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\PageResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Portable\FilaCms\Filament\Resources\PageResource;
 
 class ListPages extends ListRecords
 {

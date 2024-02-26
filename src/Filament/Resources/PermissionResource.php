@@ -2,19 +2,25 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
-use Spatie\Permission\Models\Permission;
-use Portable\FilaCms\Filament\Resources\PermissionResource\Pages;
-use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables;
-use Filament\Resources\Resource;
-use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Portable\FilaCms\Filament\Resources\PermissionResource\Pages;
+use Portable\FilaCms\Filament\Traits\IsProtectedResource;
+use Spatie\Permission\Models\Permission;
 
-class PermissionResource extends AbstractConfigurableResource
+class PermissionResource extends Resource
 {
+    use IsProtectedResource;
+
     protected static ?string $model = Permission::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-key';
+
+    protected static ?string $navigationGroup = 'Security';
 
     public static function form(Form $form): Form
     {
@@ -28,7 +34,7 @@ class PermissionResource extends AbstractConfigurableResource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->sortable()
+                TextColumn::make('name')->sortable(),
             ])
             ->searchable()
             ->filters([

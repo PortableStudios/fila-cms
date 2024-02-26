@@ -2,8 +2,8 @@
 
 namespace Portable\FilaCms\Filament\Resources\PermissionResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\PermissionResource;
 use Filament\Resources\Pages\CreateRecord;
+use Portable\FilaCms\Filament\Resources\PermissionResource;
 
 class CreatePermission extends CreateRecord
 {

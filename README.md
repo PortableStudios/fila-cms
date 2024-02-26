@@ -49,3 +49,7 @@ This command will ask for field values present in your users table and automatic
 ## Testing
 
 To run the test cases, you must set it up on a fresh laravel project. Then run `php artisan test vendor/portable/fila-cms`
+
+## Protecting resources
+
+Add the `IsProtectedResource` trait to your Filament resources to have them automatically obey `view <resource-name>` and `manage <resource-name>` permissions.

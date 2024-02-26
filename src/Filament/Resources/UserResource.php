@@ -2,17 +2,24 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
-use Portable\FilaCms\Filament\Resources\UserResource\Pages;
-use Filament\Tables\Table;
-use Filament\Tables;
-use Filament\Forms\Form;
 use App\Models\User;
+use Filament\Forms\Form;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Portable\FilaCms\Filament\Resources\UserResource\Pages;
+use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 
 class UserResource extends AbstractConfigurableResource
 {
+    use IsProtectedResource;
+
     protected static ?string $model = User::class;
+
     protected static string $configKey = 'fila-cms.users';
+
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    protected static ?string $navigationGroup = 'Security';
 
     public static function form(Form $form): Form
     {

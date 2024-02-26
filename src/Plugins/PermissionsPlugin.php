@@ -2,11 +2,10 @@
 
 namespace Portable\FilaCms\Plugins;
 
-use Portable\FilaCms\Filament\Resources\UserResource;
-use Portable\FilaCms\Filament\Resources\RoleResource;
-use Portable\FilaCms\Filament\Resources\PermissionResource;
-use Filament\Panel;
 use Filament\Contracts\Plugin;
+use Filament\Panel;
+use Portable\FilaCms\Filament\Resources\PermissionResource;
+use Portable\FilaCms\Filament\Resources\RoleResource;
 
 class PermissionsPlugin implements Plugin
 {
@@ -19,7 +18,7 @@ class PermissionsPlugin implements Plugin
     {
         $panel->resources([
             PermissionResource::class,
-            RoleResource::class
+            RoleResource::class,
         ]);
     }
 

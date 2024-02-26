@@ -2,9 +2,8 @@
 
 namespace Portable\FilaCms\Commands;
 
-use Filament\Support\Commands\UpgradeCommand;
 use Filament\Support\Commands\InstallCommand as CommandsInstallCommand;
-use Filament\PanelProvider;
+use Filament\Support\Commands\UpgradeCommand;
 
 class InstallCommand extends CommandsInstallCommand
 {
@@ -27,19 +26,19 @@ class InstallCommand extends CommandsInstallCommand
 
         $this->info('Installed Spatie Permissions. Installing Fila CMS Config...');
 
-        if ($this->ask('Would you like to publish the FilaCMS config?(Y/n)', 'Y')=='Y') {
+        if ($this->ask('Would you like to publish the FilaCMS config?(Y/n)', 'Y') == 'Y') {
             $this->call('vendor:publish', ['--tag' => 'fila-cms-config']);
 
             // we need this for revisionable package
             $this->call('vendor:publish', ['--tag' => 'migrations']);
         }
 
-        if (strtoupper($this->ask('Would you like to run migrations(Y/n)?', 'Y'))=='Y') {
+        if (strtoupper($this->ask('Would you like to run migrations(Y/n)?', 'Y')) == 'Y') {
             $this->info('Running migrations...');
             $this->call('migrate');
         }
 
-        if (strtoupper($this->ask("Would you like to add the required trait to your App\\Models\\User model?(Y/n)", 'Y'))=='Y') {
+        if (strtoupper($this->ask('Would you like to add the required trait to your App\\Models\\User model?(Y/n)', 'Y')) == 'Y') {
             $this->call('fila-cms:add-user-concerns');
         }
 

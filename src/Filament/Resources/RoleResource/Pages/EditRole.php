@@ -2,9 +2,9 @@
 
 namespace Portable\FilaCms\Filament\Resources\RoleResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\RoleResource;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Actions;
+use Filament\Resources\Pages\EditRecord;
+use Portable\FilaCms\Filament\Resources\RoleResource;
 
 class EditRole extends EditRecord
 {

@@ -2,9 +2,9 @@
 
 namespace Portable\FilaCms\Filament\Resources\PermissionResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\PermissionResource;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Actions;
+use Filament\Resources\Pages\EditRecord;
+use Portable\FilaCms\Filament\Resources\PermissionResource;
 
 class EditPermission extends EditRecord
 {

@@ -1,0 +1,27 @@
+{
+  "preset": "psr12",
+  "rules": {
+    "no_unused_imports": true,
+    "array_syntax": {
+      "syntax": "short"
+    }
+  },
+  "notName": [
+    "_ide_helper_actions.php",
+    "_ide_helper_models.php",
+    "_ide_helper.php",
+    ".phpstorm.meta.php",
+    "*.blade.php",
+    "*.stub",
+    "*.css",
+    "*.js",
+    "*.json"
+  ],
+  "exclude": [
+    ".idea",
+    "coverage",
+    "storage",
+    "bootstrap/cache",
+    "node_modules"
+  ]
+}

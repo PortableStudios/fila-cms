@@ -2,8 +2,8 @@
 
 namespace Portable\FilaCms\Filament\Resources\UserResource\Pages;
 
-use Portable\FilaCms\Filament\Resources\UserResource;
 use Filament\Resources\Pages\CreateRecord;
+use Portable\FilaCms\Filament\Resources\UserResource;
 
 class CreateUser extends CreateRecord
 {
