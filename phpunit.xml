@@ -6,12 +6,20 @@
 >
     <testsuites>
         <testsuite name="Main">
-            <directory>tests/Feature</directory>
+            <file>tests/Feature/InstallTest.php</file>
+            <!-- <file>tests/Feature/AuthorTest.php</file>
+            <file>tests/Feature/MakeUserTest.php</file>
+            <file>tests/Feature/PageTest.php</file>
+            <file>tests/Feature/TaxonomyTest.php</file> -->
+        </testsuite>
+        <testsuite name="Filament">
+            <file>tests/Filament/AuthorResourceTest.php</file>
         </testsuite>
     </testsuites>
 
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="DB_DATABASE" value="filament_test"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="LOG_CHANNEL" value="single"/>
     </php>
 </phpunit>

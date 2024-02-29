@@ -1,13 +1,12 @@
 <?php
 
-namespace Portable\FilaCms\Tests\Feature\Filament;
+namespace Portable\FilaCms\Tests\Filament;
 
-use Tests\TestCase;
+use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Portable\FilaCms\Filament\Resources\UserResource;
-use App\Models\User;
+use Portable\FilaCms\Tests\User;
 use Spatie\Permission\Models\Role;
-use Auth;
 use Livewire\Livewire;
 
 class UserResourceTest extends TestCase

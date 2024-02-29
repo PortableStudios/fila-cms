@@ -1,20 +1,20 @@
 <?php
 
-namespace Portable\FilaCms\Tests\Feature\Filament;
+namespace Portable\FilaCms\Tests\Filament;
 
-use Tests\TestCase;
+use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Portable\FilaCms\Filament\Resources\RoleResource as TargetResource;
-use App\Models\User;
+use Portable\FilaCms\Tests\User;
 use Spatie\Permission\Models\Role as TargetModel;
 use Spatie\Permission\Models\Role;
-use Auth;
 use Livewire\Livewire;
 use Illuminate\Foundation\Testing\WithFaker;
 
 class RoleResourceTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected function setUp(): void
     {
@@ -51,7 +51,7 @@ class RoleResourceTest extends TestCase
     {
         Livewire::test(TargetResource\Pages\CreateRole::class)
             ->fillForm([
-                'name' => $this->faker->words(3, TRUE)
+                'name' => $this->faker->words(3, true)
             ])
             ->call('create')
             ->assertHasNoFormErrors();
@@ -67,18 +67,18 @@ class RoleResourceTest extends TestCase
     public function test_can_render_edit_page(): void
     {
         $data = TargetModel::first();
-        
+
         $this->get(TargetResource::getUrl('edit', ['record' => $data]))->assertSuccessful();
     }
-    
+
     public function test_can_retrieve_edit_data(): void
     {
         $data = TargetModel::first();
 
         Livewire::test(
-                TargetResource\Pages\EditRole::class,
-                ['record' => $data->getRouteKey()]
-            )
+            TargetResource\Pages\EditRole::class,
+            ['record' => $data->getRouteKey()]
+        )
             ->assertFormSet([
                 'name'  => $data->name
             ]);
@@ -86,8 +86,8 @@ class RoleResourceTest extends TestCase
 
     public function test_can_save_form(): void
     {
-        $data = TargetModel::create(['name' => $this->faker->words(3, TRUE)]);
-        $new = TargetModel::make(['name' => $this->faker->words(3, TRUE)]);
+        $data = TargetModel::create(['name' => $this->faker->words(3, true)]);
+        $new = TargetModel::make(['name' => $this->faker->words(3, true)]);
 
         $updatedTime = now();
         Livewire::test(TargetResource\Pages\EditRole::class, [

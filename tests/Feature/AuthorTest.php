@@ -3,7 +3,7 @@
 namespace Portable\FilaCms\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 
 use Portable\FilaCms\Models\Author;
@@ -12,7 +12,8 @@ use Schema;
 
 class AuthorTest extends TestCase
 {
-    use WithFaker, RefreshDatabase;
+    use WithFaker;
+    use RefreshDatabase;
 
     public function test_table_exists(): void
     {

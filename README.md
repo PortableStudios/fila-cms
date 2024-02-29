@@ -2,16 +2,6 @@
 
 # How to use
 
-## Install via Composer
-
-In your composer.json, add the following line:
-` "repositories": [`
-`    {`
-`        "type": "path",`
-`        "url": "H:/projects/fila-cms"`
-`    }`
-`],`
-
 Then in your composer's require, add this line: `"portable/fila-cms": "@dev"`
 
 ## Installation Command

@@ -14,11 +14,11 @@ class AddUserConcerns extends Command
 
     public function handle()
     {
+        $userModel = config('auth.providers.users.model');
+
         $dryRun = $this->option('dry-run');
 
-        $userModel = 'App\Models\User';
-
-        $this->info("Adding traits and interfaces to $userModel");
+        $this->info("Adding traits and interfaces to User Model");
 
         $traits = [
             HasRoles::class,

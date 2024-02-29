@@ -1,23 +1,23 @@
 <?php
 
-namespace Portable\FilaCms\Tests\Feature\Filament;
+namespace Portable\FilaCms\Tests\Filament;
 
-use Tests\TestCase;
+use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Portable\FilaCms\Filament\Resources\PageResource as TargetResource;
-use App\Models\User;
+use Portable\FilaCms\Tests\User;
 use Portable\FilaCms\Models\Page as TargetModel;
 use Spatie\Permission\Models\Role;
 use Portable\FilaCms\Models\Author;
-use Auth;
 use Livewire\Livewire;
 use Illuminate\Foundation\Testing\WithFaker;
 
 class PageResourceTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
-    protected $author = NULL;
+    protected $author = null;
 
     protected function setUp(): void
     {
@@ -52,7 +52,7 @@ class PageResourceTest extends TestCase
     public function test_can_list_data(): void
     {
         $data = [];
-        for ($i=0; $i < 5; $i++) { 
+        for ($i = 0; $i < 5; $i++) {
             $data[] = $this->generateModel();
         }
 
@@ -62,7 +62,7 @@ class PageResourceTest extends TestCase
     public function test_can_create_record(): void
     {
         Livewire::test(TargetResource\Pages\CreatePage::class)
-            ->fillForm($this->generateModel(TRUE))
+            ->fillForm($this->generateModel(true))
             ->call('create')
             ->assertHasNoFormErrors();
 
@@ -81,12 +81,10 @@ class PageResourceTest extends TestCase
 
         $this->get(TargetResource::getUrl('edit', ['record' => $data]))->assertSuccessful();
     }
-    
+
     public function test_can_retrieve_edit_data(): void
     {
         $data = $this->generateModel();
-
-        \Log::Info($data);
 
         Livewire::test(
             TargetResource\Pages\EditPage::class,
@@ -101,7 +99,7 @@ class PageResourceTest extends TestCase
     {
         $data = $this->generateModel();
 
-        $new = TargetModel::make($this->generateModel(TRUE));
+        $new = TargetModel::make($this->generateModel(true));
 
         $updatedTime = now();
         Livewire::test(TargetResource\Pages\EditPage::class, [
@@ -123,16 +121,16 @@ class PageResourceTest extends TestCase
         $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
     }
 
-    public function generateModel($raw = FALSE): TargetModel | Array
+    public function generateModel($raw = false): TargetModel | array
     {
         $draft = $this->faker->numberBetween(0, 1);
 
         $data = [
-            'title'     => $this->faker->words(15, TRUE),
+            'title'     => $this->faker->words(15, true),
             'is_draft'  => $draft,
-            'publish_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : NULL,
-            'expire_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : NULL,
-            'contents'  => $this->faker->words($this->faker->numberBetween(50, 150), TRUE),
+            'publish_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
+            'expire_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
+            'contents'  => $this->faker->words($this->faker->numberBetween(50, 150), true),
             'author_Id' => $this->author->id,
         ];
 

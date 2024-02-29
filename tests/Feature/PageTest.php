@@ -3,25 +3,27 @@
 namespace Portable\FilaCms\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Author;
-use App\Models\User;
 
 use Str;
 use Schema;
-use Carbon;
 
 class PageTest extends TestCase
 {
-    use WithFaker, RefreshDatabase;
+    use WithFaker;
+    use RefreshDatabase;
+
+    protected $userModel;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $user = User::create([
+        $this->userModel = config('auth.providers.users.model');
+        $user = $this->userModel::create([
             'name'  => 'Jeremy Layson',
             'email' => 'jeremy.layson@portable.com.au',
             'password'  => 'password'
@@ -42,9 +44,9 @@ class PageTest extends TestCase
 
     public function test_can_add_page(): void
     {
-        $user = User::first();
+        $user = $this->userModel::first();
 
-        $secondUser = User::create([
+        $secondUser = $this->userModel::create([
             'name'  => 'John Santos',
             'email' => 'johnsantos@portable.com.au',
             'password'  => 'password'
@@ -72,7 +74,7 @@ class PageTest extends TestCase
     public function test_custom_slug(): void
     {
         $author = Author::first();
-        $user = User::first();
+        $user = $this->userModel::first();
 
         $title = $this->faker->text;
         $page = Page::create([
@@ -89,7 +91,7 @@ class PageTest extends TestCase
     public function test_draft_status(): void
     {
         $author = Author::first();
-        $user = User::first();
+        $user = $this->userModel::first();
 
         $title = $this->faker->text;
         $page = Page::create([
@@ -106,7 +108,7 @@ class PageTest extends TestCase
     public function test_published_status(): void
     {
         $author = Author::first();
-        $user = User::first();
+        $user = $this->userModel::first();
 
         $title = $this->faker->text;
         $page = Page::create([
@@ -123,7 +125,7 @@ class PageTest extends TestCase
     public function test_expired_status(): void
     {
         $author = Author::first();
-        $user = User::first();
+        $user = $this->userModel::first();
 
         $title = $this->faker->text;
         $page = Page::create([
@@ -140,7 +142,7 @@ class PageTest extends TestCase
     public function test_pending_status(): void
     {
         $author = Author::first();
-        $user = User::first();
+        $user = $this->userModel::first();
 
         $title = $this->faker->text;
         $page = Page::create([

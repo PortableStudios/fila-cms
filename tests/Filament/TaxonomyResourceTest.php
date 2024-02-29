@@ -1,21 +1,20 @@
 <?php
 
-namespace Portable\FilaCms\Tests\Feature\Filament;
+namespace Portable\FilaCms\Tests\Filament;
 
-use Tests\TestCase;
+use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource as TargetResource;
-use Portable\FilaCms\Filament\Resources\TaxonomyResource\RelationManagers\TermsRelationManager;
-use App\Models\User;
+use Portable\FilaCms\Tests\User;
 use Portable\FilaCms\Models\Taxonomy as TargetModel;
 use Spatie\Permission\Models\Role;
-use Auth;
 use Livewire\Livewire;
 use Illuminate\Foundation\Testing\WithFaker;
 
 class TaxonomyResourceTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected function setUp(): void
     {
@@ -44,7 +43,7 @@ class TaxonomyResourceTest extends TestCase
     public function test_can_list_data(): void
     {
         $data = [];
-        for ($i=0; $i < 5; $i++) { 
+        for ($i = 0; $i < 5; $i++) {
             $data[] = $this->generateModel();
         }
 
@@ -78,16 +77,16 @@ class TaxonomyResourceTest extends TestCase
 
         $this->get(TargetResource::getUrl('edit', ['record' => $data]))->assertSuccessful();
     }
-    
+
     public function test_can_retrieve_edit_data(): void
     {
         $this->generateModel();
         $data = TargetModel::first();
 
         Livewire::test(
-                TargetResource\Pages\EditTaxonomy::class,
-                ['record' => $data->getRouteKey()]
-            )
+            TargetResource\Pages\EditTaxonomy::class,
+            ['record' => $data->getRouteKey()]
+        )
             ->assertFormSet([
                 'name'  => $data->name,
             ]);

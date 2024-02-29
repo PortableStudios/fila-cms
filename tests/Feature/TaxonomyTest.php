@@ -3,17 +3,17 @@
 namespace Portable\FilaCms\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 
 use Portable\FilaCms\Models\Taxonomy;
-use Portable\FilaCms\Models\TaxonomyTerm;
 
 use Schema;
 
 class TaxonomyTest extends TestCase
 {
-    use WithFaker, RefreshDatabase;
+    use WithFaker;
+    use RefreshDatabase;
 
     public function test_table_exists(): void
     {

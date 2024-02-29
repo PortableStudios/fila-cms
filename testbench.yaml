@@ -1,0 +1,35 @@
+providers:
+  - Workbench\App\Providers\WorkbenchServiceProvider
+  - Portable\FilaCms\Providers\FilaCmsServiceProvider
+  - Filament\FilamentServiceProvider
+  - Livewire\LivewireServiceProvider
+  - FilamentTiptapEditor\FilamentTiptapEditorServiceProvider
+  - Venturecraft\Revisionable\RevisionableServiceProvider
+  - Spatie\Permission\PermissionServiceProvider
+  - Laravel\Sanctum\SanctumServiceProvider
+
+migrations:
+  - workbench/database/migrations
+  - spatie/laravel-permission/database/migrations
+  - venturecraft/revisionable/src/migrations
+  - database/migrations
+
+seeders:
+  - Workbench\Database\Seeders\DatabaseSeeder
+workbench:
+  start: "/"
+  install: true
+  discovers:
+    web: true
+    api: false
+    commands: true
+    components: true
+    views: true
+  build: [
+    - cache:clear
+  ]
+  assets: [
+    - laravel-assets
+    - filament-views
+  ]
+  sync: []

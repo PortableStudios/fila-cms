@@ -3,7 +3,7 @@
 namespace Portable\FilaCms\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -11,7 +11,8 @@ use Schema;
 
 class MakeUserTest extends TestCase
 {
-    use WithFaker, RefreshDatabase;
+    use WithFaker;
+    use RefreshDatabase;
 
     protected function setUp(): void
     {
@@ -32,7 +33,9 @@ class MakeUserTest extends TestCase
 
     public function test_roles_created(): void
     {
-        $userFieldsRaw = Schema::getColumnListing((new \App\Models\User)->getTable());
+        $userModel = config('auth.providers.users.model');
+
+        $userFieldsRaw = Schema::getColumnListing((new $userModel)->getTable());
 
         $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'email_verified_at' ];
         $userFields = array_diff($userFieldsRaw, $excludeFields);
@@ -42,7 +45,7 @@ class MakeUserTest extends TestCase
 
         $artisan = $this->artisan('fila-cms:make-user')
             ->expectsOutputToContain('User created')
-            ->assertExitCode(0)
+            ->assertExitCode(1)
             ->run();
 
         // verify user has been created
@@ -51,7 +54,7 @@ class MakeUserTest extends TestCase
         ]);
 
         // verify user has role
-        $user = \App\Models\User::first();
+        $user = $userModel::first();
         $this->assertTrue($user->can('access filacms-backend'));
     }
 }

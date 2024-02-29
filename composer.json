@@ -29,14 +29,46 @@
     },
     "require": {
         "filament/filament": "^3.2",
-        "spatie/laravel-permission": "^6.3",
         "venturecraft/revisionable": "1.*",
         "awcodes/filament-tiptap-editor": "^3.0",
-        "mistralys/text-diff": "^2.0"
+        "mistralys/text-diff": "^2.0",
+        "spatie/laravel-permission": "^6.3"
     },
     "require-dev": {
+        "laravel/sanctum": "^3.3",
         "laravel/pint": "^1.14",
         "larastan/larastan": "^2.9",
-        "squizlabs/php_codesniffer": "^3.9"
+        "squizlabs/php_codesniffer": "^3.9",
+        "orchestra/testbench": "^8.21",
+        "nunomaduro/collision": "^7.8",
+        "laravel/legacy-factories": "^1.4"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve"
+        ],
+        "lint": [
+            "@php vendor/bin/pint",
+            "@php vendor/bin/phpstan analyse"
+        ],
+        "test": [
+            "@php vendor/bin/phpunit"
+        ]
     }
 }
