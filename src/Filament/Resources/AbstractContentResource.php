@@ -2,6 +2,7 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -14,12 +15,14 @@ use Filament\Tables\Table;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Portable\FilaCms\Filament\Resources\PageResource\Pages;
-use Portable\FilaCms\Filament\Resources\PageResource\RelationManagers;
+use Illuminate\Support\Str;
+use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
+use Portable\FilaCms\Filament\Resources\AbstractContentResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
+use Portable\FilaCms\Models\TaxonomyResource;
 
 class AbstractContentResource extends Resource
 {
@@ -28,6 +31,8 @@ class AbstractContentResource extends Resource
     protected static ?string $model = Page::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+
+    protected static ?string $navigationGroup = 'Content';
 
     public static function getEloquentQuery(): Builder
     {
@@ -39,28 +44,41 @@ class AbstractContentResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                TextInput::make('title')
-                    ->required(),
-                Toggle::make('is_draft')
-                    ->label('Draft?')
-                    ->offIcon('heroicon-m-eye')
-                    ->onIcon('heroicon-m-eye-slash')
-                    ->required(),
-                DatePicker::make('publish_at')
-                    ->label('Publish Date'),
-                DatePicker::make('expire_at')
-                    ->label('Expiry Date'),
-                TiptapEditor::make('contents')
-                    ->profile('default')
-                    ->required()
-                    ->columnSpanFull(),
-                Select::make('author_id')
-                    ->label('Author')
-                    ->options(Author::all()->pluck('display_name', 'id'))
-                    ->searchable(),
-            ]);
+        $fields = [
+            Toggle::make('is_draft')
+                ->label('Draft?')
+                ->offIcon('heroicon-m-eye')
+                ->onIcon('heroicon-m-eye-slash')->columnSpanFull(),
+            TextInput::make('title')
+                ->required(),
+            Select::make('author_id')
+                ->label('Author')
+                ->options(Author::all()->pluck('display_name', 'id'))
+                ->searchable(),
+            DatePicker::make('publish_at')
+                ->label('Publish Date'),
+            DatePicker::make('expire_at')
+                ->label('Expiry Date'),
+            static::tiptapEditor(),
+        ];
+
+        TaxonomyResource::where('resource_class', static::class)->get()->each(function (TaxonomyResource $taxonomyResource) use (&$fields) {
+            $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_');
+            $fields[] = CheckboxList::make($fieldName.'_ids')
+                ->label($taxonomyResource->taxonomy->name)
+                ->options($taxonomyResource->taxonomy->terms->pluck('name', 'id'));
+        });
+
+        return $form->schema($fields);
+    }
+
+    public static function tiptapEditor($name = 'contents'): TiptapEditor
+    {
+        return TiptapEditor::make($name)
+            ->profile('default')
+            ->extraInputAttributes(['style' => 'min-height: 24rem;'])
+            ->required()
+            ->columnSpanFull();
     }
 
     public static function table(Table $table): Table
@@ -112,9 +130,9 @@ class AbstractContentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPages::route('/'),
-            'create' => Pages\CreatePage::route('/create'),
-            'edit' => Pages\EditPage::route('/{record}/edit'),
+            'index' => Pages\ListAbstractContentResources::route('/'),
+            'create' => Pages\CreateAbstractContentResource::route('/create'),
+            'edit' => Pages\EditAbstractContentResource::route('/{record}/edit'),
         ];
     }
 }
