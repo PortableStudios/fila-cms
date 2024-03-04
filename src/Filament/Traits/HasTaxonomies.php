@@ -83,7 +83,7 @@ trait HasTaxonomies
                 $this->_saveTaxonomyFields[$field.'_ids'] = $this->attributes[$field.'_ids'];
                 if ($creating) {
                     unset($this->attributes[$field . '_ids']);
-                }else{
+                } else {
                     $this->original[$field.'_ids'] = $this->attributes[$field.'_ids'];
                 }
             }
