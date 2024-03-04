@@ -2,12 +2,11 @@
 
 namespace Portable\FilaCms\Tests\Feature;
 
-use Portable\FilaCms\Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use File;
-
-use Spatie\Permission\Traits\HasRoles;
 use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\File;
+use Portable\FilaCms\Tests\TestCase;
+use Spatie\Permission\Traits\HasRoles;
 
 class InstallTest extends TestCase
 {
@@ -28,7 +27,7 @@ class InstallTest extends TestCase
         $this->assertTrue(File::exists(config_path('fila-cms.php')));
         $this->assertTrue(File::exists(config_path('filament-tiptap-editor.php')));
 
-        $this->assertTrue(File::exists(database_path('migrations\2013_04_09_062329_create_revisions_table.php')));
+        $this->assertTrue(File::exists(database_path('migrations/2013_04_09_062329_create_revisions_table.php')));
 
         $this->assertDatabaseHas('roles', ['name' => 'Admin']);
         $this->assertDatabaseHas('roles', ['name' => 'User']);

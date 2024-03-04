@@ -1,7 +1,13 @@
 providers:
-  - Workbench\App\Providers\WorkbenchServiceProvider
   - Portable\FilaCms\Providers\FilaCmsServiceProvider
   - Filament\FilamentServiceProvider
+  - Filament\Forms\FormsServiceProvider
+  - Filament\Actions\ActionsServiceProvider
+  - Filament\Infolists\InfolistsServiceProvider
+  - Filament\Notifications\NotificationsServiceProvider
+  - Filament\Support\SupportServiceProvider
+  - Filament\Tables\TablesServiceProvider
+  - Filament\Widgets\WidgetsServiceProvider
   - Livewire\LivewireServiceProvider
   - FilamentTiptapEditor\FilamentTiptapEditorServiceProvider
   - Venturecraft\Revisionable\RevisionableServiceProvider

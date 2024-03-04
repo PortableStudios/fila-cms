@@ -4,6 +4,8 @@ namespace Portable\FilaCms\Commands;
 
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
+use ReflectionClass;
 use Spatie\Permission\Traits\HasRoles;
 
 class AddUserConcerns extends Command
@@ -28,7 +30,7 @@ class AddUserConcerns extends Command
             FilamentUser::class,
         ];
 
-        $userContents = file_get_contents(app_path("Models/User.php"));
+        $userContents = File::get((new ReflectionClass($userModel))->getFileName());
 
         $existingTraits = class_uses_recursive($userModel);
 

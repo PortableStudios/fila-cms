@@ -3,12 +3,10 @@
 namespace Portable\FilaCms\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-
+use Illuminate\Support\Facades\Schema;
 use Portable\FilaCms\Models\Author;
-
-use Schema;
+use Portable\FilaCms\Tests\TestCase;
 
 class AuthorTest extends TestCase
 {
