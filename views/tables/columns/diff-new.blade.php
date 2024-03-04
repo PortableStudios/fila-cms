@@ -3,7 +3,7 @@
     <div class="fi-ta-text-item inline-flex items-center gap-1.5 ">
       <span class="fi-ta-text-item-label text-sm leading-6 text-gray-950 dark:text-white">
         <?php
-        $diff = \Mistralys\Diff\Diff::compareStrings($getRecord()->old_value->__toString(), $getRecord()->new_value->__toString())->toString('||||||||||');
+        $diff = \Mistralys\Diff\Diff::compareStrings($getRecord()->old_value ?: '', $getRecord()->new_value ?: '')->toString('||||||||||');
         $diff = explode('||||||||||', $diff);
         echo substr($diff[1], 0, 30);
         ?>

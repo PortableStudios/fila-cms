@@ -44,7 +44,7 @@ trait HasTaxonomies
     public static function bootHasTaxonomies()
     {
         static::creating(function ($model) {
-            $model->undirtyVirtualAttributes();
+            $model->undirtyVirtualAttributes(true);
         });
 
         static::updating(function ($model) {
@@ -69,15 +69,23 @@ trait HasTaxonomies
         }
     }
 
-    protected function undirtyVirtualAttributes()
+    protected function undirtyVirtualAttributes($creating = false)
     {
         foreach ($this->_virtualTaxonomyFields as $field) {
             if (isset($this->attributes[$field])) {
-                unset($this->attributes[$field]);
+                if ($creating) {
+                    unset($this->attributes[$field]);
+                } else {
+                    $this->original[$field] = $this->attributes[$field];
+                }
             }
             if (isset($this->attributes[$field.'_ids'])) {
                 $this->_saveTaxonomyFields[$field.'_ids'] = $this->attributes[$field.'_ids'];
-                unset($this->attributes[$field.'_ids']);
+                if ($creating) {
+                    unset($this->attributes[$field . '_ids']);
+                }else{
+                    $this->original[$field.'_ids'] = $this->attributes[$field.'_ids'];
+                }
             }
         }
     }
