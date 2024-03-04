@@ -3,6 +3,7 @@
 return [
     'use_admin_panel' => true,
     'admin_prefix' => 'admin',
+    'publish_content_routes' => true,
     'admin_plugins' => [
         \Portable\FilaCms\Plugins\UsersPlugin::class,
         \Portable\FilaCms\Plugins\PermissionsPlugin::class,

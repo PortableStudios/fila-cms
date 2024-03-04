@@ -20,6 +20,6 @@ class DynamicTermList implements CastsAttributes
 
     public function set($model, $key, $value, $attributes)
     {
-
+        return [$key => $value];
     }
 }
