@@ -19,4 +19,6 @@ jobs:
       run: composer install --prefer-dist --no-progress
     - name: Laravel Pint
       run: php vendor/bin/pint --test
+    - name: Unit Test
+      run: php vendor/bin/phpunit
       
