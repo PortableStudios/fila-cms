@@ -22,7 +22,7 @@ class PermissionResourceTest extends TestCase
 
         $this->artisan('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
         $adminRole = Role::where('name', 'Admin')->first();
-        $adminUser = User::factory()->create();
+        $adminUser = $this->createUser();
         $adminUser->assignRole($adminRole);
 
         $this->actingAs($adminUser);
@@ -35,7 +35,7 @@ class PermissionResourceTest extends TestCase
 
     public function test_forbidden(): void
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
         $this->be($user);
         $this->get(TargetResource::getUrl('index'))->assertForbidden();
     }
@@ -89,7 +89,6 @@ class PermissionResourceTest extends TestCase
         $data = TargetModel::create(['name' => $this->faker->words(3, true)]);
         $new = TargetModel::make(['name' => $this->faker->words(3, true)]);
 
-        $updatedTime = now();
         Livewire::test(TargetResource\Pages\EditPermission::class, [
             'record' => $data->getRoutekey(),
         ])
@@ -98,6 +97,7 @@ class PermissionResourceTest extends TestCase
         ])
         ->call('save')
         ->assertHasNoFormErrors();
+        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);

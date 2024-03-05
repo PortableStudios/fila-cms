@@ -22,7 +22,7 @@ class TaxonomyResourceTest extends TestCase
 
         $this->artisan('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
         $adminRole = Role::where('name', 'Admin')->first();
-        $adminUser = User::factory()->create();
+        $adminUser = $this->createUser();
         $adminUser->assignRole($adminRole);
 
         $this->actingAs($adminUser);
@@ -35,7 +35,7 @@ class TaxonomyResourceTest extends TestCase
 
     public function test_forbidden(): void
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
         $this->be($user);
         $this->get(TargetResource::getUrl('index'))->assertForbidden();
     }
@@ -100,7 +100,6 @@ class TaxonomyResourceTest extends TestCase
             'name' => $this->faker->firstName,
         ]);
 
-        $updatedTime = now();
         Livewire::test(TargetResource\Pages\EditTaxonomy::class, [
             'record' => $data->getRoutekey(),
         ])
@@ -109,6 +108,7 @@ class TaxonomyResourceTest extends TestCase
         ])
         ->call('save')
         ->assertHasNoFormErrors();
+        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);

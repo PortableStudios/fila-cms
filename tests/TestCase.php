@@ -4,9 +4,11 @@ namespace Portable\FilaCms\Tests;
 
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\Attributes\WithMigration;
 use Orchestra\Testbench\Concerns\WithWorkbench;
+use Portable\FilaCms\Tests\User;
 
 #[WithMigration]
 abstract class TestCase extends \Orchestra\Testbench\TestCase
@@ -36,11 +38,15 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             ->expectsQuestion('Would you like to publish the FilaCMS config?(Y/n)', 'Y')
             ->expectsQuestion('Would you like to run migrations(Y/n)?', 'Y')
             ->expectsQuestion('Would you like to add the required trait to your App\\Models\\User model?(Y/n)', 'Y')
-            ->expectsQuestion('theme.css already exists, do you want to overwrite it?', 'no')
-            ->expectsQuestion('tailwind.config.js already exists, do you want to overwrite it?', 'no')
+            // ->expectsQuestion('theme.css already exists, do you want to overwrite it?', 'no')
+            // ->expectsQuestion('tailwind.config.js already exists, do you want to overwrite it?', 'no')
 
             ->expectsOutputToContain('Finished')
             ->assertExitCode(0);
+
+        Factory::guessFactoryNamesUsing(function (string $modelName) {
+            return (string) '\\Portable\\FilaCms\\Tests\\Factories\\'.(class_basename($modelName)).'Factory';
+        });
     }
 
     protected function defineEnvironment($app)
@@ -48,5 +54,22 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         tap($app['config'], function (Repository $config) {
             $config->set('auth.providers.users.model', User::class);
         });
+    }
+
+    protected function getPackageProviders($app)
+    {
+        $packages = parent::getPackageProviders($app);
+        $packages[] = \RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider::class;
+        
+        return $packages;
+    }
+
+    public function createUser()
+    {
+        return User::create([
+            'name'  => 'Jeremy Layson',
+            'email' => 'jeremy.layson+' . mt_rand(1111, 9999) . '@portable.com.au',
+            'password'  => 'password',
+        ]);
     }
 }

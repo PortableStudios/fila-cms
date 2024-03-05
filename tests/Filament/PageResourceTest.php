@@ -25,7 +25,7 @@ class PageResourceTest extends TestCase
 
         $this->artisan('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
         $adminRole = Role::where('name', 'Admin')->first();
-        $adminUser = User::factory()->create();
+        $adminUser = $this->createUser();
         $adminUser->assignRole($adminRole);
 
         $this->author = Author::create([
@@ -44,7 +44,7 @@ class PageResourceTest extends TestCase
 
     public function test_forbidden(): void
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
         $this->be($user);
         $this->get(TargetResource::getUrl('index'))->assertForbidden();
     }
@@ -101,7 +101,6 @@ class PageResourceTest extends TestCase
 
         $new = TargetModel::make($this->generateModel(true));
 
-        $updatedTime = now();
         Livewire::test(TargetResource\Pages\EditPage::class, [
             'record' => $data->getRoutekey(),
         ])
@@ -113,6 +112,7 @@ class PageResourceTest extends TestCase
         ])
         ->call('save')
         ->assertHasNoFormErrors();
+        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->title, $new->title);

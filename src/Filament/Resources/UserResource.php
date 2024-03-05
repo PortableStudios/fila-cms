@@ -2,7 +2,6 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
-use App\Models\User;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -13,7 +12,7 @@ class UserResource extends AbstractConfigurableResource
 {
     use IsProtectedResource;
 
-    protected static ?string $model = User::class;
+    protected static ?string $model = null;
 
     protected static string $configKey = 'fila-cms.users';
 
@@ -31,6 +30,7 @@ class UserResource extends AbstractConfigurableResource
 
     public static function table(Table $table): Table
     {
+        static::$model = config('auth.providers.users.model');
         return $table
             ->columns(static::getTableColumns())
             ->filters([

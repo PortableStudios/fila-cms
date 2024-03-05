@@ -19,7 +19,7 @@ class UserResourceTest extends TestCase
 
         $this->artisan('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
         $adminRole = Role::where('name', 'Admin')->first();
-        $adminUser = User::factory()->create();
+        $adminUser = $this->createUser();
         $adminUser->assignRole($adminRole);
 
         $this->actingAs($adminUser);
@@ -32,14 +32,18 @@ class UserResourceTest extends TestCase
 
     public function test_forbidden(): void
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
         $this->be($user);
         $this->get(UserResource::getUrl('index'))->assertForbidden();
     }
 
     public function test_can_list_users(): void
     {
-        $users = User::factory()->count(5)->create();
+        $users = [];
+
+        for ($i=0; $i < 5; $i++) { 
+            $users[] = $this->createUser();
+        }
 
         Livewire::test(UserResource\Pages\ListUsers::class)->assertCanSeeTableRecords($users);
     }

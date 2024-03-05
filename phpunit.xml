@@ -7,13 +7,18 @@
     <testsuites>
         <testsuite name="Main">
             <file>tests/Feature/InstallTest.php</file>
-            <!-- <file>tests/Feature/AuthorTest.php</file>
+            <file>tests/Feature/AuthorTest.php</file>
             <file>tests/Feature/MakeUserTest.php</file>
             <file>tests/Feature/PageTest.php</file>
-            <file>tests/Feature/TaxonomyTest.php</file> -->
+            <file>tests/Feature/TaxonomyTest.php</file>
         </testsuite>
         <testsuite name="Filament">
             <file>tests/Filament/AuthorResourceTest.php</file>
+            <file>tests/Filament/PageResourceTest.php</file>
+            <file>tests/Filament/PermissionResourceTest.php</file>
+            <file>tests/Filament/RoleResourceTest.php</file>
+            <file>tests/Filament/TaxonomyResourceTest.php</file>
+            <file>tests/Filament/UserResourceTest.php</file>
         </testsuite>
     </testsuites>
 
