@@ -95,7 +95,7 @@ class AddUserConcerns extends Command
             $this->info("Dry run, not writing to file.  Output:");
             $this->info($userContents);
         } else {
-            file_put_contents(app_path("Models/User.php"), $userContents);
+            File::put((new ReflectionClass($userModel))->getFileName(), $userContents);
         }
     }
 }
