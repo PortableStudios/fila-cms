@@ -20,5 +20,5 @@ jobs:
     - name: Laravel Pint
       run: php vendor/bin/pint --test
     - name: Unit Test
-      run: php vendor/bin/phpunit
+      run: composer run test
       
