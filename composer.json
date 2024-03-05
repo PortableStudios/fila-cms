@@ -32,7 +32,8 @@
         "venturecraft/revisionable": "1.*",
         "awcodes/filament-tiptap-editor": "^3.0",
         "mistralys/text-diff": "^2.0",
-        "spatie/laravel-permission": "^6.3"
+        "spatie/laravel-permission": "^6.3",
+        "laravel/framework": "^10.0"
     },
     "require-dev": {
         "laravel/sanctum": "^3.3",
