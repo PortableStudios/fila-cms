@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\Attributes\WithMigration;
 use Orchestra\Testbench\Concerns\WithWorkbench;
-use Portable\FilaCms\Tests\User;
 
 #[WithMigration]
 abstract class TestCase extends \Orchestra\Testbench\TestCase
@@ -60,7 +59,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         $packages = parent::getPackageProviders($app);
         $packages[] = \RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider::class;
-        
+
         return $packages;
     }
 

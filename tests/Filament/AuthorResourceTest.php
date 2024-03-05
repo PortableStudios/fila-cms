@@ -19,10 +19,10 @@ class AuthorResourceTest extends TestCase
 
         $this->artisan('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
         $adminRole = Role::where('name', 'Admin')->first();
-        
+
         $userModel = config('auth.providers.users.model');
 
-        $adminUser = (new $userModel)->create([
+        $adminUser = (new $userModel())->create([
             'name' => 'Test',
             'email' => 'test@example.com',
             'password' => 'password'

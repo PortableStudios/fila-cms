@@ -5,7 +5,6 @@ namespace Portable\FilaCms\Tests\Filament;
 use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Portable\FilaCms\Filament\Resources\UserResource;
-use Portable\FilaCms\Tests\User;
 use Spatie\Permission\Models\Role;
 use Livewire\Livewire;
 
@@ -41,7 +40,7 @@ class UserResourceTest extends TestCase
     {
         $users = [];
 
-        for ($i=0; $i < 5; $i++) { 
+        for ($i = 0; $i < 5; $i++) {
             $users[] = $this->createUser();
         }
 

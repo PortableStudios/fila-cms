@@ -35,7 +35,7 @@ class MakeUserTest extends TestCase
     {
         $userModel = config('auth.providers.users.model');
 
-        $userFieldsRaw = Schema::getColumnListing((new $userModel)->getTable());
+        $userFieldsRaw = Schema::getColumnListing((new $userModel())->getTable());
 
         $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'email_verified_at' ];
         $userFields = array_diff($userFieldsRaw, $excludeFields);

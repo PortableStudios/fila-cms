@@ -5,7 +5,6 @@ namespace Portable\FilaCms\Tests\Filament;
 use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource as TargetResource;
-use Portable\FilaCms\Tests\User;
 use Portable\FilaCms\Models\Taxonomy as TargetModel;
 use Spatie\Permission\Models\Role;
 use Livewire\Livewire;

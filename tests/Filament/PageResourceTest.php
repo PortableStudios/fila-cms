@@ -5,7 +5,6 @@ namespace Portable\FilaCms\Tests\Filament;
 use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Portable\FilaCms\Filament\Resources\PageResource as TargetResource;
-use Portable\FilaCms\Tests\User;
 use Portable\FilaCms\Models\Page as TargetModel;
 use Spatie\Permission\Models\Role;
 use Portable\FilaCms\Models\Author;

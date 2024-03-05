@@ -5,7 +5,6 @@ namespace Portable\FilaCms\Tests\Filament;
 use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Portable\FilaCms\Filament\Resources\RoleResource as TargetResource;
-use Portable\FilaCms\Tests\User;
 use Spatie\Permission\Models\Role as TargetModel;
 use Spatie\Permission\Models\Role;
 use Livewire\Livewire;
