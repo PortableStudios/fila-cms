@@ -60,7 +60,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $packages = parent::getPackageProviders($app);
         $packages[] = \Filament\Support\SupportServiceProvider::class;
         $packages[] = \RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider::class;
-        $packages[] = \Portable\FilaCms\Providers\FilaCmsServiceProvider::class;
         $packages[] = \Filament\FilamentServiceProvider::class;
         $packages[] = \Filament\Forms\FormsServiceProvider::class;
         $packages[] = \Filament\Actions\ActionsServiceProvider::class;
@@ -73,6 +72,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $packages[] = \Venturecraft\Revisionable\RevisionableServiceProvider::class;
         $packages[] = \Spatie\Permission\PermissionServiceProvider::class;
         $packages[] = \Laravel\Sanctum\SanctumServiceProvider::class;
+        $packages[] = \Portable\FilaCms\Providers\FilaCmsServiceProvider::class;
         /*
 */
         // App\Providers\BroadcastServiceProvider::class,
