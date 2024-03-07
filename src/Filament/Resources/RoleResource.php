@@ -5,7 +5,6 @@ namespace Portable\FilaCms\Filament\Resources;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -13,7 +12,7 @@ use Portable\FilaCms\Filament\Resources\RoleResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Spatie\Permission\Models\Role;
 
-class RoleResource extends Resource
+class RoleResource extends AbstractResource
 {
     use IsProtectedResource;
 

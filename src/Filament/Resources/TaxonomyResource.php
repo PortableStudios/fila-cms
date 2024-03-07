@@ -4,7 +4,6 @@ namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource\Pages;
@@ -12,7 +11,7 @@ use Portable\FilaCms\Filament\Resources\TaxonomyResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Taxonomy;
 
-class TaxonomyResource extends Resource
+class TaxonomyResource extends AbstractResource
 {
     use IsProtectedResource;
 

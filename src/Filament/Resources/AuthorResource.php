@@ -7,7 +7,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -16,7 +15,7 @@ use Portable\FilaCms\Filament\Resources\AuthorResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Author;
 
-class AuthorResource extends Resource
+class AuthorResource extends AbstractResource
 {
     use IsProtectedResource;
 
