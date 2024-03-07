@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Tests\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
+use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource as TargetResource;
 use Portable\FilaCms\Models\Taxonomy as TargetModel;
 use Portable\FilaCms\Tests\TestCase;
