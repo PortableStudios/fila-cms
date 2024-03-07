@@ -36,7 +36,7 @@ jobs:
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
     - name: Install PHP dependencies
-      run: composer install --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
+      run: composer install
 
     - name: Run Unit With Pest
       run: ./vendor/bin/phpunit --stop-on-defect
