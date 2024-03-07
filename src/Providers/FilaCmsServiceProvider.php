@@ -3,6 +3,8 @@
 namespace Portable\FilaCms\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,18 @@ class FilaCmsServiceProvider extends ServiceProvider
                 \Portable\FilaCms\Commands\MakeUser::class,
             ]);
         }
+
+        Str::macro('ucwords', function (string $value): string {
+            return implode(' ', array_map(
+                [Str::class, 'ucfirst'],
+                explode(' ', $value),
+            ));
+        });
+
+        Stringable::macro('ucwords', function (): Stringable {
+            /** @phpstan-ignore-next-line */
+            return new Stringable(Str::ucwords($this->value));
+        });
 
         //$this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
         //$this->loadViewsFrom(__DIR__.'/../Views', 'fila-cms');
