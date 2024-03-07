@@ -47,7 +47,9 @@ class InstallCommand extends CommandsInstallCommand
         $this->info('Adding permissions');
 
         $this->info('Creating Custom Filament Theme');
-        $this->call('make:filament-theme');
+
+        $this->callSilent('make:filament-theme');
+
         $this->call('vendor:publish', ['--tag' => 'filament-tiptap-editor-config']);
 
         $this->info('Finished');

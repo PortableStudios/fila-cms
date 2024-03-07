@@ -2,13 +2,13 @@
 
 namespace Portable\FilaCms\Tests\Filament;
 
-use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Livewire\Livewire;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource as TargetResource;
 use Portable\FilaCms\Models\Taxonomy as TargetModel;
+use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Role;
-use Livewire\Livewire;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class TaxonomyResourceTest extends TestCase
 {
@@ -54,6 +54,7 @@ class TaxonomyResourceTest extends TestCase
         Livewire::test(TargetResource\Pages\CreateTaxonomy::class)
             ->fillForm([
                 'name' => $this->faker->firstName,
+                'taxonomy_resources' => array_keys(FilaCms::getContentModels())
             ])
             ->call('create')
             ->assertHasNoFormErrors();

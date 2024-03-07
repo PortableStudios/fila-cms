@@ -18,4 +18,4 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
     - name: PHPUnit
-      run: php vendor/bin/phpunit
+      run: php vendor/bin/phpunit --stop-on-defect
