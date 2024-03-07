@@ -3,8 +3,8 @@
 namespace Portable\FilaCms\Tests;
 
 use Illuminate\Contracts\Config\Repository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\Attributes\WithMigration;
 use Orchestra\Testbench\Concerns\WithWorkbench;
@@ -37,8 +37,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             ->expectsQuestion('Would you like to publish the FilaCMS config?(Y/n)', 'Y')
             ->expectsQuestion('Would you like to run migrations(Y/n)?', 'Y')
             ->expectsQuestion('Would you like to add the required trait to your App\\Models\\User model?(Y/n)', 'Y')
-            // ->expectsQuestion('theme.css already exists, do you want to overwrite it?', 'no')
-            // ->expectsQuestion('tailwind.config.js already exists, do you want to overwrite it?', 'no')
+            ->expectsQuestion('theme.css already exists, do you want to overwrite it?', 'no')
+            ->expectsQuestion('tailwind.config.js already exists, do you want to overwrite it?', 'no')
 
             ->expectsOutputToContain('Finished')
             ->assertExitCode(0);
