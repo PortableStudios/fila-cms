@@ -71,5 +71,10 @@
         "test": [
             "@php vendor/bin/phpunit"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
