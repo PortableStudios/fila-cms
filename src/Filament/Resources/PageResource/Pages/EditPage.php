@@ -3,10 +3,10 @@
 namespace Portable\FilaCms\Filament\Resources\PageResource\Pages;
 
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages\EditAbstractContentResource;
 use Portable\FilaCms\Filament\Resources\PageResource;
 
-class EditPage extends EditRecord
+class EditPage extends EditAbstractContentResource
 {
     protected static string $resource = PageResource::class;
 

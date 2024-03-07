@@ -1,6 +1,6 @@
 <?php
 
-namespace Portable\FilaCms\Filament\Resources\PageResource\RelationManagers;
+namespace Portable\FilaCms\Filament\Resources\AbstractContentResource\RelationManagers;
 
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;

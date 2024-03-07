@@ -8,11 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Portable\FilaCms\Events\ContentCreating;
 use Portable\FilaCms\Events\ContentUpdating;
+use Portable\FilaCms\Filament\Traits\HasExcerpt;
+use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 abstract class AbstractContentResource extends Model
 {
+    use HasExcerpt;
+    use HasTaxonomies;
     use RevisionableTrait;
     use SoftDeletes;
 
@@ -46,6 +50,11 @@ abstract class AbstractContentResource extends Model
         'updating' => ContentUpdating::class,
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     protected static function booting(): void
     {
         static::addGlobalScope(new PublishedScope());
@@ -64,6 +73,11 @@ abstract class AbstractContentResource extends Model
     public function updatedBy()
     {
         return $this->belongsTo(config('auth.providers.users.model'), 'updated_user_id');
+    }
+
+    public function displayAuthor(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->author ? $this->author->name : $this->createdBy->name);
     }
 
     protected function status(): Attribute
