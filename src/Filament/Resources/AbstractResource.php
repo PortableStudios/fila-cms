@@ -15,4 +15,13 @@ class AbstractResource extends Resource
 
         return Str::title(static::getModelLabel());
     }
+
+    public static function getTitleCasePluralModelLabel(): string
+    {
+        if (! static::hasTitleCaseModelLabel()) {
+            return static::getPluralModelLabel();
+        }
+
+        return Str::title(static::getPluralModelLabel());
+    }
 }
