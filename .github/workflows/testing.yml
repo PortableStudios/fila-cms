@@ -10,9 +10,10 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  phpunit:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
     steps:
     - uses: actions/checkout@v3
     - name: Install dependencies
