@@ -58,6 +58,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app)
     {
         $packages = parent::getPackageProviders($app);
+        $packages[] = \Filament\Support\SupportServiceProvider::class;
         $packages[] = \RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider::class;
         $packages[] = \Portable\FilaCms\Providers\FilaCmsServiceProvider::class;
         $packages[] = \Filament\FilamentServiceProvider::class;
@@ -65,7 +66,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $packages[] = \Filament\Actions\ActionsServiceProvider::class;
         $packages[] = \Filament\Infolists\InfolistsServiceProvider::class;
         $packages[] = \Filament\Notifications\NotificationsServiceProvider::class;
-        $packages[] = \Filament\Support\SupportServiceProvider::class;
         $packages[] = \Filament\Tables\TablesServiceProvider::class;
         $packages[] = \Filament\Widgets\WidgetsServiceProvider::class;
         $packages[] = \Livewire\LivewireServiceProvider::class;
@@ -73,6 +73,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $packages[] = \Venturecraft\Revisionable\RevisionableServiceProvider::class;
         $packages[] = \Spatie\Permission\PermissionServiceProvider::class;
         $packages[] = \Laravel\Sanctum\SanctumServiceProvider::class;
+        /*
+*/
+        // App\Providers\BroadcastServiceProvider::class,
 
 
         return $packages;
