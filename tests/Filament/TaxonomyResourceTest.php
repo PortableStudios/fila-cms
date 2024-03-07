@@ -99,6 +99,7 @@ class TaxonomyResourceTest extends TestCase
 
         $new = TargetModel::make([
             'name' => $this->faker->firstName,
+            'taxonomy_resources' => array_keys(FilaCms::getContentModels())
         ]);
 
         Livewire::test(TargetResource\Pages\EditTaxonomy::class, [
