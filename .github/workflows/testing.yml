@@ -35,14 +35,8 @@ jobs:
         echo "::add-matcher::${{ runner.tool_cache }}/php.json"
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-    - name: Set Pest
-      run: composer require pestphp/pest:^${{ matrix.pest }} --dev --no-interaction --no-update
-
     - name: Install PHP dependencies
-      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
-
-    - name: "Update Filament"
-      run: composer update filament/filament -W
+      run: composer install --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
 
     - name: Run Unit With Pest
       run: ./vendor/bin/phpunit --stop-on-defect
