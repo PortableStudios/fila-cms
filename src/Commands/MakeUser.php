@@ -29,8 +29,8 @@ class MakeUser extends Command
             return false;
         }
 
-        $userModelPath = 'App\Models\User';
-        $userModel = new $userModelPath();
+        $userModelClass = config('auth.providers.users.model');
+        $userModel = new $userModelClass();
         $userFieldsRaw = Schema::getColumnListing($userModel->getTable());
 
         $excludeFields = ['id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'email_verified_at'];
@@ -51,8 +51,11 @@ class MakeUser extends Command
         if ($dryRun) {
             $this->info('User to be created');
             $this->info($userModel);
+            return true;
         } else {
+            $this->info('User created');
             $userModel->save();
+            return true;
         }
     }
 }

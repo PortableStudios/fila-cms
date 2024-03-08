@@ -1,4 +1,4 @@
-name: PHP Composer
+name: PHPUnit
 
 on:
   push:
@@ -10,12 +10,13 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  phpunit:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
     steps:
     - uses: actions/checkout@v3
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
-    - name: Laravel Pint    
-      run: php vendor/bin/pint --test
+    - name: PHPUnit
+      run: php vendor/bin/phpunit --stop-on-defect

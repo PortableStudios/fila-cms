@@ -4,6 +4,8 @@ namespace Portable\FilaCms\Commands;
 
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
+use ReflectionClass;
 use Spatie\Permission\Traits\HasRoles;
 
 class AddUserConcerns extends Command
@@ -14,11 +16,11 @@ class AddUserConcerns extends Command
 
     public function handle()
     {
+        $userModel = config('auth.providers.users.model');
+
         $dryRun = $this->option('dry-run');
 
-        $userModel = 'App\Models\User';
-
-        $this->info("Adding traits and interfaces to $userModel");
+        $this->info("Adding traits and interfaces to User Model");
 
         $traits = [
             HasRoles::class,
@@ -28,7 +30,7 @@ class AddUserConcerns extends Command
             FilamentUser::class,
         ];
 
-        $userContents = file_get_contents(app_path("Models/User.php"));
+        $userContents = File::get((new ReflectionClass($userModel))->getFileName());
 
         $existingTraits = class_uses_recursive($userModel);
 
@@ -93,7 +95,7 @@ class AddUserConcerns extends Command
             $this->info("Dry run, not writing to file.  Output:");
             $this->info($userContents);
         } else {
-            file_put_contents(app_path("Models/User.php"), $userContents);
+            File::put((new ReflectionClass($userModel))->getFileName(), $userContents);
         }
     }
 }

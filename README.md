@@ -2,6 +2,8 @@
 
 # How to use
 
+Then in your composer's require, add this line: `"portable/fila-cms": "@dev"`
+
 ## Installation Command
 
 To initialize the package, you need to run the `fila-cms:install` command.
@@ -34,5 +36,10 @@ By inputting yes, the install command will also execute this command
 After installation, you can create a user with the admin role by executing `php artisan fila-cms:make-user`.
 This command will ask for field values present in your users table and automatically assigns the admin role to it.
 
+## Testing
+
+To run the test cases, you must set it up on a fresh laravel project. Then run `php artisan test vendor/portable/fila-cms`
+
 ## Protecting resources
+
 Add the `IsProtectedResource` trait to your Filament resources to have them automatically obey `view <resource-name>` and `manage <resource-name>` permissions.

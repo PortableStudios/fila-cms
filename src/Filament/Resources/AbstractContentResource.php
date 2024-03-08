@@ -8,7 +8,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -24,7 +23,7 @@ use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
 
-class AbstractContentResource extends Resource
+class AbstractContentResource extends AbstractResource
 {
     use IsProtectedResource;
 

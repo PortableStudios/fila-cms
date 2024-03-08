@@ -2,7 +2,6 @@
 
 namespace Portable\FilaCms\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -68,12 +67,12 @@ abstract class AbstractContentResource extends Model
 
     public function createdBy()
     {
-        return $this->belongsTo(User::class, 'created_user_id');
+        return $this->belongsTo(config('auth.providers.users.model'), 'created_user_id');
     }
 
     public function updatedBy()
     {
-        return $this->belongsTo(User::class, 'updated_user_id');
+        return $this->belongsTo(config('auth.providers.users.model'), 'updated_user_id');
     }
 
     public function displayAuthor(): Attribute
