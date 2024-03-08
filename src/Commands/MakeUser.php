@@ -3,7 +3,7 @@
 namespace Portable\FilaCms\Commands;
 
 use Illuminate\Console\Command;
-use Schema;
+use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Role;
 
 class MakeUser extends Command
@@ -51,11 +51,9 @@ class MakeUser extends Command
         if ($dryRun) {
             $this->info('User to be created');
             $this->info($userModel);
-            return true;
         } else {
             $this->info('User created');
             $userModel->save();
-            return true;
         }
     }
 }

@@ -48,9 +48,11 @@ class InstallCommand extends CommandsInstallCommand
 
         $this->info('Creating Custom Filament Theme');
 
+        // @codeCoverageIgnoreStart
         if(!app()->runningUnitTests()) {
             $this->callSilent('make:filament-theme');
         }
+        // @codeCoverageIgnoreEnd
 
         $this->call('vendor:publish', ['--tag' => 'filament-tiptap-editor-config']);
 

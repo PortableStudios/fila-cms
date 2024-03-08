@@ -128,10 +128,12 @@ class AbstractContentResource extends AbstractResource
 
     public static function getPages(): array
     {
+        // @codeCoverageIgnoreStart
         return [
             'index' => Pages\ListAbstractContentResources::route('/'),
             'create' => Pages\CreateAbstractContentResource::route('/create'),
             'edit' => Pages\EditAbstractContentResource::route('/{record}/edit'),
         ];
+        // @codeCoverageIgnoreEnd
     }
 }

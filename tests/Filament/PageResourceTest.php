@@ -2,14 +2,17 @@
 
 namespace Portable\FilaCms\Tests\Filament;
 
-use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Portable\FilaCms\Filament\Resources\PageResource as TargetResource;
-use Portable\FilaCms\Models\Page as TargetModel;
-use Spatie\Permission\Models\Role;
-use Portable\FilaCms\Models\Author;
-use Livewire\Livewire;
 use Illuminate\Foundation\Testing\WithFaker;
+use Livewire\Livewire;
+use Portable\FilaCms\Facades\FilaCms;
+use Portable\FilaCms\Filament\Resources\PageResource as TargetResource;
+use Portable\FilaCms\Models\Author;
+use Portable\FilaCms\Models\Page as TargetModel;
+use Portable\FilaCms\Models\Taxonomy;
+use Portable\FilaCms\Models\TaxonomyTerm;
+use Portable\FilaCms\Tests\TestCase;
+use Spatie\Permission\Models\Role;
 
 class PageResourceTest extends TestCase
 {
@@ -30,7 +33,7 @@ class PageResourceTest extends TestCase
         $this->author = Author::create([
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
-            'is_individual' => 1
+            'is_individual' => 1,
         ]);
 
         $this->actingAs($adminUser);
@@ -89,28 +92,42 @@ class PageResourceTest extends TestCase
             TargetResource\Pages\EditPage::class,
             ['record' => $data->getRouteKey()]
         )
-        ->assertFormSet([
-            'title'  => $data->title,
-        ]);
+            ->assertFormSet([
+                'title' => $data->title,
+            ]);
     }
 
     public function test_can_save_form(): void
     {
         $data = $this->generateModel();
+        $colour = Taxonomy::create([
+            'name' => 'Colour',
+        ]);
+        $rows = [];
+        foreach (FilaCms::getContentModels() as $resource => $title) {
+            $rows[] = ['resource_class' => $resource, 'taxonomy_id' => $colour->id];
+        }
+        $colour->resources()->createMany($rows);
+
+        $red = TaxonomyTerm::create([
+            'name' => 'Red',
+            'taxonomy_id' => $colour->id,
+        ]);
 
         $new = TargetModel::make($this->generateModel(true));
 
         Livewire::test(TargetResource\Pages\EditPage::class, [
             'record' => $data->getRoutekey(),
         ])
-        ->fillForm([
-            'title'  => $new->title,
-            'contents'  => $new->contents,
-            'is_draft'  => $new->is_draft,
-            'author_id'  => $new->author_id,
-        ])
-        ->call('save')
-        ->assertHasNoFormErrors();
+            ->fillForm([
+                'title' => $new->title,
+                'contents' => $new->contents,
+                'is_draft' => $new->is_draft,
+                'author_id' => $new->author_id,
+                'colours_ids' => [$red->id],
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
         $updatedTime = now();
 
         $data->refresh();
@@ -120,22 +137,56 @@ class PageResourceTest extends TestCase
         $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
     }
 
-    public function generateModel($raw = false): TargetModel | array
+    public function test_can_create_page_with_taxonomies(): void
+    {
+        $colour = Taxonomy::create([
+            'name' => 'Colour',
+        ]);
+        $rows = [];
+        foreach (FilaCms::getContentModels() as $resource => $title) {
+            $rows[] = ['resource_class' => $resource, 'taxonomy_id' => $colour->id];
+        }
+        $colour->resources()->createMany($rows);
+
+        $red = TaxonomyTerm::create([
+            'name' => 'Red',
+            'taxonomy_id' => $colour->id,
+        ]);
+
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm([
+                'is_draft' => 0,
+                'title' => 'Test Page',
+                'contents' => 'Test Page Contents',
+                'colours_ids' => [$red->id],
+            ])
+            ->call('create')
+            ->assertHasNoErrors();
+
+        $page = TargetModel::where('title', 'Test Page')->first();
+
+        $this->assertNotNull($page);
+        $this->assertEquals($page->colours_ids->toArray(), [$red->id]);
+        $this->assertEquals($page->colours->pluck('name')->toArray(), [$red->name]);
+    }
+
+    public function generateModel($raw = false): TargetModel|array
     {
         $draft = $this->faker->numberBetween(0, 1);
 
         $data = [
-            'title'     => $this->faker->words(15, true),
-            'is_draft'  => $draft,
-            'publish_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
-            'expire_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
-            'contents'  => $this->faker->words($this->faker->numberBetween(50, 150), true),
+            'title' => $this->faker->words(15, true),
+            'is_draft' => $draft,
+            'publish_at' => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
+            'expire_at' => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
+            'contents' => $this->faker->words($this->faker->numberBetween(50, 150), true),
             'author_Id' => $this->author->id,
         ];
 
         if ($raw) {
             return $data;
         }
+
         return TargetModel::create($data);
     }
 }

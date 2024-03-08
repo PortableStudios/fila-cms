@@ -3,11 +3,11 @@
 namespace Portable\FilaCms\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Schema;
+use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Permission;
-use Schema;
+use Spatie\Permission\Models\Role;
 
 class MakeUserTest extends TestCase
 {
@@ -20,6 +20,27 @@ class MakeUserTest extends TestCase
         $this->artisan('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
     }
 
+    public function test_dry_run(): void
+    {
+        $userModel = config('auth.providers.users.model');
+        $userModel::query()->delete();
+        $userFieldsRaw = Schema::getColumnListing((new $userModel())->getTable());
+
+        $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'email_verified_at' ];
+        $userFields = array_diff($userFieldsRaw, $excludeFields);
+        foreach ($userFields as $key => $field) {
+            $this->expectedQuestions[] = ['Enter admin ' . $field, 'test'];
+        }
+
+        $this->artisan('fila-cms:make-user', ['--dry-run' => true])
+            ->expectsOutputToContain('User to be created')
+            ->assertExitCode(0);
+
+        // verify user has not been created
+        $this->assertDatabaseMissing('users', [
+            'name' => 'test',
+        ]);
+    }
 
     public function test_can_detect_missing_role(): void
     {
@@ -45,7 +66,7 @@ class MakeUserTest extends TestCase
 
         $artisan = $this->artisan('fila-cms:make-user')
             ->expectsOutputToContain('User created')
-            ->assertExitCode(1)
+            ->assertExitCode(0)
             ->run();
 
         // verify user has been created

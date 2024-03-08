@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Portable\FilaCms\Events\ContentCreating;
 use Portable\FilaCms\Events\ContentUpdating;
+use Portable\FilaCms\Exceptions\InvalidStatusException;
 use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-abstract class AbstractContentResource extends Model
+abstract class AbstractContentModel extends Model
 {
     use HasExcerpt;
     use HasTaxonomies;
@@ -99,7 +100,7 @@ abstract class AbstractContentResource extends Model
                 }
             }
         }
-        throw new \ErrorException('Content condition does not satisfy any status');
+        throw new InvalidStatusException('Content condition does not satisfy any status');
     }
 
     public function scopeWithPublished(Builder $query): void
@@ -119,8 +120,7 @@ abstract class AbstractContentResource extends Model
     {
         $query->withAllStatuses()->where(function ($q1) {
             $q1->where('is_draft', true);
-        })
-            ->orWhere->withPublished();
+        })->orWhere->withPublished();
     }
 
     public function scopeWithPending(Builder $query): void
