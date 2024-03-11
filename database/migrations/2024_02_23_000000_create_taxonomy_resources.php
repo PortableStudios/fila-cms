@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -13,6 +14,8 @@ return new class () extends Migration {
         Schema::create('taxonomy_resources', function (Blueprint $table) {
             $table->string('resource_class');
             $table->foreignId('taxonomy_id')->constrained()->cascadeOnDelete();
+
+            $table->index(['resource_class', 'taxonomy_id']);
         });
     }
 

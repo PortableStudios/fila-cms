@@ -22,6 +22,7 @@ class AbstractContentModelTest extends TestCase
         $page->is_draft = 0;
         $page->publish_at = now()->addDays(1);
         $page->save();
+        $page = Page::withoutGlobalScopes()->find($page->id);
 
         $this->assertEquals('Pending', $page->status);
         $this->assertNull(Page::find($page->id));

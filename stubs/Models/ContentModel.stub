@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Filament\Resources\{{ resourceName }};
+use Portable\FilaCms\Models\AbstractContentModel;
+
+class {{ model }} extends AbstractContentModel
+{
+    use HasFactory;
+
+    protected $table = '{{ table }}';
+
+    protected static $resourceName = {{ resourceName }}::class;
+}

@@ -18,6 +18,9 @@ class FilaCmsServiceProvider extends ServiceProvider
                 \Portable\FilaCms\Commands\InstallCommand::class,
                 \Portable\FilaCms\Commands\AddUserConcerns::class,
                 \Portable\FilaCms\Commands\MakeUser::class,
+                \Portable\FilaCms\Commands\MakeContentResource::class,
+                \Portable\FilaCms\Commands\MakeContentMigration::class,
+                \Portable\FilaCms\Commands\MakeContentModel::class,
             ]);
         }
 
