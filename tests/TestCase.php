@@ -12,19 +12,20 @@ use Orchestra\Testbench\Concerns\WithWorkbench;
 #[WithMigration]
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    use WithWorkbench;
     use RefreshDatabase;
+    use WithWorkbench;
+
     protected static $hasInstalled = false;
 
     protected function setUp(): void
     {
         parent::setUp();
-        if(static::$hasInstalled) {
+        if (static::$hasInstalled) {
             return;
         }
         static::$hasInstalled = true;
 
-        $this->withFactories(__DIR__ . '/tests/Factories');
+        $this->withFactories(__DIR__.'/tests/Factories');
 
         // remove config files
         File::delete(config_path('fila-cms.php'));
@@ -79,16 +80,15 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 */
         // App\Providers\BroadcastServiceProvider::class,
 
-
         return $packages;
     }
 
     public function createUser()
     {
         return User::create([
-            'name'  => 'Jeremy Layson',
-            'email' => 'jeremy.layson+' . mt_rand(1111, 9999) . '@portable.com.au',
-            'password'  => 'password',
+            'name' => 'Jeremy Layson',
+            'email' => 'jeremy.layson+'.mt_rand(1111, 9999).'@portable.com.au',
+            'password' => 'password',
         ]);
     }
 }

@@ -21,6 +21,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                 \Portable\FilaCms\Commands\MakeContentResource::class,
                 \Portable\FilaCms\Commands\MakeContentMigration::class,
                 \Portable\FilaCms\Commands\MakeContentModel::class,
+                \Portable\FilaCms\Commands\MakeContentPermissionSeeder::class,
             ]);
         }
 
