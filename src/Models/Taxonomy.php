@@ -4,9 +4,12 @@ namespace Portable\FilaCms\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class Taxonomy extends Model
 {
+    use RevisionableTrait;
+
     protected $fillable = [
         'name',
     ];
