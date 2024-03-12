@@ -11,5 +11,5 @@ class StatusBadge extends Field
     use HasBadge;
     use HasColor;
 
-    public const BADGE_VIEW = 'forms.components.status-badge';
+    public const BADGE_VIEW = 'fila-cms::filament.forms.components.status-badge';
 }
