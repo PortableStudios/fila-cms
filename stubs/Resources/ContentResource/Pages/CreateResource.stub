@@ -1,0 +1,10 @@
+<?php
+namespace App\Filament\Resources\{{ class }}Resource\Pages;
+
+use App\Filament\Resources\{{ class }}Resource;
+use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages\CreateAbstractContentResource;
+
+class Create{{ class }} extends CreateAbstractContentResource
+{
+    protected static string $resource = {{ class }}Resource::class;
+}

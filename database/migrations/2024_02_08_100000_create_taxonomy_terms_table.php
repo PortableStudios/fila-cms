@@ -15,6 +15,7 @@ return new class () extends Migration {
             $table->string('name');
             $table->foreignId('taxonomy_id')->constrained();
             $table->timestamps();
+            $table->index('name');
         });
     }
 

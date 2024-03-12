@@ -1,0 +1,20 @@
+<?php
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\{{ class }}Resource\Pages;
+use App\Models\{{ model }};
+use Portable\FilaCms\Filament\Resources\AbstractContentResource;
+
+class {{ class }}Resource extends AbstractContentResource
+{
+    protected static ?string $model = {{ model }}::class;
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\List{{ pluralClass }}::route('/'),
+            'create' => Pages\Create{{ class }}::route('/create'),
+            'edit' => Pages\Edit{{ class }}::route('/{record}/edit'),
+        ];
+    }
+}

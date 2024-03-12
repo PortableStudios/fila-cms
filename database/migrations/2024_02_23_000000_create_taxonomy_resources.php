@@ -13,6 +13,8 @@ return new class () extends Migration {
         Schema::create('taxonomy_resources', function (Blueprint $table) {
             $table->string('resource_class');
             $table->foreignId('taxonomy_id')->constrained()->cascadeOnDelete();
+
+            $table->index(['resource_class', 'taxonomy_id']);
         });
     }
 

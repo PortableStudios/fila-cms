@@ -16,6 +16,9 @@ return new class () extends Migration {
             $table->string('last_name')->nullable();
             $table->boolean('is_individual')->default(true);
             $table->timestamps();
+            $table->index('first_name');
+            $table->index('last_name');
+            $table->index('is_individual');
         });
     }
 

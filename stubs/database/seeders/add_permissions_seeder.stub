@@ -1,0 +1,33 @@
+<?php
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
+class {{ class }}RoleAndPermissionSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // Create permissions
+        $permissions = [
+            ['name' => 'view {{ plural }}'],
+            ['name' => 'manage {{ plural }}'],
+        ];
+
+        // Assign permissions to roles
+        $adminRole = Role::where('name', 'Admin')->first();
+
+        foreach ($permissions as $permission) {
+            $newPermission = Permission::findOrCreate($permission['name']);
+            if($adminRole){
+                $adminRole->givePermissionTo($newPermission);
+            }
+        }
+    }
+}

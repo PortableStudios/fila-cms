@@ -15,6 +15,8 @@ return new class () extends Migration {
             $table->foreignId('taxonomyable_id');
             $table->string('taxonomyable_type');
             $table->timestamps();
+
+            $table->index(['taxonomy_term_id', 'taxonomyable_id', 'taxonomyable_type']);
         });
     }
 

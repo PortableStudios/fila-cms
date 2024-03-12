@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,7 +9,7 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('{{ table }}', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('slug');
@@ -25,7 +24,7 @@ return new class () extends Migration {
 
             $table->index('title');
             $table->index('slug');
-            $table->index(['is_draft', 'publish_at', 'expire_at']);
+            $table->index(['is_draft','publish_at','expire_at']);
 
             $table->timestamps();
             $table->softDeletes();
@@ -37,6 +36,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('{{ table }}');
     }
 };
