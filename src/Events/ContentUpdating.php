@@ -6,6 +6,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Portable\FilaCms\Models\AbstractContentModel;
 
 class ContentUpdating
@@ -20,9 +21,12 @@ class ContentUpdating
     public function __construct(public AbstractContentModel $page)
     {
         $page->updated_user_id = auth()->user() ? auth()->user()->id : $page->created_user_id;
-        if(!$page->is_draft && is_null($page->publish_at)) {
+        if (!$page->is_draft && is_null($page->publish_at)) {
             $page->publish_at = Carbon::now()->subMinute();
         }
 
+        if ($page->slug === null) {
+            $page->slug = Str::slug($page->title);
+        }
     }
 }
