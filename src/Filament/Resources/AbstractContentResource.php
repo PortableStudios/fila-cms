@@ -4,17 +4,25 @@ namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Portable\FilaCms\Filament\Forms\Components\StatusBadge;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
@@ -44,31 +52,92 @@ class AbstractContentResource extends AbstractResource
     public static function form(Form $form): Form
     {
         $fields = [
-            Toggle::make('is_draft')
-                ->label('Draft?')
-                ->offIcon('heroicon-m-eye')
-                ->onIcon('heroicon-m-eye-slash')->columnSpanFull(),
-            TextInput::make('title')
-                ->required(),
-            Select::make('author_id')
-                ->label('Author')
-                ->options(Author::all()->pluck('display_name', 'id'))
-                ->searchable(),
-            DatePicker::make('publish_at')
-                ->label('Publish Date'),
-            DatePicker::make('expire_at')
-                ->label('Expiry Date'),
-            static::tiptapEditor(),
+            Group::make()
+                ->schema([
+                    Tabs::make()
+                        ->tabs([
+                            Tabs\Tab::make('Content')
+                                ->schema([
+
+                                    TextInput::make('title')
+                                        ->columnSpanFull()
+                                        ->required(),
+                                    static::tiptapEditor(),
+                                ]),
+                            Tabs\Tab::make('Taxonomies')
+                                ->schema([
+                                    ...static::getTaxonomyFields(),
+                                ]),
+                        ]),
+                ])
+                ->columnSpan(2),
+            Group::make()
+                ->schema([
+                    Section::make()
+                        ->schema([
+                            TextInput::make('slug')
+                                ->maxLength(255),
+                            Toggle::make('is_draft')
+                                ->label('Draft?')
+                                ->offIcon('heroicon-m-eye')
+                                ->onIcon('heroicon-m-eye-slash')->columnSpanFull(),
+                            Select::make('author_id')
+                                ->label('Author')
+                                ->options(Author::all()->pluck('display_name', 'id'))
+                                ->searchable(),
+                            View::make('fila-cms::components.hr'),
+                            DatePicker::make('publish_at')
+                                ->label('Publish Date')
+                                ->live(),
+                            DatePicker::make('expire_at')
+                                ->label('Expiry Date'),
+                        ])
+                        ->columns(1),
+                    Fieldset::make()
+                        ->schema([
+                            Placeholder::make('publish_at_view')
+                                ->label('Published')
+                                ->visible(fn (?Model $record): bool => $record && $record->status === 'Published')
+                                ->content(function (?Model $record): string {
+                                    return $record->publish_at ?? '?';
+                                }),
+                            Placeholder::make('created_at_view')
+                                ->label('Created')
+                                ->visible(fn (?Model $record): bool => $record !== null)
+                                ->content(function (?Model $record): string {
+                                    return $record->created_at ?? '?';
+                                }),
+                            StatusBadge::make('status')
+                                ->live()
+                                ->badge()
+                                ->color(fn (string $state): string => match ($state) {
+                                    'Draft' => 'info',
+                                    'Pending' => 'warning',
+                                    'Published' => 'success',
+                                    'Expired' => 'danger',
+                                })
+                                ->default('Draft'),
+
+                        ])
+                        ->columns(1)
+                ])
+                ->columnSpan(1),
         ];
 
-        TaxonomyResource::where('resource_class', static::class)->get()->each(function (TaxonomyResource $taxonomyResource) use (&$fields) {
+        return $form->schema($fields)->columns(['lg' => 3]);
+    }
+
+    public static function getTaxonomyFields(): array
+    {
+        $taxonomyFields = [];
+        TaxonomyResource::where('resource_class', static::class)->get()->each(function (TaxonomyResource $taxonomyResource) use (&$taxonomyFields) {
             $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_');
-            $fields[] = CheckboxList::make($fieldName.'_ids')
+            $taxonomyFields[] = CheckboxList::make($fieldName . '_ids')
                 ->label($taxonomyResource->taxonomy->name)
                 ->options($taxonomyResource->taxonomy->terms->pluck('name', 'id'));
         });
 
-        return $form->schema($fields);
+        return $taxonomyFields;
     }
 
     public static function tiptapEditor($name = 'contents'): TiptapEditor
@@ -85,7 +154,7 @@ class AbstractContentResource extends AbstractResource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->description(fn (Page $page): string => substr($page->contents, 0, 50).'...')
+                    ->description(fn (Page $page): string => substr($page->contents, 0, 50) . '...')
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
                     ->sortable(),
