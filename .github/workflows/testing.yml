@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  phpunit:
+  pest:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -18,5 +18,5 @@ jobs:
     - uses: actions/checkout@v3
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
-    - name: PHPUnit
-      run: php vendor/bin/phpunit --stop-on-defect
+    - name: Pest
+      run: php vendor/bin/pest --stop-on-defect

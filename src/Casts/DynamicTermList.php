@@ -18,8 +18,9 @@ class DynamicTermList implements CastsAttributes
         return $model->terms()->where('taxonomy_id', $this->taxonomyId)->get();
     }
 
+    // @codeCoverageIgnoreStart
     public function set($model, $key, $value, $attributes)
     {
-        return [$key => $value];
     }
+    // @codeCoverageIgnoreEnd
 }

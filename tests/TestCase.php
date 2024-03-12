@@ -14,10 +14,15 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     use WithWorkbench;
     use RefreshDatabase;
+    protected static $hasInstalled = false;
 
     protected function setUp(): void
     {
         parent::setUp();
+        if(static::$hasInstalled) {
+            return;
+        }
+        static::$hasInstalled = true;
 
         $this->withFactories(__DIR__ . '/tests/Factories');
 

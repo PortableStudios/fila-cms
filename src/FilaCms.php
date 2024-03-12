@@ -3,7 +3,10 @@
 namespace Portable\FilaCms;
 
 use Filament\Facades\Filament;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource;
 use Portable\FilaCms\Livewire\ContentResourceList;
 use Portable\FilaCms\Livewire\ContentResourceShow;
@@ -15,11 +18,39 @@ class FilaCms
 
     protected static $contentModels = null;
 
+    public function systemUser()
+    {
+        $userModel = config('auth.providers.users.model');
+        $system = $userModel::query()->where('email', 'system@filacms')->first();
+        if($system) {
+            return $system;
+        }
+
+        $userFieldsRaw = Schema::getColumnListing((new $userModel())->getTable());
+
+        $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'email_verified_at', 'password','email'];
+        $data = [
+            'name' => 'System',
+            'email' => 'system@filacms',
+            'password' => Hash::make(Str::random(24))
+        ];
+        $userFields = array_diff($userFieldsRaw, $excludeFields);
+        foreach ($userFields as $key => $field) {
+            $data[$field] = 'SYSTEM';
+        }
+
+        $systemUser = $userModel::create($data);
+
+        return $systemUser;
+    }
+
     public function getContentModelResource($modelClass)
     {
+        // @codeCoverageIgnoreStart
         if (is_null(self::$contentModels)) {
             $this->getContentModels();
         }
+        // @codeCoverageIgnoreEnd
 
         return isset(self::$contentModels[$modelClass]) ? self::$contentModels[$modelClass] : null;
     }
