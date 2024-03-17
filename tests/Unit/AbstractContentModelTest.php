@@ -21,12 +21,16 @@ class AbstractContentModelTest extends TestCase
         $page = Page::factory()->create();
         $page->is_draft = 0;
         $page->publish_at = now()->addDays(1);
+        $page->expire_at = now()->addDays(10);
         $page->save();
         $page = Page::withoutGlobalScopes()->find($page->id);
 
         $this->assertEquals('Pending', $page->status);
         $this->assertNull(Page::find($page->id));
         $this->assertNotNull(Page::withPending()->where('id', $page->id)->first());
+
+        throw new InvalidStatusException('Content condition does not satisfy any status');
+
     }
 
     public function test_updated_by()
