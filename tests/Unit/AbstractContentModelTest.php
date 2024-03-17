@@ -28,9 +28,6 @@ class AbstractContentModelTest extends TestCase
         $this->assertEquals('Pending', $page->status);
         $this->assertNull(Page::find($page->id));
         $this->assertNotNull(Page::withPending()->where('id', $page->id)->first());
-
-        throw new InvalidStatusException('Content condition does not satisfy any status');
-
     }
 
     public function test_updated_by()
