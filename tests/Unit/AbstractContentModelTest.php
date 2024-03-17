@@ -21,6 +21,7 @@ class AbstractContentModelTest extends TestCase
         $page = Page::factory()->create();
         $page->is_draft = 0;
         $page->publish_at = now()->addDays(1);
+        $page->expire_at = now()->addDays(10);
         $page->save();
         $page = Page::withoutGlobalScopes()->find($page->id);
 
