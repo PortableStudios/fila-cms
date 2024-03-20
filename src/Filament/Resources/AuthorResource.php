@@ -23,10 +23,17 @@ class AuthorResource extends AbstractResource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $recordTitleAttribute = 'display_name';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Toggle::make('is_individual')
+                    ->onIcon('heroicon-m-user')
+                    ->offIcon('heroicon-m-user-group')
+                    ->default(true)
+                    ->live(),
                 Fieldset::make()
                     ->schema([
                         TextInput::make('first_name')
@@ -38,11 +45,6 @@ class AuthorResource extends AbstractResource
                             ->visible(fn (Get $get) => $get('is_individual') ? true : false),
                     ])
                     ->columns(2),
-                Toggle::make('is_individual')
-                    ->onIcon('heroicon-m-user')
-                    ->offIcon('heroicon-m-user-group')
-                    ->default(true)
-                    ->live(),
             ]);
     }
 
@@ -52,11 +54,10 @@ class AuthorResource extends AbstractResource
             ->columns([
                 TextColumn::make('display_name')->sortable(),
                 IconColumn::make('is_individual')->label('Category')
-                    ->icon(fn (bool $state) => $state ? 'heroicon-m-user' : 'heroicon-m-user-group'),
+                    ->icon(fn (bool $state) => $state ? 'heroicon-m-user' : 'heroicon-m-user-group')
+                    ->tooltip(fn (bool $state) => $state ? 'Individual' : 'Organization'),
             ])
-            ->filters([
-
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

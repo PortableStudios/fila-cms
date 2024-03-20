@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms\Form;
+use Filament\Forms;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Portable\FilaCms\Filament\Resources\UserResource\Pages;
@@ -20,11 +21,22 @@ class UserResource extends AbstractConfigurableResource
 
     protected static ?string $navigationGroup = 'Security';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required(),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->prefixIcon('heroicon-m-envelope')
+                    ->required(),
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload(),
             ]);
     }
 

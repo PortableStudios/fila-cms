@@ -21,6 +21,8 @@ class PermissionResource extends AbstractResource
 
     protected static ?string $navigationGroup = 'Security';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function form(Form $form): Form
     {
         return $form

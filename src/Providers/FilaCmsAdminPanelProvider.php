@@ -17,7 +17,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Kenepa\ResourceLock\ResourceLockPlugin;
 use Portable\FilaCms\Http\Middleware\FilaCmsAuthenticate;
+use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 
 class FilaCmsAdminPanelProvider extends PanelProvider
 {
@@ -27,11 +29,19 @@ class FilaCmsAdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->unsavedChangesAlerts()
             ->login()
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->plugins($this->getPlugins())
+            ->plugins([
+                SpotlightPlugin::make(),
+                ResourceLockPlugin::make(),
+                ...$this->getPlugins()
+            ])
+            ->resources([
+                config('filament-logger.activity_resource'),
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

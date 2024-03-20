@@ -24,6 +24,8 @@ class TaxonomyResource extends AbstractResource
 
     protected static ?string $navigationGroup = 'Taxonomies';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     /**
      * @return array<NavigationItem>
      */
@@ -33,32 +35,30 @@ class TaxonomyResource extends AbstractResource
         foreach (Taxonomy::all() as $taxonomy) {
             $navItems[] =
                 NavigationItem::make($taxonomy->name)
-                    ->group(static::getNavigationGroup())
-                    ->parentItem(static::getNavigationParentItem())
-                    ->icon(static::getNavigationIcon())
-                    ->activeIcon(static::getActiveNavigationIcon())
-                    ->isActiveWhen(fn () => request()->routeIs(route(static::getRouteBaseName().'.edit', $taxonomy)))
-                    ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
-                    ->badgeTooltip(static::getNavigationBadgeTooltip())
-                    ->sort(static::getNavigationSort())
-                    ->url(route(static::getRouteBaseName().'.edit', $taxonomy));
-
-        }
-
-        $navItems[] =
-            NavigationItem::make('Create')
                 ->group(static::getNavigationGroup())
                 ->parentItem(static::getNavigationParentItem())
                 ->icon(static::getNavigationIcon())
                 ->activeIcon(static::getActiveNavigationIcon())
-                ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName().'.create'))
+                ->isActiveWhen(fn () => request()->routeIs(route(static::getRouteBaseName() . '.edit', $taxonomy)))
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->badgeTooltip(static::getNavigationBadgeTooltip())
                 ->sort(static::getNavigationSort())
-                ->url(route(static::getRouteBaseName().'.create'));
+                ->url(route(static::getRouteBaseName() . '.edit', $taxonomy));
+        }
+
+        $navItems[] =
+            NavigationItem::make('Create')
+            ->group(static::getNavigationGroup())
+            ->parentItem(static::getNavigationParentItem())
+            ->icon(static::getNavigationIcon())
+            ->activeIcon(static::getActiveNavigationIcon())
+            ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName() . '.create'))
+            ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
+            ->badgeTooltip(static::getNavigationBadgeTooltip())
+            ->sort(static::getNavigationSort())
+            ->url(route(static::getRouteBaseName() . '.create'));
 
         return $navItems;
-
     }
 
     public static function form(Form $form): Form

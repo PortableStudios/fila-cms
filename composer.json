@@ -35,7 +35,10 @@
         "spatie/laravel-permission": "^6.3",
         "laravel/framework": "^10.0",
         "mansoor/filament-versionable": "^0.0.6",
-        "ralphjsmit/laravel-filament-components": "^2.1"
+        "ralphjsmit/laravel-filament-components": "^2.1",
+        "kenepa/resource-lock": "^2.0",
+        "z3d0x/filament-logger": "^0.7.0",
+        "pxlrbt/filament-spotlight": "*"
     },
     "require-dev": {
         "laravel/sanctum": "^3.3",
