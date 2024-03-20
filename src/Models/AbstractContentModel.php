@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Kenepa\ResourceLock\Models\Concerns\HasLocks;
+use Overtrue\LaravelVersionable\Versionable;
+use Overtrue\LaravelVersionable\VersionStrategy;
 use Portable\FilaCms\Events\ContentCreating;
 use Portable\FilaCms\Events\ContentUpdating;
 use Portable\FilaCms\Exceptions\InvalidStatusException;
@@ -19,13 +22,27 @@ abstract class AbstractContentModel extends Model
     use HasExcerpt;
     use HasTaxonomies;
     use RevisionableTrait;
+    use Versionable;
     use SoftDeletes;
+    use HasLocks;
 
     protected $table = 'contents';
 
     protected $revisionForceDeleteEnabled = true;
 
     protected $revisionEnabled = true;
+
+    protected $versionStrategy = VersionStrategy::SNAPSHOT;
+
+    protected $versionable = [
+        'title',
+        'slug',
+        'is_draft',
+        'publish_at',
+        'expire_at',
+        'contents',
+        'author_id'
+    ];
 
     protected $fillable = [
         'title',

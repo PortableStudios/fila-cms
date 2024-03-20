@@ -5,15 +5,20 @@ namespace Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Str;
+use Kenepa\ResourceLock\Resources\Pages\Concerns\UsesResourceLock;
+use Mansoor\FilamentVersionable\Page\RevisionsAction;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource;
 
 class EditAbstractContentResource extends EditRecord
 {
+    use UsesResourceLock;
+
     protected static string $resource = AbstractContentResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
+            RevisionsAction::make(),
             Actions\DeleteAction::make(),
         ];
     }

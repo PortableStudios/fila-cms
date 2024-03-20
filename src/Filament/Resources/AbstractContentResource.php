@@ -6,7 +6,6 @@ use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -19,7 +18,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Portable\FilaCms\Filament\Forms\Components\StatusBadge;
@@ -30,6 +28,7 @@ use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
+use RalphJSmit\Filament\Components\Forms as HandyComponents;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -95,18 +94,10 @@ class AbstractContentResource extends AbstractResource
                         ->columns(1),
                     Fieldset::make()
                         ->schema([
-                            Placeholder::make('publish_at_view')
-                                ->label('Published')
-                                ->visible(fn (?Model $record): bool => $record && $record->status === 'Published')
-                                ->content(function (?Model $record): string {
-                                    return $record->publish_at ?? '?';
-                                }),
-                            Placeholder::make('created_at_view')
-                                ->label('Created')
-                                ->visible(fn (?Model $record): bool => $record !== null)
-                                ->content(function (?Model $record): string {
-                                    return $record->created_at ?? '?';
-                                }),
+                            HandyComponents\CreatedAt::make()
+                                ->label('Created'),
+                            HandyComponents\UpdatedAt::make()
+                                ->label('Updated'),
                             StatusBadge::make('status')
                                 ->live()
                                 ->badge()
@@ -154,7 +145,7 @@ class AbstractContentResource extends AbstractResource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->description(fn (Page $page): string => substr($page->contents, 0, 50) . '...')
+                    ->description(fn (Page $page): string => substr(strip_tags($page->contents), 0, 50) . '...')
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
                     ->sortable(),
@@ -202,6 +193,7 @@ class AbstractContentResource extends AbstractResource
             'index' => Pages\ListAbstractContentResources::route('/'),
             'create' => Pages\CreateAbstractContentResource::route('/create'),
             'edit' => Pages\EditAbstractContentResource::route('/{record}/edit'),
+            'revisions' => Pages\AbstractContentResourceRevisions::route('/{record}/revisions'),
         ];
         // @codeCoverageIgnoreEnd
     }
