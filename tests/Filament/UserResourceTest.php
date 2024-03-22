@@ -7,9 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Portable\FilaCms\Filament\Resources\UserResource as TargetResource;
 use Portable\FilaCms\Filament\Resources\UserResource;
-
-use Portable\FilaCms\Tests\User as TargetModel;
 use Portable\FilaCms\Tests\TestCase;
+use Portable\FilaCms\Tests\User as TargetModel;
 use Spatie\Permission\Models\Role;
 
 class UserResourceTest extends TestCase
