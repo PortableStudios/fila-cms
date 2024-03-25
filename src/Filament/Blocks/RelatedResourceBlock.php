@@ -18,6 +18,7 @@ use Filament\Forms\Set;
 
 use Portable\FilaCms\Models\Page;
 use FilaCms;
+use Str;
 
 class RelatedResourceBlock extends TiptapBlock
 {
@@ -52,16 +53,14 @@ class RelatedResourceBlock extends TiptapBlock
                                             Select::make('source')
                                                 ->live()
                                                 ->required()
-                                                ->options([
-                                                    'pages' => 'Pages'
-                                                ])
+                                                ->options($this->getSources())
                                                 ->columnSpan(1),
                                             Select::make('content')
                                                 ->live()
                                                 ->searchable()
                                                 ->hidden(fn (Get $get): bool => empty($get('source')))
                                                 ->required()
-                                                ->getSearchResultsUsing(fn (string $search, Get $get, Set $set): array => $this->getContents($search, $get, $set))
+                                                ->getSearchResultsUsing(fn (string $search, Get $get): array => $this->getContents($search, $get))
                                                 ->getOptionLabelUsing(fn (string $value, Get $get): ?string => ($this->getSourceModel($get('source')))->select('id', 'title')->where('id', $value)->first()?->title)
                                                 ->afterStateUpdated(function (?string $state, ?string $old, Get $get, Set $set) {
                                                     $article = ($this->getSourceModel($get('source')))
@@ -81,14 +80,14 @@ class RelatedResourceBlock extends TiptapBlock
         ];
     }
 
-    public function getContents(string $search, $get, $set): array
+    public function getContents(string $search, $get): array
     {
         $data = [];
         $models = NULL;
         $source = $get('source');
 
         $models = ($this->getSourceModel($source))->select('id', 'title')
-            // ->whereNotIn('id', $this->getExcludeIds($get, $set))
+            ->whereNotIn('id', $this->getExcludeIds($get))
             ->where('contents', 'LIKE', '%' . $search . '%')
             ->get();
 
@@ -99,10 +98,52 @@ class RelatedResourceBlock extends TiptapBlock
         return $data;
     }
 
+    /** 
+     * Get all current arrays of selected IDs
+     * So that it can be excluded in the search result
+     */
+    protected function getExcludeIds($get)
+    {
+        $selectedContents = $get('../../selectedContents');
+
+        $ids = [];
+
+        foreach ($selectedContents as $key => $content) {
+            if (is_null($content['content']) === FALSE) {
+                $ids[] = $content['content'];
+            }
+        }
+
+        return $ids;
+    }
+
+    /** 
+     * Take all models that extends the abstract content resource
+     */
+    protected function getSources()
+    {
+        $sources = FilaCms::getContentModels();
+        $list = [];
+
+        foreach ($sources as $key => $source) {
+            $list[Str::lower($source)] = $source;
+        }
+
+        return $list;
+    }
+
+    /** 
+     * Gets the origin model of the selected source
+     * The model could reside on the FilaCMS package
+     * or on the project that implements it
+     */
     protected function getSourceModel($source)
     {
-        if ($source === 'pages') {
-            return new Page;
-        }
+        $source = Str::studly($source);
+        $models = FilaCms::getContentModels();
+        $resource = array_search($source, $models);
+        $className = FilaCms::getModelFromResource($resource);
+
+        return new $className;
     }
 }
