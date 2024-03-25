@@ -18,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use FilamentTiptapEditor\TiptapEditor;
+use FilamentTiptapEditor\Enums\TiptapOutput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -146,7 +147,9 @@ class AbstractContentResource extends AbstractResource
             ->profile('default')
             ->extraInputAttributes(['style' => 'min-height: 24rem;'])
             ->required()
-            ->columnSpanFull();
+            ->columnSpanFull()
+            ->collapseBlocksPanel(TRUE)
+            ->output(TiptapOutput::Json);
     }
 
     public static function table(Table $table): Table
@@ -154,7 +157,7 @@ class AbstractContentResource extends AbstractResource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->description(fn (Page $page): string => substr($page->contents, 0, 50) . '...')
+                    // ->description(fn (Page $page): string => substr($page->contents, 0, 50) . '...')
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
                     ->sortable(),
