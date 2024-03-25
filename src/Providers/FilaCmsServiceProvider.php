@@ -8,6 +8,8 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
+use FilamentTiptapEditor\TiptapEditor;
+use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -74,6 +76,13 @@ class FilaCmsServiceProvider extends ServiceProvider
             } catch (\Exception $e) {
                 return '';
             }
+        });
+
+        TiptapEditor::configureUsing(function (TiptapEditor $component) {
+            $component
+                ->blocks([
+                    RelatedResourceBlock::class,
+                ]);
         });
     }
 }

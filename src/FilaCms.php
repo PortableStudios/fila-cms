@@ -44,6 +44,11 @@ class FilaCms
         return $systemUser;
     }
 
+    public function getModelFromResource($resource)
+    {
+        return array_search($resource, self::$contentModels);
+    }
+
     public function getContentModelResource($modelClass)
     {
         // @codeCoverageIgnoreStart
