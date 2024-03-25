@@ -1,4 +1,5 @@
 <?php
+
 namespace Portable\FilaCms\Filament\Blocks;
 
 use FilamentTiptapEditor\TiptapBlock;
@@ -58,9 +59,11 @@ class RelatedResourceBlock extends TiptapBlock
                                             Select::make('content')
                                                 ->live()
                                                 ->searchable()
+                                                ->hidden(fn (Get $get): bool => empty($get('source')))
                                                 ->required()
-                                                ->getSearchResultsUsing(fn(string $search, Get $get, Set $set): array => $this->getContents($search, $get, $set))
-                                                ->afterStateUpdated(function(?string $state, ?string $old, Get $get, Set $set) {
+                                                ->getSearchResultsUsing(fn (string $search, Get $get, Set $set): array => $this->getContents($search, $get, $set))
+                                                ->getOptionLabelUsing(fn (string $value, Get $get): ?string => ($this->getSourceModel($get('source')))->select('id', 'title')->where('id', $value)->first()?->title)
+                                                ->afterStateUpdated(function (?string $state, ?string $old, Get $get, Set $set) {
                                                     $article = ($this->getSourceModel($get('source')))
                                                         ->select('id', 'title')
                                                         ->where('id', $state)
