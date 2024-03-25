@@ -96,11 +96,6 @@ class RelatedResourceBlock extends TiptapBlock
         return $data;
     }
 
-    public function getContent($source, $id)
-    {
-        return `{$source}: {$id}`;
-    }
-
     protected function getSourceModel($source)
     {
         if ($source === 'pages') {
