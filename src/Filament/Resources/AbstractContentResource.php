@@ -148,7 +148,7 @@ class AbstractContentResource extends AbstractResource
             ->extraInputAttributes(['style' => 'min-height: 24rem;'])
             ->required()
             ->columnSpanFull()
-            ->collapseBlocksPanel(TRUE)
+            ->collapseBlocksPanel(true)
             ->output(TiptapOutput::Json);
     }
 

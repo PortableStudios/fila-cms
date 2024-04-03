@@ -6,17 +6,13 @@ use FilamentTiptapEditor\TiptapBlock;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Placeholder;
 
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
 
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 
-use Portable\FilaCms\Models\Page;
 use FilaCms;
 use Str;
 
@@ -28,7 +24,7 @@ class RelatedResourceBlock extends TiptapBlock
 
     public string $width = '5xl';
 
-    public bool $slideOver = FALSE;
+    public bool $slideOver = false;
 
     public ?string $icon = 'heroicon-o-film';
 
@@ -83,7 +79,7 @@ class RelatedResourceBlock extends TiptapBlock
     public function getContents(string $search, $get): array
     {
         $data = [];
-        $models = NULL;
+        $models = null;
         $source = $get('source');
 
         $models = ($this->getSourceModel($source))->select('id', 'title')
@@ -98,7 +94,7 @@ class RelatedResourceBlock extends TiptapBlock
         return $data;
     }
 
-    /** 
+    /**
      * Get all current arrays of selected IDs
      * So that it can be excluded in the search result
      */
@@ -109,7 +105,7 @@ class RelatedResourceBlock extends TiptapBlock
         $ids = [];
 
         foreach ($selectedContents as $key => $content) {
-            if (is_null($content['content']) === FALSE) {
+            if (is_null($content['content']) === false) {
                 $ids[] = $content['content'];
             }
         }
@@ -117,7 +113,7 @@ class RelatedResourceBlock extends TiptapBlock
         return $ids;
     }
 
-    /** 
+    /**
      * Take all models that extends the abstract content resource
      */
     protected function getSources()
@@ -132,7 +128,7 @@ class RelatedResourceBlock extends TiptapBlock
         return $list;
     }
 
-    /** 
+    /**
      * Gets the origin model of the selected source
      * The model could reside on the FilaCMS package
      * or on the project that implements it
@@ -144,6 +140,6 @@ class RelatedResourceBlock extends TiptapBlock
         $resource = array_search($source, $models);
         $className = FilaCms::getModelFromResource($resource);
 
-        return new $className;
+        return new $className();
     }
 }
