@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec0cc50ce7680d832a3b0afb04c38a40",
+    "content-hash": "2d34b17a8e2958ad6378870cca4e8824",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2181,6 +2181,74 @@
                 }
             ],
             "time": "2023-05-21T07:57:08+00:00"
+        },
+        {
+            "name": "kenepa/resource-lock",
+            "version": "2.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kenepa/resource-lock.git",
+                "reference": "43278f1d1421684c6a42152f92a64e83f602f31e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kenepa/resource-lock/zipball/43278f1d1421684c6a42152f92a64e83f602f31e",
+                "reference": "43278f1d1421684c6a42152f92a64e83f602f31e",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "illuminate/contracts": "^9.0|^10.0|^11.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.0|^8.1",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^7.0|^8.0|^9.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "pestphp/pest-plugin-livewire": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "spatie/laravel-ray": "^1.26",
+                "tightenco/duster": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Kenepa\\ResourceLock\\ResourceLockServiceProvider"
+                    ],
+                    "aliases": {
+                        "ResourceLock": "Kenepa\\ResourceLock\\Facades\\ResourceLock"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kenepa\\ResourceLock\\": "src",
+                    "Kenepa\\ResourceLock\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Filament Resource Lock is a Filament plugin that adds resource locking functionality to your site.",
+            "homepage": "https://github.com/kenepa/resource-lock",
+            "keywords": [
+                "Kenepa",
+                "laravel",
+                "resource-lock"
+            ],
+            "support": {
+                "issues": "https://github.com/kenepa/resource-lock/issues",
+                "source": "https://github.com/kenepa/resource-lock/tree/2.0.8"
+            },
+            "time": "2024-03-13T08:04:34+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",
@@ -13053,5 +13121,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

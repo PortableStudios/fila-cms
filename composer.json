@@ -35,7 +35,8 @@
         "spatie/laravel-permission": "^6.3",
         "laravel/framework": "^10.0",
         "mansoor/filament-versionable": "^0.0.6",
-        "ralphjsmit/laravel-filament-components": "^2.1"
+        "ralphjsmit/laravel-filament-components": "^2.1",
+        "kenepa/resource-lock": "^2.0"
     },
     "require-dev": {
         "laravel/sanctum": "^3.3",
