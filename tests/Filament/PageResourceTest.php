@@ -190,7 +190,7 @@ class PageResourceTest extends TestCase
         return TargetModel::create($data);
     }
 
-    
+
     protected function createContent()
     {
         return [
