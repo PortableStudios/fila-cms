@@ -47,7 +47,6 @@ abstract class AbstractContentModel extends Model
     protected $casts = [
         'publish_at' => 'datetime',
         'expire_at' => 'datetime',
-        'contents'  => 'json',
     ];
 
     protected $dispatchesEvents = [
