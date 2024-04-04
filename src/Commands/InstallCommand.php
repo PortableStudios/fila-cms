@@ -23,6 +23,8 @@ class InstallCommand extends CommandsInstallCommand
 
         $this->call('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
         $this->call('vendor:publish', ['--provider' => "Venturecraft\Revisionable\RevisionableServiceProvider"]);
+        $this->call('vendor:publish', ['--tag' => "seo-migrations"]);
+        $this->call('vendor:publish', ['--tag' => "seo-config"]);
 
         $this->info('Installed Spatie Permissions. Installing Fila CMS Config...');
 
