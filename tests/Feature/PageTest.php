@@ -50,15 +50,10 @@ class PageTest extends TestCase
             'password'  => 'password'
         ]);
 
-        $title = $this->faker->text;
-        $page = Page::create([
-            'title'     => $title,
-            'is_draft'  => 1,
-            'contents'  => json_decode('{"type": "doc", "content": [{"type": "paragraph", "attrs": {"class": null, "style": null, "textAlign": "start"}, "content": [{"text": "Lorem ipsum keme keme keme 48 years chaka biway chapter ano kemerloo at nang ng shontis at klapeypey-klapeypey katagalugan katagalugan nang sa at na ang jowabella buya daki nang makyonget biway chaka shongaers lorem ipsum keme keme chipipay intonses shontis at nang at bakit bella kasi lulu shonga-shonga lorem ipsum keme keme buya ano jutay ma-kyonget wasok otoko at bakit juts kirara at nang na ang shogal bella na ang kabog majubis jowabella at kabog bakit otoko at ang na ang 48 years at ang nakakalurky pranella shonga chopopo ng at chuckie na at nang bella kasi chopopo nang valaj ng shokot chipipay kasi tungril guash sangkatuts lulu ano majonders ganda lang kabog sa warla sa jutay biway at bakit matod majubis sa bonggakea jowabella oblation wiz shonga-shonga.", "type": "text"}]}]}', true),
-        ]);
+        $page = Page::factory()->create();
 
         $this->assertModelExists($page);
-        $this->assertDatabaseHas('pages', [ 'slug' => Str::slug($title) ]);
+        $this->assertDatabaseHas('pages', [ 'slug' => Str::slug($page->title) ]);
         $this->assertEquals($page->created_user_id, $user->id);
 
         $this->be($secondUser);
@@ -74,16 +69,12 @@ class PageTest extends TestCase
         $author = Author::first();
         $user = $this->userModel::first();
 
-        $title = $this->faker->text;
-        $page = Page::create([
-            'title'     => $title,
-            'slug'      => 'test-slug',
-            'is_draft'  => 1,
-            'contents'  => json_decode('{"type": "doc", "content": [{"type": "paragraph", "attrs": {"class": null, "style": null, "textAlign": "start"}, "content": [{"text": "Lorem ipsum keme keme keme 48 years chaka biway chapter ano kemerloo at nang ng shontis at klapeypey-klapeypey katagalugan katagalugan nang sa at na ang jowabella buya daki nang makyonget biway chaka shongaers lorem ipsum keme keme chipipay intonses shontis at nang at bakit bella kasi lulu shonga-shonga lorem ipsum keme keme buya ano jutay ma-kyonget wasok otoko at bakit juts kirara at nang na ang shogal bella na ang kabog majubis jowabella at kabog bakit otoko at ang na ang 48 years at ang nakakalurky pranella shonga chopopo ng at chuckie na at nang bella kasi chopopo nang valaj ng shokot chipipay kasi tungril guash sangkatuts lulu ano majonders ganda lang kabog sa warla sa jutay biway at bakit matod majubis sa bonggakea jowabella oblation wiz shonga-shonga.", "type": "text"}]}]}', true),
+        $page = Page::factory()->create([
+            'slug' => 'test-slug',
         ]);
 
         $this->assertDatabaseHas('pages', [ 'slug' => 'test-slug' ]);
-        $this->assertDatabaseMissing('pages', [ 'slug' => Str::slug($title) ]);
+        $this->assertDatabaseMissing('pages', [ 'slug' => Str::slug($page->title) ]);
     }
 
     public function test_draft_status(): void
@@ -91,13 +82,8 @@ class PageTest extends TestCase
         $author = Author::first();
         $user = $this->userModel::first();
 
-        $title = $this->faker->text;
-        $page = Page::create([
-            'title'     => $title,
-            'is_draft'  => 1,
-            'publish_at'    => now()->subDays(10),
-            'expire_at'    => now()->addDays(10),
-            'contents'      => json_decode('{"type": "doc", "content": [{"type": "paragraph", "attrs": {"class": null, "style": null, "textAlign": "start"}, "content": [{"text": "Lorem ipsum keme keme keme 48 years chaka biway chapter ano kemerloo at nang ng shontis at klapeypey-klapeypey katagalugan katagalugan nang sa at na ang jowabella buya daki nang makyonget biway chaka shongaers lorem ipsum keme keme chipipay intonses shontis at nang at bakit bella kasi lulu shonga-shonga lorem ipsum keme keme buya ano jutay ma-kyonget wasok otoko at bakit juts kirara at nang na ang shogal bella na ang kabog majubis jowabella at kabog bakit otoko at ang na ang 48 years at ang nakakalurky pranella shonga chopopo ng at chuckie na at nang bella kasi chopopo nang valaj ng shokot chipipay kasi tungril guash sangkatuts lulu ano majonders ganda lang kabog sa warla sa jutay biway at bakit matod majubis sa bonggakea jowabella oblation wiz shonga-shonga.", "type": "text"}]}]}', true),
+        $page = Page::factory()->create([
+            'is_draft' => 1,
         ]);
 
         $this->assertEquals($page->status, 'Draft');
@@ -108,13 +94,10 @@ class PageTest extends TestCase
         $author = Author::first();
         $user = $this->userModel::first();
 
-        $title = $this->faker->text;
-        $page = Page::create([
-            'title'     => $title,
-            'is_draft'  => 0,
-            'publish_at'    => now()->subDays(10),
-            'expire_at'    => now()->addDays(10),
-            'contents'      => json_decode('{"type": "doc", "content": [{"type": "paragraph", "attrs": {"class": null, "style": null, "textAlign": "start"}, "content": [{"text": "Lorem ipsum keme keme keme 48 years chaka biway chapter ano kemerloo at nang ng shontis at klapeypey-klapeypey katagalugan katagalugan nang sa at na ang jowabella buya daki nang makyonget biway chaka shongaers lorem ipsum keme keme chipipay intonses shontis at nang at bakit bella kasi lulu shonga-shonga lorem ipsum keme keme buya ano jutay ma-kyonget wasok otoko at bakit juts kirara at nang na ang shogal bella na ang kabog majubis jowabella at kabog bakit otoko at ang na ang 48 years at ang nakakalurky pranella shonga chopopo ng at chuckie na at nang bella kasi chopopo nang valaj ng shokot chipipay kasi tungril guash sangkatuts lulu ano majonders ganda lang kabog sa warla sa jutay biway at bakit matod majubis sa bonggakea jowabella oblation wiz shonga-shonga.", "type": "text"}]}]}', true),
+        $page = Page::factory()->create([
+            'is_draft' => 0,
+            'publish_at' => $this->faker->dateTimeBetween('-1 week', '-1 day'),
+            'expire_at' => $this->faker->dateTimeBetween('+1 day', '+1 week'),
         ]);
 
         $this->assertEquals($page->status, 'Published');
@@ -125,13 +108,10 @@ class PageTest extends TestCase
         $author = Author::first();
         $user = $this->userModel::first();
 
-        $title = $this->faker->text;
-        $page = Page::create([
-            'title'     => $title,
-            'is_draft'  => 0,
-            'publish_at'    => now()->subDays(10),
-            'expire_at'    => now()->subDays(10),
-            'contents'      => json_decode('{"type": "doc", "content": [{"type": "paragraph", "attrs": {"class": null, "style": null, "textAlign": "start"}, "content": [{"text": "Lorem ipsum keme keme keme 48 years chaka biway chapter ano kemerloo at nang ng shontis at klapeypey-klapeypey katagalugan katagalugan nang sa at na ang jowabella buya daki nang makyonget biway chaka shongaers lorem ipsum keme keme chipipay intonses shontis at nang at bakit bella kasi lulu shonga-shonga lorem ipsum keme keme buya ano jutay ma-kyonget wasok otoko at bakit juts kirara at nang na ang shogal bella na ang kabog majubis jowabella at kabog bakit otoko at ang na ang 48 years at ang nakakalurky pranella shonga chopopo ng at chuckie na at nang bella kasi chopopo nang valaj ng shokot chipipay kasi tungril guash sangkatuts lulu ano majonders ganda lang kabog sa warla sa jutay biway at bakit matod majubis sa bonggakea jowabella oblation wiz shonga-shonga.", "type": "text"}]}]}', true),
+        $page = Page::factory()->create([
+            'is_draft' => 0,
+            'publish_at' => $this->faker->dateTimeBetween('-1 week', '-1 day'),
+            'expire_at' => $this->faker->dateTimeBetween('-1 week', '-1 day'),
         ]);
 
         $this->assertEquals($page->status, 'Expired');
@@ -142,13 +122,10 @@ class PageTest extends TestCase
         $author = Author::first();
         $user = $this->userModel::first();
 
-        $title = $this->faker->text;
-        $page = Page::create([
-            'title'     => $title,
-            'is_draft'  => 0,
-            'publish_at'    => now()->addDays(10),
-            'expire_at'    => now()->addDays(10),
-            'contents'      => json_decode('{"type": "doc", "content": [{"type": "paragraph", "attrs": {"class": null, "style": null, "textAlign": "start"}, "content": [{"text": "Lorem ipsum keme keme keme 48 years chaka biway chapter ano kemerloo at nang ng shontis at klapeypey-klapeypey katagalugan katagalugan nang sa at na ang jowabella buya daki nang makyonget biway chaka shongaers lorem ipsum keme keme chipipay intonses shontis at nang at bakit bella kasi lulu shonga-shonga lorem ipsum keme keme buya ano jutay ma-kyonget wasok otoko at bakit juts kirara at nang na ang shogal bella na ang kabog majubis jowabella at kabog bakit otoko at ang na ang 48 years at ang nakakalurky pranella shonga chopopo ng at chuckie na at nang bella kasi chopopo nang valaj ng shokot chipipay kasi tungril guash sangkatuts lulu ano majonders ganda lang kabog sa warla sa jutay biway at bakit matod majubis sa bonggakea jowabella oblation wiz shonga-shonga.", "type": "text"}]}]}', true),
+        $page = Page::factory()->create([
+            'is_draft' => 0,
+            'publish_at' => $this->faker->dateTimeBetween('+1 day', '+1 week'),
+            'expire_at' => $this->faker->dateTimeBetween('+1 day', '+1 week'),
         ]);
 
         $this->assertEquals($page->status, 'Pending');
