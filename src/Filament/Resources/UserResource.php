@@ -8,6 +8,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Portable\FilaCms\Filament\Resources\UserResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
+use Rawilk\FilamentPasswordInput\Password;
 
 class UserResource extends AbstractConfigurableResource
 {
@@ -31,9 +32,11 @@ class UserResource extends AbstractConfigurableResource
                     ->email()
                     ->prefixIcon('heroicon-m-envelope')
                     ->required(),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->revealable(),
+                Password::make('password')
+                    ->regeneratePassword(color: 'warning')
+                    ->copyable(color: 'info')
+                    ->newPasswordLength(16)
+                    ->required(),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
