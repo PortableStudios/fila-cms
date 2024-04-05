@@ -2,6 +2,7 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
+use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -24,7 +25,19 @@ class UserResource extends AbstractConfigurableResource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required(),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->prefixIcon('heroicon-m-envelope')
+                    ->required(),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->revealable(),
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload(),
             ]);
     }
 

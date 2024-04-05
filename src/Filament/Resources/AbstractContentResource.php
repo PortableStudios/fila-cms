@@ -31,6 +31,7 @@ use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
+use RalphJSmit\Filament\SEO\SEO;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -63,7 +64,8 @@ class AbstractContentResource extends AbstractResource
                                     TextInput::make('title')
                                         ->columnSpanFull()
                                         ->required(),
-                                    static::tiptapEditor(),
+                                    static::tiptapEditor()->output(\FilamentTiptapEditor\Enums\TiptapOutput::Json),
+                                     SEO::make(['description']),
                                 ]),
                             Tabs\Tab::make('Taxonomies')
                                 ->schema([
@@ -157,6 +159,7 @@ class AbstractContentResource extends AbstractResource
         return $table
             ->columns([
                 TextColumn::make('title')
+                    ->description(fn (Page $page): string => $page->excerpt)
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
                     ->sortable(),

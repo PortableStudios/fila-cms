@@ -14,6 +14,8 @@ use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Venturecraft\Revisionable\RevisionableTrait;
 use Str;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 abstract class AbstractContentModel extends Model
 {
@@ -21,6 +23,7 @@ abstract class AbstractContentModel extends Model
     use HasTaxonomies;
     use RevisionableTrait;
     use SoftDeletes;
+    use HasSEO;
 
     protected $table = 'contents';
 
@@ -72,6 +75,14 @@ abstract class AbstractContentModel extends Model
     protected static function booting(): void
     {
         static::addGlobalScope(new PublishedScope());
+    }
+
+    public function getDynamicSEOData(): SEOData
+    {
+        return new SEOData(
+            title: $this->title,
+            author: $this->author?->display_name,
+        );
     }
 
     public function author()
