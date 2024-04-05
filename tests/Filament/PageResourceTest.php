@@ -82,6 +82,9 @@ class PageResourceTest extends TestCase
     {
         $data = $this->generateModel(true);
         $data['seo.description'] = 'Test Description';
+        $data['is_draft'] = 0;
+        $data['publish_at'] = now()->subday();
+        $data['expire_at'] = now()->addDay();
 
         Livewire::test(TargetResource\Pages\CreatePage::class)
             ->fillForm($data)
