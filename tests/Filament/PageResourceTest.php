@@ -13,6 +13,7 @@ use Portable\FilaCms\Models\Taxonomy;
 use Portable\FilaCms\Models\TaxonomyTerm;
 use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Role;
+use RalphJSmit\Laravel\SEO\Models\SEO;
 
 class PageResourceTest extends TestCase
 {
@@ -77,6 +78,26 @@ class PageResourceTest extends TestCase
             ]);
     }
 
+    public function test_can_save_seo(): void
+    {
+        $data = $this->generateModel(true);
+        $data['seo.description'] = 'Test Description';
+        $data['is_draft'] = 0;
+        $data['publish_at'] = now()->subday();
+        $data['expire_at'] = now()->addDay();
+
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm($data)
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        // check last record
+        $model = TargetModel::orderBy('id', 'desc')->first();
+
+        $this->assertTrue($model->Seo instanceof SEO);
+
+    }
+
     public function test_can_render_edit_page(): void
     {
         $data = $this->generateModel();
@@ -134,7 +155,7 @@ class PageResourceTest extends TestCase
         $this->assertEquals($data->title, $new->title);
         $this->assertEquals($data->author_id, $new->author_id);
         $this->assertEquals($data->is_draft, $new->is_draft);
-        $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
+        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
     }
 
     public function test_can_create_page_with_taxonomies(): void

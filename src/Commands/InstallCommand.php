@@ -7,7 +7,7 @@ use Filament\Support\Commands\UpgradeCommand;
 
 class InstallCommand extends CommandsInstallCommand
 {
-    protected $signature = 'fila-cms:install {--scaffold} {--actions} {--forms} {--infolists} {--notifications} {--panels} {--tables} {--widgets} {--F|force}';
+    protected $signature = 'fila-cms:install {--publish-config} {--run-migrations} {--add-user-traits} {--scaffold} {--actions} {--forms} {--infolists} {--notifications} {--panels} {--tables} {--widgets} {--F|force}';
 
     protected $description = 'Install Fila CMS';
 
@@ -28,19 +28,18 @@ class InstallCommand extends CommandsInstallCommand
 
         $this->info('Installed Spatie Permissions. Installing Fila CMS Config...');
 
-        if ($this->ask('Would you like to publish the FilaCMS config?(Y/n)', 'Y') == 'Y') {
+        if ($this->option('publish-config') || ($this->ask('Would you like to publish the FilaCMS config?(Y/n)', 'Y') == 'Y')) {
             $this->call('vendor:publish', ['--tag' => 'fila-cms-config']);
-
-            // we need this for revisionable package
-            $this->call('vendor:publish', ['--tag' => 'migrations']);
         }
+        // we need this for revisionable package
+        $this->call('vendor:publish', ['--tag' => 'migrations']);
 
-        if (strtoupper($this->ask('Would you like to run migrations(Y/n)?', 'Y')) == 'Y') {
+        if ($this->option('run-migrations') || strtoupper($this->ask('Would you like to run migrations(Y/n)?', 'Y')) == 'Y') {
             $this->info('Running migrations...');
             $this->call('migrate');
         }
 
-        if (strtoupper($this->ask('Would you like to add the required trait to your App\\Models\\User model?(Y/n)', 'Y')) == 'Y') {
+        if ($this->option('add-user-traits') || strtoupper($this->ask('Would you like to add the required trait to your App\\Models\\User model?(Y/n)', 'Y')) == 'Y') {
             $this->call('fila-cms:add-user-concerns');
         }
 
@@ -57,7 +56,6 @@ class InstallCommand extends CommandsInstallCommand
         // @codeCoverageIgnoreEnd
 
         $this->call('vendor:publish', ['--tag' => 'filament-tiptap-editor-config']);
-
         $this->info('Finished');
     }
 }

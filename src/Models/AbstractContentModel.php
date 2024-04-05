@@ -13,6 +13,7 @@ use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Venturecraft\Revisionable\RevisionableTrait;
+use Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
@@ -45,15 +46,26 @@ abstract class AbstractContentModel extends Model
     protected $appends = ['status'];
 
     protected $casts = [
-        'publish_at' => 'datetime',
-        'expire_at' => 'datetime',
-        'contents'  => 'json',
+        'publish_at'    => 'datetime',
+        'expire_at'     => 'datetime',
+        'contents'      => 'json',
     ];
 
     protected $dispatchesEvents = [
         'creating' => ContentCreating::class,
         'updating' => ContentUpdating::class,
     ];
+
+    public function shortDescription($length = 50, $omission = '...'): string
+    {
+        foreach ($this->contents['content'] as $key => $value) {
+            if ($value['type'] === 'paragraph') {
+                return Str::of($value['content'][0]['text'])->take($length) . $omission;
+            }
+        }
+
+        return '...';
+    }
 
     public function getRouteKeyName(): string
     {

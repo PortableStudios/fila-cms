@@ -2,6 +2,7 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
+use Filament\Forms\Form;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
@@ -13,15 +14,16 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
-use Filament\Forms\Form;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
+
 use FilamentTiptapEditor\TiptapEditor;
+use FilamentTiptapEditor\Enums\TiptapOutput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str;
 use Portable\FilaCms\Filament\Forms\Components\StatusBadge;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\RelationManagers;
@@ -31,6 +33,7 @@ use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
 use RalphJSmit\Filament\SEO\SEO;
+use Str;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -64,7 +67,7 @@ class AbstractContentResource extends AbstractResource
                                         ->columnSpanFull()
                                         ->required(),
                                     static::tiptapEditor()->output(\FilamentTiptapEditor\Enums\TiptapOutput::Json),
-                                     SEO::make(['description']),
+                                    SEO::make(['description']),
                                 ]),
                             Tabs\Tab::make('Taxonomies')
                                 ->schema([
@@ -148,7 +151,9 @@ class AbstractContentResource extends AbstractResource
             ->profile('default')
             ->extraInputAttributes(['style' => 'min-height: 24rem;'])
             ->required()
-            ->columnSpanFull();
+            ->columnSpanFull()
+            ->collapseBlocksPanel(true)
+            ->output(TiptapOutput::Json);
     }
 
     public static function table(Table $table): Table
@@ -174,6 +179,17 @@ class AbstractContentResource extends AbstractResource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                TernaryFilter::make('is_draft')
+                    ->label('Draft')
+                    ->attribute('is_draft')
+                    ->nullable()
+                    ->placeholder('All Records')
+                    ->falseLabel('Non-Drafts Only')
+                    ->trueLabel('Drafts Only')
+                    ->queries(
+                        true: fn (Builder $query) => $query->where('is_draft', true),
+                        false: fn (Builder $query) => $query->where('is_draft', false),
+                    )
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make(),
