@@ -43,7 +43,7 @@ From the project directory, run `./vendor/bin/pest`
 ## Interacting with the package
 
 During development, you may like to actually interact with the FilaCMS UI.  In your console, run
-```./vendor/bin/workbench serve```
+```./vendor/bin/testbench serve```
 
 You can now load the application at http://localhost:8000/admin
 
