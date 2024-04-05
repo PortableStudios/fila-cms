@@ -157,7 +157,6 @@ class AbstractContentResource extends AbstractResource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    // ->description(fn (Page $page): string => substr($page->contents, 0, 50) . '...')
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
                     ->sortable(),
