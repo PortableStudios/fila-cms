@@ -20,6 +20,10 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 
 use FilamentTiptapEditor\TiptapEditor;
+use FilamentTiptapEditor\Enums\TiptapOutput;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Portable\FilaCms\Filament\Forms\Components\StatusBadge;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\RelationManagers;
@@ -29,10 +33,6 @@ use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
 use RalphJSmit\Filament\SEO\SEO;
-
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Str;
 
 class AbstractContentResource extends AbstractResource
@@ -151,7 +151,9 @@ class AbstractContentResource extends AbstractResource
             ->profile('default')
             ->extraInputAttributes(['style' => 'min-height: 24rem;'])
             ->required()
-            ->columnSpanFull();
+            ->columnSpanFull()
+            ->collapseBlocksPanel(true)
+            ->output(TiptapOutput::Json);
     }
 
     public static function table(Table $table): Table
