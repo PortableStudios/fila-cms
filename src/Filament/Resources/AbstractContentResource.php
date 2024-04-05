@@ -17,7 +17,6 @@ use Filament\Forms\Components\View;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TernaryFilter;
 
 use FilamentTiptapEditor\TiptapEditor;
@@ -68,7 +67,7 @@ class AbstractContentResource extends AbstractResource
                                         ->columnSpanFull()
                                         ->required(),
                                     static::tiptapEditor()->output(\FilamentTiptapEditor\Enums\TiptapOutput::Json),
-                                     SEO::make(['description']),
+                                    SEO::make(['description']),
                                 ]),
                             Tabs\Tab::make('Taxonomies')
                                 ->schema([
@@ -186,8 +185,8 @@ class AbstractContentResource extends AbstractResource
                     ->falseLabel('Non-Drafts Only')
                     ->trueLabel('Drafts Only')
                     ->queries(
-                        true: fn(Builder $query) => $query->where('is_draft', true),
-                        false: fn(Builder $query) => $query->where('is_draft', false),
+                        true: fn (Builder $query) => $query->where('is_draft', true),
+                        false: fn (Builder $query) => $query->where('is_draft', false),
                     )
             ])
             ->actions([

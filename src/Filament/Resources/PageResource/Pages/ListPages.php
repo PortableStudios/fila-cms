@@ -13,7 +13,7 @@ class ListPages extends ListAbstractContentResources
     public function isTableSearchable(): bool
     {
         return true;
-    } 
+    }
 
     protected function applySearchToTableQuery(Builder $query): Builder
     {
@@ -25,7 +25,7 @@ class ListPages extends ListAbstractContentResources
                 ->orWhere('slug', 'LIKE', $searchQuery)
                 ->orWhere('slug', 'LIKE', $searchQuery);
         }
-    
+
         return $query;
     }
 }
