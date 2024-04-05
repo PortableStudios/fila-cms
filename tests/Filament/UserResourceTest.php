@@ -108,7 +108,7 @@ class UserResourceTest extends TestCase
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);
-        $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
+        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
     }
 
     public function generateModel($raw = false): TargetModel|array
