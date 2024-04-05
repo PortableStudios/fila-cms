@@ -29,6 +29,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         // remove config files
         File::delete(config_path('fila-cms.php'));
+        File::delete(config_path('seo.php'));
         File::delete(config_path('filament-tiptap-editor.php'));
 
         // remove migrations from revisionable
@@ -76,6 +77,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $packages[] = \Spatie\Permission\PermissionServiceProvider::class;
         $packages[] = \Laravel\Sanctum\SanctumServiceProvider::class;
         $packages[] = \Portable\FilaCms\Providers\FilaCmsServiceProvider::class;
+        $packages[] = \Portable\FilaCms\Providers\FilaCmsServiceProvider::class;
+        $packages[] = \RalphJSmit\Laravel\SEO\LaravelSEOServiceProvider::class;
         /*
 */
         // App\Providers\BroadcastServiceProvider::class,

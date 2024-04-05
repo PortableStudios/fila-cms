@@ -2,7 +2,7 @@
 
 # How to use
 
-Then in your composer's require, add this line: `"portable/fila-cms": "@dev"`
+Require the package using composer: `composer require portable/fila-cms:@dev`
 
 ## Installation Command
 
@@ -38,7 +38,17 @@ This command will ask for field values present in your users table and automatic
 
 ## Testing
 
-To run the test cases, you must set it up on a fresh laravel project. Then run `php artisan test vendor/portable/fila-cms`
+From the project directory, run `./vendor/bin/pest`
+
+## Interacting with the package
+
+During development, you may like to actually interact with the FilaCMS UI.  In your console, run
+```./vendor/bin/workbench serve```
+
+You can now load the application at http://localhost:8000/admin
+
+Username: admin@test.com
+Password: password
 
 ## Protecting resources
 
