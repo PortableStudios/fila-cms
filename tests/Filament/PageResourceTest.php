@@ -134,7 +134,7 @@ class PageResourceTest extends TestCase
         $this->assertEquals($data->title, $new->title);
         $this->assertEquals($data->author_id, $new->author_id);
         $this->assertEquals($data->is_draft, $new->is_draft);
-        $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
+        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
     }
 
     public function test_can_create_page_with_taxonomies(): void

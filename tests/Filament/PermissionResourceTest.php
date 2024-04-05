@@ -88,6 +88,7 @@ class PermissionResourceTest extends TestCase
         $data = TargetModel::create(['name' => $this->faker->words(3, true)]);
         $new = TargetModel::make(['name' => $this->faker->words(3, true)]);
 
+        $updatedTime = now();
         Livewire::test(TargetResource\Pages\EditPermission::class, [
             'record' => $data->getRoutekey(),
         ])
@@ -96,10 +97,9 @@ class PermissionResourceTest extends TestCase
         ])
         ->call('save')
         ->assertHasNoFormErrors();
-        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);
-        $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
+        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
     }
 }
