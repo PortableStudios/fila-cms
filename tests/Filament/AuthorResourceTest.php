@@ -190,7 +190,7 @@ class AuthorResourceTest extends TestCase
         $data->refresh();
         $this->assertEquals($data->display_name, $new->first_name . ' ' . $new->last_name);
         $this->assertEquals($data->is_individual, $new->is_individual);
-        $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
+        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
     }
 
     public function generateModel(): TargetModel

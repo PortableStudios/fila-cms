@@ -18,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use FilamentTiptapEditor\TiptapEditor;
+use FilamentTiptapEditor\Enums\TiptapOutput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -30,6 +31,7 @@ use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
+use RalphJSmit\Filament\SEO\SEO;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -62,7 +64,8 @@ class AbstractContentResource extends AbstractResource
                                     TextInput::make('title')
                                         ->columnSpanFull()
                                         ->required(),
-                                    static::tiptapEditor(),
+                                    static::tiptapEditor()->output(\FilamentTiptapEditor\Enums\TiptapOutput::Json),
+                                     SEO::make(['description']),
                                 ]),
                             Tabs\Tab::make('Taxonomies')
                                 ->schema([
@@ -146,7 +149,9 @@ class AbstractContentResource extends AbstractResource
             ->profile('default')
             ->extraInputAttributes(['style' => 'min-height: 24rem;'])
             ->required()
-            ->columnSpanFull();
+            ->columnSpanFull()
+            ->collapseBlocksPanel(true)
+            ->output(TiptapOutput::Json);
     }
 
     public static function table(Table $table): Table
@@ -154,7 +159,7 @@ class AbstractContentResource extends AbstractResource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->description(fn (Page $page): string => substr($page->contents, 0, 50) . '...')
+                    ->description(fn (Page $page): string => $page->excerpt)
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
                     ->sortable(),

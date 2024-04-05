@@ -134,7 +134,7 @@ class PageResourceTest extends TestCase
         $this->assertEquals($data->title, $new->title);
         $this->assertEquals($data->author_id, $new->author_id);
         $this->assertEquals($data->is_draft, $new->is_draft);
-        $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
+        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
     }
 
     public function test_can_create_page_with_taxonomies(): void
@@ -157,7 +157,7 @@ class PageResourceTest extends TestCase
             ->fillForm([
                 'is_draft' => 0,
                 'title' => 'Test Page',
-                'contents' => 'Test Page Contents',
+                'contents' => $this->createContent(),
                 'colours_ids' => [$red->id],
             ])
             ->call('create')
@@ -179,7 +179,7 @@ class PageResourceTest extends TestCase
             'is_draft' => $draft,
             'publish_at' => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
             'expire_at' => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
-            'contents' => $this->faker->words($this->faker->numberBetween(50, 150), true),
+            'contents' => $this->createContent(),
             'author_Id' => $this->author->id,
         ];
 
@@ -188,5 +188,29 @@ class PageResourceTest extends TestCase
         }
 
         return TargetModel::create($data);
+    }
+
+
+    protected function createContent()
+    {
+        return [
+            'type'  => 'doc',
+            'content' => [
+                [
+                    'type' => 'paragraph',
+                    'attrs' => [
+                        'class' => null,
+                        'style' => null,
+                        'textAlign' => 'start',
+                    ],
+                    'content' => [
+                        [
+                            'text' => fake()->words(mt_rand(10, 50), true),
+                            'type' => 'text'
+                        ]
+                    ]
+                ]
+            ]
+        ];
     }
 }

@@ -13,6 +13,9 @@ use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Venturecraft\Revisionable\RevisionableTrait;
+use Str;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 abstract class AbstractContentModel extends Model
 {
@@ -20,6 +23,7 @@ abstract class AbstractContentModel extends Model
     use HasTaxonomies;
     use RevisionableTrait;
     use SoftDeletes;
+    use HasSEO;
 
     protected $table = 'contents';
 
@@ -42,14 +46,26 @@ abstract class AbstractContentModel extends Model
     protected $appends = ['status'];
 
     protected $casts = [
-        'publish_at' => 'datetime',
-        'expire_at' => 'datetime',
+        'publish_at'    => 'datetime',
+        'expire_at'     => 'datetime',
+        'contents'      => 'json',
     ];
 
     protected $dispatchesEvents = [
         'creating' => ContentCreating::class,
         'updating' => ContentUpdating::class,
     ];
+
+    public function shortDescription($length = 50, $omission = '...'): string
+    {
+        foreach ($this->contents['content'] as $key => $value) {
+            if ($value['type'] === 'paragraph') {
+                return Str::of($value['content'][0]['text'])->take($length) . $omission;
+            }
+        }
+
+        return '...';
+    }
 
     public function getRouteKeyName(): string
     {
@@ -59,6 +75,14 @@ abstract class AbstractContentModel extends Model
     protected static function booting(): void
     {
         static::addGlobalScope(new PublishedScope());
+    }
+
+    public function getDynamicSEOData(): SEOData
+    {
+        return new SEOData(
+            title: $this->title,
+            author: $this->author?->display_name,
+        );
     }
 
     public function author()
