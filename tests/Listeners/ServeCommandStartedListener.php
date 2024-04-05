@@ -29,9 +29,10 @@ class ServeCommandStartedListener
         Artisan::call('fila-cms:install', ['--publish-config' => true,'--run-migrations' => true,'--add-user-traits' => true]);
 
         // Ensure there's an admin user
-        $admin = User::where('email', 'admin@test.com')->first();
+        $userModel = config('auth.providers.users.model');
+        $admin = $userModel::where('email', 'admin@test.com')->first();
         if(!$admin) {
-            $admin = new User();
+            $admin = new $userModel();
         }
         $admin->email = 'admin@test.com';
         $admin->password = Hash::make('password');
