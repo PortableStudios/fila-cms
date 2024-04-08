@@ -13,6 +13,7 @@ use Portable\FilaCms\Models\Taxonomy;
 use Portable\FilaCms\Models\TaxonomyTerm;
 use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Role;
+use RalphJSmit\Laravel\SEO\Models\SEO;
 
 class PageResourceTest extends TestCase
 {
@@ -75,6 +76,26 @@ class PageResourceTest extends TestCase
                 'title' => 'required',
                 'contents' => 'required',
             ]);
+    }
+
+    public function test_can_save_seo(): void
+    {
+        $data = $this->generateModel(true);
+        $data['seo.description'] = 'Test Description';
+        $data['is_draft'] = 0;
+        $data['publish_at'] = now()->subday();
+        $data['expire_at'] = now()->addDay();
+
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm($data)
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        // check last record
+        $model = TargetModel::orderBy('id', 'desc')->first();
+
+        $this->assertTrue($model->Seo instanceof SEO);
+
     }
 
     public function test_can_render_edit_page(): void
