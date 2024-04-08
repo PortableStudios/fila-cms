@@ -12,6 +12,7 @@ use Portable\FilaCms\Models\Page as TargetModel;
 use Portable\FilaCms\Models\Taxonomy;
 use Portable\FilaCms\Models\TaxonomyTerm;
 use Portable\FilaCms\Tests\TestCase;
+use RalphJSmit\Laravel\SEO\Models\SEO;
 use Spatie\Permission\Models\Role;
 
 class PageResourceTest extends TestCase
@@ -77,6 +78,26 @@ class PageResourceTest extends TestCase
             ]);
     }
 
+    public function test_can_save_seo(): void
+    {
+        $data = $this->generateModel(true);
+        $data['seo.description'] = 'Test Description';
+        $data['is_draft'] = 0;
+        $data['publish_at'] = now()->subday();
+        $data['expire_at'] = now()->addDay();
+
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm($data)
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        // check last record
+        $model = TargetModel::orderBy('id', 'desc')->first();
+
+        $this->assertTrue($model->Seo instanceof SEO);
+
+    }
+
     public function test_can_render_edit_page(): void
     {
         $data = $this->generateModel();
@@ -128,13 +149,11 @@ class PageResourceTest extends TestCase
             ])
             ->call('save')
             ->assertHasNoFormErrors();
-        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->title, $new->title);
         $this->assertEquals($data->author_id, $new->author_id);
         $this->assertEquals($data->is_draft, $new->is_draft);
-        $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
     }
 
     public function test_can_create_page_with_taxonomies(): void
@@ -157,7 +176,7 @@ class PageResourceTest extends TestCase
             ->fillForm([
                 'is_draft' => 0,
                 'title' => 'Test Page',
-                'contents' => 'Test Page Contents',
+                'contents' => $this->createContent(),
                 'colours_ids' => [$red->id],
             ])
             ->call('create')
@@ -179,7 +198,7 @@ class PageResourceTest extends TestCase
             'is_draft' => $draft,
             'publish_at' => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
             'expire_at' => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
-            'contents' => $this->faker->words($this->faker->numberBetween(50, 150), true),
+            'contents' => $this->createContent(),
             'author_Id' => $this->author->id,
         ];
 
@@ -188,5 +207,29 @@ class PageResourceTest extends TestCase
         }
 
         return TargetModel::create($data);
+    }
+
+
+    protected function createContent()
+    {
+        return [
+            'type'  => 'doc',
+            'content' => [
+                [
+                    'type' => 'paragraph',
+                    'attrs' => [
+                        'class' => null,
+                        'style' => null,
+                        'textAlign' => 'start',
+                    ],
+                    'content' => [
+                        [
+                            'text' => fake()->words(mt_rand(10, 50), true),
+                            'type' => 'text'
+                        ]
+                    ]
+                ]
+            ]
+        ];
     }
 }

@@ -2,11 +2,13 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
+use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Portable\FilaCms\Filament\Resources\UserResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
+use Rawilk\FilamentPasswordInput\Password;
 
 class UserResource extends AbstractConfigurableResource
 {
@@ -24,7 +26,21 @@ class UserResource extends AbstractConfigurableResource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required(),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->prefixIcon('heroicon-m-envelope')
+                    ->required(),
+                Password::make('password')
+                    ->regeneratePassword(color: 'warning')
+                    ->copyable(color: 'info')
+                    ->newPasswordLength(16)
+                    ->required(),
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload(),
             ]);
     }
 

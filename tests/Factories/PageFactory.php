@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Tests\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Portable\FilaCms\Models\Page;
 
 class PageFactory extends Factory
@@ -17,13 +18,38 @@ class PageFactory extends Factory
     public function definition(): array
     {
         $draft = fake()->numberBetween(0, 1);
+        $title = fake()->words(15, true);
 
         return [
-            'title'     => fake()->words(15, true),
+            'title'     => $title,
+            'slug'      => Str::slug($title),
             'is_draft'  => $draft,
             'publish_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
-            'expire_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
-            'contents'  => fake()->words($this->faker->numberBetween(50, 150), true),
+            'expire_at'    => $draft === 1 ? $this->faker->dateTimeBetween('+1 week', '+2 weeks') : null,
+            'contents'  => $this->createContent(),
+        ];
+    }
+
+    protected function createContent()
+    {
+        return [
+            'type'  => 'doc',
+            'content' => [
+                [
+                    'type' => 'paragraph',
+                    'attrs' => [
+                        'class' => null,
+                        'style' => null,
+                        'textAlign' => 'start',
+                    ],
+                    'content' => [
+                        [
+                            'text' => fake()->words(mt_rand(10, 50), true),
+                            'type' => 'text'
+                        ]
+                    ]
+                ]
+            ]
         ];
     }
 }

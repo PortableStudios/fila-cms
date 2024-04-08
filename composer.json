@@ -36,7 +36,9 @@
         "laravel/framework": "^10.0",
         "mansoor/filament-versionable": "^0.0.6",
         "ralphjsmit/laravel-filament-components": "^2.1",
-        "kenepa/resource-lock": "^2.0"
+        "kenepa/resource-lock": "^2.0",
+        "rawilk/filament-password-input": "^2.0",
+        "ralphjsmit/laravel-filament-seo": "^1.3"
     },
     "require-dev": {
         "laravel/sanctum": "^3.3",

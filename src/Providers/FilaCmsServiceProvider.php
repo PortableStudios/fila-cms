@@ -8,6 +8,8 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
+use FilamentTiptapEditor\TiptapEditor;
+use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -26,12 +28,16 @@ class FilaCmsServiceProvider extends ServiceProvider
         }
 
         if (config('fila-cms.publish_content_routes')) {
-            $this->loadRoutesFrom(__DIR__.'/../../routes/frontend-routes.php');
+            $this->loadRoutesFrom(__DIR__ . '/../../routes/frontend-routes.php');
         }
         //$this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
 
-        $this->loadViewsFrom(__DIR__.'/../../views', 'fila-cms');
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+        $this->loadViewsFrom(__DIR__ . '/../../views', 'fila-cms');
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+
+        \Filament\Support\Facades\FilamentIcon::register([
+            'filament-password-input::regenerate' => 'heroicon-m-key',
+        ]);
 
         Livewire::component('portable.fila-cms.livewire.content-resource-list', \Portable\FilaCms\Livewire\ContentResourceList::class);
         Livewire::component('portable.fila-cms.livewire.content-resource-show', \Portable\FilaCms\Livewire\ContentResourceShow::class);
@@ -49,12 +55,12 @@ class FilaCmsServiceProvider extends ServiceProvider
         });
 
         $this->publishes([
-            __DIR__.'/../../config/fila-cms.php' => config_path('fila-cms.php'),
+            __DIR__ . '/../../config/fila-cms.php' => config_path('fila-cms.php'),
         ], 'fila-cms-config');
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
-            __DIR__.'/../../config/fila-cms.php',
+            __DIR__ . '/../../config/fila-cms.php',
             'fila-cms'
         );
 
@@ -70,10 +76,16 @@ class FilaCmsServiceProvider extends ServiceProvider
                 } else {
                     return app('Illuminate\Foundation\Vite')('vendor/portable/filacms/resources/css/filacms.css');
                 }
-
             } catch (\Exception $e) {
                 return '';
             }
+        });
+
+        TiptapEditor::configureUsing(function (TiptapEditor $component) {
+            $component
+                ->blocks([
+                    RelatedResourceBlock::class,
+                ]);
         });
     }
 }

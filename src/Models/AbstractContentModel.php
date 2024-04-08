@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kenepa\ResourceLock\Models\Concerns\HasLocks;
+use Overtrue\LaravelVersionable\Version;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
 use Portable\FilaCms\Events\ContentCreating;
@@ -15,6 +16,9 @@ use Portable\FilaCms\Exceptions\InvalidStatusException;
 use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Str;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 abstract class AbstractContentModel extends Model
@@ -25,6 +29,7 @@ abstract class AbstractContentModel extends Model
     use Versionable;
     use SoftDeletes;
     use HasLocks;
+    use HasSEO;
 
     protected $table = 'contents';
 
@@ -59,14 +64,42 @@ abstract class AbstractContentModel extends Model
     protected $appends = ['status'];
 
     protected $casts = [
-        'publish_at' => 'datetime',
-        'expire_at' => 'datetime',
+        'publish_at'    => 'datetime',
+        'expire_at'     => 'datetime',
+        'contents'      => 'json',
     ];
 
     protected $dispatchesEvents = [
         'creating' => ContentCreating::class,
         'updating' => ContentUpdating::class,
     ];
+
+    // This is overriden from Overtrue's Versionable trait
+    // in order to run the query without scopes
+    public function createInitialVersion(Model $model): Version
+    {
+        /** @var \Overtrue\LaravelVersionable\Versionable|Model $refreshedModel */
+        $refreshedModel = static::query()->withoutGlobalScopes()->findOrFail($model->getKey());
+
+        /**
+         * As initial version should include all $versionable fields,
+         * we need to get the latest version from database.
+         */
+        $attributes = $refreshedModel->getSnapshotAttributes();
+
+        return Version::createForModel($refreshedModel, $attributes, $refreshedModel->updated_at);
+    }
+
+    public function shortDescription($length = 50, $omission = '...'): string
+    {
+        foreach ($this->contents['content'] as $key => $value) {
+            if ($value['type'] === 'paragraph') {
+                return Str::of($value['content'][0]['text'])->take($length) . $omission;
+            }
+        }
+
+        return '...';
+    }
 
     public function getRouteKeyName(): string
     {
@@ -76,6 +109,14 @@ abstract class AbstractContentModel extends Model
     protected static function booting(): void
     {
         static::addGlobalScope(new PublishedScope());
+    }
+
+    public function getDynamicSEOData(): SEOData
+    {
+        return new SEOData(
+            title: $this->title,
+            author: $this->author?->display_name,
+        );
     }
 
     public function author()

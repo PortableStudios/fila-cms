@@ -13,6 +13,8 @@ providers:
   - Venturecraft\Revisionable\RevisionableServiceProvider
   - Spatie\Permission\PermissionServiceProvider
   - Laravel\Sanctum\SanctumServiceProvider
+  - Portable\FilaCms\Tests\Providers\WorkbenchServiceProvider
+  - Kenepa\ResourceLock\ResourceLockServiceProvider
 
 migrations:
   - workbench/database/migrations

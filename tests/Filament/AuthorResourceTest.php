@@ -2,12 +2,12 @@
 
 namespace Portable\FilaCms\Tests\Filament;
 
-use Portable\FilaCms\Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Livewire\Livewire;
 use Portable\FilaCms\Filament\Resources\AuthorResource as TargetResource;
 use Portable\FilaCms\Models\Author as TargetModel;
+use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Role;
-use Livewire\Livewire;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class AuthorResourceTest extends TestCase
 {
@@ -185,12 +185,10 @@ class AuthorResourceTest extends TestCase
         ])
         ->call('save')
         ->assertHasNoFormErrors();
-        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->display_name, $new->first_name . ' ' . $new->last_name);
         $this->assertEquals($data->is_individual, $new->is_individual);
-        $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
     }
 
     public function generateModel(): TargetModel

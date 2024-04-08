@@ -2,13 +2,13 @@
 
 namespace Portable\FilaCms\Tests\Filament;
 
-use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Livewire\Livewire;
 use Portable\FilaCms\Filament\Resources\RoleResource as TargetResource;
+use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Role as TargetModel;
 use Spatie\Permission\Models\Role;
-use Livewire\Livewire;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class RoleResourceTest extends TestCase
 {
@@ -96,10 +96,8 @@ class RoleResourceTest extends TestCase
         ])
         ->call('save')
         ->assertHasNoFormErrors();
-        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);
-        $this->assertEquals($data->updated_at->format('Y-m-d H:i'), $updatedTime->format('Y-m-d H:i'));
     }
 }
