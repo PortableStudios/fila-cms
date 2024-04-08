@@ -27,15 +27,15 @@ class CreateAbstractContentResource extends CreateRecord
 
         if ($this->checkIfSlugExists($data['slug'], $model)) {
             $increment = 1;
-    
+
             while (true) {
                 $slug = $data['slug'] . '-' . $increment;
-                if ($this->checkIfSlugExists($slug, $model) === FALSE) {
+                if ($this->checkIfSlugExists($slug, $model) === false) {
                     $data['slug'] = $slug;
                     break;
                 }
                 $increment++;
-            }   
+            }
         }
 
         return $data;
@@ -43,13 +43,13 @@ class CreateAbstractContentResource extends CreateRecord
 
     protected function checkIfSlugExists($slug, $modelName)
     {
-        $model = new $modelName;
+        $model = new $modelName();
 
         $data = $model->where('slug', $slug)->first();
 
         if (is_null($data)) {
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 }
