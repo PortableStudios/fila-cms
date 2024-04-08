@@ -16,6 +16,7 @@ use Portable\FilaCms\Exceptions\InvalidStatusException;
 use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
+use Portable\FilaCms\Versionable\FilaCmsVersion;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 use Str;
@@ -38,6 +39,8 @@ abstract class AbstractContentModel extends Model
     protected $revisionEnabled = true;
 
     protected $versionStrategy = VersionStrategy::SNAPSHOT;
+
+    public string $versionModel = FilaCmsVersion::class;
 
     protected $versionable = [
         'title',

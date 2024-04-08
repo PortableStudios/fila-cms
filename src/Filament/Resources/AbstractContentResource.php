@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Portable\FilaCms\Filament\Forms\Components\StatusBadge;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
-use Portable\FilaCms\Filament\Resources\AbstractContentResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Page;
@@ -200,7 +199,6 @@ class AbstractContentResource extends AbstractResource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\RevisionsRelationManager::class,
         ];
     }
 

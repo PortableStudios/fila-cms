@@ -12,7 +12,7 @@ trait HasExcerpt
     public function excerpt(): Attribute
     {
         $excerpt = $this->{$this->excerptField};
-        $content = $excerpt['content'];
+        $content = is_array($excerpt) ? $excerpt['content'] : [];
 
         // get first content with "paragraph"
         $paragraph = '';

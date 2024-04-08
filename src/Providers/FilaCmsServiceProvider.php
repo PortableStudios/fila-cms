@@ -2,13 +2,13 @@
 
 namespace Portable\FilaCms\Providers;
 
+use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
-use FilamentTiptapEditor\TiptapEditor;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
 
 class FilaCmsServiceProvider extends ServiceProvider
@@ -42,6 +42,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         Livewire::component('portable.fila-cms.livewire.content-resource-list', \Portable\FilaCms\Livewire\ContentResourceList::class);
         Livewire::component('portable.fila-cms.livewire.content-resource-show', \Portable\FilaCms\Livewire\ContentResourceShow::class);
         Blade::componentNamespace('Portable\\FilaCms\\Views\\Components', 'fila-cms');
+        config(['versionable.user_model' => config('auth.providers.users.model')]);
     }
 
     public function register()
