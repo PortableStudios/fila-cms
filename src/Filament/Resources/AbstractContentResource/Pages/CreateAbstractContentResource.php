@@ -13,10 +13,11 @@ class CreateAbstractContentResource extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $class = parent::static;
+        $class = get_class($this);
         $parent = new $class();
+        $resource = $parent::getResource();
+        $model = FilaCms::getModelFromResource($resource);
 
-        FilaCms::getModelFromResource($parent->resource);
         if (is_null($data['slug'])) {
             // auto-generate then check
             $data['slug'] = Str::slug($data['title']);
@@ -24,11 +25,31 @@ class CreateAbstractContentResource extends CreateRecord
             $data['slug'] = Str::slug($data['slug']);
         }
 
+        if ($this->checkIfSlugExists($data['slug'], $model)) {
+            $increment = 1;
+    
+            while (true) {
+                $slug = $data['slug'] . '-' . $increment;
+                if ($this->checkIfSlugExists($slug, $model) === FALSE) {
+                    $data['slug'] = $slug;
+                    break;
+                }
+                $increment++;
+            }   
+        }
+
         return $data;
     }
 
-    protected function checkIfSlugExists($slug)
+    protected function checkIfSlugExists($slug, $modelName)
     {
+        $model = new $modelName;
 
+        $data = $model->where('slug', $slug)->first();
+
+        if (is_null($data)) {
+            return FALSE;
+        }
+        return TRUE;
     }
 }
