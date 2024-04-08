@@ -85,10 +85,10 @@ class RelatedResourceBlock extends TiptapBlock
         $models = ($this->getSourceModel($source))
             ->select('id', 'title')
             ->whereNotIn('id', $this->getExcludeIds($get))
-            ->where(function($q) use ($search) {
+            ->where(function ($q) use ($search) {
                 $q->where('contents', 'LIKE', '%' . $search . '%')
                 ->orWhere('title', 'LIKE', '%' . $search . '%');
-                
+
             })
             ->get();
 
