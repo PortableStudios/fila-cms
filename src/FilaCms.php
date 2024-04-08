@@ -46,6 +46,7 @@ class FilaCms
 
     public function getModelFromResource($resource)
     {
+        dd([$resource, self::$contentModels]);
         return array_search($resource, self::$contentModels);
     }
 
