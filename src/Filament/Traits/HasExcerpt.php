@@ -18,7 +18,15 @@ trait HasExcerpt
         $paragraph = '';
         foreach ($content as $key => $value) {
             if ($value['type'] === 'paragraph') {
-                $paragraph = $value['content'][0]['text']; // take the first part
+                if (isset($value['content'])) {
+                    foreach ($value['content'] as $key => $valueContent) {
+                        // find first instance of text
+                        if (isset($valueContent['text'])) {
+                            $paragraph = $valueContent['text']; // take the first part
+                            break;
+                        }
+                    }
+                }
             }
         }
 
