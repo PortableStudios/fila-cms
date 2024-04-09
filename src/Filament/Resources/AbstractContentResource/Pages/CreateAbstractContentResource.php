@@ -14,10 +14,10 @@ class CreateAbstractContentResource extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['slug'] = $this->generateSlug($data);
-        
+
         return $data;
     }
-    
+
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $data['slug'] = $this->generateSlug($data);
