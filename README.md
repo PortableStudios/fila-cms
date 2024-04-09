@@ -43,7 +43,7 @@ From the project directory, run `./vendor/bin/pest`
 ## Interacting with the package
 
 During development, you may like to actually interact with the FilaCMS UI.  In your console, run
-```./vendor/bin/workbench serve```
+```./vendor/bin/testbench serve```
 
 You can now load the application at http://localhost:8000/admin
 
@@ -53,3 +53,45 @@ Password: password
 ## Protecting resources
 
 Add the `IsProtectedResource` trait to your Filament resources to have them automatically obey `view <resource-name>` and `manage <resource-name>` permissions.
+
+## Extending the Abstract Content
+
+To add additional models or tables that extends the AbstractContent, you start by executing `php artisan make:filament-resource {Resource}`.
+
+This command will generate a Resource file in your App\Filament\Resources folder. Add the next line in your class:
+`use Portable\FilaCms\Filament\Resources\AbstractContentResource;`
+
+Then go to your generated Resource file (e.g. `RecipeResource.php`), and change the `extends Resource` part to `extends AbstractContentResource`.
+
+You should declare the proper model in your `$model` variable.
+
+Then go to your model and add the following line:
+`use Portable\FilaCms\Models\AbstractContentModel;`
+Then change the `extends Model` to `extends AbstractContentModel`
+
+Next is to create a Plugin class in your `app/Plugins` folder (or create the folder if it's not present yet). The content should look like this (change the appropriate values such as the Resource and the ID):
+
+~~~
+namespace App\Plugins;
+
+use App\Filament\Resources\RecipeResource;
+use Filament\Panel;
+use Filament\Contracts\Plugin;
+
+class RecipesPlugin implements Plugin
+{
+    public function getId(): string
+    {
+        return 'filacms-recipes';
+    }
+
+    public function register(Panel $panel): void
+    {
+        $panel->resources([
+            RecipeResource::class
+        ]);
+    }
+}
+~~~
+
+Finally, add the plugin in your `app/config/fila-cms.php` file
