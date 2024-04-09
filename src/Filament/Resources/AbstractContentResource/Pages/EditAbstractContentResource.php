@@ -4,11 +4,12 @@ namespace Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Support\Str;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource;
 
 class EditAbstractContentResource extends EditRecord
 {
+    use CanCheckSlug;
+
     protected static string $resource = AbstractContentResource::class;
 
     protected function getHeaderActions(): array
@@ -20,7 +21,7 @@ class EditAbstractContentResource extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['slug'] = $data['slug'] ? Str::slug($data['slug']) : null;
+        $data['slug'] = $this->generateSlug($data);
 
         return $data;
     }

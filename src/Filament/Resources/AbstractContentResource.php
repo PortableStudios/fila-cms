@@ -81,6 +81,17 @@ class AbstractContentResource extends AbstractResource
                     Section::make()
                         ->schema([
                             TextInput::make('slug')
+                                ->rules([
+                                    function() {
+                                        return function (string $attribyute, $value, \Closure $fail) {
+                                            $data = (new self::$model)->where('slug', $value)->first();
+
+                                            if (is_null($data) === FALSE) {
+                                                $fail('The :attribute already exists');
+                                            }
+                                        };
+                                    }
+                                ])
                                 ->maxLength(255),
                             Toggle::make('is_draft')
                                 ->label('Draft?')
@@ -204,6 +215,15 @@ class AbstractContentResource extends AbstractResource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
+    }
+
+    protected function getResourceClass()
+    {
+        $class = get_class($this);
+        $parent = new $class();
+        $model = $parent::model;
+
+        dd($model);
     }
 
     public static function getRelations(): array
