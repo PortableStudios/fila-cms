@@ -13,6 +13,20 @@ class CreateAbstractContentResource extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        $data['slug'] = $this->generateSlug($data);
+        
+        return $data;
+    }
+    
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['slug'] = $this->generateSlug($data);
+
+        return $data;
+    }
+
+    protected function generateSlug($data)
+    {
         $class = get_class($this);
         $parent = new $class();
         $resource = $parent::getResource();
@@ -38,7 +52,7 @@ class CreateAbstractContentResource extends CreateRecord
             }
         }
 
-        return $data;
+        return $data['slug'];
     }
 
     protected function checkIfSlugExists($slug, $modelName)
