@@ -90,9 +90,6 @@ abstract class AbstractContentModel extends Model
          */
         $attributes = $refreshedModel->getSnapshotAttributes();
 
-        echo "Attributes";
-        print_r($attributes);
-
         return Version::createForModel($refreshedModel, $attributes, $refreshedModel->updated_at);
     }
 
