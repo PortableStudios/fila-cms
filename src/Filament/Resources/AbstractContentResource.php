@@ -14,6 +14,7 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
+use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
@@ -82,11 +83,15 @@ class AbstractContentResource extends AbstractResource
                         ->schema([
                             TextInput::make('slug')
                                 ->rules([
-                                    function() {
-                                        return function (string $attribyute, $value, \Closure $fail) {
-                                            $data = (new self::$model)->where('slug', $value)->first();
-
-                                            if (is_null($data) === FALSE) {
+                                    function (Get $get) {
+                                        return function (string $attribute, $value, \Closure $fail) use ($get) {
+                                            $class = new static::$model();
+                                            $data = $class->where('slug', $value)
+                                                ->when($get('id') !== null, function ($query) use ($get) {
+                                                    $query->whereNot('id', $get('id'));
+                                                })
+                                                ->first();
+                                            if (is_null($data) === false) {
                                                 $fail('The :attribute already exists');
                                             }
                                         };
@@ -215,15 +220,6 @@ class AbstractContentResource extends AbstractResource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
-    }
-
-    protected function getResourceClass()
-    {
-        $class = get_class($this);
-        $parent = new $class();
-        $model = $parent::model;
-
-        dd($model);
     }
 
     public static function getRelations(): array

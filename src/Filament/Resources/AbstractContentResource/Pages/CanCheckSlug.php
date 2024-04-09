@@ -1,10 +1,12 @@
 <?php
 
 namespace Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
+
 use FilaCms;
 use Str;
 
-trait CanCheckSlug {
+trait CanCheckSlug
+{
     protected function generateSlug($data)
     {
         $class = get_class($this);
