@@ -15,7 +15,8 @@ providers:
   - Laravel\Sanctum\SanctumServiceProvider
   - Portable\FilaCms\Tests\Providers\WorkbenchServiceProvider
   - Kenepa\ResourceLock\ResourceLockServiceProvider
-
+  - Overtrue\LaravelVersionable\ServiceProvider
+  
 migrations:
   - workbench/database/migrations
   - spatie/laravel-permission/database/migrations

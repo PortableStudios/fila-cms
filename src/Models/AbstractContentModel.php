@@ -13,6 +13,7 @@ use Overtrue\LaravelVersionable\VersionStrategy;
 use Portable\FilaCms\Events\ContentCreating;
 use Portable\FilaCms\Events\ContentUpdating;
 use Portable\FilaCms\Exceptions\InvalidStatusException;
+use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
@@ -76,6 +77,11 @@ abstract class AbstractContentModel extends Model
         'creating' => ContentCreating::class,
         'updating' => ContentUpdating::class,
     ];
+
+    public function getVersionUserId()
+    {
+        return auth()->user() ? auth()->user()->id : FilaCms::systemUser()->id;
+    }
 
     // This is overriden from Overtrue's Versionable trait
     // in order to run the query without scopes
