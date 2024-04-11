@@ -100,6 +100,6 @@ class PermissionResourceTest extends TestCase
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);
-        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
+        $this->assertGreaterThanOrEqual($updatedTime->format('U'), $data->updated_at->format('U'));
     }
 }

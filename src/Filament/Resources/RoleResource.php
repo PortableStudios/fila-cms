@@ -11,6 +11,7 @@ use Filament\Tables\Table;
 use Portable\FilaCms\Filament\Resources\RoleResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Spatie\Permission\Models\Role;
+use Portable\FilaCms\Filament\Resources\RoleResource\RelationManagers;
 
 class RoleResource extends AbstractResource
 {
@@ -55,19 +56,19 @@ class RoleResource extends AbstractResource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListRoles::route('/'),
             'create' => Pages\CreateRole::route('/create'),
             'edit' => Pages\EditRole::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\UsersRelationManager::class,
         ];
     }
 }
