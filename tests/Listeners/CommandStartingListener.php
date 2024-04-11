@@ -2,15 +2,19 @@
 
 namespace Portable\FilaCms\Tests\Listeners;
 
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
-class ServeCommandStartedListener
+class CommandStartingListener
 {
-    public function handle(): void
+    public function handle(CommandStarting $event): void
     {
+        if($event->command !== 'serve') {
+            return;
+        }
+
         Artisan::call('package:create-sqlite-db');
         Artisan::call('migrate:fresh');
 

@@ -2,18 +2,15 @@
 
 namespace Portable\FilaCms\Tests\Providers;
 
+use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
-use Orchestra\Testbench\Foundation\Events\ServeCommandEnded;
-use Orchestra\Testbench\Foundation\Events\ServeCommandStarted;
+use Portable\FilaCms\Tests\Listeners\CommandStartingListener;
 
 class WorkbenchServiceProvider extends EventServiceProvider
 {
     protected $listen = [
-        ServeCommandStarted::class => [
-            'Portable\FilaCms\Tests\Listeners\ServeCommandStartedListener',
-        ],
-        ServeCommandEnded::class => [
-            'Portable\FilaCms\Tests\Listeners\ServeCommandStoppedListener',
+        CommandStarting::class => [
+            CommandStartingListener::class
         ],
     ];
 
