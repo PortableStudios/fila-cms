@@ -114,6 +114,7 @@ class TaxonomyResource extends AbstractResource
             'index' => Pages\ListTaxonomies::route('/'),
             'create' => Pages\CreateTaxonomy::route('/create'),
             'edit' => Pages\EditTaxonomy::route('/{record}/edit'),
+            'revisions' => Pages\TaxonomyRevisions::route('/{record}/revisions'),
         ];
     }
 }

@@ -22,7 +22,6 @@ class InstallCommand extends CommandsInstallCommand
         $this->info('Installed Filament Base.  Installing Spatie Permissions');
 
         $this->call('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
-        $this->call('vendor:publish', ['--provider' => "Venturecraft\Revisionable\RevisionableServiceProvider"]);
         $this->call('vendor:publish', ['--tag' => "seo-migrations"]);
         $this->call('vendor:publish', ['--tag' => "seo-config"]);
         $this->call('vendor:publish', ['--tag' => "config"]);

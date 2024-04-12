@@ -21,13 +21,11 @@ use Portable\FilaCms\Versionable\FilaCmsVersion;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 use Str;
-use Venturecraft\Revisionable\RevisionableTrait;
 
 abstract class AbstractContentModel extends Model
 {
     use HasExcerpt;
     use HasTaxonomies;
-    use RevisionableTrait;
     use Versionable;
     use SoftDeletes;
     use HasLocks;
@@ -35,12 +33,9 @@ abstract class AbstractContentModel extends Model
 
     protected $table = 'contents';
 
-    protected $revisionForceDeleteEnabled = true;
-
-    protected $revisionEnabled = true;
-
     protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
+    // This is required to handle TipTap content
     public string $versionModel = FilaCmsVersion::class;
 
     protected $versionable = [

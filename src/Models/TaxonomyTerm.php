@@ -3,11 +3,18 @@
 namespace Portable\FilaCms\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Venturecraft\Revisionable\RevisionableTrait;
+use Overtrue\LaravelVersionable\Versionable;
+use Overtrue\LaravelVersionable\VersionStrategy;
 
 class TaxonomyTerm extends Model
 {
-    use RevisionableTrait;
+    use Versionable;
+
+    protected $versionStrategy = VersionStrategy::SNAPSHOT;
+
+    protected $versionable = [
+        'name',
+    ];
 
     protected $fillable = [
         'name',
