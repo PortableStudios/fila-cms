@@ -44,6 +44,7 @@ class InstallCommand extends CommandsInstallCommand
         }
 
         $this->call('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
+        $this->call('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RootMediaFoldersSeeder']);
 
         $this->info('Adding permissions');
 

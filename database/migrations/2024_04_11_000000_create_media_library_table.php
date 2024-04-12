@@ -10,14 +10,12 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::table('media', function (Blueprint $table) {
+        Schema::create('media', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->boolean('is_folder');
-            $table->string('filename');
-            $table->string('filepath');
-            $table->string('title')->nullable();
-            $table->string('type');
+            $table->string('filename')->nullable();
+            $table->string('filepath')->nullable();
             $table->string('mime_type')->nullable();
             $table->string('size')->nullable();
             $table->string('disk')->nullable();
@@ -25,8 +23,8 @@ return new class () extends Migration {
             $table->string('extension')->nullable();
             $table->string('alt_text')->nullable();
 
-            $table->json('meta');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->json('meta')->nullable();
+            $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

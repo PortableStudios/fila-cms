@@ -2,13 +2,13 @@
 
 namespace Portable\FilaCms\Providers;
 
+use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
-use FilamentTiptapEditor\TiptapEditor;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
 
 class FilaCmsServiceProvider extends ServiceProvider
@@ -26,6 +26,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                 \Portable\FilaCms\Commands\MakeContentPermissionSeeder::class,
             ]);
         }
+        $this->loadRoutesFrom(__DIR__ . '/../../routes/filacms-routes.php');
 
         if (config('fila-cms.publish_content_routes')) {
             $this->loadRoutesFrom(__DIR__ . '/../../routes/frontend-routes.php');
