@@ -88,7 +88,6 @@ class RelatedResourceBlock extends TiptapBlock
             ->where(function ($q) use ($search) {
                 $q->where('contents', 'LIKE', '%' . $search . '%')
                 ->orWhere('title', 'LIKE', '%' . $search . '%');
-
             })
             ->get();
 
