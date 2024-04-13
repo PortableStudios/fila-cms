@@ -6,9 +6,14 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 use Portable\FilaCms\Filament\Resources\UserResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Rawilk\FilamentPasswordInput\Password;
+use Password as PasswordReset;
+use Portable\FilaCms\Filament\Resources\UserResource\RelationManagers;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class UserResource extends AbstractConfigurableResource
 {
@@ -47,6 +52,7 @@ class UserResource extends AbstractConfigurableResource
     public static function table(Table $table): Table
     {
         static::$model = config('auth.providers.users.model');
+
         return $table
             ->columns(static::getTableColumns())
             ->filters([
@@ -54,6 +60,17 @@ class UserResource extends AbstractConfigurableResource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('send_reset_link')
+                    ->label('Send Password Reset')
+                    ->icon('heroicon-s-inbox')
+                    ->action(function (Model $user) {
+                        PasswordReset::broker()->sendResetLink(['email' => $user->email]);
+                        Notification::make()
+                            ->title('Reset Link Sent')
+                            ->body('Password reset link has been sent to the **' . $user->email . '**')
+                            ->success()
+                            ->send();
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -65,7 +82,7 @@ class UserResource extends AbstractConfigurableResource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\UserLoginsRelationManager::class,
         ];
     }
 

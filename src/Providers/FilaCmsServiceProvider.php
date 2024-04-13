@@ -10,6 +10,9 @@ use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
 use FilamentTiptapEditor\TiptapEditor;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
+use Illuminate\Support\Facades\Event;
+use Portable\FilaCms\Listeners\AuthenticationListener;
+use Illuminate\Auth\Events\Login;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -42,6 +45,8 @@ class FilaCmsServiceProvider extends ServiceProvider
         Livewire::component('portable.fila-cms.livewire.content-resource-list', \Portable\FilaCms\Livewire\ContentResourceList::class);
         Livewire::component('portable.fila-cms.livewire.content-resource-show', \Portable\FilaCms\Livewire\ContentResourceShow::class);
         Blade::componentNamespace('Portable\\FilaCms\\Views\\Components', 'fila-cms');
+
+        Event::listen(Login::class, AuthenticationListener::class);
     }
 
     public function register()

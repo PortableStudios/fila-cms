@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements \Filament\Models\Contracts\FilamentUser
 {
+    use \Portable\FilaCms\Contracts\HasLogin;
     use \Spatie\Permission\Traits\HasRoles;
     use HasFactory;
 
