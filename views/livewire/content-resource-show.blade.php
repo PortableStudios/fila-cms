@@ -6,7 +6,7 @@
 
   {{ $message }}
 
-  {!! $record->contents !!}
+  {!! $record->contents ? tiptap_converter()->asHTML($record->contents) : '' !!}
 
   <x-fila-cms::content-taxonomies :record="$record" />
 </div>
