@@ -86,7 +86,7 @@ class AbstractContentResource extends AbstractResource
                                     function (Get $get) {
                                         return function (string $attribute, $value, \Closure $fail) use ($get) {
                                             $class = new static::$model();
-                                            $data = $class->where('slug', $value)
+                                            $data = ($class)->withoutGlobalScopes()->where('slug', $value)
                                                 ->when($get('id') !== null, function ($query) use ($get) {
                                                     $query->whereNot('id', $get('id'));
                                                 })

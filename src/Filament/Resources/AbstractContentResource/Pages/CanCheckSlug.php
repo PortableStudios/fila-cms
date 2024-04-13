@@ -39,9 +39,9 @@ trait CanCheckSlug
 
     protected function checkIfSlugExists($slug, $modelName)
     {
-        $model = new $modelName();
-
-        $data = $model->where('slug', $slug)->first();
+        $data = ($modelName::withoutGlobalScopes())
+            ->where('slug', $slug)
+            ->first();
 
         if (is_null($data)) {
             return false;

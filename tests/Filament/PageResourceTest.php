@@ -249,6 +249,26 @@ class PageResourceTest extends TestCase
         $this->assertEquals($page->slug, 'test-slug-title-1');
     }
 
+    public function test_duplicate_slug(): void
+    {
+        TargetModel::create([
+            'title' => $this->faker->words(15, true),
+            'is_draft' => 1,
+            'contents' => $this->createContent(),
+            'slug'     => 'first-unique-slug',
+        ]);
+
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm([
+                'is_draft' => 1,
+                'title' => 'Test Slug Title',
+                'slug'  => 'first-unique-slug',
+                'contents' => $this->createContent(),
+            ])
+            ->call('create')
+            ->assertHasErrors();
+    }
+
     public function generateModel($raw = false): TargetModel|array
     {
         $draft = $this->faker->numberBetween(0, 1);
