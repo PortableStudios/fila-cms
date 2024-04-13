@@ -9,9 +9,9 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Portable\FilaCms\Filament\Resources\RoleResource\Pages;
+use Portable\FilaCms\Filament\Resources\RoleResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Spatie\Permission\Models\Role;
-use Portable\FilaCms\Filament\Resources\RoleResource\RelationManagers;
 
 class RoleResource extends AbstractResource
 {
@@ -38,9 +38,9 @@ class RoleResource extends AbstractResource
             ->columns([
                 TextColumn::make('name')->sortable(),
                 TextColumn::make('permissions.name')
+                    ->limitList(4)
+                    ->badge()
                     ->distinctList()
-                    ->listWithLineBreaks()
-                    ->bulleted(),
             ])
             ->searchable()
             ->filters([
