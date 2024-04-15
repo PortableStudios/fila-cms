@@ -19,15 +19,26 @@ class TermsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('parent_id')
+                    ->options(function (RelationManager $livewire) {
+                        return $livewire->getOwnerRecord()
+                            ->terms()
+                            ->when($livewire->mountedTableActionRecord !== null, function ($query) use ($livewire) {
+                                $query->whereNot('id', $livewire->mountedTableActionRecord);
+                            })
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
             ]);
     }
-
     public function table(Table $table): Table
     {
         return $table
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('parent.name')
+                    ,
             ])
             ->filters([
                 //
