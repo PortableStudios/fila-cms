@@ -41,8 +41,7 @@ class UserResource extends AbstractConfigurableResource
                 Password::make('password')
                     ->regeneratePassword(color: 'warning')
                     ->copyable(color: 'info')
-                    ->newPasswordLength(16)
-                    ->required(),
+                    ->newPasswordLength(16),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
