@@ -27,7 +27,7 @@ class RoleResource extends AbstractResource
     {
         return $form
             ->schema([
-                TextInput::make('name')->required()->autofocus()->columnSpanFull(),
+                TextInput::make('name')->unique(ignoreRecord:true)->required()->autofocus()->columnSpanFull(),
                 CheckboxList::make('permissions')->relationship('permissions', 'name')->columnSpanFull(),
             ]);
     }
