@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Filament\Resources\TaxonomyResource\Pages;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
+use Mansoor\FilamentVersionable\Page\RevisionsAction;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource;
 
 class EditTaxonomy extends EditRecord
@@ -14,6 +15,7 @@ class EditTaxonomy extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            RevisionsAction::make(),
             Actions\DeleteAction::make(),
         ];
     }

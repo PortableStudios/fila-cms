@@ -32,9 +32,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         File::delete(config_path('seo.php'));
         File::delete(config_path('filament-tiptap-editor.php'));
 
-        // remove migrations from revisionable
-        File::delete(database_path('migrations/2013_04_09_062329_create_revisions_table.php'));
-
         // remove filament theme
         File::delete(resource_path('css/filament/admin/tailwind.config.js'));
         File::delete(resource_path('css/filament/admin/theme.css'));
@@ -73,7 +70,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $packages[] = \Filament\Widgets\WidgetsServiceProvider::class;
         $packages[] = \Livewire\LivewireServiceProvider::class;
         $packages[] = \FilamentTiptapEditor\FilamentTiptapEditorServiceProvider::class;
-        $packages[] = \Venturecraft\Revisionable\RevisionableServiceProvider::class;
+        $packages[] = \Mansoor\FilamentVersionable\FilamentVersionableServiceProvider::class;
         $packages[] = \Spatie\Permission\PermissionServiceProvider::class;
         $packages[] = \Laravel\Sanctum\SanctumServiceProvider::class;
         $packages[] = \Portable\FilaCms\Providers\FilaCmsServiceProvider::class;
