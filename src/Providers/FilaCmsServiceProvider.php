@@ -2,17 +2,17 @@
 
 namespace Portable\FilaCms\Providers;
 
+use FilamentTiptapEditor\TiptapEditor;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
-use FilamentTiptapEditor\TiptapEditor;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
-use Illuminate\Support\Facades\Event;
 use Portable\FilaCms\Listeners\AuthenticationListener;
-use Illuminate\Auth\Events\Login;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -92,5 +92,10 @@ class FilaCmsServiceProvider extends ServiceProvider
                     RelatedResourceBlock::class,
                 ]);
         });
+
+
+
+        $userClass = config('auth.providers.users.model');
+        $userClass::unguard();
     }
 }
