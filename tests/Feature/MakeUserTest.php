@@ -26,7 +26,18 @@ class MakeUserTest extends TestCase
         $userModel::query()->delete();
         $userFieldsRaw = Schema::getColumnListing((new $userModel())->getTable());
 
-        $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'email_verified_at' ];
+        $excludeFields = [
+            'id',
+            'created_at',
+            'updated_at',
+            'deleted_at',
+            'remember_token',
+            'email_verified_at',
+            'two_factor_secret',
+            'two_factor_recovery_codes',
+            'two_factor_confirmed_at'
+        ];
+
         $userFields = array_diff($userFieldsRaw, $excludeFields);
         foreach ($userFields as $key => $field) {
             $this->expectedQuestions[] = ['Enter admin ' . $field, 'test'];
