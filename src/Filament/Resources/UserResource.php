@@ -39,6 +39,7 @@ class UserResource extends AbstractConfigurableResource
                     ->unique(ignoreRecord:true)
                     ->required(),
                 Password::make('password')
+                    ->requiredWithout('id')
                     ->regeneratePassword(color: 'warning')
                     ->copyable(color: 'info')
                     ->newPasswordLength(16),
