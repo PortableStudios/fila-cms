@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use ReflectionClass;
 use Spatie\Permission\Traits\HasRoles;
+use Portable\FilaCms\Contracts\HasLogin;
 
 class AddUserConcerns extends Command
 {
@@ -24,6 +25,7 @@ class AddUserConcerns extends Command
 
         $traits = [
             HasRoles::class,
+            HasLogin::class,
         ];
 
         $interfaces = [

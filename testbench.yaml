@@ -14,6 +14,7 @@ providers:
   - Spatie\Permission\PermissionServiceProvider
   - Laravel\Sanctum\SanctumServiceProvider
   - Portable\FilaCms\Tests\Providers\WorkbenchServiceProvider
+  - Laravel\Fortify\FortifyServiceProvider
 
 migrations:
   - workbench/database/migrations
