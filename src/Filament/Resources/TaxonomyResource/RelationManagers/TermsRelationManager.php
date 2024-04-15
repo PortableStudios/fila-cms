@@ -2,10 +2,10 @@
 
 namespace Portable\FilaCms\Filament\Resources\TaxonomyResource\RelationManagers;
 
-use Portable\FilaCms\Filament\Resources\TaxonomyTermResource;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Table;
+use Portable\FilaCms\Filament\Resources\TaxonomyTermResource;
 
 class TermsRelationManager extends RelationManager
 {
@@ -20,7 +20,6 @@ class TermsRelationManager extends RelationManager
     {
         return TaxonomyTermResource::class;
     }
-
     public function table(Table $table): Table
     {
         return TaxonomyTermResource::table($table);

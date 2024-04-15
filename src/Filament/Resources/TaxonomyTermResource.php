@@ -4,6 +4,7 @@ namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Mansoor\FilamentVersionable\Table\RevisionsAction;
@@ -26,8 +27,23 @@ class TaxonomyTermResource extends AbstractResource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->columnSpanFull()
                     ->maxLength(255),
+                Forms\Components\Select::make('parent_id')
+                    ->label('Parent')
+                    ->options(function (RelationManager $livewire) {
+                        return $livewire->getOwnerRecord()
+                            ->terms()
+                            ->when($livewire->mountedTableActionRecord !== null, function ($query) use ($livewire) {
+                                $query->whereNot('id', $livewire->mountedTableActionRecord)
+                                    ->where(function ($q) use ($livewire) {
+                                        $q->whereNot('parent_id', $livewire->mountedTableActionRecord)
+                                          ->orWhereNull('parent_id');
+                                    });
+
+                            })
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
             ]);
     }
 
@@ -37,6 +53,7 @@ class TaxonomyTermResource extends AbstractResource
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('parent.name')
             ])
             ->filters([
                 //
