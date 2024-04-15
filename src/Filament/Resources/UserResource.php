@@ -72,7 +72,7 @@ class UserResource extends AbstractConfigurableResource
                         PasswordReset::broker()->sendResetLink(['email' => $user->email]);
                         Notification::make()
                             ->title('Reset Link Sent')
-                            ->body('Password reset link has been sent to the **' . $user->email . '**')
+                            ->body('Password reset link has been sent to ' . $user->email)
                             ->success()
                             ->send();
                     })
