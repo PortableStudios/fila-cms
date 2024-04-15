@@ -16,6 +16,7 @@ providers:
   - Kenepa\ResourceLock\ResourceLockServiceProvider
   - Mansoor\FilamentVersionable\FilamentVersionableServiceProvider
   - Laravel\Fortify\FortifyServiceProvider
+  - Overtrue\LaravelVersionable\ServiceProvider
 
 migrations:
   - workbench/database/migrations
