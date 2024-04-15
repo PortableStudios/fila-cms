@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements \Filament\Models\Contracts\FilamentUser
 {
+    use \Portable\FilaCms\Contracts\HasLogin;
     use \Spatie\Permission\Traits\HasRoles;
     use HasFactory;
 
@@ -48,8 +49,6 @@ class User extends Authenticatable implements \Filament\Models\Contracts\Filamen
         // This is required on Front and Back end.  Add more specific controls with authenticate middleware.
         return true;
     }
-
-
 
     public function canAccessPanel($panel): bool
     {

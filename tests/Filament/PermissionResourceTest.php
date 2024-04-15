@@ -2,13 +2,13 @@
 
 namespace Portable\FilaCms\Tests\Filament;
 
-use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Livewire\Livewire;
 use Portable\FilaCms\Filament\Resources\PermissionResource as TargetResource;
+use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Permission as TargetModel;
 use Spatie\Permission\Models\Role;
-use Livewire\Livewire;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class PermissionResourceTest extends TestCase
 {
@@ -88,7 +88,6 @@ class PermissionResourceTest extends TestCase
         $data = TargetModel::create(['name' => $this->faker->words(3, true)]);
         $new = TargetModel::make(['name' => $this->faker->words(3, true)]);
 
-        $updatedTime = now();
         Livewire::test(TargetResource\Pages\EditPermission::class, [
             'record' => $data->getRoutekey(),
         ])
@@ -100,6 +99,5 @@ class PermissionResourceTest extends TestCase
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);
-        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
     }
 }

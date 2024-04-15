@@ -3,8 +3,8 @@
 namespace Portable\FilaCms\Tests\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Portable\FilaCms\Models\Page;
-use Str;
 
 class PageFactory extends Factory
 {
@@ -25,7 +25,7 @@ class PageFactory extends Factory
             'slug'      => Str::slug($title),
             'is_draft'  => $draft,
             'publish_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
-            'expire_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
+            'expire_at'    => $draft === 1 ? $this->faker->dateTimeBetween('+1 week', '+2 weeks') : null,
             'contents'  => $this->createContent(),
         ];
     }

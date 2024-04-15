@@ -2,18 +2,18 @@
 
 namespace Portable\FilaCms\Filament\Blocks;
 
-use FilamentTiptapEditor\TiptapBlock;
-
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
+use FilaCms;
 
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Repeater;
 
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 
-use FilaCms;
+use FilamentTiptapEditor\TiptapBlock;
 use Str;
 
 class RelatedResourceBlock extends TiptapBlock
@@ -63,7 +63,9 @@ class RelatedResourceBlock extends TiptapBlock
                                                         ->select('id', 'title')
                                                         ->where('id', $state)
                                                         ->first();
-                                                    $set('title', $article->title);
+                                                    if($article) {
+                                                        $set('title', $article->title);
+                                                    }
                                                 })
                                                 ->columnSpan(2),
                                             TextInput::make('title')
@@ -71,6 +73,7 @@ class RelatedResourceBlock extends TiptapBlock
                                         ])
                                         ->columns(3)
                                 ])
+                                ->addActionLabel('Add Another')
                         ])
                 ])
         ];
