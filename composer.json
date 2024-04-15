@@ -37,7 +37,8 @@
         "ralphjsmit/laravel-filament-components": "^2.1",
         "kenepa/resource-lock": "^2.0",
         "rawilk/filament-password-input": "^2.0",
-        "ralphjsmit/laravel-filament-seo": "^1.3"
+        "ralphjsmit/laravel-filament-seo": "^1.3",
+        "laravel/fortify": "^1.21"
     },
     "require-dev": {
         "laravel/sanctum": "^3.3",

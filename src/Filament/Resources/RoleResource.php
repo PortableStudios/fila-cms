@@ -9,6 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Portable\FilaCms\Filament\Resources\RoleResource\Pages;
+use Portable\FilaCms\Filament\Resources\RoleResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Spatie\Permission\Models\Role;
 
@@ -37,9 +38,9 @@ class RoleResource extends AbstractResource
             ->columns([
                 TextColumn::make('name')->sortable(),
                 TextColumn::make('permissions.name')
+                    ->limitList(4)
+                    ->badge()
                     ->distinctList()
-                    ->listWithLineBreaks()
-                    ->bulleted(),
             ])
             ->searchable()
             ->filters([
@@ -55,19 +56,19 @@ class RoleResource extends AbstractResource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListRoles::route('/'),
             'create' => Pages\CreateRole::route('/create'),
             'edit' => Pages\EditRole::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\UsersRelationManager::class,
         ];
     }
 }

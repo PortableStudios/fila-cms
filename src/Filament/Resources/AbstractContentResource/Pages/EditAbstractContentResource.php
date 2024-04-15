@@ -4,7 +4,6 @@ namespace Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Support\Str;
 use Kenepa\ResourceLock\Resources\Pages\Concerns\UsesResourceLock;
 use Mansoor\FilamentVersionable\Page\RevisionsAction;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource;
@@ -12,6 +11,7 @@ use Portable\FilaCms\Filament\Resources\AbstractContentResource;
 class EditAbstractContentResource extends EditRecord
 {
     use UsesResourceLock;
+    use CanCheckSlug;
 
     protected static string $resource = AbstractContentResource::class;
 
@@ -25,7 +25,7 @@ class EditAbstractContentResource extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['slug'] = $data['slug'] ? Str::slug($data['slug']) : null;
+        $data['slug'] = $this->generateSlug($data);
 
         return $data;
     }

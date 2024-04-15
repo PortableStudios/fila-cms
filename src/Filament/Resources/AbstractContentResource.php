@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
@@ -22,6 +23,7 @@ use FilamentTiptapEditor\Enums\TiptapOutput;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 use Portable\FilaCms\Filament\Forms\Components\StatusBadge;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
@@ -31,7 +33,6 @@ use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
 use RalphJSmit\Filament\Components\Forms as HandyComponents;
 use RalphJSmit\Filament\SEO\SEO;
-use Str;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -79,6 +80,21 @@ class AbstractContentResource extends AbstractResource
                     Section::make()
                         ->schema([
                             TextInput::make('slug')
+                                ->rules([
+                                    function (Get $get) {
+                                        return function (string $attribute, $value, \Closure $fail) use ($get) {
+                                            $class = new static::$model();
+                                            $data = ($class)->withoutGlobalScopes()->where('slug', $value)
+                                                ->when($get('id') !== null, function ($query) use ($get) {
+                                                    $query->whereNot('id', $get('id'));
+                                                })
+                                                ->first();
+                                            if (is_null($data) === false) {
+                                                $fail('The :attribute already exists');
+                                            }
+                                        };
+                                    }
+                                ])
                                 ->maxLength(255),
                             Toggle::make('is_draft')
                                 ->label('Draft?')
