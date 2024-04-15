@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
-class CommandStartingListener
+class ServeCommandStartedListener
 {
-    public function handle(CommandStarting $event): void
+    public function handle(): void
     {
         // Create the user model stub
         Artisan::call('make:user-model');
@@ -21,6 +21,9 @@ class CommandStartingListener
         // remove config files
         File::delete(config_path('fila-cms.php'));
         File::delete(config_path('filament-tiptap-editor.php'));
+
+        // remove migrations from revisionable
+        File::delete(database_path('migrations/2013_04_09_062329_create_revisions_table.php'));
 
         // remove filament theme
         File::delete(resource_path('css/filament/admin/tailwind.config.js'));
