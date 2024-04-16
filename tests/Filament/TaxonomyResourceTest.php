@@ -119,6 +119,7 @@ class TaxonomyResourceTest extends TestCase
     {
         return TargetModel::create([
             'name' => $this->faker->firstName,
+            'taxonomy_resources' => array_keys(FilaCms::getContentModels())
         ]);
     }
 }
