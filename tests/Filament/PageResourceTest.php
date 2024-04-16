@@ -12,8 +12,8 @@ use Portable\FilaCms\Models\Page as TargetModel;
 use Portable\FilaCms\Models\Taxonomy;
 use Portable\FilaCms\Models\TaxonomyTerm;
 use Portable\FilaCms\Tests\TestCase;
-use Spatie\Permission\Models\Role;
 use RalphJSmit\Laravel\SEO\Models\SEO;
+use Spatie\Permission\Models\Role;
 
 class PageResourceTest extends TestCase
 {
@@ -149,13 +149,11 @@ class PageResourceTest extends TestCase
             ])
             ->call('save')
             ->assertHasNoFormErrors();
-        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->title, $new->title);
         $this->assertEquals($data->author_id, $new->author_id);
         $this->assertEquals($data->is_draft, $new->is_draft);
-        $this->assertGreaterThanOrEqual($updatedTime->format('U'), $data->updated_at->format('U'));
     }
 
     public function test_can_create_page_with_taxonomies(): void

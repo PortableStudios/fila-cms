@@ -28,7 +28,6 @@ class TaxonomyTermResource extends AbstractResource
                     ->required()
                     ->columnSpanFull()
                     ->maxLength(255),
-                
                 Forms\Components\Select::make('parent_id')
                     ->options(function (RelationManager $livewire) {
                         return $livewire->getOwnerRecord()
