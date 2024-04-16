@@ -4,13 +4,13 @@ namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Mansoor\FilamentVersionable\Table\RevisionsAction;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\TaxonomyTerm;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Notifications\Notification;
 
 class TaxonomyTermResource extends AbstractResource
@@ -28,9 +28,9 @@ class TaxonomyTermResource extends AbstractResource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->columnSpanFull()
                     ->maxLength(255),
                 Forms\Components\Select::make('parent_id')
+                    ->label('Parent')
                     ->options(function (RelationManager $livewire) {
                         return $livewire->getOwnerRecord()
                             ->terms()
