@@ -67,6 +67,19 @@ class RoleResourceTest extends TestCase
             ->assertHasFormErrors(['name' => 'required']);
     }
 
+    public function test_cant_create_duplicate(): void
+    {
+        $data = TargetModel::first();
+
+        Livewire::test(TargetResource\Pages\CreateRole::class)
+            ->fillForm([
+                'name' => $data->name
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['name' => 'unique']);
+
+    }
+
     public function test_can_render_edit_page(): void
     {
         $data = TargetModel::first();
