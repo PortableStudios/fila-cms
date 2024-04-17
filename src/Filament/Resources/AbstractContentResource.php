@@ -17,6 +17,7 @@ use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 use FilamentTiptapEditor\Enums\TiptapOutput;
@@ -195,7 +196,14 @@ class AbstractContentResource extends AbstractResource
                     ->queries(
                         true: fn (Builder $query) => $query->where('is_draft', true),
                         false: fn (Builder $query) => $query->where('is_draft', false),
-                    )
+                    ),
+                SelectFilter::make('author')
+                    ->multiple()
+                    ->options(Author::all()->pluck('display_name', 'id'))
+                    ->attribute('author_id'),
+                SelectFilter::make('terms')
+                    ->multiple()
+                    ->relationship('terms', 'name'),
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make(),
