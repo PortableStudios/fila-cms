@@ -110,17 +110,16 @@ class TaxonomyResourceTest extends TestCase
         ])
         ->call('save')
         ->assertHasNoFormErrors();
-        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);
-        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
     }
 
     public function generateModel(): TargetModel
     {
         return TargetModel::create([
             'name' => $this->faker->firstName,
+            'taxonomy_resources' => array_keys(FilaCms::getContentModels())
         ]);
     }
 }

@@ -6,14 +6,19 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
+use Kenepa\ResourceLock\Models\Concerns\HasLocks;
+use Overtrue\LaravelVersionable\Version;
+use Overtrue\LaravelVersionable\Versionable;
+use Overtrue\LaravelVersionable\VersionStrategy;
 use Portable\FilaCms\Events\ContentCreating;
 use Portable\FilaCms\Events\ContentUpdating;
 use Portable\FilaCms\Exceptions\InvalidStatusException;
+use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
-use Venturecraft\Revisionable\RevisionableTrait;
-use Str;
+use Portable\FilaCms\Versionable\FilaCmsVersion;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
@@ -21,15 +26,27 @@ abstract class AbstractContentModel extends Model
 {
     use HasExcerpt;
     use HasTaxonomies;
-    use RevisionableTrait;
+    use Versionable;
     use SoftDeletes;
+    use HasLocks;
     use HasSEO;
 
     protected $table = 'contents';
 
-    protected $revisionForceDeleteEnabled = true;
+    protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
-    protected $revisionEnabled = true;
+    // This is required to handle TipTap content
+    public string $versionModel = FilaCmsVersion::class;
+
+    protected $versionable = [
+        'title',
+        'slug',
+        'is_draft',
+        'publish_at',
+        'expire_at',
+        'contents',
+        'author_id'
+    ];
 
     protected $fillable = [
         'title',
@@ -55,6 +72,27 @@ abstract class AbstractContentModel extends Model
         'creating' => ContentCreating::class,
         'updating' => ContentUpdating::class,
     ];
+
+    public function getVersionUserId()
+    {
+        return auth()->user() ? auth()->user()->id : FilaCms::systemUser()->id;
+    }
+
+    // This is overriden from Overtrue's Versionable trait
+    // in order to run the query without scopes
+    public function createInitialVersion(Model $model): Version
+    {
+        /** @var \Overtrue\LaravelVersionable\Versionable|Model $refreshedModel */
+        $refreshedModel = static::query()->withoutGlobalScopes()->findOrFail($model->getKey());
+
+        /**
+         * As initial version should include all $versionable fields,
+         * we need to get the latest version from database.
+         */
+        $attributes = $refreshedModel->getSnapshotAttributes();
+
+        return Version::createForModel($refreshedModel, $attributes, $refreshedModel->updated_at);
+    }
 
     public function shortDescription($length = 50, $omission = '...'): string
     {

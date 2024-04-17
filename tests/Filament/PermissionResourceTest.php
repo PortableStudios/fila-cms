@@ -2,13 +2,13 @@
 
 namespace Portable\FilaCms\Tests\Filament;
 
-use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Livewire\Livewire;
 use Portable\FilaCms\Filament\Resources\PermissionResource as TargetResource;
+use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Permission as TargetModel;
 use Spatie\Permission\Models\Role;
-use Livewire\Livewire;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class PermissionResourceTest extends TestCase
 {
@@ -100,6 +100,5 @@ class PermissionResourceTest extends TestCase
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);
-        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
     }
 }

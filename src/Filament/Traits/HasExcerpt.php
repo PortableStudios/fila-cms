@@ -12,14 +12,10 @@ trait HasExcerpt
     public function excerpt(): Attribute
     {
         $excerpt = $this->{$this->excerptField};
-        $content = $excerpt['content'];
 
-        // get first content with "paragraph"
         $paragraph = '';
-        foreach ($content as $key => $value) {
-            if ($value['type'] === 'paragraph') {
-                $paragraph = $value['content'][0]['text']; // take the first part
-            }
+        if ($excerpt) {
+            $paragraph = tiptap_converter()->asText($excerpt) ?? '';
         }
 
         return Attribute::make(function () use ($paragraph) {

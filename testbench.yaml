@@ -10,15 +10,17 @@ providers:
   - Filament\Widgets\WidgetsServiceProvider
   - Livewire\LivewireServiceProvider
   - FilamentTiptapEditor\FilamentTiptapEditorServiceProvider
-  - Venturecraft\Revisionable\RevisionableServiceProvider
   - Spatie\Permission\PermissionServiceProvider
   - Laravel\Sanctum\SanctumServiceProvider
   - Portable\FilaCms\Tests\Providers\WorkbenchServiceProvider
+  - Kenepa\ResourceLock\ResourceLockServiceProvider
+  - Mansoor\FilamentVersionable\FilamentVersionableServiceProvider
+  - Laravel\Fortify\FortifyServiceProvider
+  - Overtrue\LaravelVersionable\ServiceProvider
 
 migrations:
   - workbench/database/migrations
   - spatie/laravel-permission/database/migrations
-  - venturecraft/revisionable/src/migrations
   - database/migrations
 
 seeders:

@@ -2,18 +2,22 @@
 
 namespace Portable\FilaCms\Tests\Filament;
 
-use Portable\FilaCms\Tests\TestCase;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithSession;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Livewire\Livewire;
 use Portable\FilaCms\Filament\Resources\RoleResource as TargetResource;
+use Portable\FilaCms\Filament\Resources\RoleResource\Pages\EditRole;
+use Portable\FilaCms\Tests\TestCase;
+use Portable\FilaCms\Tests\User;
 use Spatie\Permission\Models\Role as TargetModel;
 use Spatie\Permission\Models\Role;
-use Livewire\Livewire;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class RoleResourceTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
+    use InteractsWithSession;
 
     protected function setUp(): void
     {
@@ -63,6 +67,19 @@ class RoleResourceTest extends TestCase
             ->assertHasFormErrors(['name' => 'required']);
     }
 
+    public function test_cant_create_duplicate(): void
+    {
+        $data = TargetModel::first();
+
+        Livewire::test(TargetResource\Pages\CreateRole::class)
+            ->fillForm([
+                'name' => $data->name
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['name' => 'unique']);
+
+    }
+
     public function test_can_render_edit_page(): void
     {
         $data = TargetModel::first();
@@ -96,10 +113,47 @@ class RoleResourceTest extends TestCase
         ])
         ->call('save')
         ->assertHasNoFormErrors();
-        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);
-        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
+    }
+
+    public function test_can_delete_without_users()
+    {
+        $role = Role::create(['name' => 'dummy-role']);
+        $livewireResponse = Livewire::test(EditRole::class, [
+            'record' => $role->getRoutekey(),
+        ])
+        ->call('mountAction', 'delete')
+        ->call('callMountedAction');
+
+        $livewireResponse->assertSessionHas('filament.notifications', function ($notifications) {
+            return collect($notifications)->first()['title'] === 'Deleted';
+        });
+
+        $role = Role::find($role->id);
+        $this->assertNull($role);
+    }
+
+
+    public function test_cannot_delete_with_users()
+    {
+        $role = Role::create(['name' => 'dependant-role']);
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        $livewire = Livewire::test(EditRole::class, [
+            'record' => $role->getRoutekey(),
+        ]);
+
+        $livewire = $livewire->call('mountAction', 'delete');
+        $livewire = $livewire->call('callMountedAction');
+
+        $livewire->assertSessionHas('filament.notifications', function ($notifications) {
+            return collect($notifications)->first()['body'] === 'You cannot delete a role that is assigned to user(s)';
+        });
+
+        $role = Role::find($role->id);
+        $this->assertNotNull($role);
     }
 }

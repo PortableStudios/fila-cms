@@ -46,6 +46,9 @@ class FilaCms
 
     public function getModelFromResource($resource)
     {
+        if(!is_array(self::$contentModels)) {
+            $this->getContentModels();
+        }
         return array_search($resource, self::$contentModels);
     }
 

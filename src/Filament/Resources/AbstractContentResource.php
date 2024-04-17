@@ -6,7 +6,6 @@ use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -19,23 +18,22 @@ use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
-
 use Filament\Tables\Table;
+
 use FilamentTiptapEditor\Enums\TiptapOutput;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use Portable\FilaCms\Filament\Forms\Components\StatusBadge;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
-use Portable\FilaCms\Filament\Resources\AbstractContentResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
-use Str;
+use RalphJSmit\Filament\Components\Forms as HandyComponents;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -86,6 +84,21 @@ class AbstractContentResource extends AbstractResource
                     Section::make()
                         ->schema([
                             TextInput::make('slug')
+                                ->rules([
+                                    function (Get $get) {
+                                        return function (string $attribute, $value, \Closure $fail) use ($get) {
+                                            $class = new static::$model();
+                                            $data = ($class)->withoutGlobalScopes()->where('slug', $value)
+                                                ->when($get('id') !== null, function ($query) use ($get) {
+                                                    $query->whereNot('id', $get('id'));
+                                                })
+                                                ->first();
+                                            if (is_null($data) === false) {
+                                                $fail('The :attribute already exists');
+                                            }
+                                        };
+                                    }
+                                ])
                                 ->maxLength(255),
                             Toggle::make('is_draft')
                                 ->label('Draft?')
@@ -105,18 +118,10 @@ class AbstractContentResource extends AbstractResource
                         ->columns(1),
                     Fieldset::make()
                         ->schema([
-                            Placeholder::make('publish_at_view')
-                                ->label('Published')
-                                ->visible(fn (?Model $record): bool => $record && $record->status === 'Published')
-                                ->content(function (?Model $record): string {
-                                    return $record->publish_at ?? '?';
-                                }),
-                            Placeholder::make('created_at_view')
-                                ->label('Created')
-                                ->visible(fn (?Model $record): bool => $record !== null)
-                                ->content(function (?Model $record): string {
-                                    return $record->created_at ?? '?';
-                                }),
+                            HandyComponents\CreatedAt::make()
+                                ->label('Created'),
+                            HandyComponents\UpdatedAt::make()
+                                ->label('Updated'),
                             StatusBadge::make('status')
                                 ->live()
                                 ->badge()
@@ -339,7 +344,6 @@ class AbstractContentResource extends AbstractResource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\RevisionsRelationManager::class,
         ];
     }
 
@@ -350,6 +354,7 @@ class AbstractContentResource extends AbstractResource
             'index' => Pages\ListAbstractContentResources::route('/'),
             'create' => Pages\CreateAbstractContentResource::route('/create'),
             'edit' => Pages\EditAbstractContentResource::route('/{record}/edit'),
+            'revisions' => Pages\AbstractContentResourceRevisions::route('/{record}/revisions'),
         ];
         // @codeCoverageIgnoreEnd
     }

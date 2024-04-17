@@ -80,6 +80,7 @@ class AuthorResource extends AbstractResource
             'index' => Pages\ListAuthors::route('/'),
             'create' => Pages\CreateAuthor::route('/create'),
             'edit' => Pages\EditAuthor::route('/{record}/edit'),
+            'revisions' => Pages\AuthorRevisions::route('/{record}/revisions'),
         ];
     }
 }

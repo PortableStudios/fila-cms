@@ -21,10 +21,12 @@ class InstallCommand extends CommandsInstallCommand
 
         $this->info('Installed Filament Base.  Installing Spatie Permissions');
 
+        $this->call('fortify:install');
+
         $this->call('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
-        $this->call('vendor:publish', ['--provider' => "Venturecraft\Revisionable\RevisionableServiceProvider"]);
         $this->call('vendor:publish', ['--tag' => "seo-migrations"]);
         $this->call('vendor:publish', ['--tag' => "seo-config"]);
+        $this->call('vendor:publish', ['--tag' => "config"]);
 
         $this->info('Installed Spatie Permissions. Installing Fila CMS Config...');
 
@@ -33,6 +35,8 @@ class InstallCommand extends CommandsInstallCommand
         }
         // we need this for revisionable package
         $this->call('vendor:publish', ['--tag' => 'migrations']);
+        $this->call('vendor:publish', ['--tag' => 'resource-lock-migrations']);
+
 
         if ($this->option('run-migrations') || strtoupper($this->ask('Would you like to run migrations(Y/n)?', 'Y')) == 'Y') {
             $this->info('Running migrations...');

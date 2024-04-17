@@ -66,6 +66,7 @@ class TaxonomyResource extends AbstractResource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->columnSpanFull()
                     ->maxLength(255),
@@ -114,6 +115,7 @@ class TaxonomyResource extends AbstractResource
             'index' => Pages\ListTaxonomies::route('/'),
             'create' => Pages\CreateTaxonomy::route('/create'),
             'edit' => Pages\EditTaxonomy::route('/{record}/edit'),
+            'revisions' => Pages\TaxonomyRevisions::route('/{record}/revisions'),
         ];
     }
 }
