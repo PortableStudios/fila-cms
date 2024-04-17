@@ -21,6 +21,9 @@ return [
             // Any fields here you _don't_ want FilaCms to provide editing for
         ],
     ],
+    'editor' => [
+        'media_action' => \Portable\FilaCms\Filament\Actions\MediaAction::class,
+    ],
     'media_library' => [
         'allow_root_uploads' => false,
         'thumbnails' => [
