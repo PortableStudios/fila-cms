@@ -19,10 +19,11 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-
 use FilamentTiptapEditor\Enums\TiptapOutput;
+
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -277,7 +278,36 @@ class AbstractContentResource extends AbstractResource
                 ]),
         ];
 
-        return $seoFields;
+        $only = [
+            'seo_title',
+            'seo_description',
+            'og_title',
+            'og_description',
+            'og_type',
+            'robots',
+        ];
+
+        return [
+            Group::make()
+                ->schema($seoFields)
+                ->afterStateHydrated(function (Group $component, ?Model $record) use ($only): void {
+                    $component->getChildComponentContainer()->fill(
+                        $record?->seo?->only($only) ?: []
+                    );
+                })
+                ->statePath('seo')
+                ->dehydrated(false)
+                ->saveRelationshipsUsing(function (Model $record, array $state) use ($only): void {
+                    $state = collect($state)->only($only)->map(fn ($value) => $value ?: null)->all();
+
+                    if ($record->seo && $record->seo->exists) {
+                        $record->seo->update($state);
+                    } else {
+                        $record->seo()->create($state);
+                    }
+                })
+        ];
+
     }
 
     public static function tiptapEditor($name = 'contents'): TiptapEditor
