@@ -20,6 +20,7 @@ class TermsRelationManager extends RelationManager
     {
         return TaxonomyTermResource::class;
     }
+
     public function table(Table $table): Table
     {
         return TaxonomyTermResource::table($table);

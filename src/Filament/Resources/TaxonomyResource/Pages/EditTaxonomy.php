@@ -7,6 +7,8 @@ use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Mansoor\FilamentVersionable\Page\RevisionsAction;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource;
+use Portable\FilaCms\Models\TaxonomyTerm;
+use Filament\Notifications\Notification;
 
 class EditTaxonomy extends EditRecord
 {
@@ -16,7 +18,23 @@ class EditTaxonomy extends EditRecord
     {
         return [
             RevisionsAction::make(),
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->before(function (Actions\DeleteAction $action) {
+                    $terms = TaxonomyTerm::where('taxonomy_id', $this->record->id)
+                        ->whereHas('taxonomyables')
+                        ->first();
+
+                    if (is_null($terms) === false) {
+
+                        Notification::make()
+                            ->warning()
+                            ->title('Unable to delete Taxonomy')
+                            ->body('One or more terms under this taxonomy is currently in use')
+                            ->send();
+
+                        $action->cancel();
+                    }
+                }),
         ];
     }
 

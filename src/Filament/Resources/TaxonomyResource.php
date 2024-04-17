@@ -66,6 +66,7 @@ class TaxonomyResource extends AbstractResource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->columnSpanFull()
                     ->maxLength(255),
