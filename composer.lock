@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d955846f8cbb292cac5cd0275fcde071",
+    "content-hash": "5d6901e0f3ed3c3b77f98f7c085cf21d",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1285,6 +1285,53 @@
                 }
             ],
             "time": "2023-08-10T19:36:49+00:00"
+        },
+        {
+            "name": "dyrynda/laravel-cascade-soft-deletes",
+            "version": "4.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michaeldyrynda/laravel-cascade-soft-deletes.git",
+                "reference": "467aa81143aebd63c58cc508578b137c52ee1590"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/michaeldyrynda/laravel-cascade-soft-deletes/zipball/467aa81143aebd63c58cc508578b137c52ee1590",
+                "reference": "467aa81143aebd63c58cc508578b137c52ee1590",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^10.0 || ^11.0",
+                "illuminate/events": "^10.0 || ^11.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "pestphp/pest": "^2.34",
+                "pestphp/pest-plugin-drift": "^2.5"
+            },
+            "type": "utility",
+            "autoload": {
+                "psr-4": {
+                    "Dyrynda\\Database\\Support\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dyrynda",
+                    "email": "michael@dyrynda.com.au",
+                    "homepage": "https://dyrynda.com.au"
+                }
+            ],
+            "description": "Cascading deletes for Eloquent models that implement soft deletes",
+            "support": {
+                "issues": "https://github.com/michaeldyrynda/laravel-cascade-soft-deletes/issues",
+                "source": "https://github.com/michaeldyrynda/laravel-cascade-soft-deletes/tree/4.4.0"
+            },
+            "time": "2024-03-18T23:17:38+00:00"
         },
         {
             "name": "egulias/email-validator",

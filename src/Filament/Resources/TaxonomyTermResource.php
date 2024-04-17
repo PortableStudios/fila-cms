@@ -4,14 +4,15 @@ namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rules\Unique;
 use Mansoor\FilamentVersionable\Table\RevisionsAction;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\TaxonomyTerm;
-use Filament\Notifications\Notification;
 
 class TaxonomyTermResource extends AbstractResource
 {
@@ -24,10 +25,15 @@ class TaxonomyTermResource extends AbstractResource
 
     public static function form(Form $form): Form
     {
+        $owner = $form->getLivewire()->ownerRecord;
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule) use ($owner) {
+                        return $rule->where('taxonomy_id', $owner->id);
+                    })
                     ->maxLength(255),
                 Forms\Components\Select::make('parent_id')
                     ->label('Parent')
@@ -80,11 +86,11 @@ class TaxonomyTermResource extends AbstractResource
                         $term = TaxonomyTerm::where('id', $livewire->mountedTableActionRecord)->first();
 
                         // check if has taxonomyables
-                        if ($term->taxonomyables->count() === 0) {
+                        if ($term->taxonomyables->count() > 0) {
                             Notification::make()
-                                ->warning()
-                                ->title('Unable to delete Taxonomy')
-                                ->body('One or more terms under this taxonomy is currently in use')
+                                ->danger()
+                                ->title('Unable to delete term')
+                                ->body('This term is currently in use')
                                 ->send();
 
                             $action->cancel();
@@ -100,13 +106,14 @@ class TaxonomyTermResource extends AbstractResource
                             foreach ($livewire->getSelectedTableRecords() as $key => $term) {
                                 if ($term->taxonomyables->count() > 0) {
                                     $hasTermWithContent = true;
+                                    break;
                                 }
                             }
 
                             if ($hasTermWithContent) {
                                 Notification::make()
-                                ->warning()
-                                ->title('Unable to delete Taxonomies')
+                                ->danger()
+                                ->title('Unable to delete terms')
                                 ->body('One or more terms selected is currently in use')
                                 ->send();
 
