@@ -50,6 +50,11 @@ You can now load the application at http://localhost:8000/admin
 Username: admin@test.com
 Password: password
 
+If you're doing anything that needs to send mail, start the Mailhog daemon:
+`docker run -p 8025:8025 -p 1025:1025 mailhog/mailhog`
+
+Now you can go to http://localhost:8025 and see any mail that the application "sends"
+
 ## Protecting resources
 
 Add the `IsProtectedResource` trait to your Filament resources to have them automatically obey `view <resource-name>` and `manage <resource-name>` permissions.

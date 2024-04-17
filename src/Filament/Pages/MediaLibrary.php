@@ -29,6 +29,7 @@ class MediaLibrary extends Page implements HasForms, HasTable
     use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationGroup = 'Content';
 
     protected static string $view = 'fila-cms::pages.media-library';
     public ?array $data = [];
@@ -130,6 +131,7 @@ class MediaLibrary extends Page implements HasForms, HasTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('id')
+                    ->label('Size')
                     ->badge()
                     ->formatStateUsing(function ($state, $record) {
                         return $record->display_size;
@@ -141,7 +143,7 @@ class MediaLibrary extends Page implements HasForms, HasTable
                             return 'white';
                         }
                     }),
-                TextColumn::make('updated_at')->label('Last Modified'),
+                TextColumn::make('updated_at')->label('Modified'),
             ])
             ->actions(
                 [

@@ -15,6 +15,7 @@ use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
 use Portable\FilaCms\Listeners\AuthenticationListener;
+use Portable\FilaCms\Services\MediaLibrary;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -47,6 +48,7 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         Livewire::component('portable.fila-cms.livewire.content-resource-list', \Portable\FilaCms\Livewire\ContentResourceList::class);
         Livewire::component('portable.fila-cms.livewire.content-resource-show', \Portable\FilaCms\Livewire\ContentResourceShow::class);
+        Livewire::component('media-library-table', \Portable\FilaCms\Livewire\MediaLibraryTable::class);
         Blade::componentNamespace('Portable\\FilaCms\\Views\\Components', 'fila-cms');
         config(['versionable.user_model' => config('auth.providers.users.model')]);
 
@@ -66,11 +68,18 @@ class FilaCmsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('FilaCms', FilaCms::class);
+        $this->app->bind('MediaLibrary', \Portable\FilaCms\Services\MediaLibrary::class);
+
         $loader = AliasLoader::getInstance();
         $loader->alias('FilaCms', FacadesFilaCms::class);
+        $loader->alias('MediaLibrary', \Portable\FilaCms\Facades\MediaLibrary::class);
 
         $this->app->bind('fila-cms', function () {
             return new FilaCms();
+        });
+
+        $this->app->bind('fila-cms-media', function () {
+            return new MediaLibrary();
         });
 
         $this->publishes([
@@ -102,6 +111,7 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         TiptapEditor::configureUsing(function (TiptapEditor $component) {
             $component
+                ->mediaAction(config('fila-cms.editor.media_action'))
                 ->blocks([
                     RelatedResourceBlock::class,
                 ]);
