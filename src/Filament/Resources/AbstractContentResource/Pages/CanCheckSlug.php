@@ -2,8 +2,8 @@
 
 namespace Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 
-use FilaCms;
-use Str;
+use Illuminate\Support\Str;
+use Portable\FilaCms\Facades\FilaCms;
 
 trait CanCheckSlug
 {
@@ -40,8 +40,12 @@ trait CanCheckSlug
     protected function checkIfSlugExists($slug, $modelName)
     {
         $data = ($modelName::withoutGlobalScopes())
-            ->where('slug', $slug)
-            ->first();
+            ->where('slug', $slug);
+
+        if($this->record?->exists) {
+            $data = $data->where('id', '!=', $this->record->id);
+        }
+        $data = $data->first();
 
         if (is_null($data)) {
             return false;

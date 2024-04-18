@@ -206,6 +206,24 @@ class PageResourceTest extends TestCase
         $this->assertEquals($page->slug, 'test-slug-title');
     }
 
+    public function test_automatic_slug_doesnt_change_on_update(): void
+    {
+        $data = TargetModel::factory()->create();
+        $oldSlug = $data->slug;
+
+        Livewire::test(TargetResource\Pages\EditPage::class, [
+            'record' => $data->getRoutekey(),
+        ])
+            ->fillForm([
+                'contents' => $this->faker->words(100, true),
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $data->refresh();
+        $this->assertEquals($data->slug, $oldSlug);
+    }
+
     public function test_custom_slug(): void
     {
         Livewire::test(TargetResource\Pages\CreatePage::class)
