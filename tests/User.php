@@ -50,8 +50,6 @@ class User extends Authenticatable implements \Filament\Models\Contracts\Filamen
         return true;
     }
 
-
-
     public function canAccessPanel($panel): bool
     {
         // This is required on Front and Back end.  Add more specific controls with authenticate middleware.

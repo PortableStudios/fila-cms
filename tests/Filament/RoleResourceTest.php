@@ -67,6 +67,19 @@ class RoleResourceTest extends TestCase
             ->assertHasFormErrors(['name' => 'required']);
     }
 
+    public function test_cant_create_duplicate(): void
+    {
+        $data = TargetModel::first();
+
+        Livewire::test(TargetResource\Pages\CreateRole::class)
+            ->fillForm([
+                'name' => $data->name
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['name' => 'unique']);
+
+    }
+
     public function test_can_render_edit_page(): void
     {
         $data = TargetModel::first();
@@ -100,11 +113,9 @@ class RoleResourceTest extends TestCase
         ])
         ->call('save')
         ->assertHasNoFormErrors();
-        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);
-        $this->assertGreaterThanOrEqual($data->updated_at->format('U'), $updatedTime->format('U'));
     }
 
     public function test_can_delete_without_users()

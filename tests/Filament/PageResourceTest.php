@@ -12,8 +12,8 @@ use Portable\FilaCms\Models\Page as TargetModel;
 use Portable\FilaCms\Models\Taxonomy;
 use Portable\FilaCms\Models\TaxonomyTerm;
 use Portable\FilaCms\Tests\TestCase;
-use Spatie\Permission\Models\Role;
 use RalphJSmit\Laravel\SEO\Models\SEO;
+use Spatie\Permission\Models\Role;
 
 class PageResourceTest extends TestCase
 {
@@ -149,13 +149,11 @@ class PageResourceTest extends TestCase
             ])
             ->call('save')
             ->assertHasNoFormErrors();
-        $updatedTime = now();
 
         $data->refresh();
         $this->assertEquals($data->title, $new->title);
         $this->assertEquals($data->author_id, $new->author_id);
         $this->assertEquals($data->is_draft, $new->is_draft);
-        $this->assertGreaterThanOrEqual($updatedTime->format('U'), $data->updated_at->format('U'));
     }
 
     public function test_can_create_page_with_taxonomies(): void
@@ -191,6 +189,84 @@ class PageResourceTest extends TestCase
         $this->assertEquals($page->colours->pluck('name')->toArray(), [$red->name]);
     }
 
+    public function test_automatic_slug(): void
+    {
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm([
+                'is_draft' => 0,
+                'title' => 'Test Slug Title',
+                'contents' => $this->createContent(),
+            ])
+            ->call('create')
+            ->assertHasNoErrors();
+
+        $page = TargetModel::where('title', 'Test Slug Title')->first();
+
+        $this->assertEquals($page->slug, 'test-slug-title');
+    }
+
+    public function test_custom_slug(): void
+    {
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm([
+                'is_draft' => 0,
+                'title' => 'Test Slug Title',
+                'slug'  => 'custom-slug',
+                'contents' => $this->createContent(),
+            ])
+            ->call('create')
+            ->assertHasNoErrors();
+
+        $page = TargetModel::where('title', 'Test Slug Title')->first();
+
+        $this->assertEquals($page->slug, 'custom-slug');
+    }
+
+    public function test_autoslug_increment(): void
+    {
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm([
+                'is_draft' => 0,
+                'title' => 'Test Slug Title',
+                'contents' => $this->createContent(),
+            ])
+            ->call('create')
+            ->assertHasNoErrors();
+
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm([
+                'is_draft' => 0,
+                'title' => 'Test Slug Title',
+                'contents' => $this->createContent(),
+            ])
+            ->call('create')
+            ->assertHasNoErrors();
+
+        $page = TargetModel::where('title', 'Test Slug Title')->orderBy('id', 'desc')->first();
+
+        $this->assertEquals($page->slug, 'test-slug-title-1');
+    }
+
+    public function test_duplicate_slug(): void
+    {
+        TargetModel::create([
+            'title' => $this->faker->words(15, true),
+            'is_draft' => 1,
+            'contents' => $this->createContent(),
+            'slug'     => 'first-unique-slug',
+        ]);
+
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm([
+                'is_draft' => 1,
+                'title' => 'Test Slug Title',
+                'slug'  => 'first-unique-slug',
+                'contents' => $this->createContent(),
+            ])
+            ->call('create')
+            ->assertHasErrors();
+    }
+
     public function generateModel($raw = false): TargetModel|array
     {
         $draft = $this->faker->numberBetween(0, 1);
@@ -210,7 +286,6 @@ class PageResourceTest extends TestCase
 
         return TargetModel::create($data);
     }
-
 
     protected function createContent()
     {

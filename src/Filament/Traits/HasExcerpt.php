@@ -12,7 +12,11 @@ trait HasExcerpt
     public function excerpt(): Attribute
     {
         $excerpt = $this->{$this->excerptField};
-        $paragraph = tiptap_converter()->asText($excerpt) ?? '';
+
+        $paragraph = '';
+        if ($excerpt) {
+            $paragraph = tiptap_converter()->asText($excerpt) ?? '';
+        }
 
         return Attribute::make(function () use ($paragraph) {
             return Str::take(Str::of($paragraph)->stripTags(), 200);

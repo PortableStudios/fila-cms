@@ -19,7 +19,7 @@ class AbstractContentModelTest extends TestCase
     public function test_with_pending()
     {
         $page = Page::factory()->create();
-        $page->is_draft = 0;
+        $page->is_draft = false;
         $page->publish_at = now()->addDays(1);
         $page->expire_at = now()->addDays(10);
         $page->save();

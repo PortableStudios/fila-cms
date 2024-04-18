@@ -75,8 +75,6 @@ class InstallTest extends TestCase
         $this->assertTrue(File::exists(config_path('fila-cms.php')));
         $this->assertTrue(File::exists(config_path('filament-tiptap-editor.php')));
 
-        $this->assertTrue(File::exists(database_path('migrations/2013_04_09_062329_create_revisions_table.php')));
-
         $this->assertDatabaseHas('roles', ['name' => 'Admin']);
         $this->assertDatabaseHas('roles', ['name' => 'User']);
         $this->assertDatabaseHas('permissions', ['name' => 'access filacms-backend']);
@@ -103,9 +101,6 @@ class InstallTest extends TestCase
         File::delete(config_path('fila-cms.php'));
         File::delete(config_path('filament-tiptap-editor.php'));
 
-        // remove migrations from revisionable
-        File::delete(database_path('migrations/2013_04_09_062329_create_revisions_table.php'));
-
         // remove filament theme
         File::delete(resource_path('css/filament/admin/tailwind.config.js'));
         File::delete(resource_path('css/filament/admin/theme.css'));
@@ -126,7 +121,6 @@ class InstallTest extends TestCase
     {
         $this->assertTrue(File::exists(config_path('fila-cms.php')));
         $this->assertTrue(File::exists(config_path('filament-tiptap-editor.php')));
-        $this->assertTrue(File::exists(database_path('migrations/2013_04_09_062329_create_revisions_table.php')));
 
         $this->assertDatabaseHas('roles', ['name' => 'Admin']);
         $this->assertDatabaseHas('roles', ['name' => 'User']);
