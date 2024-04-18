@@ -19,9 +19,10 @@ return new class () extends Migration {
             $table->string('mime_type')->nullable();
             $table->string('size')->nullable();
             $table->string('disk')->nullable();
-            $table->string('url')->nullable();
             $table->string('extension')->nullable();
             $table->string('alt_text')->nullable();
+            $table->integer('width')->nullable();
+            $table->integer('height')->nullable();
 
             $table->json('meta')->nullable();
             $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');

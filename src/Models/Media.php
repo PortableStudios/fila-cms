@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Models;
 use CodeInc\HumanReadableFileSize\HumanReadableFileSize;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
 
 class Media extends Model
@@ -17,15 +18,43 @@ class Media extends Model
         'mime_type',
         'size',
         'disk',
-        'url',
+        'width',
+        'height',
         'extension',
         'alt_text'
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($media) {
+            if($media->is_folder) {
+                $media->children->each->delete();
+            } else {
+                Storage::disk($media->disk)->delete($media->filepath . '/' . $media->filename);
+            }
+        });
+    }
+
+    public function url(): Attribute
+    {
+        return new Attribute(function ($value) {
+            return route('media.show', ['media' => $this, 'mediaExtension' => $this->extension]);
+        });
+    }
+
+    public function smallThumbnail(): Attribute
+    {
+        return new Attribute(function ($value) {
+            return $this->is_folder ? static::folderImage() : route('media.thumbnail.small', $this);
+        });
+    }
+
     public function mediumThumbnail(): Attribute
     {
         return new Attribute(function ($value) {
-            return $this->url;
+            return $this->is_folder ? static::folderImage() : $this->url;
         });
     }
 
@@ -52,20 +81,28 @@ class Media extends Model
 
     public function move($newParent, $newName = null)
     {
-        if($newParent->id !== $this->parent_id) {
+        if($newParent?->id !== $this->parent_id) {
             if($newParent->disk !== $this->disk) {
                 throw new \Exception('Cannot move media to a different disk');
             }
         }
 
         $currentPath = $this->filepath . '/' . $this->filename;
-        $newPath = $newParent->filepath . '/' . ($newName ?: $this->filename);
+        $newPath = $newParent?->filepath . '/' . ($newName ?: $this->filename);
 
         Storage::disk($this->disk)->move($currentPath, $newPath);
         $this->update([
-            'parent_id' => $newParent->id,
-            'filepath' => $newParent->filepath,
+            'parent_id' => $newParent?->id,
+            'filepath' => $newParent?->filepath,
             'filename' => $newName ?: $this->filename,
         ]);
+    }
+
+    public static function folderImage()
+    {
+        $data = Blade::render('@svg("heroicon-o-folder")');
+
+        $encodedSVG = \rawurlencode(\str_replace(["\r", "\n"], ' ', $data));
+        return 'data:image/svg+xml,' . $encodedSVG;
     }
 }

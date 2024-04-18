@@ -98,12 +98,16 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         Blade::directive('filaCmsStyles', function (string $expression): string {
             try {
+                if(file_exists(realpath(resource_path('../../../../../resources/css/filacms.css')))) {
+                    return app('Illuminate\Foundation\Vite')('../../../../resources/css/filacms.css');
+                }
+
                 // Check if there's a local FilaCMS.css
                 if (file_exists(resource_path('css/filacms.css'))) {
                     return app('Illuminate\Foundation\Vite')('resources/css/filacms.css');
-                } else {
-                    return app('Illuminate\Foundation\Vite')('vendor/portable/filacms/resources/css/filacms.css');
                 }
+
+                return app('Illuminate\Foundation\Vite')('vendor/portable/filacms/resources/css/filacms.css');
             } catch (\Exception $e) {
                 return '';
             }

@@ -1,10 +1,5 @@
 <x-filament-panels::page>
 
-  <x-filament::breadcrumbs :breadcrumbs="$this->breadcrumbs()" />
-
-  {{ $this->table }}
-
-  <x-filament-actions::modals />
-
+  <livewire:media-library-table />
 
 </x-filament-panels::page>
