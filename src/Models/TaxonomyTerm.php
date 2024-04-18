@@ -5,10 +5,12 @@ namespace Portable\FilaCms\Models;
 use Illuminate\Database\Eloquent\Model;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TaxonomyTerm extends Model
 {
     use Versionable;
+    use SoftDeletes;
 
     protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
@@ -30,5 +32,10 @@ class TaxonomyTerm extends Model
     public function parent()
     {
         return $this->belongsTo(TaxonomyTerm::class, 'parent_id');
+    }
+
+    public function taxonomyables()
+    {
+        return $this->hasMany(Taxonomyable::class);
     }
 }

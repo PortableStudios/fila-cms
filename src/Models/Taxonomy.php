@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Taxonomy extends Model
 {
     use Versionable;
+    use SoftDeletes;
 
     protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
