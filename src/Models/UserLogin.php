@@ -13,8 +13,7 @@ class UserLogin extends Model
     public function user()
     {
         $userModelClass = config('auth.providers.users.model');
-        $userModel = new $userModelClass();
 
-        return $this->belongsTo($userModel::class, 'user_id');
+        return $this->belongsTo($userModelClass, 'user_id');
     }
 }

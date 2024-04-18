@@ -2,17 +2,19 @@
 
 namespace Portable\FilaCms\Providers;
 
+use FilamentTiptapEditor\TiptapEditor;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
+use Portable\FilaCms\Actions\Fortify\ResetUserPassword;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
-use FilamentTiptapEditor\TiptapEditor;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
-use Illuminate\Support\Facades\Event;
 use Portable\FilaCms\Listeners\AuthenticationListener;
-use Illuminate\Auth\Events\Login;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -47,6 +49,16 @@ class FilaCmsServiceProvider extends ServiceProvider
         Blade::componentNamespace('Portable\\FilaCms\\Views\\Components', 'fila-cms');
 
         Event::listen(Login::class, AuthenticationListener::class);
+
+        Fortify::resetPasswordView(function () {
+            return view('fila-cms::auth.reset-password');
+        });
+
+        Fortify::loginView(function () {
+            return redirect(route('filament.admin.auth.login'));
+        });
+
+        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
     }
 
     public function register()

@@ -4,16 +4,16 @@ namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Password as PasswordReset;
 use Portable\FilaCms\Filament\Resources\UserResource\Pages;
+use Portable\FilaCms\Filament\Resources\UserResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Rawilk\FilamentPasswordInput\Password;
-use Password as PasswordReset;
-use Portable\FilaCms\Filament\Resources\UserResource\RelationManagers;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Notifications\Notification;
 
 class UserResource extends AbstractConfigurableResource
 {
@@ -36,17 +36,22 @@ class UserResource extends AbstractConfigurableResource
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->prefixIcon('heroicon-m-envelope')
+                    ->unique(ignoreRecord:true)
                     ->required(),
                 Password::make('password')
                     ->regeneratePassword(color: 'warning')
                     ->copyable(color: 'info')
-                    ->newPasswordLength(16)
-                    ->required(),
+                    ->newPasswordLength(16),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
                     ->preload(),
             ]);
+    }
+
+    public static function getModel(): string
+    {
+        return  config('auth.providers.users.model');
     }
 
     public static function table(Table $table): Table
@@ -67,7 +72,7 @@ class UserResource extends AbstractConfigurableResource
                         PasswordReset::broker()->sendResetLink(['email' => $user->email]);
                         Notification::make()
                             ->title('Reset Link Sent')
-                            ->body('Password reset link has been sent to the **' . $user->email . '**')
+                            ->body('Password reset link has been sent to ' . $user->email)
                             ->success()
                             ->send();
                     })

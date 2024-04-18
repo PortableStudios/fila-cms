@@ -23,6 +23,9 @@ class WorkbenchServiceProvider extends EventServiceProvider
     public function register(): void
     {
         parent::register();
+        if(class_exists('Workbench\App\Models\User')) {
+            config(['auth.providers.users.model' => 'Workbench\App\Models\User']);
+        }
     }
 
     /**
