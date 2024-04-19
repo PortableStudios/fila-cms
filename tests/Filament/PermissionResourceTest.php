@@ -88,7 +88,6 @@ class PermissionResourceTest extends TestCase
         $data = TargetModel::create(['name' => $this->faker->words(3, true)]);
         $new = TargetModel::make(['name' => $this->faker->words(3, true)]);
 
-        $updatedTime = now();
         Livewire::test(TargetResource\Pages\EditPermission::class, [
             'record' => $data->getRoutekey(),
         ])
