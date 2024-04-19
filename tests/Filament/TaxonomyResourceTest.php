@@ -7,7 +7,10 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource as TargetResource;
+use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Taxonomy as TargetModel;
+use Portable\FilaCms\Models\Taxonomy;
+use Portable\FilaCms\Models\TaxonomyTerm;
 use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Role;
 
@@ -115,10 +118,61 @@ class TaxonomyResourceTest extends TestCase
         $this->assertEquals($data->name, $new->name);
     }
 
+    public function test_cant_delete_with_terms_in_use()
+    {
+        $taxonomy = Taxonomy::factory()->create();
+        $term = TaxonomyTerm::factory()->create([
+            'taxonomy_id' => $taxonomy->id
+        ]);
+        $page = Page::factory()->create();
+        $term->taxonomyables()->create([
+            'taxonomyable_id' => $page->id,
+            'taxonomyable_type' => Page::class
+        ]);
+
+        $livewireResponse = Livewire::test(TargetResource\Pages\EditTaxonomy::class, [
+            'record' => $taxonomy->getRouteKey()
+            ])
+            ->call('mountAction', 'delete')
+            ->call('callMountedAction');
+
+        $livewireResponse->assertSessionHas('filament.notifications', function ($notifications) {
+            return collect($notifications)->first()['title'] === 'Unable to delete Taxonomy';
+        });
+
+        $taxonomy = Taxonomy::find($taxonomy->id);
+        $this->assertNotNull($taxonomy);
+    }
+
+
+    public function test_can_delete_without_terms_in_use()
+    {
+        $taxonomy = Taxonomy::factory()->create();
+        $term = TaxonomyTerm::factory()->create([
+            'taxonomy_id' => $taxonomy->id
+        ]);
+
+        $livewireResponse = Livewire::test(TargetResource\Pages\EditTaxonomy::class, [
+            'record' => $taxonomy->getRouteKey()
+            ])
+            ->call('mountAction', 'delete')
+            ->call('callMountedAction');
+
+        $livewireResponse->assertSessionHas('filament.notifications', function ($notifications) {
+            return collect($notifications)->first()['title'] === 'Deleted';
+        });
+
+        $taxonomy = Taxonomy::find($taxonomy->id);
+        $this->assertNull($taxonomy);
+        $term = TaxonomyTerm::find($term->id);
+        $this->assertNull($term);
+    }
+
     public function generateModel(): TargetModel
     {
         return TargetModel::create([
             'name' => $this->faker->firstName,
+            'taxonomy_resources' => array_keys(FilaCms::getContentModels())
         ]);
     }
 }

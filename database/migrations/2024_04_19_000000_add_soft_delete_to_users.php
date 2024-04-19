@@ -22,7 +22,7 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        if (Schema::hasColumn('users', 'deleted_at') === false) {
+        if (Schema::hasColumn('users', 'deleted_at')) {
             Schema::table('users', function (Blueprint $table) {
                 $table->dropSoftDeletes();
             });
