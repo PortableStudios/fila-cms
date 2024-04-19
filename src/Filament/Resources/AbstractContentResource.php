@@ -287,6 +287,7 @@ class AbstractContentResource extends AbstractResource
             ->columns([
                 TextColumn::make('title')
                     ->description(fn (Page $page): string => $page->excerpt)
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
                     ->sortable(),
