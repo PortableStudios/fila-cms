@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements \Filament\Models\Contracts\FilamentUser
 {
+    use \Illuminate\Database\Eloquent\SoftDeletes;
     use \Portable\FilaCms\Contracts\HasLogin;
     use \Spatie\Permission\Traits\HasRoles;
     use HasApiTokens;
