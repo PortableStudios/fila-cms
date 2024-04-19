@@ -16,7 +16,6 @@ class CommandStartingListener
         }
 
         // Create the user model stub
-        Artisan::call('make:user-model');
         config(['auth.providers.users.model', 'Workbench\App\Models\User']);
 
         Artisan::call('package:create-sqlite-db');
