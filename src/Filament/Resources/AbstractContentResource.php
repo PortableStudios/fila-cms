@@ -9,6 +9,7 @@ use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
@@ -16,14 +17,16 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-
 use FilamentTiptapEditor\Enums\TiptapOutput;
+
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Portable\FilaCms\Filament\Forms\Components\StatusBadge;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
@@ -33,7 +36,6 @@ use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
 use RalphJSmit\Filament\Components\Forms as HandyComponents;
-use RalphJSmit\Filament\SEO\SEO;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -62,18 +64,21 @@ class AbstractContentResource extends AbstractResource
                         ->tabs([
                             Tabs\Tab::make('Content')
                                 ->schema([
-
                                     TextInput::make('title')
                                         ->columnSpanFull()
                                         ->required(),
                                     static::tiptapEditor()->output(\FilamentTiptapEditor\Enums\TiptapOutput::Json),
-                                    SEO::make(['description']),
                                 ]),
                             Tabs\Tab::make('Taxonomies')
                                 ->schema([
                                     ...static::getTaxonomyFields(),
                                 ]),
-                        ]),
+                            Tabs\Tab::make('SEO')
+                                ->schema([
+                                    ...static::getSeoFields(),
+                                ]),
+                        ])
+                        ->persistTabInQueryString()
                 ])
                 ->columnSpan(2),
             Group::make()
@@ -150,6 +155,119 @@ class AbstractContentResource extends AbstractResource
         });
 
         return $taxonomyFields;
+    }
+
+    public static function getSeoFields(): array
+    {
+        $seoFields = [
+            Section::make('Search Engine Optimisation')
+                ->compact()
+                ->description('SEO metadata is automatically generated from your content. Override these fields to customise how your content appears in search engine results.')
+                ->columns(12)
+                ->schema([
+                    Toggle::make('override_seo_title')
+                        ->columnSpan(3)
+                        ->inline(false)
+                        ->label('Override Title')
+                        ->live(),
+                    TextInput::make('title')
+                        ->columnSpan(9)
+                        ->label('Title')
+                        ->hintColor('info')
+                        ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Make sure your title is explicit and contains your most important keywords. Each page should have a unique title.')
+                        ->placeholder(fn (Get $get): string => $get('title') ?? '')
+                        ->disabled(fn (Get $get): bool => !$get('override_seo_title')),
+                    Toggle::make('override_seo_description')
+                        ->columnSpan(3)
+                        ->inline(false)
+                        ->label('Override Description')
+                        ->live(),
+                    Textarea::make('description')
+                        ->columnSpan(9)
+                        ->maxLength(155)
+                        ->label('Description')
+                        ->hintColor('info')
+                        ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'SEO descriptions allow you to influence how your web pages are described and displayed in search results. Ensure that all of your web pages have a unique meta description that is explicit and contains your most important keywords.')
+                        ->helperText(function (?string $state): HtmlString {
+                            $length = strlen($state);
+                            $lengthStatus = match (true) {
+                                $length > 160 => 'danger',
+                                $length === 160 => 'success',
+                                $length >= 140 => 'warning',
+                                $length >= 80 => 'success',
+                                default => 'gray',
+                            };
+                            return new HtmlString(
+                                Str::of("<span style=\"color: rgba(var(--{$lengthStatus}-500),var(--tw-text-opacity))\">" . strlen($state) . '</span>')
+                                    ->append(' / ')
+                                    ->append(160 . ' ')
+                                    ->append('characters')
+                            );
+                        })
+                        ->maxLength(160)
+                        ->reactive()
+                        ->placeholder(fn (Get $get): string => $get('summary') ?? '')
+                        ->disabled(fn (Get $get): bool => !$get('override_seo_description')),
+                ]),
+            Section::make('Robots')
+                ->compact()
+                ->description(str('If you do not want this page to be indexed by search engines, you can set the robots meta tag to **No Index**. **No Follow** will also prevent search engines from following links on this page.')->inlineMarkdown()->toHtmlString())
+                ->columns(12)
+                ->schema([
+                        Select::make('robots')
+                            ->columnSpanFull()
+                            ->label('')
+                            ->options([
+                                'index, follow' => 'Index, Follow',
+                                'noindex, follow' => 'No Index, Follow',
+                                'index, nofollow' => 'Index, No Follow',
+                                'noindex, nofollow' => 'No Index, No Follow',
+                            ])
+                            ->default('index, follow')
+                            ->selectablePlaceholder(false)
+                ]),
+        ];
+
+        $only = [
+            'title',
+            'description',
+            'robots',
+        ];
+
+        return [
+            Group::make()
+                ->schema($seoFields)
+                ->afterStateHydrated(function (Group $component, ?Model $record) use ($only): void {
+                    $data = $record?->seo?->only($only) ?: [];
+                    if($record) {
+                        $data['override_seo_title'] = $data['title'] !== $record?->title;
+                        $data['override_seo_description'] = $data['description'] !== $record?->excerpt;
+                    }
+                    $component->getChildComponentContainer()->fill(
+                        $data
+                    );
+                })
+                ->statePath('seo')
+                ->dehydrated(false)
+                ->saveRelationshipsUsing(function (Model $record, array $state) use ($only) {
+                    if($state['override_seo_title'] === false) {
+                        $state['title'] = $record->title;
+                    }
+
+                    if($state['override_seo_description'] === false) {
+                        $state['description'] = $record->excerpt;
+                    }
+
+                    $state = collect($state)->only($only)->map(fn ($value) => $value ?: null)->all();
+
+                    if ($record->seo && $record->seo->exists) {
+                        $record->seo->update($state);
+                    } else {
+                        $record->seo()->create($state);
+                    }
+                })
+        ];
+
     }
 
     public static function tiptapEditor($name = 'contents'): TiptapEditor
