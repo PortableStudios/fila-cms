@@ -17,8 +17,8 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use FilamentTiptapEditor\Enums\TiptapOutput;
 
@@ -170,7 +170,7 @@ class AbstractContentResource extends AbstractResource
                         ->inline(false)
                         ->label('Override Title')
                         ->live(),
-                    TextInput::make('seo_title')
+                    TextInput::make('title')
                         ->columnSpan(9)
                         ->label('Title')
                         ->hintColor('info')
@@ -182,7 +182,7 @@ class AbstractContentResource extends AbstractResource
                         ->inline(false)
                         ->label('Override Description')
                         ->live(),
-                    Textarea::make('seo_description')
+                    Textarea::make('description')
                         ->columnSpan(9)
                         ->maxLength(155)
                         ->label('Description')
@@ -209,57 +209,6 @@ class AbstractContentResource extends AbstractResource
                         ->placeholder(fn (Get $get): string => $get('summary') ?? '')
                         ->disabled(fn (Get $get): bool => !$get('override_seo_description')),
                 ]),
-            Section::make('Open Graph')
-                ->compact()
-                ->description('Open Graph metadata is automatically generated from your content. Override these fields to customise how your content appears when a user posts a link on Facebook.')
-                ->columns(12)
-                ->schema([
-                        Toggle::make('override_og_title')
-                            ->columnSpan(3)
-                            ->inline(false)
-                            ->label('Override Title')
-                            ->live(),
-                        TextInput::make('og_title')
-                            ->columnSpan(9)
-                            ->label('Title')
-                            ->hintColor('info')
-                            ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Specifies the title of your content when users share this page on social media. A succinct and accurate title will grab the attention of users and encourage them to click on your content.')
-                            ->placeholder(fn (Get $get): string => $get('title') ?? '')
-                            ->disabled(fn (Get $get): bool => !$get('override_og_title')),
-                        Toggle::make('override_og_description')
-                            ->columnSpan(3)
-                            ->inline(false)
-                            ->label('Override Description')
-                            ->live(),
-                        Textarea::make('og_description')
-                            ->columnSpan(9)
-                            ->maxLength(155)
-                            ->label('Description')
-                            ->hintColor('info')
-                            ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'This is shown below the Title when users share this page on social media. Provide a summary of the content and purpose of the page.')
-                            ->placeholder(fn (Get $get): string => $get('summary') ?? '')
-                            ->disabled(fn (Get $get): bool => !$get('override_og_description')),
-                        Select::make('og_type')
-                            ->columnStart(4)
-                            ->columnSpan(9)
-                            ->label('Type')
-                            ->hintColor('info')
-                            ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'The type should be the most specific type that describes your content. For example, if your content is a blog post, you should set the type to article.')
-                            ->options([
-                                'book' => 'Book',
-                                'business.business' => 'Business',
-                                'music.album' => 'Music Album',
-                                'music.song' => 'Music Song',
-                                'place' => 'Place',
-                                'product' => 'Product',
-                                'profile' => 'Profile',
-                                'restaurant.restaurant' => 'Restaurant',
-                                'video.other' => 'Video',
-                                'website' => 'Website',
-                            ])
-                            ->default('website')
-                            ->selectablePlaceholder(false),
-                ]),
             Section::make('Robots')
                 ->compact()
                 ->description(str('If you do not want this page to be indexed by search engines, you can set the robots meta tag to **No Index**. **No Follow** will also prevent search engines from following links on this page.')->inlineMarkdown()->toHtmlString())
@@ -280,11 +229,8 @@ class AbstractContentResource extends AbstractResource
         ];
 
         $only = [
-            'seo_title',
-            'seo_description',
-            'og_title',
-            'og_description',
-            'og_type',
+            'title',
+            'description',
             'robots',
         ];
 
@@ -292,13 +238,26 @@ class AbstractContentResource extends AbstractResource
             Group::make()
                 ->schema($seoFields)
                 ->afterStateHydrated(function (Group $component, ?Model $record) use ($only): void {
+                    $data = $record?->seo?->only($only) ?: [];
+                    if($record) {
+                        $data['override_seo_title'] = $data['title'] !== $record?->title;
+                        $data['override_seo_description'] = $data['description'] !== $record?->excerpt;
+                    }
                     $component->getChildComponentContainer()->fill(
-                        $record?->seo?->only($only) ?: []
+                        $data
                     );
                 })
                 ->statePath('seo')
                 ->dehydrated(false)
-                ->saveRelationshipsUsing(function (Model $record, array $state) use ($only): void {
+                ->saveRelationshipsUsing(function (Model $record, array $state) use ($only) {
+                    if($state['override_seo_title'] === false) {
+                        $state['title'] = $record->title;
+                    }
+
+                    if($state['override_seo_description'] === false) {
+                        $state['description'] = $record->excerpt;
+                    }
+
                     $state = collect($state)->only($only)->map(fn ($value) => $value ?: null)->all();
 
                     if ($record->seo && $record->seo->exists) {
