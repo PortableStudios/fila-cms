@@ -15,6 +15,7 @@ use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
 use Portable\FilaCms\Listeners\AuthenticationListener;
+use Portable\FilaCms\Services\MediaLibrary;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                 \Portable\FilaCms\Commands\MakeContentPermissionSeeder::class,
             ]);
         }
+        $this->loadRoutesFrom(__DIR__ . '/../../routes/filacms-routes.php');
 
         if (config('fila-cms.publish_content_routes')) {
             $this->loadRoutesFrom(__DIR__ . '/../../routes/frontend-routes.php');
@@ -46,6 +48,7 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         Livewire::component('portable.fila-cms.livewire.content-resource-list', \Portable\FilaCms\Livewire\ContentResourceList::class);
         Livewire::component('portable.fila-cms.livewire.content-resource-show', \Portable\FilaCms\Livewire\ContentResourceShow::class);
+        Livewire::component('media-library-table', \Portable\FilaCms\Livewire\MediaLibraryTable::class);
         Blade::componentNamespace('Portable\\FilaCms\\Views\\Components', 'fila-cms');
         config(['versionable.user_model' => config('auth.providers.users.model')]);
 
@@ -65,11 +68,18 @@ class FilaCmsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('FilaCms', FilaCms::class);
+        $this->app->bind('MediaLibrary', \Portable\FilaCms\Services\MediaLibrary::class);
+
         $loader = AliasLoader::getInstance();
         $loader->alias('FilaCms', FacadesFilaCms::class);
+        $loader->alias('MediaLibrary', \Portable\FilaCms\Facades\MediaLibrary::class);
 
         $this->app->bind('fila-cms', function () {
             return new FilaCms();
+        });
+
+        $this->app->bind('fila-cms-media', function () {
+            return new MediaLibrary();
         });
 
         $this->publishes([
@@ -88,12 +98,16 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         Blade::directive('filaCmsStyles', function (string $expression): string {
             try {
+                if(file_exists(realpath(resource_path('../../../../../resources/css/filacms.css')))) {
+                    return app('Illuminate\Foundation\Vite')('../../../../resources/css/filacms.css');
+                }
+
                 // Check if there's a local FilaCMS.css
                 if (file_exists(resource_path('css/filacms.css'))) {
                     return app('Illuminate\Foundation\Vite')('resources/css/filacms.css');
-                } else {
-                    return app('Illuminate\Foundation\Vite')('vendor/portable/filacms/resources/css/filacms.css');
                 }
+
+                return app('Illuminate\Foundation\Vite')('vendor/portable/filacms/resources/css/filacms.css');
             } catch (\Exception $e) {
                 return '';
             }
@@ -101,6 +115,7 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         TiptapEditor::configureUsing(function (TiptapEditor $component) {
             $component
+                ->mediaAction(config('fila-cms.editor.media_action'))
                 ->blocks([
                     RelatedResourceBlock::class,
                 ]);
