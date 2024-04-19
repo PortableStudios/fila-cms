@@ -21,4 +21,41 @@ return [
             // Any fields here you _don't_ want FilaCms to provide editing for
         ],
     ],
+    'editor' => [
+        'media_action' => \Portable\FilaCms\Filament\Actions\MediaAction::class,
+    ],
+    'media_library' => [
+        'allow_root_uploads' => false,
+        'thumbnails' => [
+            'small' => [
+                'width' => 100,
+                'height' => 100,
+                'fit' => 'crop',
+            ],
+            'medium' => [
+                'width' => 250,
+                'height' => 250,
+                'fit' => 'crop',
+            ],
+            'large' => [
+                'width' => 500,
+                'height' => 500,
+                'fit' => 'crop',
+            ],
+        ],
+        'root_folders' => [
+            [
+                'name' => 'Images',
+                'disk' => 'local',
+            ],
+            [
+                'name' => 'Documents',
+                'disk' => 'local',
+            ],
+            [
+                'name' => 'Videos',
+                'disk' => 'local',
+            ]
+        ]
+    ]
 ];
