@@ -174,8 +174,26 @@ class AbstractContentResource extends AbstractResource
                         ->columnSpan(9)
                         ->label('Title')
                         ->hintColor('info')
+                        ->live()
+                        ->maxLength(60)
                         ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Make sure your title is explicit and contains your most important keywords. Each page should have a unique title.')
                         ->placeholder(fn (Get $get): string => $get('title') ?? '')
+                        ->helperText(function (?string $state): HtmlString {
+                            $length = strlen($state);
+                            $lengthStatus = match (true) {
+                                $length > 60 => 'danger',
+                                $length === 60 => 'success',
+                                $length >= 40 => 'warning',
+                                $length >= 30 => 'success',
+                                default => 'gray',
+                            };
+                            return new HtmlString(
+                                Str::of("<span style=\"color: rgba(var(--{$lengthStatus}-500),var(--tw-text-opacity))\">" . strlen($state) . '</span>')
+                                    ->append(' / ')
+                                    ->append(160 . ' ')
+                                    ->append('characters')
+                            );
+                        })
                         ->disabled(fn (Get $get): bool => !$get('override_seo_title')),
                     Toggle::make('override_seo_description')
                         ->columnSpan(3)
