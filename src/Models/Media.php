@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Media extends Model
 {
@@ -34,6 +35,13 @@ class Media extends Model
             } else {
                 Storage::disk($media->disk)->delete($media->filepath . '/' . $media->filename);
             }
+        });
+    }
+
+    public function isImage(): Attribute
+    {
+        return new Attribute(function () {
+            return Str::startsWith($this->mime_type, 'image');
         });
     }
 

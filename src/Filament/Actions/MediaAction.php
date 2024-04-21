@@ -2,6 +2,7 @@
 
 namespace Portable\FilaCms\Filament\Actions;
 
+use Filament\Actions\StaticAction;
 use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Get;
@@ -13,6 +14,8 @@ use Portable\FilaCms\Models\Media;
 
 class MediaAction extends Action
 {
+    protected $currentFile;
+
     public static function getDefaultName(): ?string
     {
         return 'filament_tiptap_media';
@@ -49,7 +52,16 @@ class MediaAction extends Action
                 return __('filament-tiptap-editor::media-modal.heading.'.$context);
             })->form(function (TiptapEditor $component) {
                 return $this->getFormFields($component);
-            })->action(function (Action $action, TiptapEditor $component, $data, Get $get) {
+            })
+            ->modalSubmitActionLabel(function (Get $get) {
+                return ($this->currentFile && $this->currentFile->is_image) ? 'Insert Image' : 'Select an image';
+            })
+            ->modalSubmitAction(function (StaticAction $action) {
+                return $action->disabled(function () {
+                    return !($this->currentFile && $this->currentFile->is_image);
+                });
+            })
+            ->action(function (Action $action, TiptapEditor $component, $data, Get $get) {
                 $data['mediaModel'] = Media::find($data['media']);
                 if(!$data['mediaModel']) {
                     $action->cancel();
@@ -70,7 +82,7 @@ class MediaAction extends Action
                     type: 'media',
                     statePath: $component->getStatePath(),
                     media: [
-                        'src' => $source . '',
+                        'src' => $source,
                         'alt' => $data['mediaModel']->alt_text ?? null,
                         'title' => $data['mediaModel']->alt_text,
                         'width' => $data['mediaModel']->width,
@@ -88,8 +100,10 @@ class MediaAction extends Action
                 if($state) {
                     $media = Media::find($state);
                     $set('mediaModel', $media);
+                    $this->currentFile = $media;
                 } else {
                     $set('mediaModel', null);
+                    $this->currentFile = null;
                 }
             })
         ];
