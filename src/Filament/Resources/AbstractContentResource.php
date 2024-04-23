@@ -18,9 +18,11 @@ use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
+use Filament\Support\Enums\MaxWidth;
 use FilamentTiptapEditor\Enums\TiptapOutput;
+
 
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
@@ -36,6 +38,7 @@ use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
 use RalphJSmit\Filament\Components\Forms as HandyComponents;
+use Carbon\Carbon;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -308,7 +311,7 @@ class AbstractContentResource extends AbstractResource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
-                    ->sortable(),
+                    ->sortable(['first_name', 'last_name']),
                 TextColumn::make('status')->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -322,18 +325,54 @@ class AbstractContentResource extends AbstractResource
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
-                TernaryFilter::make('is_draft')
-                    ->label('Draft')
-                    ->attribute('is_draft')
-                    ->nullable()
+                SelectFilter::make('status')
+                    ->label('Status')
                     ->placeholder('All Records')
-                    ->falseLabel('Non-Drafts Only')
-                    ->trueLabel('Drafts Only')
-                    ->queries(
-                        true: fn (Builder $query) => $query->where('is_draft', true),
-                        false: fn (Builder $query) => $query->where('is_draft', false),
-                    ),
+                    ->options([
+                        'draft'     => 'Draft',
+                        'pending'   => 'Pending',
+                        'published' => 'Published',
+                        'expired'   => 'Expired',
+                        'deleted'   => 'Deleted',
+                    ])
+                    ->query(function (Builder $query, $data) {
+                        $query->withoutGlobalScopes();
+
+                        switch ($data['value']) {
+                            case 'draft':
+                                $query->where('is_draft', true)->whereNull('deleted_at');
+                                break;
+                            case 'pending':
+                                $query->where('is_draft', false)
+                                    ->where('publish_at', '>', now())
+                                    ->where(function ($query) {
+                                        $query->whereNull('expire_at')
+                                            ->orWhere('expire_at', '>', now());
+                                    })
+                                    ->whereNull('deleted_at');
+                                break;
+                            case 'published':
+                                $query->where('is_draft', false)
+                                    ->where('publish_at', '<', now())
+                                    ->where(function ($query) {
+                                        $query->whereNull('expire_at')
+                                            ->orWhere('expire_at', '>', now());
+                                    })
+                                    ->whereNull('deleted_at');
+                                break;
+                            case 'expired':
+                                $query->where('is_draft', false)
+                                    ->where('publish_at', '<', now())
+                                    ->where('expire_at', '<', now())
+                                    ->whereNull('deleted_at');
+                                break;
+                            case 'deleted':
+                                $query->whereNotNull('deleted_at');
+                                break;
+                        }
+
+                        // return $builder;
+                    }),
                 SelectFilter::make('author')
                     ->multiple()
                     ->options(Author::all()->pluck('display_name', 'id'))
@@ -341,7 +380,110 @@ class AbstractContentResource extends AbstractResource
                 SelectFilter::make('terms')
                     ->multiple()
                     ->relationship('terms', 'name'),
+                Tables\Filters\Filter::make('publish_at')
+                    ->form([
+                        Fieldset::make('Published')
+                            ->schema([
+                                DatePicker::make('publish_from')->label('From'),
+                                DatePicker::make('publish_to')->label('To'),
+                            ])
+                            ->columns(2)
+                    ])
+                    ->columnSpan(2)
+                    ->indicateUsing(function (array $data): ?string {
+                        $texts = [];
+                        if ($data['publish_from']) {
+                            $texts[] = 'from: ' . Carbon::parse($data['publish_from'])->format('Y-m-d');
+                        }
+                        if ($data['publish_to']) {
+                            $texts[] = 'to: ' . Carbon::parse($data['publish_to'])->format('Y-m-d');
+                        }
+
+                        if (count($texts) === 0) {
+                            return null;
+                        }
+                        array_unshift($texts, 'Published');
+                        return implode(' ', $texts);
+                    })
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when($data['publish_from'], function ($query) use ($data) {
+                            $query->where('publish_at', '>=', $data['publish_from']);
+                        })->when($data['publish_to'], function ($query) use ($data) {
+                            $query->where('publish_at', '<=', $data['publish_to']);
+                        });
+                    }),
+                Tables\Filters\Filter::make('expire_at')
+                    ->form([
+                        Fieldset::make('Expiry')
+                            ->schema([
+                                DatePicker::make('expire_from')->label('From'),
+                                DatePicker::make('expire_to')->label('To'),
+                            ])
+                            ->columns(2)
+                    ])
+                    ->columnSpan(2)
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when($data['expire_from'], function ($query) use ($data) {
+                            $query->where('expire_at', '>=', $data['expire_from']);
+                        })->when($data['expire_to'], function ($query) use ($data) {
+                            $query->where('expire_at', '<=', $data['expire_to']);
+                        });
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        $texts = [];
+                        if ($data['expire_from']) {
+                            $texts[] = 'from: ' . Carbon::parse($data['expire_from'])->format('Y-m-d');
+                        }
+                        if ($data['expire_to']) {
+                            $texts[] = 'to: ' . Carbon::parse($data['expire_to'])->format('Y-m-d');
+                        }
+
+                        if (count($texts) === 0) {
+                            return null;
+                        }
+                        array_unshift($texts, 'Expires');
+                        return implode(' ', $texts);
+                    }),
+                Tables\Filters\Filter::make('updated_at')
+                    ->form([
+                        Fieldset::make('Modified')
+                            ->schema([
+                                DatePicker::make('updated_from')->label('From'),
+                                DatePicker::make('updated_to')->label('To'),
+                            ])
+                            ->columns(2)
+                    ])
+                    ->columnSpan(2)
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when($data['updated_from'], function ($query) use ($data) {
+                            $query->where('updated_at', '>=', $data['updated_from']);
+                        })->when($data['updated_to'], function ($query) use ($data) {
+                            $query->where('updated_at', '<=', $data['updated_to']);
+                        });
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        $texts = [];
+                        if ($data['updated_from']) {
+                            $texts[] = 'from: ' . Carbon::parse($data['updated_from'])->format('Y-m-d');
+                        }
+                        if ($data['updated_to']) {
+                            $texts[] = 'to: ' . Carbon::parse($data['updated_to'])->format('Y-m-d');
+                        }
+
+                        if (count($texts) === 0) {
+                            return null;
+                        }
+                        array_unshift($texts, 'Modified');
+                        return implode(' ', $texts);
+                    }),
             ])
+            ->filtersFormColumns(2)
+            ->filtersFormWidth(MaxWidth::ExtraLarge)
+            ->filtersTriggerAction(
+                fn (Action $action) => $action
+                        ->button()
+                        ->label('Filter'),
+            )
             ->actions([
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
