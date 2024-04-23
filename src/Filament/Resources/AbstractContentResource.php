@@ -369,9 +369,10 @@ class AbstractContentResource extends AbstractResource
                             case 'deleted':
                                 $query->whereNotNull('deleted_at');
                                 break;
+                            default:
+                                $query->whereNull('deleted_at');
+                                break;
                         }
-
-                        // return $builder;
                     }),
                 SelectFilter::make('author')
                     ->multiple()
