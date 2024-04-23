@@ -40,6 +40,8 @@ class RoleAndPermissionSeeder extends Seeder
             ['name' => 'manage taxonomies'],
             ['name' => 'view pages'],
             ['name' => 'manage pages'],
+            ['name' => 'view navigations'],
+            ['name' => 'manage navigations'],
         ];
 
         foreach ($permissions as $permission) {
