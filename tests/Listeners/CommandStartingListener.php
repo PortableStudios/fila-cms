@@ -16,7 +16,6 @@ class CommandStartingListener
         }
 
         // Create the user model stub
-        Artisan::call('make:user-model');
         config(['auth.providers.users.model', 'Workbench\App\Models\User']);
 
         Artisan::call('package:create-sqlite-db');
@@ -34,7 +33,12 @@ class CommandStartingListener
         File::delete(resource_path('css/filament/admin/tailwind.config.js'));
         File::delete(resource_path('css/filament/admin/theme.css'));
 
-        Artisan::call('fila-cms:install', ['--publish-config' => true,'--run-migrations' => true,'--add-user-traits' => false]);
+        File::copy(getcwd() . '/vite.config.js', resource_path('../vite.config.js'));
+        File::ensureDirectoryExists(resource_path('css'));
+        File::copy(getcwd() . '/resources/css/filacms.css', resource_path('css/filacms.css'));
+        File::copy(getcwd() . '/package.json', resource_path('../package.json'));
+
+        Artisan::call('fila-cms:install', ['--publish-config' => true,'--run-migrations' => true,'--add-user-traits' => true]);
 
         // Ensure there's an admin user
         $userModel = config('auth.providers.users.model');

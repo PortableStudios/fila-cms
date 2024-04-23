@@ -3,12 +3,19 @@
 namespace Portable\FilaCms\Versionable;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Overtrue\LaravelVersionable\Diff;
 use Overtrue\LaravelVersionable\Version;
 
 class FilaCmsVersion extends \Overtrue\LaravelVersionable\Version
 {
     protected $table = 'versions';
+
+    public function versionable(): MorphTo
+    {
+        return $this->morphTo('versionable')->withoutGlobalScopes();
+    }
+
 
     public function diff(?Version $toVersion = null, array $differOptions = [], array $renderOptions = []): Diff
     {

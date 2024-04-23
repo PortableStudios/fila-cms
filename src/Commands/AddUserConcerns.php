@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use ReflectionClass;
 use Spatie\Permission\Traits\HasRoles;
 use Portable\FilaCms\Contracts\HasLogin;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AddUserConcerns extends Command
 {
@@ -26,6 +27,7 @@ class AddUserConcerns extends Command
         $traits = [
             HasRoles::class,
             HasLogin::class,
+            SoftDeletes::class,
         ];
 
         $interfaces = [

@@ -81,6 +81,7 @@ class PageResourceTest extends TestCase
     public function test_can_save_seo(): void
     {
         $data = $this->generateModel(true);
+        $data['seo.override_seo_description'] = true;
         $data['seo.description'] = 'Test Description';
         $data['is_draft'] = 0;
         $data['publish_at'] = now()->subday();
@@ -95,7 +96,26 @@ class PageResourceTest extends TestCase
         $model = TargetModel::orderBy('id', 'desc')->first();
 
         $this->assertTrue($model->Seo instanceof SEO);
+        $this->assertEquals($model->Seo->description, 'Test Description');
+    }
 
+    public function test_can_generate_seo(): void
+    {
+        $data = $this->generateModel(true);
+        $data['is_draft'] = 0;
+        $data['publish_at'] = now()->subday();
+        $data['expire_at'] = now()->addDay();
+
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->fillForm($data)
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        // check last record
+        $model = TargetModel::orderBy('id', 'desc')->first();
+
+        $this->assertTrue($model->Seo instanceof SEO);
+        $this->assertEquals($model->Seo->title, $model->title);
     }
 
     public function test_can_render_edit_page(): void
@@ -203,6 +223,24 @@ class PageResourceTest extends TestCase
         $page = TargetModel::where('title', 'Test Slug Title')->first();
 
         $this->assertEquals($page->slug, 'test-slug-title');
+    }
+
+    public function test_automatic_slug_doesnt_change_on_update(): void
+    {
+        $data = TargetModel::factory()->create();
+        $oldSlug = $data->slug;
+
+        Livewire::test(TargetResource\Pages\EditPage::class, [
+            'record' => $data->getRoutekey(),
+        ])
+            ->fillForm([
+                'contents' => $this->faker->words(100, true),
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $data->refresh();
+        $this->assertEquals($data->slug, $oldSlug);
     }
 
     public function test_custom_slug(): void

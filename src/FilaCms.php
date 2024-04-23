@@ -6,10 +6,14 @@ use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Drivers\Gd\Driver as GDDriver;
+use Intervention\Image\ImageManager;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource;
 use Portable\FilaCms\Livewire\ContentResourceList;
 use Portable\FilaCms\Livewire\ContentResourceShow;
+use Portable\FilaCms\Models\Media;
 use ReflectionClass;
 
 class FilaCms
@@ -109,5 +113,22 @@ class FilaCms
                 }
             );
         }
+    }
+
+    public function thumbnail(Media $media, $size = 'small')
+    {
+        $thumbnailSizes = config('fila-cms.media_library.thumbnails');
+        if(!isset($thumbnailSizes[$size])) {
+            throw new \Exception("Invalid thumbnail size");
+        }
+        $disk = Storage::disk($media->disk);
+
+        $manager = new ImageManager(GDDriver::class);
+
+        $imageBinary = $disk->get($media->filepath . '/' . $media->filename);
+
+        $image = $manager->read($imageBinary);
+
+        return $image->scaleDown($thumbnailSizes[$size]['width'], $thumbnailSizes[$size]['height'])->encodeByMediaType('image/png', 75);
     }
 }

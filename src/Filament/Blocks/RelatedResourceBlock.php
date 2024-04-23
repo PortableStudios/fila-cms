@@ -3,16 +3,12 @@
 namespace Portable\FilaCms\Filament\Blocks;
 
 use FilaCms;
-
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Repeater;
-
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-
 use FilamentTiptapEditor\TiptapBlock;
 use Str;
 

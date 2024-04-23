@@ -4,6 +4,7 @@ namespace Portable\FilaCms\Commands;
 
 use Filament\Support\Commands\InstallCommand as CommandsInstallCommand;
 use Filament\Support\Commands\UpgradeCommand;
+use Illuminate\Support\Facades\File;
 
 class InstallCommand extends CommandsInstallCommand
 {
@@ -48,6 +49,7 @@ class InstallCommand extends CommandsInstallCommand
         }
 
         $this->call('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
+        $this->call('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RootMediaFoldersSeeder']);
 
         $this->info('Adding permissions');
 
@@ -55,7 +57,10 @@ class InstallCommand extends CommandsInstallCommand
 
         // @codeCoverageIgnoreStart
         if(!app()->runningUnitTests()) {
-            $this->callSilent('make:filament-theme');
+            // Only call this if there isn't already a filament theme
+            if(!File::exists(resource_path('css/filament/admin/theme.css'))) {
+                $this->callSilent('make:filament-theme');
+            }
         }
         // @codeCoverageIgnoreEnd
 
