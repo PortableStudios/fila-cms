@@ -136,6 +136,7 @@ class NavigationResourceTest extends TestCase
                 'url' => fake()->url(),
             ]
         ];
+
         return TargetModel::create([
             'name'      => fake()->words(mt_rand(2, 10), true),
             'type' => $type,
