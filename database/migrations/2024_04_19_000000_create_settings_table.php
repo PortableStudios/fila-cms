@@ -13,7 +13,7 @@ return new class () extends Migration {
             $table->id();
             $table->string('key')->unique();
             $table->text('value')->nullable();
-            $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }
