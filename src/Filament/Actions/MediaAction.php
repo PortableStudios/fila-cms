@@ -28,7 +28,6 @@ class MediaAction extends Action
         $this->arguments([
             'src' => '',
             'alt' => '',
-            'title' => '',
             'width' => '',
             'height' => '',
         ])
@@ -42,7 +41,6 @@ class MediaAction extends Action
                 $form->fill([
                     'src' => $source,
                     'alt' => $arguments['alt'] ?? '',
-                    'title' => $arguments['title'] ?? '',
                     'width' => $arguments['width'] ?? '',
                     'height' => $arguments['height'] ?? '',
                 ]);
@@ -84,7 +82,6 @@ class MediaAction extends Action
                     media: [
                         'src' => $source,
                         'alt' => $data['mediaModel']->alt_text ?? null,
-                        'title' => $data['mediaModel']->alt_text,
                         'width' => $data['mediaModel']->width,
                         'height' => $data['mediaModel']->height,
                     ],

@@ -329,6 +329,7 @@ Split::make([
                 ->label('Alt Text')
                 ->searchable()
                 ->sortable(),
+             // Using the ID because we need a field with guaranteed content for formatStateUsing to be called
             TextColumn::make('id')
                 ->label('Size')
                 ->badge()
