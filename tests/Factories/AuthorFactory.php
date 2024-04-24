@@ -3,14 +3,11 @@
 namespace Portable\FilaCms\Tests\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Portable\FilaCms\Models\Taxonomy;
+use Portable\FilaCms\Models\Author;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
-class TaxonomyFactory extends Factory
+class AuthorFactory extends Factory
 {
-    protected $model = Taxonomy::class;
+    protected $model = Author::class;
 
     /**
      * Define the model's default state.
@@ -20,7 +17,9 @@ class TaxonomyFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->words(2, true),
+            'first_name'        => fake()->firstName,
+            'last_name'         => fake()->lastName,
+            'is_individual'     => 1,
         ];
     }
 }

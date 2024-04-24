@@ -6,6 +6,7 @@ use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Portable\FilaCms\Tests\Factories\PageFactory;
 
 class CommandStartingListener
 {
@@ -51,5 +52,7 @@ class CommandStartingListener
         $admin->name = 'Admin';
         $admin->save();
         $admin->assignRole('Admin');
+
+        PageFactory::new()->count(10)->create();
     }
 }

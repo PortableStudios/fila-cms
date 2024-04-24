@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Tests\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Portable\FilaCms\Models\Page;
+use Portable\FilaCms\Models\TaxonomyTerm;
 
 class PageFactory extends Factory
 {
@@ -20,6 +21,11 @@ class PageFactory extends Factory
         $draft = fake()->numberBetween(0, 1);
         $title = fake()->words(15, true);
 
+        TaxonomyFactory::new()
+            ->has(TaxonomyTermFactory::new()->count(mt_rand(3, 5)), 'terms')
+            ->count(1)
+            ->create();
+
         return [
             'title'     => $title,
             'slug'      => Str::slug($title),
@@ -27,7 +33,15 @@ class PageFactory extends Factory
             'publish_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
             'expire_at'    => $draft === 1 ? $this->faker->dateTimeBetween('+1 week', '+2 weeks') : null,
             'contents'  => $this->createContent(),
+            'author_id'    => AuthorFactory::new()->create()->id,
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Page $page) {
+            $page->terms()->sync(TaxonomyTerm::all()->random(mt_rand(2, 3))->pluck('id'));
+        });
     }
 
     protected function createContent()
