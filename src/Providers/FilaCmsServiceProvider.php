@@ -2,25 +2,34 @@
 
 namespace Portable\FilaCms\Providers;
 
+use Filament\Forms\ComponentContainer;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\TextInput;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
 use Portable\FilaCms\Actions\Fortify\ResetUserPassword;
+use Portable\FilaCms\Data\DummyForm;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
+use Portable\FilaCms\Filament\Forms\Components\AddressInput;
+use Portable\FilaCms\Filament\Forms\Components\ImagePicker;
 use Portable\FilaCms\Listeners\AuthenticationListener;
+use Portable\FilaCms\Models\Setting;
 use Portable\FilaCms\Services\MediaLibrary;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->loadSettings();
         if ($this->app->runningInConsole()) {
             $this->commands([
                 \Portable\FilaCms\Commands\InstallCommand::class,
@@ -119,6 +128,81 @@ class FilaCmsServiceProvider extends ServiceProvider
                 ->blocks([
                     RelatedResourceBlock::class,
                 ]);
+        });
+
+        $this->registerSettingsFields();
+
+    }
+
+    protected function loadSettings()
+    {
+        if(!Schema::hasTable('settings')) {
+            return;
+        }
+
+        $form = new DummyForm();
+        $container = new ComponentContainer($form);
+
+        $fields = FacadesFilaCms::getSettingsFields();
+        $fields = collect($fields)->flatten();
+        $container->schema($fields->toArray());
+
+        $values = [];
+        foreach($fields as $field) {
+            if(!method_exists($field, 'getName')) {
+                continue;
+            }
+            $values[$field->getName()] = Setting::get($field->getName());
+        }
+
+        $container->fill($values);
+
+        $data = (array)$form;
+
+        foreach(array_keys($values) as $fieldName) {
+            config(['settings.'.$fieldName => data_get($data, $fieldName)]);
+        }
+
+
+        return true;
+
+    }
+
+    protected function registerSettingsFields()
+    {
+        FacadesFilaCms::registerSetting('SEO & Analytics', 'Organisation Details', 0, function () {
+            return [
+                TextInput::make('seo.organisation.name')->label('Organisation Name'),
+                ImagePicker::make('seo.organisation.logo')->label('Organisation Logo'),
+                TextInput::make('seo.organisation.email')->label('Organisation Email'),
+                TextInput::make('seo.organisation.phone')->label('Organisation Phone'),
+
+
+                CheckboxList::make('seo.analytics')
+                ->label('Analytics')
+                ->options([
+                    'google' => 'Google Analytics',
+                    'facebook' => 'Facebook Pixel',
+                    'hotjar' => 'Hotjar',
+                    'gtm' => 'Google Tag Manager',
+            ])
+            ->mutateDehydratedStateUsing(function ($state) {
+                return is_array($state) ? implode(",", $state) : $state;
+            })->afterStateHydrated(function (CheckboxList $component, $state) {
+                $component->state(explode(",", $state));
+            }),
+                AddressInput::make('seo.organisation.address')->label('Organisation Address')->required(true)
+                ->mutateDehydratedStateUsing(function ($state) {
+                    return json_encode($state);
+                })->afterStateHydrated(function (AddressInput $component, $state) {
+                    $component->state(json_decode($state, true));
+                })
+                ,
+                TextInput::make('seo.organisation.facebook')->label('Facebook Url'),
+                TextInput::make('seo.organisation.linkedIn')->label('LinkedIn Url'),
+                TextInput::make('seo.organisation.instagram')->label('Instagram Url'),
+                TextInput::make('seo.organisation.twitter')->label('Twitter Url'),
+            ];
         });
     }
 }

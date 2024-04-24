@@ -34,6 +34,12 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
 
     public $current_parent;
     public $current_file;
+    public $jsKey;
+
+    public function mount($jsKey = null)
+    {
+        $this->jsKey = $jsKey ?: $this->id();
+    }
 
     public function breadcrumbs()
     {
@@ -58,13 +64,13 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
     {
         $this->current_parent = Str::replace('id-', '', $id);
         $this->current_file = null;
-        $this->dispatch('media-file-selected', ['id' => null]);
+        $this->dispatch('media-file-selected', ['id' => null, 'jsKey' => $this->jsKey ]);
     }
 
     public function setFile($id)
     {
         $this->current_file = $id;
-        $this->dispatch('media-file-selected', ['id' => $id]);
+        $this->dispatch('media-file-selected', ['id' => $id, 'jsKey' => $this->jsKey ]);
     }
 
     public function table(Table $table): Table
