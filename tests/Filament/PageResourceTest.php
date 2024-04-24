@@ -317,7 +317,7 @@ class PageResourceTest extends TestCase
             ])
             ->call('create')
             ->assertHasNoFormErrors();
-            
+
         $sampleUrl = Str::slug(Str::random(10));
         // check last record
         $model = TargetModel::orderBy('id', 'desc')->first();

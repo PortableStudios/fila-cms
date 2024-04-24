@@ -298,9 +298,32 @@ class AbstractContentResource extends AbstractResource
                                 ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'If the input provided does not conform to URL standards, the system will automatically sanitize it by removing any special characters that are not compatible with URLs.')
                                 ->prefix($prefixUrl)
                                 ->suffixIcon('heroicon-m-globe-alt'),
+                            Select::make('redirect_status')
+                                ->options([
+                                    '301' => '301 - Permanent',
+                                    '302' => '302 - Temporary'
+                                ])
+                                ->default(301)
+                                ->required(),
+                            Toggle::make('enable')
+                                ->live(onBlur: true)
+                                ->offIcon('heroicon-m-eye-slash')
+                                ->onIcon('heroicon-m-eye'),
+                            TextInput::make('hits')
+                                ->label('Total hits')
+                                ->readOnly()
+
                         ])
-                        ->itemLabel(function(array $state) use ($prefixUrl) {
-                            return $prefixUrl . Str::slug($state['url'] ?? null);
+                        ->itemLabel(function (array $state) use ($prefixUrl) {
+
+                            $label = '';
+                            if($state['enable'] === false) {
+                                $label .= '[Disabled] - ';
+                            }
+
+                            $label .= $prefixUrl . Str::slug($state['url'] ?? null);
+
+                            return $label;
                         })
                         ->mutateRelationshipDataBeforeFillUsing(function (array $data): array {
                             $data['url'] = Str::slug($data['url']);
@@ -322,7 +345,7 @@ class AbstractContentResource extends AbstractResource
             Group::make()
                 ->schema($vanityURLFields)
                 ->statePath('shortUrls')
-                ->dehydrated(false)                
+                ->dehydrated(false)
         ];
 
     }

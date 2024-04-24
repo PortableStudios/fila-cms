@@ -130,15 +130,14 @@ class FilaCms
             $target = new $modelClass();
             $page = $target->find($shortUrl->shortable_id);
 
-            if(empty($page)) {
+            if($shortUrl->enable === false || empty($page)) {
                 abort(404);
             }
 
-            // SUGGESTION: add hit counter?
-            // $shortUrl->increment('hits');
+            $shortUrl->increment('hits');
 
             // TODO: make it more dynamic instead of direct using "pages"
-            return redirect()->route('pages.show', $page->slug ?? $page->id);
+            return redirect(route('pages.show', $page->slug ?? $page->id), $shortUrl->redirect_status ?? 302);
         });
     }
 

@@ -11,7 +11,17 @@ class ShortUrl extends Model
 
     protected $table = 'short_urls';
 
-    protected $fillable = ['url', 'shortable_id', 'shortable_type'];
+    protected $fillable = ['url', 'shortable_id', 'shortable_type', 'redirect_status', 'enable', 'hits'];
+
+    protected $casts = [
+        'enable' => 'boolean',
+    ];
+
+    protected $attributes = [
+        'enable' => true,
+        'redirect_status' => 301,
+        'hits' => 0,
+    ];
 
     public function shortable()
     {

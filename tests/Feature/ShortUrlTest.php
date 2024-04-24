@@ -42,11 +42,11 @@ class ShortUrlTest extends TestCase
         $page = Page::factory()->create();
         $sampleUrl = Str::slug(Str::random(10));
         $sampleUrl2 = Str::slug(Str::random(10));
-        
+
         $page->shortUrls()->createMany([
             [
                 'url' => $sampleUrl
-            ], 
+            ],
             [
                 'url' => $sampleUrl2
             ]
@@ -59,12 +59,12 @@ class ShortUrlTest extends TestCase
     public function test_duplicate_values(): void
     {
         $page = Page::factory()->create();
-        $sampleUrl = Str::slug(Str::random(10));   
-        
+        $sampleUrl = Str::slug(Str::random(10));
+
         $page->shortUrls()->create([
             'url' => $sampleUrl
         ]);
-        
+
         $newPage = Page::factory()->create();
         try {
             $newPage->shortUrls()->create([
@@ -73,7 +73,7 @@ class ShortUrlTest extends TestCase
         } catch (\Exception $e) {
             // Check if the exception thrown is due to a unique constraint violation
             $this->assertInstanceOf(\Illuminate\Database\QueryException::class, $e);
-            $this->assertStringContainsString('UNIQUE', $e->getMessage());            
+            $this->assertStringContainsString('UNIQUE', $e->getMessage());
         }
     }
 }

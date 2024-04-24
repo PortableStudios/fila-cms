@@ -12,10 +12,12 @@ return new class () extends Migration {
     {
         Schema::create('short_urls', function (Blueprint $table) {
             $table->id();
-            $table->string('url')->unique();
+            $table->string('url')->unique()->index();
             $table->unsignedBigInteger('shortable_id');
             $table->string('shortable_type');
-            // $table->unsignedBigInteger('total_hits')->default(0);
+            $table->string('redirect_status')->default('301');
+            $table->boolean('enable')->default(true);
+            $table->unsignedBigInteger('hits')->nullable()->default(0);
             $table->timestamps();
         });
     }
