@@ -51,5 +51,9 @@ class CommandStartingListener
         $admin->name = 'Admin';
         $admin->save();
         $admin->assignRole('Admin');
+
+        \Portable\FilaCms\Models\Author::factory()->count(15)->create();
+        \Portable\FilaCms\Models\Taxonomy::factory()->count(3)->create();
+        \Portable\FilaCms\Models\Page::factory()->count(20)->create();
     }
 }

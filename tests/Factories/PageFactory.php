@@ -5,6 +5,8 @@ namespace Portable\FilaCms\Tests\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Portable\FilaCms\Models\Page;
+use Portable\FilaCms\Models\Author;
+use Portable\FilaCms\Models\TaxonomyTerm;
 
 class PageFactory extends Factory
 {
@@ -27,6 +29,8 @@ class PageFactory extends Factory
             'publish_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
             'expire_at'    => $draft === 1 ? $this->faker->dateTimeBetween('+1 week', '+2 weeks') : null,
             'contents'  => $this->createContent(),
+            'author'    => Author::all()->random()->id,
+            'terms' => TaxonomyTerm::all()->random(mt_rand(1,3))->pluck('id'),
         ];
     }
 

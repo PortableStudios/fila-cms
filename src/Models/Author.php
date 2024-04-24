@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Author extends Model
 {
+    use HasFactory;
     use Versionable;
     use SoftDeletes;
 
