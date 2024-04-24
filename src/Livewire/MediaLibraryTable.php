@@ -101,11 +101,15 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
         return Action::make('delete')->requiresConfirmation()
             ->action(function (Media $media) {
                 $media->delete();
+                if($this->current_file == $media->id) {
+                    $this->setFile(null);
+                }
+
             })
             ->label('Delete')
             ->icon('heroicon-o-trash')
             ->color('danger')
-            ->visible(function (Media $media) {
+            ->visible(function () {
                 return ($this->current_parent || config('fila-cms.media_library.allow_root_uploads'));
             });
     }
@@ -242,8 +246,12 @@ Split::make([
                 ]);
 
                 $image = getimagesize(Storage::disk($disk)->path($path . '/' . $filename));
-                $width = $image[0];
-                $height = $image[1];
+                if(is_array($image)) {
+                    $width = $image[0];
+                    $height = $image[1];
+                } else {
+                    $width = $height = 0;
+                }
 
                 $media = Media::create([
                     'filename' => $filename,
@@ -252,6 +260,7 @@ Split::make([
                     'alt_text' => $data['alt_text'],
                     'size' => $data['upload_media']->getSize(),
                     'extension' => $data['upload_media']->getClientOriginalExtension(),
+                    'mime_type' => mime_content_type(Storage::disk($disk)->path($path . $filename)),
                     'width' => $width,
                     'height' => $height,
                     'is_folder' => false,
@@ -320,7 +329,8 @@ Split::make([
                 ->label('Alt Text')
                 ->searchable()
                 ->sortable(),
-            TextColumn::make('size')
+             // Using the ID because we need a field with guaranteed content for formatStateUsing to be called
+            TextColumn::make('id')
                 ->label('Size')
                 ->badge()
                 ->sortable()
