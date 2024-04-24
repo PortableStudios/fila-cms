@@ -2,6 +2,7 @@
 
 namespace Portable\FilaCms;
 
+use Closure;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver as GDDriver;
 use Intervention\Image\ImageManager;
+use Portable\FilaCms\Data\SettingData;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource;
 use Portable\FilaCms\Livewire\ContentResourceList;
 use Portable\FilaCms\Livewire\ContentResourceShow;
@@ -19,8 +21,8 @@ use ReflectionClass;
 class FilaCms
 {
     protected static $contentResources = null;
-
     protected static $contentModels = null;
+    protected static $settings = null;
 
     public function systemUser()
     {
@@ -130,5 +132,38 @@ class FilaCms
         $image = $manager->read($imageBinary);
 
         return $image->scaleDown($thumbnailSizes[$size]['width'], $thumbnailSizes[$size]['height'])->encodeByMediaType('image/png', 75);
+    }
+
+    public function registerSetting(string $tab, string $group, int $order, Closure $fieldsCallback)
+    {
+        if(static::$settings === null) {
+            static::$settings = collect();
+        }
+
+        $settingData = new SettingData($tab, $group, $order, $fieldsCallback);
+        static::$settings->push($settingData);
+    }
+
+    public function getSettings()
+    {
+        return static::$settings;
+    }
+
+    public function getSettingsFields()
+    {
+        $settings = static::$settings;
+        $tabs = [];
+        foreach($settings->groupBy(['tabName','groupName'])->sortBy('order') as $tabName => $groups) {
+            $tabs[$tabName] = [];
+            foreach($groups as $groupName => $settingsData) {
+                $groupFields = [];
+                foreach($settingsData as $settingsDatum) {
+                    $groupFields = array_merge($groupFields, call_user_func($settingsDatum->fields));
+                }
+                $tabs[$tabName][$groupName] = $groupFields;
+            }
+        }
+
+        return $tabs;
     }
 }

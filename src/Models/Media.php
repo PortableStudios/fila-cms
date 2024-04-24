@@ -113,4 +113,12 @@ class Media extends Model
         $encodedSVG = \rawurlencode(\str_replace(["\r", "\n"], ' ', $data));
         return 'data:image/svg+xml,' . $encodedSVG;
     }
+
+    public static function uploadImage()
+    {
+        $data = Blade::render('@svg("heroicon-m-arrow-up-tray")');
+
+        $encodedSVG = \rawurlencode(\str_replace(["\r", "\n"], ' ', $data));
+        return 'data:image/svg+xml,' . $encodedSVG;
+    }
 }

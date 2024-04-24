@@ -19,7 +19,7 @@ class PermissionResource extends AbstractResource
 
     protected static ?string $navigationIcon = 'heroicon-o-key';
 
-    protected static ?string $navigationGroup = 'Security';
+    protected static ?string $navigationGroup = 'System';
 
     public static function form(Form $form): Form
     {

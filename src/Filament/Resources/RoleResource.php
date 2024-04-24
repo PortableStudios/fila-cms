@@ -21,7 +21,7 @@ class RoleResource extends AbstractResource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
-    protected static ?string $navigationGroup = 'Security';
+    protected static ?string $navigationGroup = 'System';
 
     public static function form(Form $form): Form
     {

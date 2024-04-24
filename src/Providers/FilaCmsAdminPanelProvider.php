@@ -17,6 +17,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Portable\FilaCms\Filament\Pages\EditSettings;
 use Portable\FilaCms\Filament\Pages\MediaLibrary;
 use Portable\FilaCms\Http\Middleware\FilaCmsAuthenticate;
 
@@ -38,6 +39,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                EditSettings::class,
                 MediaLibrary::class
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
@@ -47,7 +49,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Content',
                 'Taxonomies',
-                'Security',
+                'System',
             ])
             ->middleware([
                 EncryptCookies::class,

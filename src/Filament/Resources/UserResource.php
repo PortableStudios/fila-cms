@@ -25,7 +25,7 @@ class UserResource extends AbstractConfigurableResource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup = 'Security';
+    protected static ?string $navigationGroup = 'System';
 
     public static function form(Form $form): Form
     {
