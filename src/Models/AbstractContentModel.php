@@ -17,6 +17,7 @@ use Portable\FilaCms\Exceptions\InvalidStatusException;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
+use Portable\FilaCms\Filament\Traits\HasShortUrl;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Versionable\FilaCmsVersion;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
@@ -26,6 +27,7 @@ abstract class AbstractContentModel extends Model
 {
     use HasExcerpt;
     use HasTaxonomies;
+    use HasShortUrl;
     use Versionable;
     use SoftDeletes;
     use HasLocks;
