@@ -321,7 +321,18 @@ class AbstractContentResource extends AbstractResource
                         'Published' => 'success',
                         'Expired' => 'danger',
                     })
-                    ->sortable(),
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query->select()
+                            ->selectSub(function ($query) {
+                                $query->selectRaw('CASE
+                                WHEN `is_draft` THEN "draft"
+                                WHEN `publish_at` > now() THEN "pending"
+                                WHEN `publish_at` < now() AND `expire_at` < now() THEN "expired"
+                                WHEN `publish_at` < now() AND (`expire_at` > now() or `expire_at` IS NULL) THEN "published"
+                            END');
+                            }, 'status')
+                        ->orderBy('status', $direction);
+                    }),
                 TextColumn::make('createdBy.name')->label('Creator')
                     ->sortable(),
             ])
@@ -341,51 +352,52 @@ class AbstractContentResource extends AbstractResource
                     ->query(function (Builder $query, $data) {
                         $query->withoutGlobalScopes();
 
-                        foreach ($data['values'] as $key => $value) {
-                            switch ($value) {
-                                case 'draft':
-                                    $query->orWhere(function ($query) {
-                                        $query->where('is_draft', true)->whereNull('deleted_at');
-                                    });
-                                    break;
-                                case 'pending':
-                                    $query->orWhere(function ($query) {
-                                        $query->where('is_draft', false)
-                                            ->where('publish_at', '>', now())
-                                            ->where(function ($query) {
-                                                $query->whereNull('expire_at')
-                                                    ->orWhere('expire_at', '>', now());
-                                            })
-                                            ->whereNull('deleted_at');
-                                    });
-                                    break;
-                                case 'published':
-                                    $query->orWhere(function ($query) {
-                                        $query->where('is_draft', false)
-                                            ->where('publish_at', '<', now())
-                                            ->where(function ($query) {
-                                                $query->whereNull('expire_at')
-                                                    ->orWhere('expire_at', '>', now());
-                                            })
-                                            ->whereNull('deleted_at');
-                                    });
-                                    break;
-                                case 'expired':
-                                    $query->orWhere(function ($query) {
-                                        $query->where('is_draft', false)
-                                            ->where('publish_at', '<', now())
-                                            ->where('expire_at', '<', now())
-                                            ->whereNull('deleted_at');
-                                    });
-                                    break;
-                                case 'deleted':
-                                    $query->orWhere(function ($query) {
-                                        $query->whereNotNull('deleted_at');
-                                    });
-                                    break;
+                        $query->where(function ($query) use ($data) {
+                            foreach ($data['values'] as $key => $value) {
+                                switch ($value) {
+                                    case 'draft':
+                                        $query->orWhere(function ($query) {
+                                            $query->where('is_draft', true)->whereNull('deleted_at');
+                                        });
+                                        break;
+                                    case 'pending':
+                                        $query->orWhere(function ($query) {
+                                            $query->where('is_draft', false)
+                                                ->where('publish_at', '>', now())
+                                                ->where(function ($query) {
+                                                    $query->whereNull('expire_at')
+                                                        ->orWhere('expire_at', '>', now());
+                                                })
+                                                ->whereNull('deleted_at');
+                                        });
+                                        break;
+                                    case 'published':
+                                        $query->orWhere(function ($query) {
+                                            $query->where('is_draft', false)
+                                                ->where('publish_at', '<', now())
+                                                ->where(function ($query) {
+                                                    $query->whereNull('expire_at')
+                                                        ->orWhere('expire_at', '>', now());
+                                                })
+                                                ->whereNull('deleted_at');
+                                        });
+                                        break;
+                                    case 'expired':
+                                        $query->orWhere(function ($query) {
+                                            $query->where('is_draft', false)
+                                                ->where('publish_at', '<', now())
+                                                ->where('expire_at', '<', now())
+                                                ->whereNull('deleted_at');
+                                        });
+                                        break;
+                                    case 'deleted':
+                                        $query->orWhere(function ($query) {
+                                            $query->whereNotNull('deleted_at');
+                                        });
+                                        break;
+                                }
                             }
-                        }
-
+                        });
                     }),
                 SelectFilter::make('author')
                     ->multiple()
@@ -421,9 +433,9 @@ class AbstractContentResource extends AbstractResource
                     })
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when($data['publish_from'], function ($query) use ($data) {
-                            $query->where('publish_at', '>=', $data['publish_from']);
+                            $query->where('publish_at', '>=', Carbon::parse($data['publish_from'])->startOfDay());
                         })->when($data['publish_to'], function ($query) use ($data) {
-                            $query->where('publish_at', '<=', $data['publish_to']);
+                            $query->where('publish_at', '<=', Carbon::parse($data['publish_to'])->endOfDay());
                         });
                     }),
                 Tables\Filters\Filter::make('expire_at')
@@ -438,9 +450,9 @@ class AbstractContentResource extends AbstractResource
                     ->columnSpan(2)
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when($data['expire_from'], function ($query) use ($data) {
-                            $query->where('expire_at', '>=', $data['expire_from']);
+                            $query->where('expire_at', '>=', Carbon::parse($data['expire_from'])->startOfDay());
                         })->when($data['expire_to'], function ($query) use ($data) {
-                            $query->where('expire_at', '<=', $data['expire_to']);
+                            $query->where('expire_at', '<=', Carbon::parse($data['expire_to'])->endOfDay());
                         });
                     })
                     ->indicateUsing(function (array $data): ?string {
@@ -455,6 +467,7 @@ class AbstractContentResource extends AbstractResource
                         if (count($texts) === 0) {
                             return null;
                         }
+
                         array_unshift($texts, 'Expires');
                         return implode(' ', $texts);
                     }),
@@ -470,9 +483,9 @@ class AbstractContentResource extends AbstractResource
                     ->columnSpan(2)
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when($data['updated_from'], function ($query) use ($data) {
-                            $query->where('updated_at', '>=', $data['updated_from']);
+                            $query->where('updated_at', '>=', Carbon::parse($data['updated_from'])->startOfDay());
                         })->when($data['updated_to'], function ($query) use ($data) {
-                            $query->where('updated_at', '<=', $data['updated_to']);
+                            $query->where('updated_at', '<=', Carbon::parse($data['updated_to'])->endOfDay());
                         });
                     })
                     ->indicateUsing(function (array $data): ?string {
@@ -487,6 +500,7 @@ class AbstractContentResource extends AbstractResource
                         if (count($texts) === 0) {
                             return null;
                         }
+
                         array_unshift($texts, 'Modified');
                         return implode(' ', $texts);
                     }),
