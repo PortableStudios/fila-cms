@@ -56,13 +56,13 @@ class AddressInput extends Component implements CanEntangleWithSingularRelations
     public static function make(string $name): static
     {
         $static = app(static::class, ['schema' => [
-            Select::make('country')->hiddenLabel(true)->placeholder('Country')->options(static::getCountries())->required(function (Select $component) {
+            Select::make('country')->placeholder('Country')->options(static::getCountries())->required(function (Select $component) {
                 return $component->getContainer()->getParentComponent()->isRequired();
             })->searchable()->live(),
-            TextInput::make('street1')->placeholder('Street 1')->required(function (TextInput $component) {
+            TextInput::make('street_1')->placeholder('Street 1')->required(function (TextInput $component) {
                 return $component->getContainer()->getParentComponent()->isRequired();
             }),
-            TextInput::make('street2')->placeholder('Street 2'),
+            TextInput::make('street_2')->placeholder('Street 2'),
             Group::make([
                 TextInput::make('suburb')->placeholder('Suburb'),
                 Select::make('state')->placeholder('State')

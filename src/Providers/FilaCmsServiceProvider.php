@@ -3,7 +3,7 @@
 namespace Portable\FilaCms\Providers;
 
 use Filament\Forms\ComponentContainer;
-use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Auth\Events\Login;
@@ -172,37 +172,34 @@ class FilaCmsServiceProvider extends ServiceProvider
     {
         FacadesFilaCms::registerSetting('SEO & Analytics', 'Organisation Details', 0, function () {
             return [
-                TextInput::make('seo.organisation.name')->label('Organisation Name'),
-                ImagePicker::make('seo.organisation.logo')->label('Organisation Logo'),
+                TextInput::make('seo.organisation.name')->label('Organisation Name')->columnSpanFull(),
                 TextInput::make('seo.organisation.email')->label('Organisation Email'),
                 TextInput::make('seo.organisation.phone')->label('Organisation Phone'),
-
-
-                CheckboxList::make('seo.analytics')
-                ->label('Analytics')
-                ->options([
-                    'google' => 'Google Analytics',
-                    'facebook' => 'Facebook Pixel',
-                    'hotjar' => 'Hotjar',
-                    'gtm' => 'Google Tag Manager',
-            ])
-            ->mutateDehydratedStateUsing(function ($state) {
-                return is_array($state) ? implode(",", $state) : $state;
-            })->afterStateHydrated(function (CheckboxList $component, $state) {
-                $component->state(explode(",", $state));
-            }),
                 AddressInput::make('seo.organisation.address')->label('Organisation Address')->required(true)
                 ->mutateDehydratedStateUsing(function ($state) {
                     return json_encode($state);
                 })->afterStateHydrated(function (AddressInput $component, $state) {
                     $component->state(json_decode($state, true));
-                })
-                ,
+                })->columnSpanFull(),
                 TextInput::make('seo.organisation.facebook')->label('Facebook Url'),
                 TextInput::make('seo.organisation.linkedIn')->label('LinkedIn Url'),
                 TextInput::make('seo.organisation.instagram')->label('Instagram Url'),
                 TextInput::make('seo.organisation.twitter')->label('Twitter Url'),
             ];
         });
+
+        FacadesFilaCms::registerSetting('SEO & Analytics', 'Global SEO', 1, function () {
+            return [
+                TextInput::make('seo.global.site_name')->label('Site Name'),
+                ImagePicker::make('seo.global.image')->label('SEO Image'),
+            ];
+        });
+
+        FacadesFilaCms::registerSetting('SEO & Analytics', 'Tracking', 1, function () {
+            return [
+                Textarea::make('seo.tracking.gtm_code')->label('GTM Code')->columnSpanFull(),
+            ];
+        });
+
     }
 }
