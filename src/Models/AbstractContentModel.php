@@ -145,6 +145,10 @@ abstract class AbstractContentModel extends Model
 
     protected function status(): Attribute
     {
+        if ($this->deleted_at) {
+            return Attribute::make(get: fn () => 'Deleted');
+        }
+
         if ($this->is_draft) {
             return Attribute::make(get: fn () => 'Draft');
         } else {

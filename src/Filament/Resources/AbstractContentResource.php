@@ -130,11 +130,12 @@ class AbstractContentResource extends AbstractResource
                             StatusBadge::make('status')
                                 ->live()
                                 ->badge()
-                                ->color(fn (string $state): string => match ($state) {
+                                ->color(fn (string $state): mixed => match ($state) {
                                     'Draft' => 'info',
                                     'Pending' => 'warning',
                                     'Published' => 'success',
                                     'Expired' => 'danger',
+                                    'Deleted' => \Filament\Support\Colors\Color::Indigo,
                                 })
                                 ->default('Draft'),
 
@@ -315,16 +316,18 @@ class AbstractContentResource extends AbstractResource
                     ->sortable(['first_name', 'last_name']),
                 TextColumn::make('status')->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn (string $state): mixed => match ($state) {
                         'Draft' => 'gray',
                         'Pending' => 'warning',
                         'Published' => 'success',
                         'Expired' => 'danger',
+                        'Deleted' => \Filament\Support\Colors\Color::Indigo,
                     })
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query->select()
                             ->selectSub(function ($query) {
                                 $query->selectRaw('CASE
+                                WHEN `deleted_at` IS NOT NULL THEN "deleted"
                                 WHEN `is_draft` THEN "draft"
                                 WHEN `publish_at` > now() THEN "pending"
                                 WHEN `publish_at` < now() AND `expire_at` < now() THEN "expired"
