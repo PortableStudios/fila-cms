@@ -14,6 +14,7 @@ use Portable\FilaCms\Filament\Resources\AbstractContentResource;
 use Portable\FilaCms\Livewire\ContentResourceList;
 use Portable\FilaCms\Livewire\ContentResourceShow;
 use Portable\FilaCms\Models\Media;
+use Portable\FilaCms\Models\ShortUrl;
 use ReflectionClass;
 
 class FilaCms
@@ -113,6 +114,32 @@ class FilaCms
                 }
             );
         }
+    }
+
+    public function shortUrlRoutes()
+    {
+        Route::get(config('fila-cms.short_url_prefix') . '/{slug}', function ($slug) {
+
+            $shortUrl = ShortUrl::where('url', $slug)->first();
+            if(empty($shortUrl)) {
+                abort(404);
+            }
+
+            $modelClass = $shortUrl->shortable_type;
+
+            $target = new $modelClass();
+            $page = $target->find($shortUrl->shortable_id);
+
+            if(empty($page)) {
+                abort(404);
+            }
+
+            // SUGGESTION: add hit counter?
+            // $shortUrl->increment('hits');
+
+            // TODO: make it more dynamic instead of direct using "pages"
+            return redirect()->route('pages.show', $page->slug ?? $page->id);
+        });
     }
 
     public function thumbnail(Media $media, $size = 'small')
