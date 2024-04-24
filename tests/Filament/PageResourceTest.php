@@ -4,6 +4,7 @@ namespace Portable\FilaCms\Tests\Filament;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\PageResource as TargetResource;
@@ -115,7 +116,7 @@ class PageResourceTest extends TestCase
         $model = TargetModel::orderBy('id', 'desc')->first();
 
         $this->assertTrue($model->Seo instanceof SEO);
-        $this->assertEquals($model->Seo->title, $model->title);
+        $this->assertEquals($model->Seo->title, Str::limit($model->title, 57));
     }
 
     public function test_can_update_generated_seo(): void
