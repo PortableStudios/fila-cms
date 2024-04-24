@@ -13,6 +13,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Tables;
@@ -79,6 +80,10 @@ class AbstractContentResource extends AbstractResource
                             Tabs\Tab::make('SEO')
                                 ->schema([
                                     ...static::getSeoFields(),
+                                ]),
+                            Tabs\Tab::make('URLs')
+                                ->schema([
+                                    ...static::getVanityURLFields(),
                                 ]),
                         ])
                         ->persistTabInQueryString()
@@ -287,6 +292,81 @@ class AbstractContentResource extends AbstractResource
                         $record->seo()->create($state);
                     }
                 })
+        ];
+
+    }
+
+    public static function getVanityURLFields(): array
+    {
+        $prefixUrl = implode('/', [rtrim(config('app.url'), '/'), trim(config('fila-cms.short_url_prefix'), '/'), '' ]);
+        $vanityURLFields = [
+            Section::make('Legacy or Vanity URLs')
+                ->compact()
+                ->description('Users visiting the supplied URL will be redirected to the canonical URL for this entry')
+                ->schema([
+                    Repeater::make('shortUrls')
+                        ->relationship()
+                        ->reorderable(false)
+                        ->defaultItems(0)
+                        ->collapsed()
+                        ->addActionLabel('Add new URL')
+                        ->schema([
+                            TextInput::make('url')
+                                ->unique(ignoreRecord: true)
+                                ->live(onBlur: true)
+                                ->required()
+                                ->hintColor('info')
+                                ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'If the input provided does not conform to URL standards, the system will automatically sanitize it by removing any special characters that are not compatible with URLs.')
+                                ->prefix($prefixUrl)
+                                ->suffixIcon('heroicon-m-globe-alt'),
+                            Select::make('redirect_status')
+                                ->options([
+                                    '301' => '301 - Permanent',
+                                    '302' => '302 - Temporary'
+                                ])
+                                ->default(301)
+                                ->required(),
+                            Toggle::make('enable')
+                                ->live(onBlur: true)
+                                ->offIcon('heroicon-m-eye-slash')
+                                ->onIcon('heroicon-m-eye'),
+                            TextInput::make('hits')
+                                ->label('Total hits')
+                                ->readOnly()
+
+                        ])
+                        ->itemLabel(function (array $state) use ($prefixUrl) {
+
+                            $label = '';
+                            if($state['enable'] === false) {
+                                $label .= '[Disabled] - ';
+                            }
+
+                            $label .= $prefixUrl . Str::slug($state['url'] ?? null);
+
+                            return $label;
+                        })
+                        ->mutateRelationshipDataBeforeFillUsing(function (array $data): array {
+                            $data['url'] = Str::slug($data['url']);
+                            return $data;
+                        })
+                        ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
+                            $data['url'] = Str::slug($data['url']);
+                            return $data;
+                        })
+                        ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
+                            $data['url'] = Str::slug($data['url']);
+                            return $data;
+                        })
+                ]),
+        ];
+
+
+        return [
+            Group::make()
+                ->schema($vanityURLFields)
+                ->statePath('shortUrls')
+                ->dehydrated(false)
         ];
 
     }
