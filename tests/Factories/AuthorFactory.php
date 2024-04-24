@@ -3,7 +3,6 @@
 namespace Portable\FilaCms\Tests\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use Portable\FilaCms\Models\Author;
 
 class AuthorFactory extends Factory
@@ -18,8 +17,8 @@ class AuthorFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name'        => fake()->first_name,
-            'last_name'         => fake()->last_name,
+            'first_name'        => fake()->firstName,
+            'last_name'         => fake()->lastName,
             'is_individual'     => 1,
         ];
     }

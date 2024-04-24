@@ -6,6 +6,7 @@ use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Portable\FilaCms\Tests\Factories\PageFactory;
 
 class CommandStartingListener
 {
@@ -52,8 +53,6 @@ class CommandStartingListener
         $admin->save();
         $admin->assignRole('Admin');
 
-        \Portable\FilaCms\Models\Author::factory()->count(15)->create();
-        \Portable\FilaCms\Models\Taxonomy::factory()->count(3)->create();
-        \Portable\FilaCms\Models\Page::factory()->count(20)->create();
+        PageFactory::new()->count(10)->create();
     }
 }

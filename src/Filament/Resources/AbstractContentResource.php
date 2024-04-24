@@ -307,8 +307,9 @@ class AbstractContentResource extends AbstractResource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->description(fn (Page $page): string => $page->excerpt)
+                    ->description(fn (Page $page): string => Str::take($page->excerpt, 35))
                     ->searchable()
+                    ->limit(35)
                     ->sortable(),
                 TextColumn::make('author.display_name')->label('Author')
                     ->sortable(['first_name', 'last_name']),
@@ -335,44 +336,56 @@ class AbstractContentResource extends AbstractResource
                         'expired'   => 'Expired',
                         'deleted'   => 'Deleted',
                     ])
+                    ->multiple()
+                    ->default(['draft', 'pending', 'published', 'expired'])
                     ->query(function (Builder $query, $data) {
                         $query->withoutGlobalScopes();
 
-                        switch ($data['value']) {
-                            case 'draft':
-                                $query->where('is_draft', true)->whereNull('deleted_at');
-                                break;
-                            case 'pending':
-                                $query->where('is_draft', false)
-                                    ->where('publish_at', '>', now())
-                                    ->where(function ($query) {
-                                        $query->whereNull('expire_at')
-                                            ->orWhere('expire_at', '>', now());
-                                    })
-                                    ->whereNull('deleted_at');
-                                break;
-                            case 'published':
-                                $query->where('is_draft', false)
-                                    ->where('publish_at', '<', now())
-                                    ->where(function ($query) {
-                                        $query->whereNull('expire_at')
-                                            ->orWhere('expire_at', '>', now());
-                                    })
-                                    ->whereNull('deleted_at');
-                                break;
-                            case 'expired':
-                                $query->where('is_draft', false)
-                                    ->where('publish_at', '<', now())
-                                    ->where('expire_at', '<', now())
-                                    ->whereNull('deleted_at');
-                                break;
-                            case 'deleted':
-                                $query->whereNotNull('deleted_at');
-                                break;
-                            default:
-                                $query->whereNull('deleted_at');
-                                break;
+                        foreach ($data['values'] as $key => $value) {
+                            switch ($value) {
+                                case 'draft':
+                                    $query->orWhere(function ($query) {
+                                        $query->where('is_draft', true)->whereNull('deleted_at');
+                                    });
+                                    break;
+                                case 'pending':
+                                    $query->orWhere(function ($query) {
+                                        $query->where('is_draft', false)
+                                            ->where('publish_at', '>', now())
+                                            ->where(function ($query) {
+                                                $query->whereNull('expire_at')
+                                                    ->orWhere('expire_at', '>', now());
+                                            })
+                                            ->whereNull('deleted_at');
+                                    });
+                                    break;
+                                case 'published':
+                                    $query->orWhere(function ($query) {
+                                        $query->where('is_draft', false)
+                                            ->where('publish_at', '<', now())
+                                            ->where(function ($query) {
+                                                $query->whereNull('expire_at')
+                                                    ->orWhere('expire_at', '>', now());
+                                            })
+                                            ->whereNull('deleted_at');
+                                    });
+                                    break;
+                                case 'expired':
+                                    $query->orWhere(function ($query) {
+                                        $query->where('is_draft', false)
+                                            ->where('publish_at', '<', now())
+                                            ->where('expire_at', '<', now())
+                                            ->whereNull('deleted_at');
+                                    });
+                                    break;
+                                case 'deleted':
+                                    $query->orWhere(function ($query) {
+                                        $query->whereNotNull('deleted_at');
+                                    });
+                                    break;
+                            }
                         }
+
                     }),
                 SelectFilter::make('author')
                     ->multiple()
