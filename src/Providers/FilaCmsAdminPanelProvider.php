@@ -49,7 +49,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Content',
                 'Taxonomies',
-                'Security',
+                'System',
             ])
             ->middleware([
                 EncryptCookies::class,
