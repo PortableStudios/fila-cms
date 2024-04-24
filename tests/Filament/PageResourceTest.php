@@ -14,6 +14,7 @@ use Portable\FilaCms\Models\TaxonomyTerm;
 use Portable\FilaCms\Tests\TestCase;
 use RalphJSmit\Laravel\SEO\Models\SEO;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
 
 class PageResourceTest extends TestCase
 {
@@ -303,6 +304,27 @@ class PageResourceTest extends TestCase
             ])
             ->call('create')
             ->assertHasErrors();
+    }
+
+    public function test_can_add_vanity_urls(): void
+    {
+        $page = Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->set('data.shortUrls', [])
+            ->fillForm([
+                'is_draft' => 0,
+                'title' => 'Test Page',
+                'contents' => $this->createContent()
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+            
+        $sampleUrl = Str::slug(Str::random(10));
+        // check last record
+        $model = TargetModel::orderBy('id', 'desc')->first();
+        $model->shortUrls()->create([
+            'url' => $sampleUrl
+        ]);
+        $this->assertSame($sampleUrl, $model->shortUrls[0]->url);
     }
 
     public function generateModel($raw = false): TargetModel|array
