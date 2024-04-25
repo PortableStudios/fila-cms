@@ -4,6 +4,8 @@ namespace Portable\FilaCms;
 
 use Closure;
 use Filament\Facades\Filament;
+use FilamentTiptapEditor\Enums\TiptapOutput;
+use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -90,6 +92,17 @@ class FilaCms
         static::$contentResources = $options;
 
         return $options;
+    }
+
+    public function formRoutes()
+    {
+        Route::group(
+            ['prefix' => 'form', 'middleware' => 'web'],
+            function () {
+                Route::get('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name('form.show');
+                Route::post('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name('form.submit');
+            }
+        );
     }
 
     public function contentRoutes()
@@ -191,5 +204,27 @@ class FilaCms
         }
 
         return $tabs;
+    }
+
+    public function getFormBlock(string $name)
+    {
+        $blocks = config('fila-cms.forms.blocks');
+        foreach($blocks as $block) {
+            if($block::getBlockName() === $name) {
+                return $block;
+            }
+        }
+        return null;
+    }
+
+    public function tipTapEditor($name): TiptapEditor
+    {
+        return TiptapEditor::make($name)
+            ->profile('default')
+            ->extraInputAttributes(['style' => 'min-height: 24rem;'])
+            ->required()
+            ->columnSpanFull()
+            ->collapseBlocksPanel(true)
+            ->output(TiptapOutput::Json);
     }
 }

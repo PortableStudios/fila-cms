@@ -6,6 +6,7 @@ use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Portable\FilaCms\Tests\Factories\FormFactory;
 use Portable\FilaCms\Tests\Factories\PageFactory;
 
 class CommandStartingListener
@@ -54,5 +55,9 @@ class CommandStartingListener
         $admin->assignRole('Admin');
 
         PageFactory::new()->count(10)->create();
+        FormFactory::new()->create([
+            'title' => 'Contact Us',
+            'slug' => 'contact-us'
+        ]);
     }
 }

@@ -11,13 +11,14 @@ use Kenepa\ResourceLock\Models\Concerns\HasLocks;
 use Overtrue\LaravelVersionable\Version;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
+use Portable\FilaCms\Contracts\HasSlug;
 use Portable\FilaCms\Events\ContentCreating;
 use Portable\FilaCms\Events\ContentUpdating;
 use Portable\FilaCms\Exceptions\InvalidStatusException;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Traits\HasExcerpt;
-use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Filament\Traits\HasShortUrl;
+use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Versionable\FilaCmsVersion;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
@@ -32,6 +33,7 @@ abstract class AbstractContentModel extends Model
     use SoftDeletes;
     use HasLocks;
     use HasSEO;
+    use HasSlug;
 
     protected $table = 'contents';
 
