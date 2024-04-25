@@ -4,7 +4,6 @@ namespace Portable\FilaCms\Tests\Filament;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\PageResource as TargetResource;
