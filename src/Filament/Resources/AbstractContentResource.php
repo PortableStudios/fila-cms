@@ -14,6 +14,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Support\Enums\MaxWidth;
@@ -80,6 +81,10 @@ class AbstractContentResource extends AbstractResource
                                 ->schema([
                                     ...static::getSeoFields(),
                                 ]),
+                            Tabs\Tab::make('URLs')
+                                ->schema([
+                                    ...static::getVanityURLFields(),
+                                ]),
                         ])
                         ->persistTabInQueryString()
                 ])
@@ -130,11 +135,12 @@ class AbstractContentResource extends AbstractResource
                             StatusBadge::make('status')
                                 ->live()
                                 ->badge()
-                                ->color(fn (string $state): string => match ($state) {
+                                ->color(fn (string $state): mixed => match ($state) {
                                     'Draft' => 'info',
                                     'Pending' => 'warning',
                                     'Published' => 'success',
                                     'Expired' => 'danger',
+                                    'Deleted' => \Filament\Support\Colors\Color::Indigo,
                                 })
                                 ->default('Draft'),
 
@@ -294,6 +300,81 @@ class AbstractContentResource extends AbstractResource
 
     }
 
+    public static function getVanityURLFields(): array
+    {
+        $prefixUrl = implode('/', [rtrim(config('app.url'), '/'), trim(config('fila-cms.short_url_prefix'), '/'), '' ]);
+        $vanityURLFields = [
+            Section::make('Legacy or Vanity URLs')
+                ->compact()
+                ->description('Users visiting the supplied URL will be redirected to the canonical URL for this entry')
+                ->schema([
+                    Repeater::make('shortUrls')
+                        ->relationship()
+                        ->reorderable(false)
+                        ->defaultItems(0)
+                        ->collapsed()
+                        ->addActionLabel('Add new URL')
+                        ->schema([
+                            TextInput::make('url')
+                                ->unique(ignoreRecord: true)
+                                ->live(onBlur: true)
+                                ->required()
+                                ->hintColor('info')
+                                ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'If the input provided does not conform to URL standards, the system will automatically sanitize it by removing any special characters that are not compatible with URLs.')
+                                ->prefix($prefixUrl)
+                                ->suffixIcon('heroicon-m-globe-alt'),
+                            Select::make('redirect_status')
+                                ->options([
+                                    '301' => '301 - Permanent',
+                                    '302' => '302 - Temporary'
+                                ])
+                                ->default(301)
+                                ->required(),
+                            Toggle::make('enable')
+                                ->live(onBlur: true)
+                                ->offIcon('heroicon-m-eye-slash')
+                                ->onIcon('heroicon-m-eye'),
+                            TextInput::make('hits')
+                                ->label('Total hits')
+                                ->readOnly()
+
+                        ])
+                        ->itemLabel(function (array $state) use ($prefixUrl) {
+
+                            $label = '';
+                            if($state['enable'] === false) {
+                                $label .= '[Disabled] - ';
+                            }
+
+                            $label .= $prefixUrl . Str::slug($state['url'] ?? null);
+
+                            return $label;
+                        })
+                        ->mutateRelationshipDataBeforeFillUsing(function (array $data): array {
+                            $data['url'] = Str::slug($data['url']);
+                            return $data;
+                        })
+                        ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
+                            $data['url'] = Str::slug($data['url']);
+                            return $data;
+                        })
+                        ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
+                            $data['url'] = Str::slug($data['url']);
+                            return $data;
+                        })
+                ]),
+        ];
+
+
+        return [
+            Group::make()
+                ->schema($vanityURLFields)
+                ->statePath('shortUrls')
+                ->dehydrated(false)
+        ];
+
+    }
+
     public static function tiptapEditor($name = 'contents'): TiptapEditor
     {
         return TiptapEditor::make($name)
@@ -318,13 +399,26 @@ class AbstractContentResource extends AbstractResource
                     ->sortable(['first_name', 'last_name']),
                 TextColumn::make('status')->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn (string $state): mixed => match ($state) {
                         'Draft' => 'gray',
                         'Pending' => 'warning',
                         'Published' => 'success',
                         'Expired' => 'danger',
+                        'Deleted' => \Filament\Support\Colors\Color::Indigo,
                     })
-                    ->sortable(),
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query->select()
+                            ->selectSub(function ($query) {
+                                $query->selectRaw('CASE
+                                WHEN `deleted_at` IS NOT NULL THEN "deleted"
+                                WHEN `is_draft` THEN "draft"
+                                WHEN `publish_at` > now() THEN "pending"
+                                WHEN `publish_at` < now() AND `expire_at` < now() THEN "expired"
+                                WHEN `publish_at` < now() AND (`expire_at` > now() or `expire_at` IS NULL) THEN "published"
+                            END');
+                            }, 'status')
+                        ->orderBy('status', $direction);
+                    }),
                 TextColumn::make('createdBy.name')->label('Creator')
                     ->sortable(),
             ])
@@ -344,51 +438,52 @@ class AbstractContentResource extends AbstractResource
                     ->query(function (Builder $query, $data) {
                         $query->withoutGlobalScopes();
 
-                        foreach ($data['values'] as $key => $value) {
-                            switch ($value) {
-                                case 'draft':
-                                    $query->orWhere(function ($query) {
-                                        $query->where('is_draft', true)->whereNull('deleted_at');
-                                    });
-                                    break;
-                                case 'pending':
-                                    $query->orWhere(function ($query) {
-                                        $query->where('is_draft', false)
-                                            ->where('publish_at', '>', now())
-                                            ->where(function ($query) {
-                                                $query->whereNull('expire_at')
-                                                    ->orWhere('expire_at', '>', now());
-                                            })
-                                            ->whereNull('deleted_at');
-                                    });
-                                    break;
-                                case 'published':
-                                    $query->orWhere(function ($query) {
-                                        $query->where('is_draft', false)
-                                            ->where('publish_at', '<', now())
-                                            ->where(function ($query) {
-                                                $query->whereNull('expire_at')
-                                                    ->orWhere('expire_at', '>', now());
-                                            })
-                                            ->whereNull('deleted_at');
-                                    });
-                                    break;
-                                case 'expired':
-                                    $query->orWhere(function ($query) {
-                                        $query->where('is_draft', false)
-                                            ->where('publish_at', '<', now())
-                                            ->where('expire_at', '<', now())
-                                            ->whereNull('deleted_at');
-                                    });
-                                    break;
-                                case 'deleted':
-                                    $query->orWhere(function ($query) {
-                                        $query->whereNotNull('deleted_at');
-                                    });
-                                    break;
+                        $query->where(function ($query) use ($data) {
+                            foreach ($data['values'] as $key => $value) {
+                                switch ($value) {
+                                    case 'draft':
+                                        $query->orWhere(function ($query) {
+                                            $query->where('is_draft', true)->whereNull('deleted_at');
+                                        });
+                                        break;
+                                    case 'pending':
+                                        $query->orWhere(function ($query) {
+                                            $query->where('is_draft', false)
+                                                ->where('publish_at', '>', now())
+                                                ->where(function ($query) {
+                                                    $query->whereNull('expire_at')
+                                                        ->orWhere('expire_at', '>', now());
+                                                })
+                                                ->whereNull('deleted_at');
+                                        });
+                                        break;
+                                    case 'published':
+                                        $query->orWhere(function ($query) {
+                                            $query->where('is_draft', false)
+                                                ->where('publish_at', '<', now())
+                                                ->where(function ($query) {
+                                                    $query->whereNull('expire_at')
+                                                        ->orWhere('expire_at', '>', now());
+                                                })
+                                                ->whereNull('deleted_at');
+                                        });
+                                        break;
+                                    case 'expired':
+                                        $query->orWhere(function ($query) {
+                                            $query->where('is_draft', false)
+                                                ->where('publish_at', '<', now())
+                                                ->where('expire_at', '<', now())
+                                                ->whereNull('deleted_at');
+                                        });
+                                        break;
+                                    case 'deleted':
+                                        $query->orWhere(function ($query) {
+                                            $query->whereNotNull('deleted_at');
+                                        });
+                                        break;
+                                }
                             }
-                        }
-
+                        });
                     }),
                 SelectFilter::make('author')
                     ->multiple()
@@ -424,9 +519,9 @@ class AbstractContentResource extends AbstractResource
                     })
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when($data['publish_from'], function ($query) use ($data) {
-                            $query->where('publish_at', '>=', $data['publish_from']);
+                            $query->where('publish_at', '>=', Carbon::parse($data['publish_from'])->startOfDay());
                         })->when($data['publish_to'], function ($query) use ($data) {
-                            $query->where('publish_at', '<=', $data['publish_to']);
+                            $query->where('publish_at', '<=', Carbon::parse($data['publish_to'])->endOfDay());
                         });
                     }),
                 Tables\Filters\Filter::make('expire_at')
@@ -441,9 +536,9 @@ class AbstractContentResource extends AbstractResource
                     ->columnSpan(2)
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when($data['expire_from'], function ($query) use ($data) {
-                            $query->where('expire_at', '>=', $data['expire_from']);
+                            $query->where('expire_at', '>=', Carbon::parse($data['expire_from'])->startOfDay());
                         })->when($data['expire_to'], function ($query) use ($data) {
-                            $query->where('expire_at', '<=', $data['expire_to']);
+                            $query->where('expire_at', '<=', Carbon::parse($data['expire_to'])->endOfDay());
                         });
                     })
                     ->indicateUsing(function (array $data): ?string {
@@ -458,6 +553,7 @@ class AbstractContentResource extends AbstractResource
                         if (count($texts) === 0) {
                             return null;
                         }
+
                         array_unshift($texts, 'Expires');
                         return implode(' ', $texts);
                     }),
@@ -473,9 +569,9 @@ class AbstractContentResource extends AbstractResource
                     ->columnSpan(2)
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when($data['updated_from'], function ($query) use ($data) {
-                            $query->where('updated_at', '>=', $data['updated_from']);
+                            $query->where('updated_at', '>=', Carbon::parse($data['updated_from'])->startOfDay());
                         })->when($data['updated_to'], function ($query) use ($data) {
-                            $query->where('updated_at', '<=', $data['updated_to']);
+                            $query->where('updated_at', '<=', Carbon::parse($data['updated_to'])->endOfDay());
                         });
                     })
                     ->indicateUsing(function (array $data): ?string {
@@ -490,6 +586,7 @@ class AbstractContentResource extends AbstractResource
                         if (count($texts) === 0) {
                             return null;
                         }
+
                         array_unshift($texts, 'Modified');
                         return implode(' ', $texts);
                     }),

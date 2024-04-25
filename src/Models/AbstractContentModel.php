@@ -17,6 +17,7 @@ use Portable\FilaCms\Exceptions\InvalidStatusException;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
+use Portable\FilaCms\Filament\Traits\HasShortUrl;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Versionable\FilaCmsVersion;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
@@ -26,6 +27,7 @@ abstract class AbstractContentModel extends Model
 {
     use HasExcerpt;
     use HasTaxonomies;
+    use HasShortUrl;
     use Versionable;
     use SoftDeletes;
     use HasLocks;
@@ -145,6 +147,10 @@ abstract class AbstractContentModel extends Model
 
     protected function status(): Attribute
     {
+        if ($this->deleted_at) {
+            return Attribute::make(get: fn () => 'Deleted');
+        }
+
         if ($this->is_draft) {
             return Attribute::make(get: fn () => 'Draft');
         } else {

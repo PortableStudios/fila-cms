@@ -57,5 +57,6 @@ return [
                 'disk' => 'local',
             ]
         ]
-    ]
+    ],
+    'short_url_prefix' => env('FILACMS_SHORT_URL_PREFIX', 's'),
 ];
