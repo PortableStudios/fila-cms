@@ -138,7 +138,7 @@ class PageResourceTest extends TestCase
         $data['title'] = 'An updated title';
 
         Livewire::test(TargetResource\Pages\EditPage::class, [
-            'record' => $data->getRoutekey(),
+            'record' => $model->getRoutekey(),
         ])
         ->fillForm($data)
         ->call('save')
