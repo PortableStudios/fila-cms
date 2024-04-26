@@ -116,6 +116,38 @@ class PageResourceTest extends TestCase
         $model = TargetModel::orderBy('id', 'desc')->first();
 
         $this->assertTrue($model->Seo instanceof SEO);
+        $this->assertEquals($model->Seo->title, Str::limit($model->title, 57));
+    }
+
+    public function test_can_update_generated_seo(): void
+    {
+        $data = $this->generateModel(true);
+        $data['is_draft'] = 0;
+        $data['publish_at'] = now()->subday();
+        $data['expire_at'] = now()->addDay();
+
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+
+            ->fillForm($data)
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        // check last record
+        $model = TargetModel::orderBy('id', 'desc')->first();
+
+        $data['title'] = 'An updated title';
+
+        Livewire::test(TargetResource\Pages\EditPage::class, [
+            'record' => $model->getRoutekey(),
+        ])
+        ->fillForm($data)
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+        // Reload model
+        $model = TargetModel::find($model->id);
+
+        $this->assertTrue($model->Seo instanceof SEO);
         $this->assertEquals($model->Seo->title, $model->title);
     }
 

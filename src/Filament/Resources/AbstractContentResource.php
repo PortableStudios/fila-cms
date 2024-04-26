@@ -2,6 +2,7 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
+use Carbon\Carbon;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
@@ -16,15 +17,15 @@ use Filament\Forms\Components\View;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\Action;
-use Filament\Support\Enums\MaxWidth;
+
+
 use FilamentTiptapEditor\Enums\TiptapOutput;
-
-
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -39,7 +40,6 @@ use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
 use RalphJSmit\Filament\Components\Forms as HandyComponents;
-use Carbon\Carbon;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -199,7 +199,7 @@ class AbstractContentResource extends AbstractResource
                             return new HtmlString(
                                 Str::of("<span style=\"color: rgba(var(--{$lengthStatus}-500),var(--tw-text-opacity))\">" . strlen($state) . '</span>')
                                     ->append(' / ')
-                                    ->append(160 . ' ')
+                                    ->append(60 . ' ')
                                     ->append('characters')
                             );
                         })
@@ -267,8 +267,8 @@ class AbstractContentResource extends AbstractResource
                 ->afterStateHydrated(function (Group $component, ?Model $record) use ($only): void {
                     $data = $record?->seo?->only($only) ?: [];
                     if($record) {
-                        $data['override_seo_title'] = $data['title'] !== $record?->title;
-                        $data['override_seo_description'] = $data['description'] !== $record?->excerpt;
+                        $data['override_seo_title'] = $data['title'] !== Str::limit($record?->title, 57);
+                        $data['override_seo_description'] = $data['description'] !== Str::limit($record?->excerpt, 157);
                     }
                     $component->getChildComponentContainer()->fill(
                         $data
@@ -276,13 +276,16 @@ class AbstractContentResource extends AbstractResource
                 })
                 ->statePath('seo')
                 ->dehydrated(false)
-                ->saveRelationshipsUsing(function (Model $record, array $state) use ($only) {
+                ->saveRelationshipsUsing(function (Model $record, Group $group, array $state) use ($only) {
+                    $formData = $group->getContainer()->getLivewire()->data;
+                    $record->title = $formData['title'];
+                    $record->contents = $formData['contents'];
                     if($state['override_seo_title'] === false) {
-                        $state['title'] = $record->title;
+                        $state['title'] = Str::limit($record->title, 57);
                     }
 
                     if($state['override_seo_description'] === false) {
-                        $state['description'] = $record->excerpt;
+                        $state['description'] = Str::limit($record->excerpt, 157);
                     }
 
                     $state = collect($state)->only($only)->map(fn ($value) => $value ?: null)->all();
