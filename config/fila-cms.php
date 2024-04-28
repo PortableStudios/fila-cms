@@ -10,6 +10,7 @@ return [
         \Portable\FilaCms\Plugins\AuthorsPlugin::class,
         \Portable\FilaCms\Plugins\TaxonomyPlugin::class,
         \Portable\FilaCms\Plugins\PagesPlugin::class,
+        \Portable\FilaCms\Plugins\MenusPlugin::class,
     ],
     'users' => [
         // The fields that appear in the column listing, and on the edit page
