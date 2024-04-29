@@ -38,14 +38,6 @@ class MenuItem extends Model
     public static function boot()
     {
         parent::boot();
-
-        static::saving(function ($menuItem) {
-            return;
-            unset($menuItem->attributes['reference_page']);
-            unset($menuItem->attributes['reference_content']);
-            unset($menuItem->attributes['reference_text']);
-            $menuItem->attributes['reference'] = $menuItem->reference;
-        });
     }
 
     public function parent()
