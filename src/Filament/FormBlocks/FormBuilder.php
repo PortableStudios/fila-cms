@@ -2,7 +2,10 @@
 
 namespace Portable\FilaCms\Filament\FormBlocks;
 
+use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Builder;
+use Illuminate\Support\Facades\Blade;
+use Portable\FilaCms\Data\DummyForm;
 use Portable\FilaCms\Facades\FilaCms;
 
 class FormBuilder extends Builder
@@ -29,6 +32,24 @@ class FormBuilder extends Builder
         }
 
         return $fields;
+    }
 
+    public static function getDisplayFields($fieldData, $fieldValues): string
+    {
+        $fields = static::getFields($fieldData);
+        $dummyForm = new DummyForm();
+
+        $container = new ComponentContainer($dummyForm);
+        $container->schema($fields);
+        $container->fill($fieldValues);
+
+        $fieldsHtml = '';
+
+        $view = $container->render();
+
+        $fieldsHtml = Blade::render($view, ['this' => $container]);
+
+        $fieldsHtml = $container->render()->render();
+        return $fieldsHtml;
     }
 }

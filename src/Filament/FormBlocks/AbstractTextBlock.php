@@ -21,7 +21,20 @@ abstract class AbstractTextBlock extends AbstractFormBlock
                         ->label('Field Name')
                         ->default($this->getName())
                         ->required(),
-                    Select::make('text_type')
+                    static::getTypeSelector(),
+
+                ]),
+                Grid::make('settings')
+                    ->columns(3)
+                    ->schema(function () {
+                        return static::getRequirementFields();
+                    }),
+                ];
+    }
+
+    protected static function getTypeSelector()
+    {
+        return Select::make('text_type')
                         ->label('Text Type')
                         ->default('text')
                         ->options([
@@ -31,15 +44,7 @@ abstract class AbstractTextBlock extends AbstractFormBlock
                             'password' => 'Password',
                             'url' => 'URL',
                             'tel' => 'Telephone',
-                        ]),
-
-                ]),
-                Grid::make('settings')
-                    ->columns(3)
-                    ->schema(function () {
-                        return static::getRequirementFields();
-                    }),
-                ];
+                        ]);
     }
 
     protected static function createField($fieldData)

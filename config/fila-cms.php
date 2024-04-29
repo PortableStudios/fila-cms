@@ -3,6 +3,7 @@
 use Portable\FilaCms\Filament\FormBlocks\CheckboxBlock;
 use Portable\FilaCms\Filament\FormBlocks\CheckboxListBlock;
 use Portable\FilaCms\Filament\FormBlocks\ColumnBlock;
+use Portable\FilaCms\Filament\FormBlocks\DateTimeInputBlock;
 use Portable\FilaCms\Filament\FormBlocks\InformationBlock;
 use Portable\FilaCms\Filament\FormBlocks\RadioBlock;
 use Portable\FilaCms\Filament\FormBlocks\RelationshipBlock;
@@ -41,6 +42,7 @@ return [
             InformationBlock::class,
             TextInputBlock::class,
             TextAreaBlock::class,
+            DateTimeInputBlock::class,
             RadioBlock::class,
             CheckboxBlock::class,
             CheckboxListBlock::class,

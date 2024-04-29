@@ -10,6 +10,7 @@ use Livewire\Component;
 use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 use Portable\FilaCms\Models\Form as ModelsForm;
 use Portable\FilaCms\Models\FormEntry;
+use Portable\FilaCms\Notifications\FormSubmittedNotification;
 
 class FormShow extends Component implements HasForms
 {
@@ -22,23 +23,28 @@ class FormShow extends Component implements HasForms
 
     public function mount(string $slug): void
     {
-        $this->record = ModelsForm::where('slug', $slug)->firstOrFail();
+        $this->record = ModelsForm::where('slug', $slug)->first();
+        if(!$this->record || ($this->record->only_for_logged_in && !auth()->user())) {
+            abort(404);
+        }
         $this->form->fill();
     }
 
     public function form(Form $form): Form
     {
-        return $form->schema(FormBuilder::getFields($this->record->fields));
+        return $form->schema(FormBuilder::getFields($this->record->fields))->statePath('data');
     }
 
     public function submitForm()
     {
-        FormEntry::create([
+        $entry = FormEntry::create([
             'form_id' => $this->record->id,
             'user_id' => auth()->user()?->id,
             'fields' => $this->record->fields,
             'values' => $this->data,
         ]);
+
+        $entry->form->notify(new FormSubmittedNotification($entry));
 
         $this->submitted = true;
     }

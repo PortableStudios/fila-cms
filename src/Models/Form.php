@@ -4,6 +4,7 @@ namespace Portable\FilaCms\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Portable\FilaCms\Contracts\HasSlug;
 use Portable\FilaCms\Facades\FilaCms;
 
@@ -11,6 +12,7 @@ class Form extends Model
 {
     use HasSlug;
     use HasFactory;
+    use Notifiable;
 
     protected $fillable = [
         'title',
@@ -37,6 +39,7 @@ class Form extends Model
             $form->user_id = auth()->user() ? auth()->user()->id : FilaCms::systemUser()->id;
         });
     }
+
     public function entries()
     {
         return $this->hasMany(FormEntry::class);
@@ -45,5 +48,10 @@ class Form extends Model
     public function user()
     {
         return $this->belongsTo(config('auth.providers.users.model'));
+    }
+
+    public function routeNotificationForMail($notification)
+    {
+        return $this->notification_email;
     }
 }

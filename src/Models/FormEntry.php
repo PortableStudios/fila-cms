@@ -2,7 +2,9 @@
 
 namespace Portable\FilaCms\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class FormEntry extends Model
 {
@@ -18,4 +20,16 @@ class FormEntry extends Model
         'values' => 'json',
         'fields' => 'json'
     ];
+
+    public function form()
+    {
+        return $this->belongsTo(Form::class);
+    }
+
+    public function displayHtml(): Attribute
+    {
+        return new Attribute(function () {
+            return FormBuilder::getDisplayFields($this->fields, $this->values);
+        });
+    }
 }
