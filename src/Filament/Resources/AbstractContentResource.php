@@ -292,6 +292,7 @@ class AbstractContentResource extends AbstractResource
                         ->schema([
                             TextInput::make('url')
                                 ->unique(ignoreRecord: true)
+                                ->rules(['alpha_dash'])
                                 ->live(onBlur: true)
                                 ->required()
                                 ->hintColor('info')
@@ -315,19 +316,12 @@ class AbstractContentResource extends AbstractResource
 
                         ])
                         ->itemLabel(function (array $state) use ($prefixUrl) {
-
                             $label = '';
                             if($state['enable'] === false) {
                                 $label .= '[Disabled] - ';
                             }
-
                             $label .= $prefixUrl . Str::slug($state['url'] ?? null);
-
                             return $label;
-                        })
-                        ->mutateRelationshipDataBeforeFillUsing(function (array $data): array {
-                            $data['url'] = Str::slug($data['url']);
-                            return $data;
                         })
                         ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
                             $data['url'] = Str::slug($data['url']);
