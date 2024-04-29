@@ -4,17 +4,16 @@ namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Get;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
-use Portable\FilaCms\Models\Menu;
-use Portable\FilaCms\Models\MenuItem;
+use Illuminate\Support\Str;
+use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\MenuItemResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
-use Portable\FilaCms\Facades\FilaCms;
-use Illuminate\Support\Str;
+use Portable\FilaCms\Models\MenuItem;
 
 class MenuItemResource extends AbstractResource
 {
@@ -31,44 +30,8 @@ class MenuItemResource extends AbstractResource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->columnSpan(2)
-                    ->required(),
-                Forms\Components\Select::make('type')
-                    ->columnSpan(2)
-                    ->options([
-                        'page' => 'Page',
-                        'content' => 'Content',
-                        'url'  => 'URL',
-                    ])
-                    ->default('page')
-                    ->selectablePlaceholder(false)
-                    ->live()
-                    ->required(),
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Select::make('reference_page')
-                            ->label('Page')
-                            ->visible(fn (Get $get) => $get('type') !== 'url' ? true : false)
-                            ->options(FilaCms::getContentModels())
-                            ->required()
-                            ->live()
-                            ->columnSpan(2),
-                        Forms\Components\Select::make('reference_content')
-                            ->label('Content')
-                            ->visible(fn (Get $get) => $get('type') === 'content' ? true : false)
-                            ->getSearchResultsUsing(fn (string $search, Get $get, MenuItemResource $resource): array => $resource->getContents($search, $get))
-                            ->getOptionLabelUsing(fn (string $value, MenuItemResource $resource, Get $get): ?string => ($resource->getSourceModel($get('reference_page')))->select('id', 'title')->where('id', $value)->first()?->title)
-                            ->required()
-                            ->searchable()
-                            ->columnSpan(2),
-                        Forms\Components\TextInput::make('reference_text')
-                            ->visible(fn (Get $get) => $get('type') === 'url' ? true : false)
-                            ->label('Reference')
-                            ->columnSpan(2)
-                            ->required(),
-                    ])
-                    ->columnSpan(4)
-                    ->columns(4),
+                    ->required()
+                    ->columnSpan(2),
                 Forms\Components\Select::make('parent_id')
                     ->label('Parent')
                     ->columnSpan(2)
@@ -90,6 +53,43 @@ class MenuItemResource extends AbstractResource
                             ->get()
                             ->pluck('name', 'id');
                     }),
+                Forms\Components\TextInput::make('order')->required()->numeric()->columnSpan(2),
+                Forms\Components\Select::make('type')
+                    ->options([
+                        'index-page' => 'Content Listing Page',
+                        'content' => 'Content Detail Page',
+                        'url'  => 'URL',
+                    ])
+                    ->default('content')
+                    ->selectablePlaceholder(false)
+                    ->columnSpan(2)
+                    ->live()
+                    ->required(),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Select::make('reference_page')
+                            ->label('Content Type')
+                            ->visible(fn (Get $get) => $get('type') !== 'url' ? true : false)
+                            ->options(FilaCms::getContentModels())
+                            ->required()
+                            ->live()
+                            ->columnSpan(2),
+                        Forms\Components\Select::make('reference_content')
+                            ->label('Content Item')
+                            ->visible(fn (Get $get) => $get('type') === 'content' ? true : false)
+                            ->getSearchResultsUsing(fn (string $search, Get $get, MenuItemResource $resource): array => $resource->getContents($search, $get))
+                            ->getOptionLabelUsing(fn (string $value, MenuItemResource $resource, Get $get): ?string => ($resource->getSourceModel($get('reference_page')))->select('id', 'title')->where('id', $value)->first()?->title)
+                            ->required()
+                            ->searchable()
+                            ->columnSpan(2),
+                        Forms\Components\TextInput::make('reference_text')
+                            ->visible(fn (Get $get) => $get('type') === 'url' ? true : false)
+                            ->label('URL')
+                            ->columnSpan(2)
+                            ->required(),
+                    ])
+                    ->columnSpan(4)
+                    ->columns(4),
             ])
             ->columns(4);
     }
@@ -120,7 +120,7 @@ class MenuItemResource extends AbstractResource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])->defaultSort('order');
     }
 
     public static function getRelations(): array

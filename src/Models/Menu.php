@@ -2,15 +2,17 @@
 
 namespace Portable\FilaCms\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Menu extends Model
 {
     use Versionable;
     use SoftDeletes;
+    use HasFactory;
 
     protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
@@ -23,7 +25,7 @@ class Menu extends Model
         'name',
         'type',
     ];
-    
+
     public function items()
     {
         return $this->hasMany(MenuItem::class, 'menu_id');

@@ -5,14 +5,13 @@ namespace Portable\FilaCms\Filament\Resources;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Get;
+use Filament\Tables\Table;
 
-use Portable\FilaCms\Models\Menu;
 use Portable\FilaCms\Filament\Resources\MenuResource\Pages;
 use Portable\FilaCms\Filament\Resources\MenuResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
+use Portable\FilaCms\Models\Menu;
 
 class MenuResource extends AbstractResource
 {
@@ -21,6 +20,7 @@ class MenuResource extends AbstractResource
     protected static ?string $model = Menu::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Content';
 
     public static function form(Form $form): Form
     {
