@@ -311,7 +311,9 @@ class AbstractContentResource extends AbstractResource
                                 ->offIcon('heroicon-m-eye-slash')
                                 ->onIcon('heroicon-m-eye'),
                             TextInput::make('hits')
-                                ->label('Total hits')
+                                ->label('Total views')
+                                ->default(0)
+                                ->integer()
                                 ->readOnly()
 
                         ])
