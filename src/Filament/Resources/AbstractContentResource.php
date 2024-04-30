@@ -300,6 +300,8 @@ class AbstractContentResource extends AbstractResource
                                 ->prefix($prefixUrl)
                                 ->suffixIcon('heroicon-m-globe-alt'),
                             Select::make('redirect_status')
+                                ->hintColor('info')
+                                ->hintIcon('heroicon-m-question-mark-circle', tooltip: "When you set up a 301 permanent redirect, any changes you make to enable or disable it won't apply until you clear your browser's cache.")
                                 ->options([
                                     '301' => '301 - Permanent',
                                     '302' => '302 - Temporary'
