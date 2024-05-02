@@ -48,7 +48,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         }
         //$this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
 
-        $this->loadViewsFrom(__DIR__ . '/../../views', 'fila-cms');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'fila-cms');
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
         \Filament\Support\Facades\FilamentIcon::register([
