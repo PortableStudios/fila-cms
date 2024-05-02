@@ -53,7 +53,6 @@ class MenuItemResource extends AbstractResource
                             ->get()
                             ->pluck('name', 'id');
                     }),
-                Forms\Components\TextInput::make('order')->required()->numeric()->columnSpan(2),
                 Forms\Components\Select::make('type')
                     ->options([
                         'index-page' => 'Content Listing Page',
@@ -77,6 +76,7 @@ class MenuItemResource extends AbstractResource
                         Forms\Components\Select::make('reference_content')
                             ->label('Content Item')
                             ->visible(fn (Get $get) => $get('type') === 'content' ? true : false)
+                            ->hidden(fn (Get $get) => $get('reference_page') === null)
                             ->getSearchResultsUsing(fn (string $search, Get $get, MenuItemResource $resource): array => $resource->getContents($search, $get))
                             ->getOptionLabelUsing(fn (string $value, MenuItemResource $resource, Get $get): ?string => ($resource->getSourceModel($get('reference_page')))->select('id', 'title')->where('id', $value)->first()?->title)
                             ->required()
@@ -102,9 +102,12 @@ class MenuItemResource extends AbstractResource
     public static function table(Table $table): Table
     {
         return $table
+            ->reorderable('order')
+            ->paginated([25, 50, 100, 'All'])
             ->columns([
                 TextColumn::make('name')->sortable(),
                 TextColumn::make('type')->label('Type'),
+                TextColumn::make('order')->label('Order'),
                 TextColumn::make('parent.name')->label('Parent'),
             ])
             ->filters([
@@ -135,6 +138,10 @@ class MenuItemResource extends AbstractResource
         $data = [];
         $models = null;
         $source = $get('reference_page');
+
+        if (is_null($source)) {
+            return [];
+        }
 
         $models = ($this->getSourceModel($source))
             ->select('id', 'title')

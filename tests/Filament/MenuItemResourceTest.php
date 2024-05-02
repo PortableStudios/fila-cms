@@ -66,7 +66,9 @@ class MenuItemResourceTest extends TestCase
             'Item 4',
         ]);
 
-        $data[0]->update(['name' => 'Item 5', 'order' => 5]);
+        // item 4 is already order = 5, if sorted by order, order 5 comes first
+        // because they have the same order, and order 5 comes first via ID
+        $data[0]->update(['name' => 'Item 5', 'order' => 6]);
 
         Livewire::test(ItemsRelationManager::class, [
             'ownerRecord' => $menu,

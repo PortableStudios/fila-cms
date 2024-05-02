@@ -21,6 +21,7 @@ class MenuItem extends Model
     protected $versionable = [
         'name',
         'type',
+        'order',
         'reference',
         'parent_id',
     ];
@@ -38,6 +39,16 @@ class MenuItem extends Model
     public static function boot()
     {
         parent::boot();
+    }
+
+    public static function booted(): void
+    {
+        static::created(function (MenuItem $item) {
+            // auto-add order with end of list
+            $count = MenuItem::where('menu_id', $item->menu_id)->get()->count();
+            $item->order = $count;
+            $item->save();
+        });
     }
 
     public function parent()
