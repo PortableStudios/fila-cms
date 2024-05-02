@@ -46,7 +46,7 @@ class MenuItem extends Model
         static::created(function (MenuItem $item) {
             // auto-add order with end of list
             $count = MenuItem::where('menu_id', $item->menu_id)->max('order');
-            $item->order = $count;
+            $item->order = $count + 1;
             $item->save();
         });
     }
