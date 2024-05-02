@@ -266,7 +266,7 @@ Split::make([
                     'alt_text' => $data['alt_text'],
                     'size' => $data['upload_media']->getSize(),
                     'extension' => $data['upload_media']->getClientOriginalExtension(),
-                    'mime_type' => mime_content_type(Storage::disk($disk)->path($path . $filename)),
+                    'mime_type' => mime_content_type(Storage::disk($disk)->path($path .'/'. $filename)),
                     'width' => $width,
                     'height' => $height,
                     'is_folder' => false,

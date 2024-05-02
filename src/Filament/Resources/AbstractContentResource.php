@@ -315,6 +315,7 @@ class AbstractContentResource extends AbstractResource
                         ->schema([
                             TextInput::make('url')
                                 ->unique(ignoreRecord: true)
+                                ->rules(['alpha_dash'])
                                 ->live(onBlur: true)
                                 ->required()
                                 ->hintColor('info')
@@ -322,6 +323,8 @@ class AbstractContentResource extends AbstractResource
                                 ->prefix($prefixUrl)
                                 ->suffixIcon('heroicon-m-globe-alt'),
                             Select::make('redirect_status')
+                                ->hintColor('info')
+                                ->hintIcon('heroicon-m-question-mark-circle', tooltip: "When you set up a 301 permanent redirect, any changes you make to enable or disable it won't apply until you clear your browser's cache.")
                                 ->options([
                                     '301' => '301 - Permanent',
                                     '302' => '302 - Temporary'
@@ -333,24 +336,19 @@ class AbstractContentResource extends AbstractResource
                                 ->offIcon('heroicon-m-eye-slash')
                                 ->onIcon('heroicon-m-eye'),
                             TextInput::make('hits')
-                                ->label('Total hits')
+                                ->label('Total views')
+                                ->default(0)
+                                ->integer()
                                 ->readOnly()
 
                         ])
                         ->itemLabel(function (array $state) use ($prefixUrl) {
-
                             $label = '';
                             if($state['enable'] === false) {
                                 $label .= '[Disabled] - ';
                             }
-
                             $label .= $prefixUrl . Str::slug($state['url'] ?? null);
-
                             return $label;
-                        })
-                        ->mutateRelationshipDataBeforeFillUsing(function (array $data): array {
-                            $data['url'] = Str::slug($data['url']);
-                            return $data;
                         })
                         ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
                             $data['url'] = Str::slug($data['url']);
