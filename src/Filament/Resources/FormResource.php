@@ -4,6 +4,7 @@ namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -74,7 +75,10 @@ class FormResource extends AbstractResource
                         }
                     ])->maxLength(255),
                 Toggle::make('only_for_logged_in')->label('Restrict to logged in users'),
-                TextInput::make('notification_email')->email()->helperText('Email to send form submissions to.  Leave blank for no notifications.'),
+                Repeater::make('notification_emails')
+                        ->schema([
+                            TextInput::make('email')->email(),
+                        ])->helperText('Email to send form submissions to.  Leave blank for no notifications.'),
                 TextInput::make('confirmation_title')->required(),
                 FilaCms::tipTapEditor('confirmation_text')->required()->default(
                     tiptap_converter()->asJSON('Thank you for submitting the form.  We\'ll be in touch shortly.')

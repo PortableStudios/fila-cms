@@ -14,7 +14,7 @@ return new class () extends Migration {
             $table->id();
             $table->string('title');
             $table->string('slug');
-            $table->string('notification_email')->nullable();
+            $table->json('notification_emails')->nullable();
             $table->boolean('only_for_logged_in')->default(false);
             $table->string('confirmation_title')->nullable();
             $table->json('confirmation_text')->nullable();

@@ -16,7 +16,6 @@ class FormEntryFactory extends Factory
      */
     public function definition(): array
     {
-        $title = $this->faker->words(6, true);
         return [
             'status'     => $this->faker->randomElement(['New', 'Open', 'Closed']),
             'values' => [

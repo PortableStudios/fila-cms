@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
+use Portable\FilaCms\Notifications\FormSubmittedNotification;
 
 class FormEntry extends Model
 {
@@ -20,6 +21,15 @@ class FormEntry extends Model
         'values' => 'json',
         'fields' => 'json'
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->form->notify(new FormSubmittedNotification($model));
+        });
+    }
 
     public function form()
     {

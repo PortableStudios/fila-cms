@@ -19,7 +19,7 @@ class Form extends Model
         'slug',
         'only_for_logged_in',
         'confirmation_title',
-        'notification_email',
+        'notification_emails',
         'confirmation_text',
         'user_id',
         'fields'
@@ -28,6 +28,7 @@ class Form extends Model
     protected $casts = [
         'fields' => 'json',
         'confirmation_text' => 'json',
+        'notification_emails' => 'json',
         'only_for_logged_in' => 'boolean',
     ];
 
@@ -52,6 +53,7 @@ class Form extends Model
 
     public function routeNotificationForMail($notification)
     {
-        return $this->notification_email;
+        return collect($this->notification_emails)->pluck('email')->toArray();
+
     }
 }
