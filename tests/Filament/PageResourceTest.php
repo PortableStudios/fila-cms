@@ -359,6 +359,59 @@ class PageResourceTest extends TestCase
         $this->assertSame($sampleUrl, $model->shortUrls[0]->url);
     }
 
+    public function test_add_roles(): void
+    {
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->set('data.roleRestrictions.role_id', [\Spatie\Permission\Models\Role::first()->id])
+            ->fillForm([
+                'is_draft' => 0,
+                'title' => 'Test Page',
+                'contents' => $this->createContent()
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $model = TargetModel::orderBy('id', 'desc')->first();
+
+        $this->assertGreaterThan(0, $model->Roles->count());
+    }
+
+    public function test_check_role_access(): void
+    {
+        $adminRole = Role::where('name', 'Admin')->first();
+        $userRole = Role::where('name', 'User')->first();
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->set('data.roleRestrictions.role_id', [$adminRole->id])
+            ->fillForm([
+                'is_draft' => 0,
+                'title' => 'Test Page',
+                'contents' => $this->createContent()
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $model = TargetModel::orderBy('created_at', 'DESC')->first();
+
+        $user = $this->createUser();
+        $this->be($user);
+        $this->get(TargetResource::getUrl('edit', [
+            'record' => $model
+        ]))
+        ->assertForbidden();
+
+        $user->assignRole($adminRole);
+        $this->get(TargetResource::getUrl('edit', [
+            'record' => $model
+        ]))->assertSuccessful();
+
+        $user = $this->createUser();
+        $user->assignRole($userRole);
+        $this->be($user);
+        $this->get(TargetResource::getUrl('edit', [
+            'record' => $model
+        ]))->assertForbidden();
+    }
+
     public function generateModel($raw = false): TargetModel|array
     {
         $draft = $this->faker->numberBetween(0, 1);

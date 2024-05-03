@@ -85,6 +85,10 @@ class AbstractContentResource extends AbstractResource
                                 ->schema([
                                     ...static::getVanityURLFields(),
                                 ]),
+                            Tabs\Tab::make('Roles')
+                                ->schema([
+                                    ...static::getRoleRestrictionFields(),
+                                ]),
                         ])
                         ->persistTabInQueryString()
                 ])
@@ -371,6 +375,29 @@ class AbstractContentResource extends AbstractResource
                 ->dehydrated(false)
         ];
 
+    }
+
+    public static function getRoleRestrictionFields(): array
+    {
+        $roleRestrictionFields = [
+            Section::make('Allowed Roles')
+                ->compact()
+                ->description('List of roles that are allowed to access this content. If no role is selected, the content is hidden to non-authenticated viewers.')
+                ->schema([
+                    Select::make('role_id')
+                        ->relationship(name: 'roles', titleAttribute: 'name')
+                        ->searchable(false)
+                        ->preload()
+                        ->multiple(),
+                ])
+        ];
+
+        return [
+            Group::make()
+                ->schema($roleRestrictionFields)
+                ->statePath('roleRestrictions')
+                ->dehydrated(false)
+        ];
     }
 
     public static function tiptapEditor($name = 'contents'): TiptapEditor
