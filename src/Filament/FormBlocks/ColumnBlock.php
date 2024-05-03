@@ -8,6 +8,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Get;
+use Illuminate\Support\Collection;
 
 class ColumnBlock extends AbstractFormBlock
 {
@@ -16,6 +17,23 @@ class ColumnBlock extends AbstractFormBlock
     public static function getBlockName(): string
     {
         return 'Columns';
+    }
+
+    public static function displayHtml($fieldData, $values): string
+    {
+        $count = isset($fieldData['column_count']) ? $fieldData['column_count'] : 2;
+        $count = is_numeric($count) ? $count : 2;
+
+        $html = '<table width="100%"><tr>';
+        for($i = 0; $i < $count; $i++) {
+            $fieldData['column_' . $i] = isset($fieldData['column_' . $i]) ? $fieldData['column_' . $i] : [];
+            $html .= '<td width="' . (100 / $count) . '%">';
+            $html .= FormBuilder::getDisplayFields($fieldData['column_' . $i], $values);
+            $html .= '</td>';
+        }
+        $html .= '</html>';
+
+        return $html;
     }
 
     public function getSchema(): Closure|array
@@ -44,14 +62,28 @@ class ColumnBlock extends AbstractFormBlock
         };
     }
 
-    public static function createField($fieldData): Component
+    public static function getChildren($schema): Collection
+    {
+        $count = isset($schema['column_count']) ? $schema['column_count'] : 2;
+        $count = is_numeric($count) ? $count : 2;
+
+        $fields = collect();
+        for($i = 0; $i < $count; $i++) {
+            $kids = FormBuilder::getChildren(isset($schema['column_' . $i]) ? $schema['column_' . $i] : []);
+            $fields = $fields->merge($kids);
+        }
+
+        return $fields;
+    }
+
+    public static function createField($fieldData, $readOnly = false): Component
     {
         $count = isset($fieldData['column_count']) ? $fieldData['column_count'] : 2;
         $count = is_numeric($count) ? $count : 2;
 
         $columns = [];
         for($i = 0; $i < $count; $i++) {
-            $columns[] = Group::make(FormBuilder::getFields(isset($fieldData['column_' . $i]) ? $fieldData['column_' . $i] : []));
+            $columns[] = Group::make(FormBuilder::getFields(isset($fieldData['column_' . $i]) ? $fieldData['column_' . $i] : [], $readOnly));
         }
 
         return Grid::make('columns')

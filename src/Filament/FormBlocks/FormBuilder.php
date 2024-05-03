@@ -2,10 +2,8 @@
 
 namespace Portable\FilaCms\Filament\FormBlocks;
 
-use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Builder;
-use Illuminate\Support\Facades\Blade;
-use Portable\FilaCms\Data\DummyForm;
+use Illuminate\Support\Collection;
 use Portable\FilaCms\Facades\FilaCms;
 
 class FormBuilder extends Builder
@@ -24,32 +22,43 @@ class FormBuilder extends Builder
         return $static;
     }
 
-    public static function getFields($fieldData): array
+    public static function getChildren($schema): Collection
     {
-        $fields = [];
-        foreach ($fieldData as $key => $field) {
-            $fields[] = (FilaCms::getFormBlock($field['type']))::getField($field['data']);
+        $fields = collect();
+
+        foreach($schema as $field) {
+            $kids = FilaCms::getFormBlock($field['type'])::getChildren($field['data']);
+            $fields = $fields->merge($kids);
         }
 
         return $fields;
     }
 
+    public static function getFields($fieldData, $readOnly = false): array
+    {
+        $fields = [];
+        foreach ($fieldData as $key => $field) {
+            $fields[] = (FilaCms::getFormBlock($field['type']))::getField($field['data'], $readOnly);
+        }
+
+        return $fields;
+    }
+
+    public function displayHtml($fieldDefs, $values)
+    {
+        $html = '';
+        foreach($fieldDefs as $fieldDef) {
+            $field = FilaCms::getFormBlock($fieldDef['type']);
+            $html .= $field::displayHtml($fieldDef['data'], $values);
+        }
+        return $html;
+
+    }
+
     public static function getDisplayFields($fieldData, $fieldValues): string
     {
-        $fields = static::getFields($fieldData);
-        $dummyForm = new DummyForm();
+        $builder = static::make('display');
 
-        $container = new ComponentContainer($dummyForm);
-        $container->schema($fields);
-        $container->fill($fieldValues);
-
-        $fieldsHtml = '';
-
-        $view = $container->render();
-
-        $fieldsHtml = Blade::render($view, ['this' => $container]);
-
-        $fieldsHtml = $container->render()->render();
-        return $fieldsHtml;
+        return $builder->displayHtml($fieldData, $fieldValues);
     }
 }

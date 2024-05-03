@@ -14,7 +14,7 @@ class RichTextBlock extends AbstractTextBlock
         return 'Rich Text';
     }
 
-    public static function createField($fieldData)
+    public static function createField($fieldData, $readOnly = false)
     {
         return FilaCms::tipTapEditor($fieldData['field_name'])
             ->default($fieldData['default_value']);

@@ -26,7 +26,7 @@ class InformationBlock extends AbstractFormBlock
         ];
     }
 
-    public static function createField($fieldData): Component
+    public static function createField($fieldData, $readOnly = false): Component
     {
         $field = Placeholder::make('information')
             ->hiddenLabel(true)

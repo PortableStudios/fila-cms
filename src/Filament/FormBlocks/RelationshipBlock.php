@@ -45,7 +45,7 @@ class RelationshipBlock extends AbstractFormBlock
                 ];
     }
 
-    protected static function createField($fieldData)
+    protected static function createField($fieldData, $readOnly = false)
     {
         if(!isset($fieldData['component_class'])) {
             $fieldData['component_class'] = Select::class;

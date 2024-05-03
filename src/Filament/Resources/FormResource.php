@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Filament\Resources;
 
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -14,6 +15,7 @@ use Filament\Tables\Table;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 use Portable\FilaCms\Filament\Resources\FormResource\Pages;
+use Portable\FilaCms\Filament\Resources\FormResource\RelationManagers\FormEntriesRelationManager;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Form as ModelsForm;
 
@@ -33,37 +35,56 @@ class FormResource extends AbstractResource
         $currentFields = [];
         $currentFields[] = Action::make('Add Field');
 
-        $fields = [
+        $fields = static::getFormDefinition();
+        return $form->schema($fields);
+    }
+
+    public static function getEntriesDefinition($form)
+    {
+        return [
+            Table::make($form->getLivewire())
+                ->columns([
+                    TextColumn::make('created_at')->label('Date Submitted')->sortable(),
+                ])
+        ];
+    }
+
+    public static function getFormDefinition()
+    {
+        $sections = [
             Section::make('Fields')
                 ->schema([FormBuilder::make('fields')->hiddenLabel()->columnSpanFull()])
                 ->columnSpan(2),
+
             Section::make('Form Information')->schema([
                 TextInput::make('title')->required()->autofocus(),
                 TextInput::make('slug')
                     ->rules([
-                    function (Get $get) {
-                        return function (string $attribute, $value, \Closure $fail) use ($get) {
-                            $data = ModelsForm::withoutGlobalScopes()->where('slug', $value)
-                                ->when($get('id') !== null, function ($query) use ($get) {
-                                    $query->whereNot('id', $get('id'));
-                                })
+                        function (Get $get) {
+                            return function (string $attribute, $value, \Closure $fail) use ($get) {
+                                $data = ModelsForm::withoutGlobalScopes()->where('slug', $value)
+                                    ->when($get('id') !== null, function ($query) use ($get) {
+                                        $query->whereNot('id', $get('id'));
+                                    })
                                 ->first();
-                            if (is_null($data) === false) {
-                                $fail('The :attribute already exists');
-                            }
-                        };
-                    }
-                ])->maxLength(255),
+                                if (is_null($data) === false) {
+                                    $fail('The :attribute already exists');
+                                }
+                            };
+                        }
+                    ])->maxLength(255),
                 Toggle::make('only_for_logged_in')->label('Restrict to logged in users'),
                 TextInput::make('notification_email')->email()->helperText('Email to send form submissions to.  Leave blank for no notifications.'),
                 TextInput::make('confirmation_title')->required(),
                 FilaCms::tipTapEditor('confirmation_text')->required()->default(
                     tiptap_converter()->asJSON('Thank you for submitting the form.  We\'ll be in touch shortly.')
                 )
-
             ])->columnSpan(1)
         ];
-        return $form->schema($fields)->columns(['lg' => 3]);
+
+        return [
+            Group::make($sections)->columns(['lg' => 3])->columnSpanFull()
+        ];
     }
 
     public static function table(Table $table): Table
@@ -89,7 +110,7 @@ class FormResource extends AbstractResource
     public static function getRelations(): array
     {
         return [
-            //
+            FormEntriesRelationManager::class
         ];
     }
 

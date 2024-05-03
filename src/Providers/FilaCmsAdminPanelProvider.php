@@ -51,6 +51,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
                 'Taxonomies',
                 'System',
             ])
+            ->databaseNotifications()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

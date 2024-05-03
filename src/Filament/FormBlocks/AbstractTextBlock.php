@@ -47,7 +47,7 @@ abstract class AbstractTextBlock extends AbstractFormBlock
                         ]);
     }
 
-    protected static function createField($fieldData)
+    protected static function createField($fieldData, $readOnly = false)
     {
         return (static::$componentClass)::make($fieldData['field_name'])
             ->default(isset($fieldData['default_value']) ? $fieldData['default_value'] : null);

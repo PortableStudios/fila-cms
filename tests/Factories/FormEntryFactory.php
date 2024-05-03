@@ -3,12 +3,11 @@
 namespace Portable\FilaCms\Tests\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Portable\FilaCms\Models\Form;
+use Portable\FilaCms\Models\FormEntry;
 
-class FormFactory extends Factory
+class FormEntryFactory extends Factory
 {
-    protected $model = Form::class;
+    protected $model = FormEntry::class;
 
     /**
      * Define the model's default state.
@@ -19,10 +18,11 @@ class FormFactory extends Factory
     {
         $title = $this->faker->words(6, true);
         return [
-            'title'     => $title,
-            'slug'      => Str::slug($title),
-            'confirmation_title'  => 'Thank You!',
-            'confirmation_text'    => tiptap_converter()->asJSON('<p>Thank you for submitting the form.</p>'),
+            'status'     => $this->faker->randomElement(['New', 'Open', 'Closed']),
+            'values' => [
+                'Your Name' => $this->faker->name,
+                'Telephone' => $this->faker->phoneNumber
+            ],
             'fields' => [
                 [
                     "type" => "Text Field",
