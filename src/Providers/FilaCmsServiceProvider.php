@@ -48,7 +48,13 @@ class FilaCmsServiceProvider extends ServiceProvider
         }
         //$this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
 
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'fila-cms');
+        $this->loadViewsFrom(
+            [
+                resource_path('views/fila-cms'),
+                __DIR__ . '/../../resources/views'
+            ],
+            'fila-cms'
+        );
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
         \Filament\Support\Facades\FilamentIcon::register([
@@ -131,7 +137,6 @@ class FilaCmsServiceProvider extends ServiceProvider
         });
 
         $this->registerSettingsFields();
-
     }
 
     protected function loadSettings()

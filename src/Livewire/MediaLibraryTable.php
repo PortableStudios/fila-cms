@@ -99,7 +99,7 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
 
     public function render(): View
     {
-        return view('fila-cms::livewire.media-library-table');
+        return view('fila-cms::admin.livewire.media-library-table');
     }
 
     protected function getDeleteAction(): Action
