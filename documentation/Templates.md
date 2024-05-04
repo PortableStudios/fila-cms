@@ -14,7 +14,5 @@ Everything above the main page content is rendered from this file
 **layouts/page-footer.blade.php**
 Everything below the main page content is rendered from this file.
 
-**autheset-pass
-
 **auth/reset-password.blade.php**
-The
+The "Reset Password" page
