@@ -49,7 +49,7 @@ abstract class AbstractFormBlock extends Block
         $field = static::getField($fieldData);
         $value = isset($values[$field->getName()]) ? $values[$field->getName()] : '';
 
-        return '<div><b>' . $field->getLabel() . '</b>: ' . $value . '</div>';
+        return '<div><strong>' . $field->getLabel() . '</strong>: ' . $value . '</div>';
     }
 
     protected static function applyRequirementFields(Component $field, array $fieldData): Component

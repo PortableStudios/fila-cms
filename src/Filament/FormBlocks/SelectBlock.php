@@ -3,12 +3,12 @@
 namespace Portable\FilaCms\Filament\FormBlocks;
 
 use Closure;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 
 class SelectBlock extends AbstractOptionsBlock
 {
-    protected Closure|string|null $icon = 'heroicon-o-queue-list';
+    protected Closure|string|null $icon = 'heroicon-o-chevron-up-down';
     protected static $componentClass = Select::class;
 
     public static function getBlockName(): string
@@ -19,13 +19,12 @@ class SelectBlock extends AbstractOptionsBlock
     protected static function getRequirementFields(): array
     {
         return [
-            Checkbox::make('required')
-                ->inline(false)
-                ->label('Required'),
-            Checkbox::make('multiselect')
+            Toggle::make('required')
+                ->inline(false),
+            Toggle::make('multiselect')
                 ->inline(false)
                 ->label('Multi-select'),
-            Checkbox::make('searchable')
+            Toggle::make('searchable')
                 ->inline(false)
                 ->label('Searchable'),
         ];

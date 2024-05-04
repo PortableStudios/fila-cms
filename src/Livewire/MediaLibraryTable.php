@@ -134,7 +134,7 @@ Split::make([
                     Group::make([
                         Placeholder::make('mediaModel.filename')
                             ->content(function () use ($media) {
-                                return new HtmlString('<b>' . $media->filename . '</b><br>' . $media->displaySize);
+                                return new HtmlString('<strong>' . $media->filename . '</strong><br>' . $media->displaySize);
                             })
                             ->hiddenLabel(true),
                         Placeholder::make('mediaModel.alt_text')

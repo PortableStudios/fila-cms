@@ -3,13 +3,13 @@
 namespace Portable\FilaCms\Filament\FormBlocks;
 
 use Closure;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Components\Toggle;
 
 class DateTimeInputBlock extends AbstractTextBlock
 {
@@ -67,9 +67,8 @@ class DateTimeInputBlock extends AbstractTextBlock
         $default = $state['date_type']::make('default_value')
             ->label('Default Value');
         return [
-            Checkbox::make('required')
-                ->inline(false)
-                ->label('Required')->live(),
+            Toggle::make('required')
+                ->inline(false),
             $default
         ];
     }

@@ -10,6 +10,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Model;
 use Portable\FilaCms\Facades\FilaCms;
@@ -115,9 +116,8 @@ class RelationshipBlock extends AbstractFormBlock
                 ->label('Component Class')
                 ->live()
                 ->required(),
-            Checkbox::make('required')
-                ->inline(false)
-                ->label('Required'),
+            Toggle::make('required')
+                ->inline(false),
             Checkbox::make('multiselect')
                 ->inline(false)
                 ->disabled(function (Get $get) {

@@ -3,11 +3,11 @@
 namespace Portable\FilaCms\Filament\FormBlocks;
 
 use Closure;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 
 abstract class AbstractTextBlock extends AbstractFormBlock
 {
@@ -77,9 +77,8 @@ abstract class AbstractTextBlock extends AbstractFormBlock
     protected static function getRequirementFields(): array
     {
         return [
-            Checkbox::make('required')
-                ->inline(false)
-                ->label('Required'),
+            Toggle::make('required')
+                ->inline(false),
             TextInput::make('max_length')
                 ->label('Max Length')
                 ->integer(true),
