@@ -66,8 +66,12 @@ class AddressInput extends Component implements CanEntangleWithSingularRelations
             Group::make([
                 TextInput::make('suburb')->placeholder('Suburb'),
                 Select::make('state')->placeholder('State')
-                    ->afterStateUpdated(function ($state, Set $set) {
-                        $set('country', '');
+                    ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                        $currentState = $get('state');
+                        if($currentState == '') {
+                            return;
+                        }
+                        $set('country', static::getCountry($currentState));
                     })
                     ->options(function (Get $get) {
                         $country = $get('country');
@@ -87,6 +91,14 @@ class AddressInput extends Component implements CanEntangleWithSingularRelations
     protected static function getCountries()
     {
         return collect(countries())->pluck('name', 'iso_3166_1_alpha2')->toArray();
+    }
+
+    public static function getCountry($state)
+    {
+        $country = collect(countries())->first(function ($country) use ($state) {
+            return collect(country($country['iso_3166_1_alpha2'])->getDivisions())->has($state);
+        });
+        return $country['iso_3166_1_alpha2'] ?? null;
     }
 
     public static function getStates($country = null)
