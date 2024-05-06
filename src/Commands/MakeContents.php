@@ -8,7 +8,7 @@ class MakeContents extends Command
 {
     protected $signature = 'make:filacms-contents {name?}';
 
-    protected $description = 'Creates a newmigration, model, resource and permission seeder for an abstract content item';
+    protected $description = 'Creates a new migration, model, resource and permission seeder for an abstract content item';
 
     public function handle()
     {
