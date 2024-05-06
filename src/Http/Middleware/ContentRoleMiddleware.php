@@ -30,6 +30,9 @@ class ContentRoleMiddleware
                 if (is_null($model) === false) {
                     $roles = $model->roles()->get()->pluck(['name']);
 
+                    if ($roles->count() === 0) {
+                        break;
+                    }
 
                     if ($roles->count() > 0 && $request->user() === null) {
                         abort(403);

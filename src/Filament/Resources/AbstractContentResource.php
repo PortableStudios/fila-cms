@@ -17,6 +17,7 @@ use Filament\Forms\Components\View;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
@@ -254,6 +255,13 @@ class AbstractContentResource extends AbstractResource
                                 'index, nofollow' => 'Index, No Follow',
                                 'noindex, nofollow' => 'No Index, No Follow',
                             ])
+                            ->disabled(function (Get $get, Set $set) {
+                                if (count($get('data.roleRestrictions.role_id', true)) > 0) {
+                                    $set('robots', 'noindex, nofollow');
+                                    return true;
+                                }
+                                return false;
+                            })
                             ->default('index, follow')
                             ->selectablePlaceholder(false)
                 ]),
@@ -388,7 +396,8 @@ class AbstractContentResource extends AbstractResource
                         ->relationship(name: 'roles', titleAttribute: 'name')
                         ->searchable(false)
                         ->preload()
-                        ->multiple(),
+                        ->multiple()
+                        ->live(),
                 ])
         ];
 
