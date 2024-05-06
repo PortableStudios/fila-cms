@@ -14,9 +14,9 @@ use Str;
 
 class RelatedResourceBlock extends TiptapBlock
 {
-    public string $preview = 'fila-cms::filament.blocks.previews.related-contents';
+    public string $preview = 'fila-cms::blocks.previews.related-contents';
 
-    public string $rendered = 'fila-cms::filament.blocks.rendered.related-contents';
+    public string $rendered = 'fila-cms::blocks.rendered.related-contents';
 
     public string $width = '5xl';
 

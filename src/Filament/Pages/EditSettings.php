@@ -21,7 +21,7 @@ class EditSettings extends Page implements HasForms
     public ?array $data = [];
     protected static ?string $title = 'Settings';
     protected static ?string $navigationIcon = 'heroicon-o-cog-8-tooth';
-    protected static string $view = 'fila-cms::filament.pages.edit-settings';
+    protected static string $view = 'fila-cms::admin.pages.edit-settings';
     protected static ?string $navigationGroup = 'System';
 
     public function mount(): void

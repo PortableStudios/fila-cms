@@ -53,6 +53,7 @@ class MakeContentPermissionSeeder extends Command
         $answer = $this->ask('Would you like to run the seeder now? (Y/n)');
 
         if (Str::lower($answer) === 'y') {
+            require_once($path . '/'.$model.'RoleAndPermissionSeeder.php');
             $this->call('db:seed', ['--class' => $model.'RoleAndPermissionSeeder']);
         }
 
