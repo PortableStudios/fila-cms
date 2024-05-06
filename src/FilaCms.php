@@ -149,15 +149,33 @@ class FilaCms
         if(!isset($thumbnailSizes[$size])) {
             throw new \Exception("Invalid thumbnail size");
         }
+        $width = $thumbnailSizes[$size]['width'];
+        $height = $thumbnailSizes[$size]['height'];
+
+        switch($media->mime_type) {
+            case 'application/pdf':
+                $filePath = dirname(__FILE__) . '/../resources/images/pdf-icon.png';
+                $manager = new ImageManager(GDDriver::class);
+                $image = $manager->read($filePath);
+                return $image->scaleDown($width, $height)->encodeByMediaType('image/png', 75);
+            default:
+                return $this->imageThumbnail($media, $width, $height);
+        }
+    }
+
+    protected function imageThumbnail(Media $media, $width, $height)
+    {
         $disk = Storage::disk($media->disk);
-
         $manager = new ImageManager(GDDriver::class);
-
         $imageBinary = $disk->get($media->filepath . '/' . $media->filename);
+        try {
+            $image = $manager->read($imageBinary);
+        } catch (\Exception $e) {
+            $filePath = dirname(__FILE__) . '/../resources/images/image-icon.png';
+            $image = $manager->read($filePath);
+        }
 
-        $image = $manager->read($imageBinary);
-
-        return $image->scaleDown($thumbnailSizes[$size]['width'], $thumbnailSizes[$size]['height'])->encodeByMediaType('image/png', 75);
+        return $image->scaleDown($width, $height)->encodeByMediaType('image/png', 75);
     }
 
     public function registerSetting(string $tab, string $group, int $order, Closure $fieldsCallback)
