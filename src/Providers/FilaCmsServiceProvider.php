@@ -187,10 +187,10 @@ class FilaCmsServiceProvider extends ServiceProvider
                 })->afterStateHydrated(function (AddressInput $component, $state) {
                     $component->state(json_decode($state, true));
                 })->columnSpanFull(),
-                TextInput::make('seo.organisation.facebook')->label('Facebook Url'),
-                TextInput::make('seo.organisation.linkedIn')->label('LinkedIn Url'),
-                TextInput::make('seo.organisation.instagram')->label('Instagram Url'),
-                TextInput::make('seo.organisation.twitter')->label('Twitter Url'),
+                TextInput::make('seo.organisation.facebook')->label('Facebook Url')->url(),
+                TextInput::make('seo.organisation.linkedIn')->label('LinkedIn Url')->url(),
+                TextInput::make('seo.organisation.instagram')->label('Instagram Url')->url(),
+                TextInput::make('seo.organisation.twitter')->label('Twitter Url')->url(),
             ];
         });
 
