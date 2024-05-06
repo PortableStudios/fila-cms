@@ -3,6 +3,7 @@
     {{ $this->form }}
 
     <div class="mt-4">&nbsp;</div>
+    <x-filament-actions::modals />
   </form>
 
 
