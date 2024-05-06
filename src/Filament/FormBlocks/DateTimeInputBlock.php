@@ -68,7 +68,7 @@ class DateTimeInputBlock extends AbstractTextBlock
             ->label('Default Value');
         return [
             Toggle::make('required')
-                ->inline(false),
+                ->inline(false)->live(),
             $default
         ];
     }
