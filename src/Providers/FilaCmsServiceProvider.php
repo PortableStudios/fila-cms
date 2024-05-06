@@ -185,7 +185,9 @@ class FilaCmsServiceProvider extends ServiceProvider
                 ->mutateDehydratedStateUsing(function ($state) {
                     return json_encode($state);
                 })->afterStateHydrated(function (AddressInput $component, $state) {
-                    $component->state(json_decode($state, true));
+                    if(is_string($state)) {
+                        $component->state(json_decode($state, true));
+                    }
                 })->columnSpanFull(),
                 TextInput::make('seo.organisation.facebook')->label('Facebook Url')->url(),
                 TextInput::make('seo.organisation.linkedIn')->label('LinkedIn Url')->url(),

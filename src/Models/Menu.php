@@ -23,7 +23,7 @@ class Menu extends Model
 
     protected $fillable = [
         'name',
-        'type',
+        'note',
     ];
 
     public function items()

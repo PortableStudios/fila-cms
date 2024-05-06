@@ -51,12 +51,21 @@ class MenuResourceTest extends TestCase
 
     public function test_can_create_record(): void
     {
+        $name = $this->faker->firstName;
+        $note = $this->faker->words(2);
+
         Livewire::test(MenuResource\Pages\CreateMenu::class)
             ->fillForm([
-                'name' => $this->faker->firstName,
+                'name' => $name,
+                'note' => $note
             ])
             ->call('create')
             ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas('menus', [
+            'name' => $name,
+            'note' => $note
+        ]);
 
         Livewire::test(MenuResource\Pages\CreateMenu::class)
             ->fillForm([
