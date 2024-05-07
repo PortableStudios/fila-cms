@@ -2,8 +2,10 @@
 
 namespace Portable\FilaCms\Tests\Filament;
 
+use Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\PageResource as TargetResource;
@@ -356,6 +358,65 @@ class PageResourceTest extends TestCase
             'url' => $sampleUrl
         ]);
         $this->assertSame($sampleUrl, $model->shortUrls[0]->url);
+    }
+
+    public function test_add_roles(): void
+    {
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->set('data.roleRestrictions.role_id', [\Spatie\Permission\Models\Role::first()->id])
+            ->fillForm([
+                'is_draft' => 0,
+                'title' => 'Test Page',
+                'contents' => $this->createContent()
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $model = TargetModel::orderBy('id', 'desc')->first();
+
+        $this->assertGreaterThan(0, $model->Roles->count());
+    }
+
+    public function test_check_role_access(): void
+    {
+        $adminRole = Role::where('name', 'Admin')->first();
+        $userRole = Role::where('name', 'User')->first();
+        Livewire::test(TargetResource\Pages\CreatePage::class)
+            ->set('data.roleRestrictions.role_id', [$adminRole->id])
+            ->fillForm([
+                'is_draft' => 0,
+                'title' => 'Test Page',
+                'contents' => $this->createContent()
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $model = TargetModel::orderBy('created_at', 'DESC')->first();
+
+        $user = $this->createUser();
+        $this->be($user);
+        $this->get(TargetResource::getUrl('edit', [
+            'record' => $model
+        ]))
+        ->assertForbidden();
+
+        $user->assignRole($adminRole);
+        $this->get(TargetResource::getUrl('edit', [
+            'record' => $model
+        ]))->assertSuccessful();
+
+        $user = $this->createUser();
+        $user->assignRole($userRole);
+        $this->be($user);
+        $this->get(TargetResource::getUrl('edit', [
+            'record' => $model
+        ]))->assertForbidden();
+
+        Auth::logout();
+        $this->call('GET', '/pages/' . $model->slug)->assertForbidden();
+
+        $model->roles()->delete();
+        $this->call('GET', '/pages/' . $model->slug)->assertSuccessful();
     }
 
     public function generateModel($raw = false): TargetModel|array

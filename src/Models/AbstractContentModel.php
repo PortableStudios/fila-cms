@@ -16,6 +16,7 @@ use Portable\FilaCms\Events\ContentCreating;
 use Portable\FilaCms\Events\ContentUpdating;
 use Portable\FilaCms\Exceptions\InvalidStatusException;
 use Portable\FilaCms\Facades\FilaCms;
+use Portable\FilaCms\Filament\Traits\HasContentRoles;
 use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasShortUrl;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
@@ -33,6 +34,7 @@ abstract class AbstractContentModel extends Model
     use SoftDeletes;
     use HasLocks;
     use HasSEO;
+    use HasContentRoles;
     use HasSlug;
 
     protected $table = 'contents';

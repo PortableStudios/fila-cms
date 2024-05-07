@@ -6,6 +6,7 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Process;
 use Orchestra\Testbench\Attributes\WithMigration;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 
@@ -47,6 +48,13 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         Factory::guessFactoryNamesUsing(function (string $modelName) {
             return (string) '\\Portable\\FilaCms\\Tests\\Factories\\'.(class_basename($modelName)).'Factory';
         });
+
+        File::copy(getcwd() . '/vite.config.js', resource_path('../vite.config.js'));
+        File::ensureDirectoryExists(resource_path('css'));
+        File::copy(getcwd() . '/resources/css/filacms.css', resource_path('css/filacms.css'));
+        File::copy(getcwd() . '/package.json', resource_path('../package.json'));
+        Process::path(app_path())->run('npm run build');
+
     }
 
     protected function defineEnvironment($app)

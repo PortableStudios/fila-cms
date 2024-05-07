@@ -116,7 +116,7 @@ class FilaCms
             $feShowComponent = method_exists($resourceClass, 'getFrontendShowComponent') ? $resourceClass::getFrontendShowComponent() : ContentResourceShow::class;
 
             Route::group(
-                ['prefix' => $prefix, 'middleware' => 'web'],
+                ['prefix' => $prefix, 'middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
                 function () use ($feShowComponent, $prefix, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
                     if ($registerIndex) {
                         Route::get('/', $feIndexComponent)
@@ -129,6 +129,11 @@ class FilaCms
                 }
             );
         }
+    }
+
+    public function getRawContentModels()
+    {
+        return static::$contentModels;
     }
 
     public function shortUrlRoutes()
