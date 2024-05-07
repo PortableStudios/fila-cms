@@ -7,6 +7,7 @@ use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -14,7 +15,6 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Support\Enums\MaxWidth;
@@ -24,14 +24,12 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
-
-use FilamentTiptapEditor\Enums\TiptapOutput;
-use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Forms\Components\StatusBadge;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
@@ -71,7 +69,7 @@ class AbstractContentResource extends AbstractResource
                                     TextInput::make('title')
                                         ->columnSpanFull()
                                         ->required(),
-                                    static::tiptapEditor()->output(\FilamentTiptapEditor\Enums\TiptapOutput::Json),
+                                    FilaCms::tiptapEditor('contents'),
                                 ]),
                             Tabs\Tab::make('Taxonomies')
                                 ->schema([
@@ -371,17 +369,6 @@ class AbstractContentResource extends AbstractResource
                 ->dehydrated(false)
         ];
 
-    }
-
-    public static function tiptapEditor($name = 'contents'): TiptapEditor
-    {
-        return TiptapEditor::make($name)
-            ->profile('default')
-            ->extraInputAttributes(['style' => 'min-height: 24rem;'])
-            ->required()
-            ->columnSpanFull()
-            ->collapseBlocksPanel(true)
-            ->output(TiptapOutput::Json);
     }
 
     public static function table(Table $table): Table

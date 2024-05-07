@@ -14,7 +14,6 @@ use Portable\FilaCms\Models\TaxonomyTerm;
 use Portable\FilaCms\Tests\TestCase;
 use RalphJSmit\Laravel\SEO\Models\SEO;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Str;
 
 class PageResourceTest extends TestCase
 {

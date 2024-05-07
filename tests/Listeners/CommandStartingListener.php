@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Process;
+use Portable\FilaCms\Tests\Factories\FormEntryFactory;
+use Portable\FilaCms\Tests\Factories\FormFactory;
 use Portable\FilaCms\Tests\Factories\PageFactory;
 
 class CommandStartingListener
@@ -56,5 +58,11 @@ class CommandStartingListener
 
         Process::path(app_path())->forever()->start('npm run dev');
         PageFactory::new()->count(10)->create();
+        $form = FormFactory::new()->create([
+            'title' => 'Contact Us',
+            'slug' => 'contact-us'
+        ]);
+
+        FormEntryFactory::new(['form_id' => $form->id])->count(5)->create();
     }
 }
