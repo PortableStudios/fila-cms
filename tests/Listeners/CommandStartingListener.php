@@ -6,6 +6,7 @@ use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Process;
 use Portable\FilaCms\Tests\Factories\FormEntryFactory;
 use Portable\FilaCms\Tests\Factories\FormFactory;
 use Portable\FilaCms\Tests\Factories\PageFactory;
@@ -36,12 +37,12 @@ class CommandStartingListener
         File::delete(resource_path('css/filament/admin/tailwind.config.js'));
         File::delete(resource_path('css/filament/admin/theme.css'));
 
+        Artisan::call('fila-cms:install', ['--publish-config' => true,'--run-migrations' => true,'--add-user-traits' => true]);
+
         File::copy(getcwd() . '/vite.config.js', resource_path('../vite.config.js'));
         File::ensureDirectoryExists(resource_path('css'));
         File::copy(getcwd() . '/resources/css/filacms.css', resource_path('css/filacms.css'));
         File::copy(getcwd() . '/package.json', resource_path('../package.json'));
-
-        Artisan::call('fila-cms:install', ['--publish-config' => true,'--run-migrations' => true,'--add-user-traits' => true]);
 
         // Ensure there's an admin user
         $userModel = config('auth.providers.users.model');
@@ -55,6 +56,7 @@ class CommandStartingListener
         $admin->save();
         $admin->assignRole('Admin');
 
+        Process::path(app_path())->forever()->start('npm run dev');
         PageFactory::new()->count(10)->create();
         $form = FormFactory::new()->create([
             'title' => 'Contact Us',

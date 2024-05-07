@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b1d5739f80466500a48bb67c12e96f9",
+    "content-hash": "47df94fcf48ee5d12b56508f68d72b26",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -5259,6 +5259,50 @@
                 }
             ],
             "time": "2023-11-12T21:59:55+00:00"
+        },
+        {
+            "name": "portable/laravel-db-tools",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PortableStudios/laravel-db-tools.git",
+                "reference": "685636f3d2fd5a3e995d83bf6fead50cd547f873"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PortableStudios/laravel-db-tools/zipball/685636f3d2fd5a3e995d83bf6fead50cd547f873",
+                "reference": "685636f3d2fd5a3e995d83bf6fead50cd547f873",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Portable\\LaravelDbTools\\LaravelDbToolsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Portable\\LaravelDbTools\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kath Young",
+                    "email": "kath.young@portable.com.au"
+                }
+            ],
+            "description": "Database import and export for Artisan",
+            "support": {
+                "issues": "https://github.com/PortableStudios/laravel-db-tools/issues",
+                "source": "https://github.com/PortableStudios/laravel-db-tools/tree/v1.0.1"
+            },
+            "time": "2023-03-17T00:43:44+00:00"
         },
         {
             "name": "pragmarx/google2fa",

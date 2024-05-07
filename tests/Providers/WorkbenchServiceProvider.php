@@ -25,6 +25,7 @@ class WorkbenchServiceProvider extends EventServiceProvider
         }
 
         config(['mail.mailers.smtp.host' => 'localhost']);
+        config(['cache.default' => 'array']);
     }
 
     /**

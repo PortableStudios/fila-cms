@@ -13,6 +13,12 @@ class ImagePicker extends Field
 
     protected ?bool $isLive = true;
 
+    public function hasImage()
+    {
+        $model = $this->getState();
+        return (bool)$model;
+    }
+
     public function currentImage()
     {
         $model = $this->getState();
