@@ -39,6 +39,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                 \Portable\FilaCms\Commands\MakeContentMigration::class,
                 \Portable\FilaCms\Commands\MakeContentModel::class,
                 \Portable\FilaCms\Commands\MakeContentPermissionSeeder::class,
+                \Portable\FilaCms\Commands\MakeContents::class,
             ]);
         }
         $this->loadRoutesFrom(__DIR__ . '/../../routes/filacms-routes.php');
@@ -48,7 +49,13 @@ class FilaCmsServiceProvider extends ServiceProvider
         }
         //$this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
 
-        $this->loadViewsFrom(__DIR__ . '/../../views', 'fila-cms');
+        $this->loadViewsFrom(
+            [
+                resource_path('views/fila-cms'),
+                __DIR__ . '/../../resources/views'
+            ],
+            'fila-cms'
+        );
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
         \Filament\Support\Facades\FilamentIcon::register([
@@ -58,6 +65,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         Livewire::component('portable.fila-cms.livewire.content-resource-list', \Portable\FilaCms\Livewire\ContentResourceList::class);
         Livewire::component('portable.fila-cms.livewire.content-resource-show', \Portable\FilaCms\Livewire\ContentResourceShow::class);
         Livewire::component('media-library-table', \Portable\FilaCms\Livewire\MediaLibraryTable::class);
+        Livewire::component('form-show', \Portable\FilaCms\Livewire\FormShow::class);
         Blade::componentNamespace('Portable\\FilaCms\\Views\\Components', 'fila-cms');
         config(['versionable.user_model' => config('auth.providers.users.model')]);
 
@@ -131,7 +139,6 @@ class FilaCmsServiceProvider extends ServiceProvider
         });
 
         $this->registerSettingsFields();
-
     }
 
     protected function loadSettings()
@@ -181,10 +188,10 @@ class FilaCmsServiceProvider extends ServiceProvider
                 })->afterStateHydrated(function (AddressInput $component, $state) {
                     $component->state(json_decode($state, true));
                 })->columnSpanFull(),
-                TextInput::make('seo.organisation.facebook')->label('Facebook Url'),
-                TextInput::make('seo.organisation.linkedIn')->label('LinkedIn Url'),
-                TextInput::make('seo.organisation.instagram')->label('Instagram Url'),
-                TextInput::make('seo.organisation.twitter')->label('Twitter Url'),
+                TextInput::make('seo.organisation.facebook')->label('Facebook Url')->url(),
+                TextInput::make('seo.organisation.linkedIn')->label('LinkedIn Url')->url(),
+                TextInput::make('seo.organisation.instagram')->label('Instagram Url')->url(),
+                TextInput::make('seo.organisation.twitter')->label('Twitter Url')->url(),
             ];
         });
 

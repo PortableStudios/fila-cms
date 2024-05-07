@@ -1,5 +1,17 @@
 <?php
 
+use Portable\FilaCms\Filament\FormBlocks\CheckboxBlock;
+use Portable\FilaCms\Filament\FormBlocks\CheckboxListBlock;
+use Portable\FilaCms\Filament\FormBlocks\ColumnBlock;
+use Portable\FilaCms\Filament\FormBlocks\DateTimeInputBlock;
+use Portable\FilaCms\Filament\FormBlocks\InformationBlock;
+use Portable\FilaCms\Filament\FormBlocks\RadioBlock;
+use Portable\FilaCms\Filament\FormBlocks\RelationshipBlock;
+use Portable\FilaCms\Filament\FormBlocks\RichTextBlock;
+use Portable\FilaCms\Filament\FormBlocks\SelectBlock;
+use Portable\FilaCms\Filament\FormBlocks\TextAreaBlock;
+use Portable\FilaCms\Filament\FormBlocks\TextInputBlock;
+
 return [
     'use_admin_panel' => true,
     'admin_prefix' => 'admin',
@@ -10,6 +22,7 @@ return [
         \Portable\FilaCms\Plugins\AuthorsPlugin::class,
         \Portable\FilaCms\Plugins\TaxonomyPlugin::class,
         \Portable\FilaCms\Plugins\PagesPlugin::class,
+        \Portable\FilaCms\Plugins\FormsPlugin::class,
         \Portable\FilaCms\Plugins\MenusPlugin::class,
     ],
     'users' => [
@@ -24,6 +37,21 @@ return [
     ],
     'editor' => [
         'media_action' => \Portable\FilaCms\Filament\Actions\MediaAction::class,
+    ],
+    'forms' => [
+        'blocks' => [
+            InformationBlock::class,
+            TextInputBlock::class,
+            TextAreaBlock::class,
+            DateTimeInputBlock::class,
+            RadioBlock::class,
+            CheckboxBlock::class,
+            CheckboxListBlock::class,
+            RichTextBlock::class,
+            SelectBlock::class,
+            RelationshipBlock::class,
+            ColumnBlock::class,
+        ]
     ],
     'media_library' => [
         'allow_root_uploads' => false,

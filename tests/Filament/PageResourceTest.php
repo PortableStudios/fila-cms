@@ -2,8 +2,10 @@
 
 namespace Portable\FilaCms\Tests\Filament;
 
+use Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\PageResource as TargetResource;
@@ -14,8 +16,6 @@ use Portable\FilaCms\Models\TaxonomyTerm;
 use Portable\FilaCms\Tests\TestCase;
 use RalphJSmit\Laravel\SEO\Models\SEO;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Str;
-use Auth;
 
 class PageResourceTest extends TestCase
 {

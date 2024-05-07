@@ -4,6 +4,8 @@ namespace Portable\FilaCms;
 
 use Closure;
 use Filament\Facades\Filament;
+use FilamentTiptapEditor\Enums\TiptapOutput;
+use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -92,6 +94,17 @@ class FilaCms
         return $options;
     }
 
+    public function formRoutes()
+    {
+        Route::group(
+            ['prefix' => 'form', 'middleware' => 'web'],
+            function () {
+                Route::get('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name('form.show');
+                Route::post('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name('form.submit');
+            }
+        );
+    }
+
     public function contentRoutes()
     {
         $this->getContentModels();
@@ -154,15 +167,33 @@ class FilaCms
         if(!isset($thumbnailSizes[$size])) {
             throw new \Exception("Invalid thumbnail size");
         }
+        $width = $thumbnailSizes[$size]['width'];
+        $height = $thumbnailSizes[$size]['height'];
+
+        switch($media->mime_type) {
+            case 'application/pdf':
+                $filePath = dirname(__FILE__) . '/../resources/images/pdf-icon.png';
+                $manager = new ImageManager(GDDriver::class);
+                $image = $manager->read($filePath);
+                return $image->scaleDown($width, $height)->encodeByMediaType('image/png', 75);
+            default:
+                return $this->imageThumbnail($media, $width, $height);
+        }
+    }
+
+    protected function imageThumbnail(Media $media, $width, $height)
+    {
         $disk = Storage::disk($media->disk);
-
         $manager = new ImageManager(GDDriver::class);
-
         $imageBinary = $disk->get($media->filepath . '/' . $media->filename);
+        try {
+            $image = $manager->read($imageBinary);
+        } catch (\Exception $e) {
+            $filePath = dirname(__FILE__) . '/../resources/images/image-icon.png';
+            $image = $manager->read($filePath);
+        }
 
-        $image = $manager->read($imageBinary);
-
-        return $image->scaleDown($thumbnailSizes[$size]['width'], $thumbnailSizes[$size]['height'])->encodeByMediaType('image/png', 75);
+        return $image->scaleDown($width, $height)->encodeByMediaType('image/png', 75);
     }
 
     public function registerSetting(string $tab, string $group, int $order, Closure $fieldsCallback)
@@ -196,5 +227,27 @@ class FilaCms
         }
 
         return $tabs;
+    }
+
+    public function getFormBlock(string $name)
+    {
+        $blocks = config('fila-cms.forms.blocks');
+        foreach($blocks as $block) {
+            if($block::getBlockName() === $name) {
+                return $block;
+            }
+        }
+        return null;
+    }
+
+    public function tipTapEditor($name): TiptapEditor
+    {
+        return TiptapEditor::make($name)
+            ->profile('default')
+            ->extraInputAttributes(['style' => 'min-height: 24rem;'])
+            ->required()
+            ->columnSpanFull()
+            ->collapseBlocksPanel(true)
+            ->output(TiptapOutput::Json);
     }
 }

@@ -99,7 +99,7 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
 
     public function render(): View
     {
-        return view('fila-cms::livewire.media-library-table');
+        return view('fila-cms::admin.livewire.media-library-table');
     }
 
     protected function getDeleteAction(): Action
@@ -134,7 +134,7 @@ Split::make([
                     Group::make([
                         Placeholder::make('mediaModel.filename')
                             ->content(function () use ($media) {
-                                return new HtmlString('<b>' . $media->filename . '</b><br>' . $media->displaySize);
+                                return new HtmlString('<strong>' . $media->filename . '</strong><br>' . $media->displaySize);
                             })
                             ->hiddenLabel(true),
                         Placeholder::make('mediaModel.alt_text')

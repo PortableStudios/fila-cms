@@ -4,9 +4,10 @@
 
     <div class="media-library-preview border rounded shadow m-2 relative"
       style="max-width: 120px; height: 120px; width: 120px; background-repeat:no-repeat; background-image: url('{{ $currentImage() }}'); background-size: contain; background-position: center;">
-
-      <button class="absolute m-1 bg-white text-danger border rounded-full block font-bold"
-        style="top: -10px; right: -10px; color: red; width: 20px;" x-on:click="state = ''">x</button>
+      @if ($hasImage())
+        <button type="button" class="absolute m-1 bg-white text-danger border rounded-full block font-bold"
+          style="top: -10px; right: -10px; color: red; width: 20px;" x-on:click="state = ''">x</button>
+      @endif
       <div x-on:click="$dispatch('open-modal', {id: '{{ $getStatePath() }}-image-picker'})"
         class="w-full h-full bg-danger">
       </div>

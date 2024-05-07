@@ -23,6 +23,9 @@ class WorkbenchServiceProvider extends EventServiceProvider
         if(class_exists('Workbench\App\Models\User')) {
             config(['auth.providers.users.model' => 'Workbench\App\Models\User']);
         }
+
+        config(['mail.mailers.smtp.host' => 'localhost']);
+        config(['cache.default' => 'array']);
     }
 
     /**
