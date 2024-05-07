@@ -390,7 +390,7 @@ class AbstractContentResource extends AbstractResource
         $roleRestrictionFields = [
             Section::make('Allowed Roles')
                 ->compact()
-                ->description('List of roles that are allowed to access this content. If no role is selected, the content is hidden to non-authenticated viewers.')
+                ->description('List of roles that are allowed to access this content. If a role is selected, the content is hidden to non-authenticated viewers.')
                 ->schema([
                     Select::make('role_id')
                         ->relationship(name: 'roles', titleAttribute: 'name')

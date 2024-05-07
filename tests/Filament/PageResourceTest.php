@@ -15,6 +15,7 @@ use Portable\FilaCms\Tests\TestCase;
 use RalphJSmit\Laravel\SEO\Models\SEO;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
+use Auth;
 
 class PageResourceTest extends TestCase
 {
@@ -410,6 +411,12 @@ class PageResourceTest extends TestCase
         $this->get(TargetResource::getUrl('edit', [
             'record' => $model
         ]))->assertForbidden();
+
+        Auth::logout();
+        $this->call('GET', '/pages/' . $model->slug)->assertForbidden();
+
+        $model->roles()->delete();
+        $this->call('GET', '/pages/' . $model->slug)->assertSuccessful();
     }
 
     public function generateModel($raw = false): TargetModel|array
