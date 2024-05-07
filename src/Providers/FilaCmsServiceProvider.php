@@ -76,8 +76,13 @@ class FilaCmsServiceProvider extends ServiceProvider
         });
 
         Fortify::loginView(function () {
-            return redirect(route('filament.admin.auth.login'));
+            return view('fila-cms::auth.login');
         });
+
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\LoginResponse::class,
+            \Portable\FilaCms\Http\Responses\LoginResponse::class
+        );
 
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
     }

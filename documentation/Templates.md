@@ -16,3 +16,6 @@ Everything below the main page content is rendered from this file.
 
 **auth/reset-password.blade.php**
 The "Reset Password" page
+
+**auth/login.blade.php**
+The "Login page" page
