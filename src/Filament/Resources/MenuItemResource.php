@@ -49,6 +49,7 @@ class MenuItemResource extends AbstractResource
                         return MenuItem::when(gettype($model) === 'object', function ($query) use ($model) {
                             $query->whereNot('id', $model->id);
                         })
+                            ->whereNull('deleted_at')
                             ->whereDoesntHave('parent') // if already a children, can't be a parent
                             ->get()
                             ->pluck('name', 'id');
@@ -118,6 +119,7 @@ class MenuItemResource extends AbstractResource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
