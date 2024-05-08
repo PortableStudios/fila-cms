@@ -43,7 +43,8 @@
         "laravel/fortify": "^1.21",
         "dyrynda/laravel-cascade-soft-deletes": "^4.4",
         "rinvex/countries": "^9.0",
-        "portable/laravel-db-tools": "^1.0"
+        "portable/laravel-db-tools": "^1.0",
+        "laravel/socialite": "^5.14"
     },
     "require-dev": {
         "laravel/sanctum": "^3.3",

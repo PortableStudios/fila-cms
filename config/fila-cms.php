@@ -25,6 +25,9 @@ return [
         \Portable\FilaCms\Plugins\FormsPlugin::class,
         \Portable\FilaCms\Plugins\MenusPlugin::class,
     ],
+    'sso' => [
+        'providers' => ['google','facebook','linkedin']
+    ],
     'users' => [
         // The fields that appear in the column listing, and on the edit page
         'default_columns' => ['name', 'email', 'roles'],

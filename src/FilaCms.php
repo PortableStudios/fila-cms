@@ -250,4 +250,16 @@ class FilaCms
             ->collapseBlocksPanel(true)
             ->output(TiptapOutput::Json);
     }
+
+    public function ssoRoutes()
+    {
+        $providers = config('fila-cms.sso.providers', ['google','facebook','linkedin']);
+        foreach($providers as $provider) {
+            if(config('settings.sso.'. $provider . '.client_id') && config('settings.sso.'. $provider . '.client_secret')) {
+                Route::get('/login/' . $provider, [\Portable\FilaCms\Http\Controllers\SSOController::class, 'redirectToProvider'])->name('sso.' . $provider);
+                Route::get('/login/' . $provider . '/callback', [\Portable\FilaCms\Http\Controllers\SSOController::class, 'handleProviderCallback']);
+
+            }
+        }
+    }
 }
