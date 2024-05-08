@@ -105,6 +105,18 @@ class FilaCms
         );
     }
 
+    public function profileRoutes()
+    {
+        Route::group(
+            ['prefix' => 'user', 'middleware' => [config('fortify.auth_middleware', 'auth'), config('fortify.guard')]],
+            function () {
+                Route::get('profile-information', function () {
+                    return view('fila-cms::auth.user-profile');
+                })->name('user-profile-information.show');
+            }
+        );
+    }
+
     public function contentRoutes()
     {
         $this->getContentModels();

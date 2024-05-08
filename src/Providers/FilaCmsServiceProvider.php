@@ -16,6 +16,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
 use Portable\FilaCms\Actions\Fortify\ResetUserPassword;
+use Portable\FilaCms\Actions\Fortify\UpdateUserProfileInformation;
 use Portable\FilaCms\Data\DummyForm;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
@@ -86,6 +87,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         );
 
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        Fortify::updateUserProfileInformationUsing(config('fila-cms.users.profile_updater', UpdateUserProfileInformation::class));
     }
 
     public function register()

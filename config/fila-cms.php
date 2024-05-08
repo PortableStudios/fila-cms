@@ -29,6 +29,7 @@ return [
         'providers' => ['google','facebook','linkedin']
     ],
     'users' => [
+        'profile_updater' => \Portable\FilaCms\Actions\Fortify\UpdateUserProfileInformation::class,
         // The fields that appear in the column listing, and on the edit page
         'default_columns' => ['name', 'email', 'roles'],
         'extra_fields' => [
