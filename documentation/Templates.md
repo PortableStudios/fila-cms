@@ -14,8 +14,17 @@ Everything above the main page content is rendered from this file
 **layouts/page-footer.blade.php**
 Everything below the main page content is rendered from this file.
 
+**components/auth/login-form.blade.php**
+The login form itself
+
+**components/auth/user-profile-form.blade.php**
+The user profile form
+
 **auth/reset-password.blade.php**
 The "Reset Password" page
 
 **auth/login.blade.php**
 The "Login page" page
+
+**auth/user-profile.blade.php**
+The "User Profile" page
