@@ -17,6 +17,7 @@ providers:
   - Mansoor\FilamentVersionable\FilamentVersionableServiceProvider
   - Laravel\Fortify\FortifyServiceProvider
   - Overtrue\LaravelVersionable\ServiceProvider
+  - Laravel\Socialite\SocialiteServiceProvider
 
 migrations:
   - workbench/database/migrations
