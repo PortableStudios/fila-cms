@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Providers;
 
 use Filament\Forms\ComponentContainer;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use FilamentTiptapEditor\TiptapEditor;
@@ -217,5 +218,37 @@ class FilaCmsServiceProvider extends ServiceProvider
             ];
         });
 
+        FacadesFilaCms::registerSetting('Single Sign-On', 'Facebook', 1, function () {
+            return [
+                TextInput::make('sso.facebook.client_id')->label('Client Id'),
+                TextInput::make('sso.facebook.client_secret')->label('Client Secret'),
+                Placeholder::make('sso.facebook.redirect')
+                    ->label('Redirect Url')
+                    ->content(url('login/facebook/callback'))
+                    ->helperText('Use this as the redirect url in your Facebook app settings'),
+            ];
+        });
+
+        FacadesFilaCms::registerSetting('Single Sign-On', 'Google', 1, function () {
+            return [
+                TextInput::make('sso.google.client_id')->label('Client Id'),
+                TextInput::make('sso.google.client_secret')->label('Client Secret'),
+                Placeholder::make('sso.google.redirect')
+                    ->label('Redirect Url')
+                    ->content(url('login/google/callback'))
+                    ->helperText('Use this as the redirect url in your Google app settings'),
+            ];
+        });
+
+        FacadesFilaCms::registerSetting('Single Sign-On', 'LinkedIn', 1, function () {
+            return [
+                TextInput::make('sso.linkedin.client_id')->label('Client Id'),
+                TextInput::make('sso.linkedin.client_secret')->label('Client Secret'),
+                Placeholder::make('sso.linkedin.redirect')
+                    ->label('Redirect Url')
+                    ->content(url('login/linked/callback'))
+                    ->helperText('Use this as the redirect url in your LinkedIn app settings'),
+            ];
+        });
     }
 }
