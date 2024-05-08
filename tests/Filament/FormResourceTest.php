@@ -118,7 +118,8 @@ class FormResourceTest extends TestCase
     public function test_can_render_form()
     {
         $form = TargetModel::factory()->create();
-        $this->get(route('form.show', $form->slug))->assertSuccessful();
+        Livewire::test(FormShow::class, ['slug' => $form->slug])
+            ->assertFormExists();
     }
 
     public function test_can_submit_form()
