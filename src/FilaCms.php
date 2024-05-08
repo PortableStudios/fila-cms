@@ -145,6 +145,9 @@ class FilaCms
 
     public function getRawContentModels()
     {
+        if(is_null(static::$contentModels)) {
+            static::getContentModels();
+        }
         return static::$contentModels;
     }
 
