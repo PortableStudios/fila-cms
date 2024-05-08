@@ -26,6 +26,7 @@ class MenuItemResource extends AbstractResource
     public static function form(Form $form): Form
     {
         $model = $form->model;
+        $menu = $form->getLivewire()->ownerRecord;
 
         return $form
             ->schema([
@@ -44,11 +45,12 @@ class MenuItemResource extends AbstractResource
                         }
                         return false;
                     })
-                    ->options(function (MenuItemResource $resource) use ($model) {
+                    ->options(function (MenuItemResource $resource) use ($model, $menu) {
                         // do not show self, if edit
                         return MenuItem::when(gettype($model) === 'object', function ($query) use ($model) {
                             $query->whereNot('id', $model->id);
                         })
+                            ->where('menu_id', $menu->id)
                             ->whereNull('deleted_at')
                             ->whereDoesntHave('parent') // if already a children, can't be a parent
                             ->get()
