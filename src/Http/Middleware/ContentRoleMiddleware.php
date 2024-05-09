@@ -5,8 +5,8 @@ namespace Portable\FilaCms\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Portable\FilaCms\FilaCms;
 use Illuminate\Support\Str;
+use Portable\FilaCms\Facades\FilaCms;
 
 class ContentRoleMiddleware
 {
@@ -17,7 +17,7 @@ class ContentRoleMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $contentModels = (new FilaCms())->getRawContentModels();
+        $contentModels = FilaCms::getRawContentModels();
 
         $path = $request->path();
         foreach ($contentModels as $modelClass => $resourceClass) {
