@@ -5,6 +5,8 @@ namespace Portable\FilaCms\Filament\FormBlocks;
 use Closure;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Component;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 
 class CheckboxBlock extends AbstractTextBlock
@@ -15,6 +17,21 @@ class CheckboxBlock extends AbstractTextBlock
     public static function getBlockName(): string
     {
         return 'Checkbox Field';
+    }
+
+    public function getSchema(): Closure|array
+    {
+        return [
+            Grid::make('general')
+                ->columns(2)
+                ->schema([
+                    TextInput::make('field_name')
+                        ->label('Field Name')
+                        ->default($this->getName())
+                        ->required(),
+                        ...static::getRequirementFields()
+        ]),
+                ];
     }
 
     protected static function applyRequirementFields(Component $field, array $fieldData): Component

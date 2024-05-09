@@ -19,4 +19,9 @@ class RichTextBlock extends AbstractTextBlock
         return FilaCms::tipTapEditor($fieldData['field_name'])
             ->default($fieldData['default_value']);
     }
+
+    protected static function getTypeSelector()
+    {
+        return null;
+    }
 }

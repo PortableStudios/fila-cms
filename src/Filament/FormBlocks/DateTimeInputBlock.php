@@ -15,6 +15,7 @@ class DateTimeInputBlock extends AbstractTextBlock
 {
     protected Closure|string|null $icon = 'heroicon-o-calendar-days';
     protected static $componentClass = TextInput::class;
+    protected $date_type = DatePicker::class;
 
     public static function getBlockName(): string
     {
@@ -27,11 +28,17 @@ class DateTimeInputBlock extends AbstractTextBlock
             ->default(isset($fieldData['default_value']) ? $fieldData['default_value'] : null);
     }
 
-    protected static function getTypeSelector()
+    protected static function getTypeSelector($me = null)
     {
         return Select::make('date_type')
                         ->label('Date/Time Type')
                         ->default(DatePicker::class)
+                        ->afterStateHydrated(function ($state) use ($me) {
+                            $me->date_type = $state;
+                        })
+                        ->afterStateUpdated(function ($state) use ($me) {
+                            $me->date_type = $state;
+                        })
                         ->options([
                             DatePicker::class => 'Date',
                             TimePicker::class => 'Time',
@@ -42,8 +49,9 @@ class DateTimeInputBlock extends AbstractTextBlock
 
     public function getSchema(): Closure|array
     {
-        return function ($state) {
+        return function (DateTimeInputBlock $block, $state) {
             $data = array_pop($state)['data'];
+
             return [
                 Grid::make('general')
                     ->columns(2)
@@ -52,19 +60,19 @@ class DateTimeInputBlock extends AbstractTextBlock
                             ->label('Field Name')
                             ->default($this->getName())
                             ->required(),
-                        static::getTypeSelector(),
+                        static::getTypeSelector($this),
 
                 ]),
                 Grid::make('settings')
                     ->columns(3)
-                    ->schema(static::getDateRequirementFields($data)),
+                    ->schema($this->getDateRequirementFields()),
                 ];
         };
     }
 
-    protected static function getDateRequirementFields($state): array
+    protected function getDateRequirementFields(): array
     {
-        $default = $state['date_type']::make('default_value')
+        $default = (isset($this->date_type) ? $this->date_type : DatePicker::class)::make('default_value')
             ->label('Default Value');
         return [
             Toggle::make('required')

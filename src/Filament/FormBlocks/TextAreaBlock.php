@@ -20,7 +20,7 @@ class TextAreaBlock extends AbstractTextBlock
     public static function applyRequirementFields($field, $fieldData): Component
     {
         $field = parent::applyRequirementFields($field, $fieldData);
-        $field->rows($fieldData['rows']);
+        $field->rows(isset($fieldData['rows']) ? $fieldData['rows'] : 5);
         return $field;
     }
 
@@ -30,5 +30,10 @@ class TextAreaBlock extends AbstractTextBlock
         $fields[] = TextInput::make('rows')->default(5);
 
         return $fields;
+    }
+
+    protected static function getTypeSelector()
+    {
+        return null;
     }
 }

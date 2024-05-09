@@ -15,4 +15,8 @@ class RadioBlock extends AbstractOptionsBlock
         return 'Radio Field';
     }
 
+    protected static function getRequirementFields(): array
+    {
+        return [];
+    }
 }

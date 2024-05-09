@@ -8,6 +8,7 @@ use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 
 abstract class AbstractOptionsBlock extends AbstractFormBlock
 {
@@ -21,9 +22,12 @@ abstract class AbstractOptionsBlock extends AbstractFormBlock
                         ->label('Field Name')
                         ->default($this->getName())
                         ->required(),
+                    Toggle::make('required')
+                        ->inline(false),
+
                 ]),
                 Grid::make('settings')
-                    ->columns(3)
+                    ->columns(2)
                     ->schema(function () {
                         return static::getRequirementFields();
                     }),

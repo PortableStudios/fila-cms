@@ -22,28 +22,7 @@ class FormEntryFactory extends Factory
                 'Your Name' => $this->faker->name,
                 'Telephone' => $this->faker->phoneNumber
             ],
-            'fields' => [
-                [
-                    "type" => "Text Field",
-                    "data" => [
-                        "field_name" => "Your Name",
-                        "text_type" => "text",
-                        "required" => true,
-                        "max_length" => null,
-                        "default_value" => null
-                    ]
-                ],
-                [
-                    "type" => "Text Field",
-                    "data" => [
-                        "field_name" => "Telephone",
-                        "text_type" => "telephone",
-                        "required" => true,
-                        "max_length" => null,
-                        "default_value" => null
-                    ]
-                ]
-            ]
+            'fields' => FormFactory::getFields()
         ];
     }
 }

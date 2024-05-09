@@ -19,8 +19,6 @@ class SelectBlock extends AbstractOptionsBlock
     protected static function getRequirementFields(): array
     {
         return [
-            Toggle::make('required')
-                ->inline(false),
             Toggle::make('multiselect')
                 ->inline(false)
                 ->label('Multi-select'),

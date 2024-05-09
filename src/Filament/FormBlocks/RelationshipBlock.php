@@ -3,7 +3,6 @@
 namespace Portable\FilaCms\Filament\FormBlocks;
 
 use Closure;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Grid;
@@ -37,9 +36,19 @@ class RelationshipBlock extends AbstractFormBlock
                         ->label('Field Name')
                         ->default($this->getName())
                         ->required(),
+                    Select::make('component_class')
+                        ->options([
+                            CheckboxList::class => 'Checkbox List',
+                            Radio::class => 'Radio Buttons',
+                            Select::class => 'Select',
+                        ])
+                        ->default(Select::class)
+                        ->label('Component Class')
+                        ->live()
+                        ->required(),
                 ]),
                 Grid::make('settings')
-                    ->columns(4)
+                    ->columns(3)
                     ->schema(function () {
                         return static::getRequirementFields();
                     })
@@ -106,26 +115,16 @@ class RelationshipBlock extends AbstractFormBlock
     protected static function getRequirementFields(): array
     {
         return [
-            Select::make('component_class')
-                ->options([
-                    CheckboxList::class => 'Checkbox List',
-                    Radio::class => 'Radio Buttons',
-                    Select::class => 'Select',
-                ])
-                ->default(Select::class)
-                ->label('Component Class')
-                ->live()
-                ->required(),
             Toggle::make('required')
                 ->inline(false),
-            Checkbox::make('multiselect')
+            Toggle::make('multiselect')
                 ->inline(false)
                 ->disabled(function (Get $get) {
                     return in_array($get('component_class'), [Radio::class, CheckboxList::class]);
                 })
                 ->live()
                 ->label('Multiselect'),
-            Checkbox::make('searchable')
+            Toggle::make('searchable')
                 ->inline(false)
                 ->live()
                 ->disabled(function (Get $get) {

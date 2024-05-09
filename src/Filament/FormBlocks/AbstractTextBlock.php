@@ -13,17 +13,19 @@ abstract class AbstractTextBlock extends AbstractFormBlock
 {
     public function getSchema(): Closure|array
     {
+        $generalFields = [TextInput::make('field_name')
+        ->label('Field Name')
+        ->default($this->getName())
+        ->required()];
+        $typeSelector = static::getTypeSelector();
+        if($typeSelector) {
+            $generalFields[] = $typeSelector;
+        }
+
         return [
             Grid::make('general')
                 ->columns(2)
-                ->schema([
-                    TextInput::make('field_name')
-                        ->label('Field Name')
-                        ->default($this->getName())
-                        ->required(),
-                    static::getTypeSelector(),
-
-                ]),
+                ->schema($generalFields),
                 Grid::make('settings')
                     ->columns(3)
                     ->schema(function () {
@@ -55,11 +57,11 @@ abstract class AbstractTextBlock extends AbstractFormBlock
 
     protected static function applyRequirementFields(Component $field, array $fieldData): Component
     {
-        if(isset($fieldData['max_length'])) {
+        if(isset($fieldData['max_length']) && method_exists($field, 'maxLength')) {
             $field->maxLength($fieldData['max_length']);
         }
 
-        if(isset($fieldData['required']) && $fieldData['required']) {
+        if(isset($fieldData['required']) && $fieldData['required'] && method_exists($field, 'required')) {
             $field->required();
         }
 

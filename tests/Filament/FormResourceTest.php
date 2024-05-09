@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Tests\Filament;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Portable\FilaCms\Filament\Resources\FormResource as TargetResource;
+use Portable\FilaCms\Livewire\FormShow;
 use Portable\FilaCms\Models\Form as TargetModel;
 use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Role;
@@ -73,9 +74,7 @@ class FormResourceTest extends TestCase
 
     public function test_can_render_edit_page(): void
     {
-        $this->generateModel();
-
-        $data = TargetModel::first();
+        $data = $this->generateModel();
 
         $this->get(TargetResource::getUrl('edit', ['record' => $data]))->assertSuccessful();
     }
@@ -116,6 +115,32 @@ class FormResourceTest extends TestCase
 
     }
 
+    public function test_can_render_form()
+    {
+        $form = TargetModel::factory()->create();
+        Livewire::test(FormShow::class, ['slug' => $form->slug])
+            ->assertFormExists();
+    }
+
+    public function test_can_submit_form()
+    {
+        $form = TargetModel::factory()->create();
+
+        Livewire::test(FormShow::class, ['slug' => $form->slug])
+            ->fillForm([
+                'Checkbox' => true,
+                'Checkbox List' => ['Option 1', 'Option 2'],
+                'Date Picker' => now()->format('Y-m-d'),
+                'Radio' => 'Option 1',
+                'Relationship' => [1,2],
+                'Rich Text' => tiptap_converter()->asJSON('<p>Rich Text</p>'),
+                'Select' => 'Option 1',
+                'Text Area' => 'Text Area',
+                'Text Input' => 'Text Input',
+            ])
+            ->call('submitForm')
+            ->assertHasNoFormErrors();
+    }
 
     public function generateModel(): TargetModel
     {
