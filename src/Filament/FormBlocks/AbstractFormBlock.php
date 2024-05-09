@@ -49,6 +49,10 @@ abstract class AbstractFormBlock extends Block
         $field = static::getField($fieldData);
         $value = isset($values[$field->getName()]) ? $values[$field->getName()] : '';
 
+        if(is_array($value)) {
+            $value = implode(', ', $value);
+        }
+
         return '<div><strong>' . $field->getLabel() . '</strong>: ' . $value . '</div>';
     }
 
