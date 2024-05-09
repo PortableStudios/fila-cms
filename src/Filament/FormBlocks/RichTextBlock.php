@@ -24,4 +24,16 @@ class RichTextBlock extends AbstractTextBlock
     {
         return null;
     }
+
+    public static function displayHtml($fieldData, $values): string
+    {
+        $field = static::getField($fieldData);
+        $value = isset($values[$field->getName()]) ? $values[$field->getName()] : '';
+
+        if(is_array($value)) {
+            $value = tiptap_converter()->asHTML($value);
+        }
+
+        return '<div><strong>' . $field->getLabel() . '</strong>: ' . $value . '</div>';
+    }
 }
