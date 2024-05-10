@@ -12,6 +12,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
@@ -23,6 +24,7 @@ use Portable\FilaCms\FilaCms;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
 use Portable\FilaCms\Filament\Forms\Components\AddressInput;
 use Portable\FilaCms\Filament\Forms\Components\ImagePicker;
+use Portable\FilaCms\Filament\TiptapExtensions\ImageResize;
 use Portable\FilaCms\Listeners\AuthenticationListener;
 use Portable\FilaCms\Models\Setting;
 use Portable\FilaCms\Services\MediaLibrary;
@@ -32,6 +34,22 @@ class FilaCmsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadSettings();
+
+        $tiptapJs = Vite::asset('tiptap-additions.js', __DIR__ . '/../../public/');
+
+        $extensions = config('filament-tiptap-editor.extensions') ?? [];
+        $extensions[] = [
+                'id' => 'imageResize',
+                'button' => 'filament-tiptap-editor::tools.media',
+                'name' => 'ImageReize',
+                'parser' => ImageResize::class,
+        ];
+
+        config([
+            'filament-tiptap-editor.extensions' => $extensions,
+        ]);
+        config(['filament-tiptap-editor.extensions_script' => $tiptapJs]);
+
         if ($this->app->runningInConsole()) {
             $this->commands([
                 \Portable\FilaCms\Commands\InstallCommand::class,

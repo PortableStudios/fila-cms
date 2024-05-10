@@ -259,6 +259,7 @@ class FilaCms
     {
         return TiptapEditor::make($name)
             ->profile('default')
+            ->tools(['imageResize'])
             ->extraInputAttributes(['style' => 'min-height: 24rem;'])
             ->required()
             ->columnSpanFull()

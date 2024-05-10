@@ -19,6 +19,7 @@
     "dependencies": {
         "@alpinejs/anchor": "^3.13.8",
         "@alpinejs/collapse": "^3.13.8",
-        "@alpinejs/focus": "^3.13.8"
+        "@alpinejs/focus": "^3.13.8",
+        "tiptap-extension-resize-image": "^1.0.4"
     }
 }

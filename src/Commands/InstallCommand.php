@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Commands;
 use Filament\Support\Commands\InstallCommand as CommandsInstallCommand;
 use Filament\Support\Commands\UpgradeCommand;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Process;
 
 class InstallCommand extends CommandsInstallCommand
 {
@@ -61,6 +62,11 @@ class InstallCommand extends CommandsInstallCommand
             // Only call this if there isn't already a filament theme
             if(!File::exists(resource_path('css/filament/admin/theme.css'))) {
                 $this->callSilent('make:filament-theme');
+                // Copy our theme file
+                File::copy(getcwd() . '/resources/css/filament/admin/theme.css', resource_path('css/filament/admin/theme.css'));
+
+                // Run the build
+                Process::path(app_path())->run('npm run build');
             }
         }
         // @codeCoverageIgnoreEnd
