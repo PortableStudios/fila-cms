@@ -65,9 +65,17 @@ class FormEntryResource extends AbstractResource
 
         foreach($allFields as $field) {
             $columns[] = Tables\Columns\TextColumn::make($field->getName())
-                ->label($field->getLabel())
-                ->getStateUsing(function ($record) use ($field) {
-                    return isset($record->values[$field->getName()]) ? $record->values[$field->getName()] : '';
+                ->label($field->getLabel())                
+                ->getStateUsing(function ($record) use ($field) {                    
+                    $value = isset($record->values[$field->getName()]) ? $record->values[$field->getName()] : '';
+                    if(is_array($value)){
+                        try{
+                            $value = tiptap_converter()->asText($value);
+                        }catch(\Exception $e){
+                            return implode(", ", $value);
+                        }
+                    }
+                    return $value;
                 })
                 ->searchable(true, function ($query, $search) use ($field) {
                     $query->where('values->' . $field->getName(), 'like', '%' . $search . '%');
