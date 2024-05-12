@@ -65,13 +65,13 @@ class FormEntryResource extends AbstractResource
 
         foreach($allFields as $field) {
             $columns[] = Tables\Columns\TextColumn::make($field->getName())
-                ->label($field->getLabel())                
-                ->getStateUsing(function ($record) use ($field) {                    
+                ->label($field->getLabel())
+                ->getStateUsing(function ($record) use ($field) {
                     $value = isset($record->values[$field->getName()]) ? $record->values[$field->getName()] : '';
-                    if(is_array($value)){
-                        try{
+                    if(is_array($value)) {
+                        try {
                             $value = tiptap_converter()->asText($value);
-                        }catch(\Exception $e){
+                        } catch(\Exception $e) {
                             return implode(", ", $value);
                         }
                     }
