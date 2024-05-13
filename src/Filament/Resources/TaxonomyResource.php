@@ -65,6 +65,12 @@ class TaxonomyResource extends AbstractResource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('code')
+                    ->disabledOn('edit')
+                    ->unique(ignoreRecord: true)
+                    ->required()
+                    ->columnSpanFull()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('name')
                     ->unique(ignoreRecord: true)
                     ->required()
@@ -82,6 +88,8 @@ class TaxonomyResource extends AbstractResource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('code')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')

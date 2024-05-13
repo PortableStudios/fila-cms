@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Tests\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Portable\FilaCms\Models\Taxonomy;
 
 /**
@@ -19,8 +20,10 @@ class TaxonomyFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->words(2, true);
         return [
-            'name' => fake()->words(2, true),
+            'name' => $name,
+            'code' => Str::slug($name)
         ];
     }
 }
