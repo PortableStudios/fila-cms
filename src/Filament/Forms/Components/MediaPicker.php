@@ -56,7 +56,7 @@ class MediaPicker extends Field implements HasExtraItemActions
             });
     }
 
-    public function pickImageAction()
+    public function pickMediaAction()
     {
         return Action::make('pick-media')
             ->form(
