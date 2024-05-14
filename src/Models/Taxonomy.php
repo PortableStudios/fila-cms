@@ -25,8 +25,8 @@ class Taxonomy extends Model
     ];
 
     protected $fillable = [
-	'name',
-	'code'
+    'name',
+    'code'
     ];
 
     protected $appends = [
