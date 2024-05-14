@@ -19,12 +19,25 @@ class SSOController extends Controller
     public function redirectToProvider()
     {
         $driver = preg_match("/login\/(.*)/", Route::current()->uri(), $matches) ? $matches[1] : null;
+
+        config(['services.' . $driver => [
+            'client_id' => config('settings.sso.' . $driver . '.client_id'),
+            'client_secret' => config('settings.sso.' . $driver . '.client_secret'),
+            'redirect' => config('app.url') . '/login/' . $driver . '/callback',
+        ]]);
+
         return Socialite::driver($driver)->redirect();
     }
 
     public function handleProviderCallback(LoginResponse $loginResponse)
     {
         $driver = preg_match("/login\/(.*)\//", Route::current()->uri(), $matches) ? $matches[1] : null;
+        config(['services.' . $driver => [
+            'client_id' => config('settings.sso.' . $driver . '.client_id'),
+            'client_secret' => config('settings.sso.' . $driver . '.client_secret'),
+            'redirect' => config('app.url') . '/login/' . $driver . '/callback',
+        ]]);
+
         $userModel = config('auth.providers.users.model');
         $ssoUser = Socialite::driver($driver)->user();
         $ssoLink = UserSsoLink::where('driver', $driver)->where('provider_id', $ssoUser->getId())->first();
