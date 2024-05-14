@@ -16,7 +16,7 @@ return new class () extends Migration {
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->string('provider_id');
             $table->string('provider_token');
-            $table->string('provider_refresh_token');
+            $table->string('provider_refresh_token')->nullable();
             $table->timestamps();
         });
     }
