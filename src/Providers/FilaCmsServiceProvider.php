@@ -179,6 +179,14 @@ class FilaCmsServiceProvider extends ServiceProvider
             config(['settings.'.$fieldName => data_get($data, $fieldName)]);
         }
 
+        $providers = config('fila-cms.sso.providers', ['google','facebook','linkedin']);
+        foreach($providers as $provider) {
+            if(config('settings.sso.'. $provider . '.client_id') && config('settings.sso.'. $provider . '.client_secret')) {
+                config(['services.'.$provider.'.client_id' => config('settings.sso.'. $provider . '.client_id')]);
+                config(['services.'.$provider.'.client_secret' => config('settings.sso.'. $provider . '.client_secret')]);
+                config(['services.'.$provider.'.redirect' => '/login/' . $provider . '/callback']);
+            }
+        }
 
         return true;
 

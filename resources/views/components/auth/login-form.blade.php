@@ -9,4 +9,5 @@
     <input class="inline-block w-1/2" type="password" name="password" id="password" class="form-control" required>
   </div>
   <button type="submit" class="btn btn-primary">Login</button>
+  <x-fila-cms::auth.sso-links />
 </form>
