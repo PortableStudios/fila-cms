@@ -37,7 +37,8 @@ class FilaCms
 
         $userFieldsRaw = Schema::getColumnListing((new $userModel())->getTable());
 
-        $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'email_verified_at', 'password','email'];
+        $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'email_verified_at', 'password','email','two_factor_confirmed_at'];
+
         $data = [
             'name' => 'System',
             'email' => 'system@filacms',
