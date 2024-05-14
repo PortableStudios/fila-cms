@@ -51,7 +51,8 @@ class MenuItemResourceTest extends TestCase
         for ($i = 0; $i < 5; $i++) {
             $data[] = MenuItem::factory()->create([
                 'menu_id' => $menu->id,
-                'name' => 'Item ' . $i
+                'name' => 'Item ' . $i,
+                'order' => $i,
             ]);
         }
 

@@ -86,6 +86,7 @@ class FilaCmsServiceProvider extends ServiceProvider
             \Portable\FilaCms\Http\Responses\LoginResponse::class
         );
 
+        Fortify::verifyEmailView('fila-cms::auth.verify-email');
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::updateUserProfileInformationUsing(config('fila-cms.users.profile_updater', UpdateUserProfileInformation::class));
     }
