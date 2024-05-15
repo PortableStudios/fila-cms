@@ -44,7 +44,7 @@ class SSOController extends Controller
 
         if(!$ssoLink) {
             // Do we already have a user with this email?
-            $user = $userModel::where('email', $ssoUser->getEmail())->first();
+            $user = $userModel::withTrashed()->where('email', $ssoUser->getEmail())->first();
             if(!$user) {
                 $user = $userModel::create([
                     'name' => $ssoUser->getName(),
@@ -59,6 +59,12 @@ class SSOController extends Controller
                 'provider_token' => $ssoUser->token,
                 'provider_refresh_token' => $ssoUser->refreshToken,
             ]);
+        }
+
+        if(!$ssoLink->user) {
+            $user = $userModel::withTrashed()->find($ssoLink->user_id);
+            $user->roles()->detach();
+            $user->restore();
         }
 
         Auth::login($ssoLink->user);
