@@ -97,4 +97,21 @@ abstract class AbstractOptionsBlock extends AbstractFormBlock
                 ->label('Display Inline'),
         ];
     }
+
+    public static function displayValue($fieldData, $values): string
+    {
+        $fieldName = data_get($fieldData, 'field_name');
+        $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
+        if(!is_array($value)) {
+            $value = [$value];
+        }
+        $options = data_get($fieldData, 'options', []);
+
+        // Map value array keys to options
+        $value = array_map(function ($val) use ($options) {
+            return $options[$val] ?? $val;
+        }, $value);
+
+        return implode(", ", $value);
+    }
 }
