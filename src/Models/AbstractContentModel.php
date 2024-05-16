@@ -180,7 +180,10 @@ abstract class AbstractContentModel extends Model
         $query->where(function ($q1) {
             // apply published condition
             $q1->where('is_draft', false)
-                ->where('publish_at', '<', now())
+                ->where(function ($q2) {
+                    $q2->whereNull('publish_at')
+                        ->orWhere('publish_at', '<', now());
+                })
                 ->where(function ($q2) {
                     $q2->whereNull('expire_at')
                         ->orWhere('expire_at', '>', now());

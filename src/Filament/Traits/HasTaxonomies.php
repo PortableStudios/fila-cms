@@ -64,7 +64,7 @@ trait HasTaxonomies
     {
         $this->taxonomyable()->delete();
         foreach ($this->_virtualTaxonomyFields as $fieldName) {
-            $items = $this->_saveTaxonomyFields[$fieldName.'_ids'];
+            $items = isset($this->_saveTaxonomyFields[$fieldName.'_ids']) ? $this->_saveTaxonomyFields[$fieldName.'_ids'] : [];
             $this->terms()->attach($items);
         }
     }
