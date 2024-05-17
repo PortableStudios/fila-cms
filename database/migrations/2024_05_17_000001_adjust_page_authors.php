@@ -18,7 +18,7 @@ return new class () extends Migration {
         });
 
         Schema::table('pages', function (Blueprint $table) {
-            $table->dropColumn('author_id');
+            $table->dropConstrainedForeignId('author_id');
         });
     }
 
