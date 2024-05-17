@@ -23,6 +23,17 @@ abstract class AbstractFormBlock extends Block
         return $static;
     }
 
+    public static function getFieldDefinitions($schema): Collection
+    {
+        $definition = [
+            'type' => static::getBlockName(),
+            'data' => $schema
+        ];
+
+        $collection = collect([$definition]);
+        return $collection;
+    }
+
     public static function getChildren($schema): Collection
     {
         $field = static::getField($schema);
@@ -47,13 +58,21 @@ abstract class AbstractFormBlock extends Block
     public static function displayHtml($fieldData, $values): string
     {
         $field = static::getField($fieldData);
-        $value = isset($values[$field->getName()]) ? $values[$field->getName()] : '';
+        $value = static::displayValue($fieldData, $values);
+
+        return '<div><strong>' . $field->getLabel() . '</strong>: ' . $value . '</div>';
+    }
+
+    public static function displayValue($fieldData, $values): string
+    {
+        $fieldName = data_get($fieldData, 'field_name');
+        $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
 
         if(is_array($value)) {
             $value = implode(', ', $value);
         }
 
-        return '<div><strong>' . $field->getLabel() . '</strong>: ' . $value . '</div>';
+        return $value;
     }
 
     protected static function applyRequirementFields(Component $field, array $fieldData): Component

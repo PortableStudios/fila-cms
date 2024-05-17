@@ -61,13 +61,13 @@ class FormEntryResource extends AbstractResource
         ];
 
         // A flat collection of all form fields
-        $allFields = FormBuilder::getChildren($form->fields);
+        $allFields = FormBuilder::getFieldDefinitions($form->fields);
 
         foreach($allFields as $field) {
-            $columns[] = Tables\Columns\TextColumn::make($field->getName())
+            $columns[] = Tables\Columns\TextColumn::make($field['field_name'])
                 ->label($field->getLabel())
                 ->getStateUsing(function ($record) use ($field) {
-                    $value = isset($record->values[$field->getName()]) ? $record->values[$field->getName()] : '';
+                    $value = isset($record->values[$field['field_name']]) ? $record->values[$field['field_name']] : '';
                     if(is_array($value)) {
                         try {
                             $value = tiptap_converter()->asText($value);

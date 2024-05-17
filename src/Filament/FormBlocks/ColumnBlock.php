@@ -62,6 +62,20 @@ class ColumnBlock extends AbstractFormBlock
         };
     }
 
+    public static function getFieldDefinitions($schema): Collection
+    {
+        $count = isset($schema['column_count']) ? $schema['column_count'] : 2;
+        $count = is_numeric($count) ? $count : 2;
+
+        $fields = collect();
+        for($i = 0; $i < $count; $i++) {
+            $kids = FormBuilder::getFieldDefinitions(isset($schema['column_' . $i]) ? $schema['column_' . $i] : []);
+            $fields = $fields->merge($kids);
+        }
+
+        return $fields;
+    }
+
     public static function getChildren($schema): Collection
     {
         $count = isset($schema['column_count']) ? $schema['column_count'] : 2;

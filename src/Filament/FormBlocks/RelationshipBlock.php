@@ -13,6 +13,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Model;
 use Portable\FilaCms\Facades\FilaCms;
+use Portable\FilaCms\Models\AbstractContentModel;
 use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Taxonomy;
 use Portable\FilaCms\Models\TaxonomyTerm;
@@ -55,44 +56,83 @@ class RelationshipBlock extends AbstractFormBlock
                 ];
     }
 
+    protected static function getModelClass($fieldData)
+    {
+        $relationshipClass = $fieldData['relationship'];
+        $taxonomyId = $fieldData['taxonomy_id'] ?? null;
+        if(is_subclass_of($relationshipClass, Model::class)) {
+            $modelClass = $relationshipClass;
+        } elseif($taxonomyId) {
+            $modelClass = TaxonomyTerm::class;
+        } else {
+            $modelClass = FilaCms::getModelFromResource($relationshipClass);
+        }
+
+        return $modelClass;
+    }
+
+    protected static function getTitleField($modelClass)
+    {
+        if($modelClass == Author::class || is_subclass_of($modelClass, Author::class)) {
+            $titleField = 'display_name';
+        } elseif(is_subclass_of($modelClass, AbstractContentModel::class)) {
+            $titleField = 'title';
+        } else {
+            $titleField = 'name';
+        }
+
+        return $titleField;
+    }
+
+    protected static function getOptionsQuery($fieldData, $search = null)
+    {
+        $modelClass = static::getModelClass($fieldData);
+        $titleField = static::getTitleField($modelClass);
+        $taxonomyId = $fieldData['taxonomy_id'] ?? null;
+
+        if(is_subclass_of($modelClass, TaxonomyTerm::class)) {
+            $query = TaxonomyTerm::where('taxonomy_id', $taxonomyId);
+            $titleField = 'name';
+        } else {
+            $query = $modelClass::query();
+        }
+
+        if($search) {
+            $query = $query->where($titleField, 'LIKE', '%'. $search . '%');
+        }
+
+        return $query->orderBy($titleField);
+    }
+
     protected static function createField($fieldData, $readOnly = false)
     {
         if(!isset($fieldData['component_class'])) {
             $fieldData['component_class'] = Select::class;
         }
 
-        return ($fieldData['component_class'])::make($fieldData['field_name'])
-            ->options(static::getOptions($fieldData))
+        $field = ($fieldData['component_class'])::make($fieldData['field_name'])
             ->default(isset($fieldData['default_value']) ? $fieldData['default_value'] : null);
+
+        if($fieldData['component_class'] == Select::class) {
+            $field = $field->searchable()->getSearchResultsUsing(function (string $search) use ($fieldData) {
+                $query = static::getOptionsQuery($fieldData, $search);
+                $titleField = static::getTitleField($fieldData);
+
+                $options = $query->get()->pluck($titleField, 'id')->toArray();
+
+                return $options;
+            });
+        } else {
+            $field = $field->options(static::getOptions($fieldData));
+        }
+
+        return $field;
     }
 
     protected static function getOptions($fieldData)
     {
-        $options = [];
-
-        $relationshipClass = $fieldData['relationship'];
-        if(is_subclass_of($relationshipClass, Model::class)) {
-            $modelClass = $relationshipClass;
-            switch($modelClass) {
-                case Author::class:
-                    $titleField = 'display_name';
-                    break;
-                default:
-                    $titleField = 'name';
-            }
-        } else {
-            $modelClass = FilaCms::getModelFromResource($relationshipClass);
-            $titleField = 'title';
-        }
-        $taxonomyId = $fieldData['taxonomy_id'] ?? null;
-
-        if($modelClass) {
-            $options = $modelClass::all()->sortBy($titleField)->pluck($titleField, 'id')->toArray();
-        } elseif($taxonomyId) {
-            $options = TaxonomyTerm::where('taxonomy_id', $taxonomyId)->get()->sortBy('name')->pluck('name', 'id')->toArray();
-        }
-
-        return $options;
+        $titleField = static::getTitleField(static::getModelClass($fieldData));
+        return static::getOptionsQuery($fieldData)->get()->sortBy($titleField)->pluck($titleField, 'id')->toArray();
     }
 
     protected static function applyRequirementFields(Component $field, array $fieldData): Component
@@ -152,5 +192,23 @@ class RelationshipBlock extends AbstractFormBlock
         $options[TaxonomyTerm::class] = 'Taxonomy Terms';
 
         return $options;
+    }
+
+    public static function displayValue($fieldData, $values): string
+    {
+        $fieldName = data_get($fieldData, 'field_name');
+        $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
+        if(!is_array($value)) {
+            $value = [$value];
+        }
+
+        $options = static::getOptionsQuery($fieldData)->whereIn('id', $value)->get()->pluck(static::getTitleField(static::getModelClass($fieldData)), 'id')->toArray();
+
+        // Map value array keys to options
+        $value = array_map(function ($val) use ($options) {
+            return $options[$val] ?? $val;
+        }, $value);
+
+        return implode(", ", $value);
     }
 }

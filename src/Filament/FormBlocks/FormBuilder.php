@@ -22,6 +22,17 @@ class FormBuilder extends Builder
         return $static;
     }
 
+    public static function getFieldDefinitions($schema): Collection
+    {
+        $fields = collect();
+        foreach($schema as $field) {
+            $kids = FilaCms::getFormBlock($field['type'])::getFieldDefinitions($field['data']);
+            $fields = $fields->merge($kids);
+        }
+
+        return $fields;
+    }
+
     public static function getChildren($schema): Collection
     {
         $fields = collect();

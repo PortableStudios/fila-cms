@@ -25,15 +25,15 @@ class RichTextBlock extends AbstractTextBlock
         return null;
     }
 
-    public static function displayHtml($fieldData, $values): string
+    public static function displayValue($fieldData, $values): string
     {
-        $field = static::getField($fieldData);
-        $value = isset($values[$field->getName()]) ? $values[$field->getName()] : '';
+        $fieldName = data_get($fieldData, 'field_name');
+        $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
 
         if(is_array($value)) {
             $value = tiptap_converter()->asHTML($value);
         }
 
-        return '<div><strong>' . $field->getLabel() . '</strong>: ' . $value . '</div>';
+        return $value;
     }
 }

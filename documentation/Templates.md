@@ -14,6 +14,9 @@ Everything above the main page content is rendered from this file
 **layouts/page-footer.blade.php**
 Everything below the main page content is rendered from this file.
 
+**layouts/email.blade.php**
+This is the main email rendering template that providers the wrapper and styling for emails.
+
 **components/auth/login-form.blade.php**
 The login form itself
 
@@ -28,3 +31,6 @@ The "Login page" page
 
 **auth/user-profile.blade.php**
 The "User Profile" page
+
+**notifications/form-submitted.blade.php**
+This renders the contents of the form submittion notification email.
