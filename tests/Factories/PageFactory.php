@@ -33,7 +33,6 @@ class PageFactory extends Factory
             'publish_at'    => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
             'expire_at'    => $draft === 1 ? $this->faker->dateTimeBetween('+1 week', '+2 weeks') : null,
             'contents'  => $this->createContent(),
-            'author_id'    => AuthorFactory::new()->create()->id,
         ];
     }
 

@@ -58,98 +58,116 @@ class AbstractContentResource extends AbstractResource
         ]);
     }
 
+    public static function getContentTab()
+    {
+        return Tabs\Tab::make('Content')
+            ->schema([
+                TextInput::make('title')
+                    ->columnSpanFull()
+                    ->required(),
+                FilaCms::tiptapEditor('contents'),
+            ]);
+    }
+
+    public static function getMainTabs()
+    {
+        $tabs = [
+            static::getContentTab(),
+            Tabs\Tab::make('Taxonomies')
+                ->schema(static::getTaxonomyFields()),
+            Tabs\Tab::make('SEO')
+                ->schema(static::getSeoFields()),
+            Tabs\Tab::make('Short URLs')
+                ->schema(static::getVanityURLFields()),
+            Tabs\Tab::make('Access Control')
+                ->schema(static::getRoleRestrictionFields()),
+        ];
+
+        return $tabs;
+    }
+
+    public static function getSidebarFieldSection()
+    {
+        return Section::make()
+        ->schema([
+            TextInput::make('slug')
+                ->rules([
+                    function (Get $get) {
+                        return function (string $attribute, $value, \Closure $fail) use ($get) {
+                            $class = new static::$model();
+                            $data = ($class)->withoutGlobalScopes()->where('slug', $value)
+                                ->when($get('id') !== null, function ($query) use ($get) {
+                                    $query->whereNot('id', $get('id'));
+                                })
+                                ->first();
+                            if (is_null($data) === false) {
+                                $fail('The :attribute already exists');
+                            }
+                        };
+                    }
+                ])
+                ->maxLength(255),
+            Toggle::make('is_draft')
+                ->label('Draft?')
+                ->offIcon('heroicon-m-eye')
+                ->onIcon('heroicon-m-eye-slash')->columnSpanFull(),
+            Select::make('authors')
+                ->label('Author(s)')
+                ->relationship()
+                ->multiple()
+                ->options(Author::all()->pluck('display_name', 'id'))
+                ->searchable(),
+            View::make('fila-cms::components.hr'),
+            DatePicker::make('publish_at')
+                ->label('Publish Date')
+                ->live(),
+            DatePicker::make('expire_at')
+                ->label('Expiry Date'),
+        ])
+        ->columns(1);
+    }
+
+    public static function getSidebarInfoSection()
+    {
+        return Fieldset::make()
+                ->schema([
+                    HandyComponents\CreatedAt::make()
+                        ->label('Created'),
+                    HandyComponents\UpdatedAt::make()
+                        ->label('Updated'),
+                    StatusBadge::make('status')
+                        ->live()
+                        ->badge()
+                        ->color(fn (string $state): mixed => match ($state) {
+                            'Draft' => 'info',
+                            'Pending' => 'warning',
+                            'Published' => 'success',
+                            'Expired' => 'danger',
+                            'Deleted' => \Filament\Support\Colors\Color::Indigo,
+                        })
+                        ->default('Draft'),
+
+                ])
+                ->columns(1);
+    }
+
+    public static function getSidebar()
+    {
+        return [ static::getSidebarFieldSection(), static::getSidebarInfoSection()];
+    }
+
     public static function form(Form $form): Form
     {
         $fields = [
             Group::make()
                 ->schema([
                     Tabs::make()
-                        ->tabs([
-                            Tabs\Tab::make('Content')
-                                ->schema([
-                                    TextInput::make('title')
-                                        ->columnSpanFull()
-                                        ->required(),
-                                    FilaCms::tiptapEditor('contents'),
-                                ]),
-                            Tabs\Tab::make('Taxonomies')
-                                ->schema([
-                                    ...static::getTaxonomyFields(),
-                                ]),
-                            Tabs\Tab::make('SEO')
-                                ->schema([
-                                    ...static::getSeoFields(),
-                                ]),
-                            Tabs\Tab::make('URLs')
-                                ->schema([
-                                    ...static::getVanityURLFields(),
-                                ]),
-                            Tabs\Tab::make('Roles')
-                                ->schema([
-                                    ...static::getRoleRestrictionFields(),
-                                ]),
-                        ])
+                        ->tabs(static::getMainTabs())
                         ->persistTabInQueryString()
                 ])
                 ->columnSpan(2),
             Group::make()
-                ->schema([
-                    Section::make()
-                        ->schema([
-                            TextInput::make('slug')
-                                ->rules([
-                                    function (Get $get) {
-                                        return function (string $attribute, $value, \Closure $fail) use ($get) {
-                                            $class = new static::$model();
-                                            $data = ($class)->withoutGlobalScopes()->where('slug', $value)
-                                                ->when($get('id') !== null, function ($query) use ($get) {
-                                                    $query->whereNot('id', $get('id'));
-                                                })
-                                                ->first();
-                                            if (is_null($data) === false) {
-                                                $fail('The :attribute already exists');
-                                            }
-                                        };
-                                    }
-                                ])
-                                ->maxLength(255),
-                            Toggle::make('is_draft')
-                                ->label('Draft?')
-                                ->offIcon('heroicon-m-eye')
-                                ->onIcon('heroicon-m-eye-slash')->columnSpanFull(),
-                            Select::make('author_id')
-                                ->label('Author')
-                                ->options(Author::all()->pluck('display_name', 'id'))
-                                ->searchable(),
-                            View::make('fila-cms::components.hr'),
-                            DatePicker::make('publish_at')
-                                ->label('Publish Date')
-                                ->live(),
-                            DatePicker::make('expire_at')
-                                ->label('Expiry Date'),
-                        ])
-                        ->columns(1),
-                    Fieldset::make()
-                        ->schema([
-                            HandyComponents\CreatedAt::make()
-                                ->label('Created'),
-                            HandyComponents\UpdatedAt::make()
-                                ->label('Updated'),
-                            StatusBadge::make('status')
-                                ->live()
-                                ->badge()
-                                ->color(fn (string $state): mixed => match ($state) {
-                                    'Draft' => 'info',
-                                    'Pending' => 'warning',
-                                    'Published' => 'success',
-                                    'Expired' => 'danger',
-                                    'Deleted' => \Filament\Support\Colors\Color::Indigo,
-                                })
-                                ->default('Draft'),
-
-                        ])
-                        ->columns(1)
-                ])
+                ->schema(static::getSidebar())
                 ->columnSpan(1),
         ];
 
