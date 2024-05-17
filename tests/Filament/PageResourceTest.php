@@ -198,7 +198,7 @@ class PageResourceTest extends TestCase
                 'title' => $new->title,
                 'contents' => $new->contents,
                 'is_draft' => $new->is_draft,
-                'author_id' => $new->author_id,
+                'authors' => [$this->author->id],
                 'colours_ids' => [$red->id],
             ])
             ->call('save')
@@ -206,7 +206,7 @@ class PageResourceTest extends TestCase
 
         $data->refresh();
         $this->assertEquals($data->title, $new->title);
-        $this->assertEquals($data->author_id, $new->author_id);
+        $this->assertEquals($data->authors->first(), $this->author->id);
         $this->assertEquals($data->is_draft, $new->is_draft);
     }
 
