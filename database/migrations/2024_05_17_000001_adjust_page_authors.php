@@ -12,8 +12,8 @@ return new class () extends Migration {
     public function up(): void
     {
         Page::withoutGlobalScopes()->get()->each(function (Page $page) {
-            if($page->author()->exists()) {
-                $page->authors()->sync($page->author->id);
+            if($page->author_id) {
+                $page->authors()->sync($page->author_id);
             }
         });
 
