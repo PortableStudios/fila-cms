@@ -16,6 +16,7 @@ use Portable\FilaCms\Events\ContentCreating;
 use Portable\FilaCms\Events\ContentUpdating;
 use Portable\FilaCms\Exceptions\InvalidStatusException;
 use Portable\FilaCms\Facades\FilaCms;
+use Portable\FilaCms\Filament\Traits\HasAuthors;
 use Portable\FilaCms\Filament\Traits\HasContentRoles;
 use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasShortUrl;
@@ -29,6 +30,7 @@ abstract class AbstractContentModel extends Model
 {
     use HasExcerpt;
     use HasTaxonomies;
+    use HasAuthors;
     use HasShortUrl;
     use Versionable;
     use SoftDeletes;
@@ -51,7 +53,6 @@ abstract class AbstractContentModel extends Model
         'publish_at',
         'expire_at',
         'contents',
-        'author_id'
     ];
 
     protected $fillable = [
@@ -63,7 +64,6 @@ abstract class AbstractContentModel extends Model
         'contents',
         'created_user_id',
         'updated_user_id',
-        'author_id',
     ];
 
     protected $appends = ['status'];
@@ -125,13 +125,8 @@ abstract class AbstractContentModel extends Model
     {
         return new SEOData(
             title: $this->title,
-            author: $this->author?->display_name,
+            author: $this->display_author,
         );
-    }
-
-    public function author()
-    {
-        return $this->belongsTo(Author::class, 'author_id');
     }
 
     public function createdBy()
@@ -146,7 +141,7 @@ abstract class AbstractContentModel extends Model
 
     public function displayAuthor(): Attribute
     {
-        return Attribute::make(get: fn () => $this->author ? $this->author->name : $this->createdBy->name);
+        return Attribute::make(get: fn () => $this->authors->count() ? implode(", ", $this->authors->pluck('display_name')) : $this->createdBy->name);
     }
 
     protected function status(): Attribute
