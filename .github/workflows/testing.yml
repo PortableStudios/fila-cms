@@ -19,6 +19,6 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --ignore-platform-reqs
     - name: Start Meilisearch
-      run: docker run -it --rm   -p 7700:7700   -v $(pwd)/meili_data:/meili_data getmeili/meilisearch:v1.8 -d
+      run: docker run -d -it --rm   -p 7700:7700   -v $(pwd)/meili_data:/meili_data   getmeili/meilisearch:v1.8
     - name: Pest
       run: php vendor/bin/pest --stop-on-defect
