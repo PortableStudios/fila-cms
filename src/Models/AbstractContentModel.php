@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Kenepa\ResourceLock\Models\Concerns\HasLocks;
+use Laravel\Scout\Searchable;
 use Overtrue\LaravelVersionable\Version;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
@@ -38,6 +39,7 @@ abstract class AbstractContentModel extends Model
     use HasSEO;
     use HasContentRoles;
     use HasSlug;
+    use Searchable;
 
     protected $table = 'contents';
 

@@ -278,4 +278,17 @@ class FilaCms
             }
         }
     }
+
+
+    public function search($term)
+    {
+        $results = [];
+        foreach(static::$contentModels as $modelClass => $resourceClass) {
+            $results = array_merge($results, $modelClass::search($term)->get()->toArray());
+        }
+
+        $results = array_merge($results, Form::search($term)->get()->toArray());
+
+        return $results;
+    }
 }
