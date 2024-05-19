@@ -18,5 +18,9 @@ jobs:
     - uses: actions/checkout@v3
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --ignore-platform-reqs
+    - name: Start Meilisearch
+      uses: moy2010/meilisearch-github-action@0.1
+      with:
+        meilisearch-version: v0.25.2
     - name: Pest
       run: php vendor/bin/pest --stop-on-defect
