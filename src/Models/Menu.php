@@ -30,4 +30,10 @@ class Menu extends Model
     {
         return $this->hasMany(MenuItem::class, 'menu_id');
     }
+
+    // Return only direct descendants
+    public function children()
+    {
+        return $this->items()->whereNull('parent_id');
+    }
 }

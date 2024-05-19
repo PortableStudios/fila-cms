@@ -4,9 +4,9 @@ namespace Portable\FilaCms\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
 use Portable\FilaCms\Facades\FilaCms;
+use Symfony\Component\HttpFoundation\Response;
 
 class ContentRoleMiddleware
 {
@@ -21,7 +21,7 @@ class ContentRoleMiddleware
 
         $path = $request->path();
         foreach ($contentModels as $modelClass => $resourceClass) {
-            $prefix = method_exists($resourceClass, 'getFrontendRoutePrefix') ? $resourceClass::getFrontendRoutePrefix() : $resourceClass::getRoutePrefix();
+            $prefix = $resourceClass::getFrontendRoutePrefix();
 
             if (Str::of($path)->startsWith($prefix . '/')) {
                 $slug = Str::of($path)->replace($prefix . '/', '');

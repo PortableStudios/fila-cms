@@ -66,6 +66,23 @@ class MenuItem extends Model
         return $this->belongsTo(Menu::class, 'menu_id');
     }
 
+    public function url(): Attribute
+    {
+        return new Attribute(function ($value) {
+            $resourceClass = $this->reference_page;
+            switch($this->type) {
+                case 'index-page':
+                    return route($resourceClass::getFrontendIndexRoute());
+                case 'content':
+                    $slug = ($resourceClass::getModel())::find($this->reference_content)?->slug;
+
+                    return route($resourceClass::getFrontendShowRoute(), ['slug' => $slug]);
+                default: // 'url'
+                    return $this->reference_text ?? '#';
+            }
+        });
+    }
+
     public function referenceText(): Attribute
     {
         return Attribute::make(

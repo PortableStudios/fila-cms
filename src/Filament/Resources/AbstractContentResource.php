@@ -24,8 +24,8 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-
 use Illuminate\Database\Eloquent\Builder;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
@@ -34,6 +34,8 @@ use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Forms\Components\StatusBadge;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
+use Portable\FilaCms\Livewire\ContentResourceList;
+use Portable\FilaCms\Livewire\ContentResourceShow;
 use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
@@ -49,6 +51,41 @@ class AbstractContentResource extends AbstractResource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?string $navigationGroup = 'Content';
+
+    public static function getFrontendRoutePrefix()
+    {
+        return static::getRoutePrefix();
+    }
+
+    public static function getFrontendShowRoute()
+    {
+        return static::getFrontendRoutePrefix() . '.{slug}';
+    }
+
+    public static function getFrontendIndexRoute()
+    {
+        return static::getFrontendRoutePrefix() . '.index';
+    }
+
+    public static function registerIndexRoute()
+    {
+        return true;
+    }
+
+    public static function registerShowRoute()
+    {
+        return true;
+    }
+
+    public static function getFrontendIndexComponent()
+    {
+        return ContentResourceList::class;
+    }
+
+    public static function getFrontendShowComponent()
+    {
+        return ContentResourceShow::class;
+    }
 
     public static function getEloquentQuery(): Builder
     {

@@ -84,12 +84,11 @@ class ContentResourceList extends Component implements HasForms
     protected function getViewData()
     {
         $resourceClass = FilaCms::getContentModelResource($this->model);
-        $prefix = method_exists($resourceClass, 'getFrontendRoutePrefix') ? $resourceClass::getFrontendRoutePrefix() : $resourceClass::getRoutePrefix();
 
         return [
             'results' => $this->getResultsQuery()->paginate(10),
             'title' => Str::title($resourceClass::getPluralModelLabel()),
-            'showRoute' => $prefix.'.show',
+            'showRoute' => $resourceClass::getFrontendShowRoute()
         ];
     }
 }

@@ -7,8 +7,10 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Portable\FilaCms\Filament\Resources\MenuResource\Pages\EditMenu;
 use Portable\FilaCms\Filament\Resources\MenuResource\RelationManagers\ItemsRelationManager;
+use Portable\FilaCms\Models\Form;
 use Portable\FilaCms\Models\Menu;
 use Portable\FilaCms\Models\MenuItem;
+use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Tests\TestCase;
 use Spatie\Permission\Models\Role;
 
@@ -81,5 +83,54 @@ class MenuItemResourceTest extends TestCase
             'Item 4',
             'Item 5',
         ]);
+    }
+
+    public function test_index_url()
+    {
+        $menu = Menu::factory()->create();
+        $data = MenuItem::factory()->create([
+            'menu_id' => $menu->id,
+            'type' => 'index-page',
+            'reference_page' => \Portable\FilaCms\Filament\Resources\PageResource::class,
+        ]);
+
+        $resourceClass = $data->reference_page;
+        $route = route($resourceClass::getFrontendIndexRoute());
+
+        $this->assertEquals($route, $data->url);
+    }
+
+    public function test_page_url()
+    {
+        $page = Page::factory()->create();
+        $menu = Menu::factory()->create();
+        $data = MenuItem::factory()->create([
+            'menu_id' => $menu->id,
+            'type' => 'content',
+            'reference_page' => \Portable\FilaCms\Filament\Resources\PageResource::class,
+            'reference_content' => $page->id
+        ]);
+
+        $resourceClass = $data->reference_page;
+        $route = route($resourceClass::getFrontendShowRoute(), $page->slug);
+
+        $this->assertEquals($route, $data->url);
+    }
+
+    public function test_form_url()
+    {
+        $form = Form::factory()->create();
+        $menu = Menu::factory()->create();
+        $data = MenuItem::factory()->create([
+            'menu_id' => $menu->id,
+            'type' => 'content',
+            'reference_page' => \Portable\FilaCms\Filament\Resources\FormResource::class,
+            'reference_content' => $form->id
+        ]);
+
+        $resourceClass = $data->reference_page;
+        $route = route($resourceClass::getFrontendShowRoute(), $form->slug);
+
+        $this->assertEquals($route, $data->url);
     }
 }
