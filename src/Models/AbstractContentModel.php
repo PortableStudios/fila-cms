@@ -141,7 +141,7 @@ abstract class AbstractContentModel extends Model
 
     public function displayAuthor(): Attribute
     {
-        return Attribute::make(get: fn () => $this->authors->count() ? implode(", ", $this->authors->pluck('display_name')) : $this->createdBy->name);
+        return Attribute::make(get: fn () => $this->authors->count() ? implode(", ", $this->authors->pluck('display_name')->all()) : $this->createdBy->name);
     }
 
     protected function status(): Attribute
