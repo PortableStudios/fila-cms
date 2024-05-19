@@ -19,8 +19,10 @@ return new class () extends Migration {
 
 
         Schema::table('pages', function (Blueprint $table) {
-            if(config('database.default') !== 'sqlite') {
+            try {
                 $table->dropConstrainedForeignId('author_id');
+            } catch(\Exception $e) {
+                // This fails cause we're using Sqlite in testing, ignore
             }
         });
     }
