@@ -18,6 +18,7 @@ providers:
   - Laravel\Fortify\FortifyServiceProvider
   - Overtrue\LaravelVersionable\ServiceProvider
   - Laravel\Socialite\SocialiteServiceProvider
+  - Laravel\Scout\ScoutServiceProvider
 
 migrations:
   - workbench/database/migrations
