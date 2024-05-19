@@ -69,12 +69,11 @@ class MenuItem extends Model
     public function url(): Attribute
     {
         return new Attribute(function ($value) {
+            $resourceClass = $this->reference_page;
             switch($this->type) {
                 case 'index-page':
-                    $resourceClass = $this->reference_page;
                     return route($resourceClass::getFrontendIndexRoute());
                 case 'content':
-                    $resourceClass = $this->reference_page;
                     $slug = ($resourceClass::getModel())::find($this->reference_content)?->slug;
 
                     return route($resourceClass::getFrontendShowRoute(), ['slug' => $slug]);
