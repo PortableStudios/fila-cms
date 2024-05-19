@@ -15,8 +15,7 @@ use Intervention\Image\Drivers\Gd\Driver as GDDriver;
 use Intervention\Image\ImageManager;
 use Portable\FilaCms\Data\SettingData;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource;
-use Portable\FilaCms\Livewire\ContentResourceList;
-use Portable\FilaCms\Livewire\ContentResourceShow;
+use Portable\FilaCms\Filament\Resources\FormResource;
 use Portable\FilaCms\Models\Media;
 use Portable\FilaCms\Models\ShortUrl;
 use ReflectionClass;
@@ -98,10 +97,10 @@ class FilaCms
     public function formRoutes()
     {
         Route::group(
-            ['prefix' => 'form', 'middleware' => 'web'],
+            ['prefix' => FormResource::getFrontendRoutePrefix(), 'middleware' => 'web'],
             function () {
-                Route::get('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name('form.show');
-                Route::post('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name('form.submit');
+                Route::get('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name(FormResource::getFrontendShowRoute());
+                Route::post('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name(FormResource::getFrontendShowRoute().'.submit');
             }
         );
     }
@@ -122,22 +121,22 @@ class FilaCms
     {
         $this->getContentModels();
         foreach (static::$contentModels as $modelClass => $resourceClass) {
-            $prefix = method_exists($resourceClass, 'getFrontendRoutePrefix') ? $resourceClass::getFrontendRoutePrefix() : $resourceClass::getRoutePrefix();
-            $registerIndex = method_exists($resourceClass, 'registerIndexRoute') ? $resourceClass::registerIndexRoute() : true;
-            $registerShow = method_exists($resourceClass, 'registerShowRoute') ? $resourceClass::registerShowRoute() : true;
-            $feIndexComponent = method_exists($resourceClass, 'getFrontendIndexComponent') ? $resourceClass::getFrontendIndexComponent() : ContentResourceList::class;
-            $feShowComponent = method_exists($resourceClass, 'getFrontendShowComponent') ? $resourceClass::getFrontendShowComponent() : ContentResourceShow::class;
+            $prefix = $resourceClass::getFrontendRoutePrefix();
+            $registerIndex = $resourceClass::registerIndexRoute();
+            $registerShow = $resourceClass::registerShowRoute();
+            $feIndexComponent = $resourceClass::getFrontendIndexComponent();
+            $feShowComponent = $resourceClass::getFrontendShowComponent();
 
             Route::group(
                 ['prefix' => $prefix, 'middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
-                function () use ($feShowComponent, $prefix, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
+                function () use ($feShowComponent, $resourceClass, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
                     if ($registerIndex) {
                         Route::get('/', $feIndexComponent)
-                            ->name($prefix.'.index')
+                            ->name($resourceClass::getFrontendIndexRoute())
                             ->defaults('model', $modelClass);
                     }
                     if ($registerShow) {
-                        Route::get('/{slug}', $feShowComponent)->name($prefix.'.show')->defaults('model', $modelClass);
+                        Route::get('/{slug}', $feShowComponent)->name($resourceClass::getFrontendShowRoute())->defaults('model', $modelClass);
                     }
                 }
             );
