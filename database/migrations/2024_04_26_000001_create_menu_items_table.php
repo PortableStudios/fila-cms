@@ -32,7 +32,9 @@ return new class () extends Migration {
     public function down(): void
     {
         Schema::table('menu_items', function (Blueprint $table) {
-            $table->dropForeign('menu_items_parent_id_foreign');
+            if(config('database.default') !== 'sqlite') {
+                $table->dropForeign('menu_items_parent_id_foreign');
+            }
         });
         Schema::dropIfExists('menu_items');
     }

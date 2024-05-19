@@ -19,7 +19,7 @@ return new class () extends Migration {
 
 
         Schema::table('pages', function (Blueprint $table) {
-            if(!app()->environment('testing')) {
+            if(config('database.default') !== 'sqlite') {
                 $table->dropConstrainedForeignId('author_id');
             }
         });

@@ -21,7 +21,9 @@ return new class () extends Migration {
     public function down(): void
     {
         Schema::table('taxonomy_terms', function (Blueprint $table) {
-            $table->dropForeign('taxonomy_terms_parent_id_foreign');
+            if(config('database.default') !== 'sqlite') {
+                $table->dropForeign('taxonomy_terms_parent_id_foreign');
+            }
         });
     }
 };

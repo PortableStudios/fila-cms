@@ -30,6 +30,31 @@ class FormResource extends AbstractResource
 
     protected static ?string $navigationGroup = 'Forms';
 
+    public static function getFrontendRoutePrefix()
+    {
+        return static::getRoutePrefix();
+    }
+
+    public static function getFrontendShowRoute()
+    {
+        return static::getFrontendRoutePrefix() . '.{slug}';
+    }
+
+    public static function getFrontendIndexRoute()
+    {
+        return static::getFrontendRoutePrefix() . '.index';
+    }
+
+    public static function registerIndexRoute()
+    {
+        return false;
+    }
+
+    public static function registerShowRoute()
+    {
+        return true;
+    }
+
     public static function form(Form $form): Form
     {
 

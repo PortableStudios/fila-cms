@@ -8,6 +8,18 @@ class PageResource extends AbstractContentResource
 {
     protected static ?string $recordTitleAttribute = 'title';
 
+    public static function getFrontendRoutePrefix()
+    {
+        // So that pages just register as /{slug} instead of /pages/{slug}
+        return '';
+    }
+
+    public static function registerIndexRoute()
+    {
+        // We don't want a "Pages" listing page
+        return false;
+    }
+
     public static function getPages(): array
     {
         return [
