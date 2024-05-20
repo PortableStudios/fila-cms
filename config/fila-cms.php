@@ -92,4 +92,7 @@ return [
         ]
     ],
     'short_url_prefix' => env('FILACMS_SHORT_URL_PREFIX', 's'),
+    'email_views' => [
+        'welcome' => 'fila-cms::notifications.welcome',
+    ]
 ];
