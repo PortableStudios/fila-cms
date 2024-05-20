@@ -20,7 +20,6 @@ class WelcomeNotification extends Notification
         return ['mail'];
     }
 
-
     public function toMail($notifiable)
     {
         return $this->buildMailMessage();

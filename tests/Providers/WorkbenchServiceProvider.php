@@ -4,10 +4,7 @@ namespace Portable\FilaCms\Tests\Providers;
 
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
-use Laravel\Fortify\Fortify;
-use Portable\FilaCms\Observers\AuthenticatableObserver;
 use Portable\FilaCms\Tests\Listeners\CommandStartingListener;
-use Portable\FilaCms\Tests\User;
 
 class WorkbenchServiceProvider extends EventServiceProvider
 {
