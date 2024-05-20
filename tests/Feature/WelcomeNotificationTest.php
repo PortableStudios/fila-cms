@@ -3,26 +3,16 @@
 namespace Portable\FilaCms\Tests\Feature;
 
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Features;
-use Laravel\Fortify\Fortify;
 use Portable\FilaCms\Notifications\WelcomeNotification;
-use Portable\FilaCms\Observers\AuthenticatableObserver;
 use Portable\FilaCms\Tests\TestCase;
-use Portable\FilaCms\Tests\User;
-use ReflectionClass;
 
 class WelcomeNotificationTest extends TestCase
 {

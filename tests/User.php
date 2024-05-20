@@ -6,6 +6,7 @@ namespace Portable\FilaCms\Tests;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements \Filament\Models\Contracts\FilamentUser
 {
@@ -13,6 +14,7 @@ class User extends Authenticatable implements \Filament\Models\Contracts\Filamen
     use \Portable\FilaCms\Contracts\HasLogin;
     use \Spatie\Permission\Traits\HasRoles;
     use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.

@@ -14,10 +14,11 @@ class AuthenticatableObserver
     {
         if (
             ! Arr::where(
-            config('fortify.features'),
-            function ($value, $key) {
-                return $value === Features::emailVerification();
-            })
+                config('fortify.features'),
+                function ($value, $key) {
+                    return $value === Features::emailVerification();
+                }
+            )
         ) {
             Notification::send($user, new WelcomeNotification($user));
         }
