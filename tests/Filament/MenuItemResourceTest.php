@@ -91,7 +91,7 @@ class MenuItemResourceTest extends TestCase
         $data = MenuItem::factory()->create([
             'menu_id' => $menu->id,
             'type' => 'index-page',
-            'reference_page' => 'Portable\FilaCms\Filament\Resources\PageResource',
+            'reference_page' => \Portable\FilaCms\Filament\Resources\PageResource::class,
         ]);
 
         $resourceClass = $data->reference_page;
@@ -107,7 +107,7 @@ class MenuItemResourceTest extends TestCase
         $data = MenuItem::factory()->create([
             'menu_id' => $menu->id,
             'type' => 'content',
-            'reference_page' => 'Portable\FilaCms\Filament\Resources\PageResource',
+            'reference_page' => \Portable\FilaCms\Filament\Resources\PageResource::class,
             'reference_content' => $page->id
         ]);
 
@@ -124,7 +124,7 @@ class MenuItemResourceTest extends TestCase
         $data = MenuItem::factory()->create([
             'menu_id' => $menu->id,
             'type' => 'content',
-            'reference_page' => 'Portable\FilaCms\Filament\Resources\FormResource',
+            'reference_page' => \Portable\FilaCms\Filament\Resources\FormResource::class,
             'reference_content' => $form->id
         ]);
 
