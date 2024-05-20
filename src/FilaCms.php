@@ -16,6 +16,7 @@ use Intervention\Image\ImageManager;
 use Portable\FilaCms\Data\SettingData;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource;
 use Portable\FilaCms\Filament\Resources\FormResource;
+use Portable\FilaCms\Models\Form;
 use Portable\FilaCms\Models\Media;
 use Portable\FilaCms\Models\ShortUrl;
 use ReflectionClass;
@@ -277,5 +278,17 @@ class FilaCms
                 ->middleware('web');
             }
         }
+    }
+
+    public function search($term)
+    {
+        $results = [];
+        foreach(static::$contentModels as $modelClass => $resourceClass) {
+            $results = array_merge($results, $modelClass::search($term)->get()->toArray());
+        }
+
+        $results = array_merge($results, Form::search($term)->get()->toArray());
+
+        return $results;
     }
 }

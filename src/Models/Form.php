@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Scout\Searchable;
 use Portable\FilaCms\Contracts\HasSlug;
 use Portable\FilaCms\Facades\FilaCms;
 
@@ -13,6 +14,7 @@ class Form extends Model
     use HasSlug;
     use HasFactory;
     use Notifiable;
+    use Searchable;
 
     protected $fillable = [
         'title',
