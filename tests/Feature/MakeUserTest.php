@@ -35,6 +35,7 @@ class MakeUserTest extends TestCase
             'email_verified_at',
             'two_factor_secret',
             'two_factor_recovery_codes',
+            'email',
             'two_factor_confirmed_at'
         ];
 
@@ -42,6 +43,8 @@ class MakeUserTest extends TestCase
         foreach ($userFields as $key => $field) {
             $this->expectedQuestions[] = ['Enter admin ' . $field, 'test'];
         }
+
+        $this->expectedQuestions[] = ['Enter admin email','test@test.com'];
 
         $this->artisan('fila-cms:make-user', ['--dry-run' => true])
             ->expectsOutputToContain('User to be created')
@@ -76,6 +79,7 @@ class MakeUserTest extends TestCase
             'deleted_at',
             'remember_token',
             'email_verified_at',
+            'email',
             'two_factor_secret',
             'two_factor_recovery_codes',
             'two_factor_confirmed_at'
@@ -85,6 +89,7 @@ class MakeUserTest extends TestCase
         foreach ($userFields as $key => $field) {
             $this->expectedQuestions[] = ['Enter admin ' . $field, 'test'];
         }
+        $this->expectedQuestions[] = ['Enter admin email','test@test.com'];
 
         $artisan = $this->artisan('fila-cms:make-user')
             ->expectsOutputToContain('User created')
