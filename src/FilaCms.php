@@ -147,7 +147,7 @@ class FilaCms
             } else {
                 // If there's no prefix, manually register all the routes, we don't create a catch-all hole
                 Route::group(
-                    ['prefix' => $prefix, 'middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
+                    ['middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
                     function () use ($feShowComponent, $resourceClass, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
                         if ($registerIndex) {
                             Route::get('/', $feIndexComponent)
