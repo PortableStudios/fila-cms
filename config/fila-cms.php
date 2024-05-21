@@ -91,5 +91,5 @@ return [
             ]
         ]
     ],
-    'short_url_prefix' => env('FILACMS_SHORT_URL_PREFIX', 's'),
+    'short_url_prefix' => env('FILACMS_SHORT_URL_PREFIX', 's')
 ];
