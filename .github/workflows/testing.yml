@@ -21,6 +21,6 @@ jobs:
     - name: Start Meilisearch
       run: docker run -d -it --rm   -p 7700:7700   -v $(pwd)/meili_data:/meili_data   getmeili/meilisearch:v1.8
     - name: Start Mailhog
-      run: docker run -d -p 8025:8025 -p 587:587 mailhog/mailhog
+      run: docker run -d -p 8025:8025 -p 1025:1025 mailhog/mailhog
     - name: Pest
       run: php vendor/bin/pest --stop-on-defect
