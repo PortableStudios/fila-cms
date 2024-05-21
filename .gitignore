@@ -1,3 +1,4 @@
 /node_modules
 vendor/*
+meili_data/*
 .phpunit.result.cache

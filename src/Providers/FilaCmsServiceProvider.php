@@ -71,6 +71,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         Livewire::component('form-show', \Portable\FilaCms\Livewire\FormShow::class);
         Blade::componentNamespace('Portable\\FilaCms\\Views\\Components', 'fila-cms');
         config(['versionable.user_model' => config('auth.providers.users.model')]);
+        config(['scout.driver' => config('fila-cms.search.driver', 'meilisearch')]);
 
         Event::listen(Login::class, AuthenticationListener::class);
 

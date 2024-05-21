@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Portable\FilaCms\Models\Page;
 
@@ -19,7 +20,7 @@ return new class () extends Migration {
 
 
         Schema::table('pages', function (Blueprint $table) {
-            if(!app()->environment('testing')) {
+            if(DB::connection()->getDriverName() !== 'sqlite') {
                 $table->dropConstrainedForeignId('author_id');
             }
         });

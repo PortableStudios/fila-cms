@@ -8,11 +8,11 @@ use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-
 use Illuminate\Support\Str;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\MenuItemResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
+use Portable\FilaCms\Models\Form as FormModel;
 use Portable\FilaCms\Models\MenuItem;
 
 class MenuItemResource extends AbstractResource
@@ -72,7 +72,7 @@ class MenuItemResource extends AbstractResource
                         Forms\Components\Select::make('reference_page')
                             ->label('Content Type')
                             ->visible(fn (Get $get) => $get('type') !== 'url' ? true : false)
-                            ->options(FilaCms::getContentModels())
+                            ->options(static::getContentSources())
                             ->required()
                             ->live()
                             ->columnSpan(2),
@@ -110,11 +110,7 @@ class MenuItemResource extends AbstractResource
             ->columns([
                 TextColumn::make('name')->sortable(),
                 TextColumn::make('type')->label('Type'),
-                TextColumn::make('order')->label('Order'),
                 TextColumn::make('parent.name')->label('Parent'),
-            ])
-            ->filters([
-
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
@@ -128,6 +124,14 @@ class MenuItemResource extends AbstractResource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])->defaultSort('order');
+    }
+
+    public static function getContentSources()
+    {
+        $sources = FilaCms::getContentModels();
+        $sources[FormResource::class] = 'Forms';
+
+        return $sources;
     }
 
     public static function getRelations(): array
@@ -177,6 +181,9 @@ class MenuItemResource extends AbstractResource
     protected function getSourceModel($source)
     {
         $className = FilaCms::getModelFromResource($source);
+        if(!$className) {
+            $className = FormModel::class;
+        }
 
         return new $className();
     }
