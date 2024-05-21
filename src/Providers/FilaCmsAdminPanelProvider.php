@@ -9,6 +9,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\MenuItem;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -17,7 +18,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Portable\FilaCms\Http\Middleware\TwoFactorMiddleware;
 use Portable\FilaCms\Filament\Pages\EditSettings;
+use Portable\FilaCms\Filament\Pages\UserSettings;
 use Portable\FilaCms\Filament\Pages\MediaLibrary;
 use Portable\FilaCms\Http\Middleware\FilaCmsAuthenticate;
 
@@ -40,6 +43,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
                 EditSettings::class,
+                UserSettings::class,
                 MediaLibrary::class
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
@@ -51,6 +55,12 @@ class FilaCmsAdminPanelProvider extends PanelProvider
                 'Taxonomies',
                 'System',
             ])
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Settings')
+                    ->url('/admin/user-settings')
+                    ->icon('heroicon-o-cog-6-tooth')
+            ])
             ->databaseNotifications()
             ->middleware([
                 EncryptCookies::class,
@@ -60,6 +70,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
+                TwoFactorMiddleware::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
