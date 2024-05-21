@@ -20,5 +20,7 @@ jobs:
       run: composer install --prefer-dist --no-progress --ignore-platform-reqs
     - name: Start Meilisearch
       run: docker run -d -it --rm   -p 7700:7700   -v $(pwd)/meili_data:/meili_data   getmeili/meilisearch:v1.8
+    - name: Start Mailhog
+      run: docker run -p 8025:8025 -p 1025:1025 mailhog/mailhog
     - name: Pest
       run: php vendor/bin/pest --stop-on-defect
