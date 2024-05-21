@@ -75,7 +75,11 @@ class FilaCmsServiceProvider extends ServiceProvider
         Event::listen(Login::class, AuthenticationListener::class);
 
         Fortify::resetPasswordView(function () {
-            return view('fila-cms::auth.reset-password');
+            return view(config('fila-cms.auth.password_reset_view'));
+        });
+
+        Fortify::requestPasswordResetLinkView(function () {
+            return view(config('fila-cms.auth.forgot_password_view'));
         });
 
         Fortify::loginView(function () {
@@ -88,7 +92,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         );
 
         Fortify::verifyEmailView('fila-cms::auth.verify-email');
-        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        Fortify::resetUserPasswordsUsing(config('fila-cms.auth.password_reset'));
         Fortify::updateUserProfileInformationUsing(config('fila-cms.users.profile_updater', UpdateUserProfileInformation::class));
     }
 
