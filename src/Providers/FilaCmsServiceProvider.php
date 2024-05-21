@@ -27,6 +27,7 @@ use Portable\FilaCms\Listeners\AuthenticationListener;
 use Portable\FilaCms\Models\Setting;
 use Portable\FilaCms\Services\MediaLibrary;
 
+
 class FilaCmsServiceProvider extends ServiceProvider
 {
     public function boot()
@@ -89,6 +90,9 @@ class FilaCmsServiceProvider extends ServiceProvider
         Fortify::verifyEmailView('fila-cms::auth.verify-email');
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::updateUserProfileInformationUsing(config('fila-cms.users.profile_updater', UpdateUserProfileInformation::class));
+        Fortify::twoFactorChallengeView(function () {
+            return view('fila-cms::auth.two-factor-challenge');
+        });
     }
 
     public function register()
