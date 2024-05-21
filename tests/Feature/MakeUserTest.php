@@ -40,7 +40,7 @@ class MakeUserTest extends TestCase
 
         $userFields = array_diff($userFieldsRaw, $excludeFields);
         foreach ($userFields as $key => $field) {
-            $this->expectedQuestions[] = ['Enter admin ' . $field, 'test'];
+            $this->expectedQuestions[] = ['Enter admin ' . $field, 'test@test.com'];
         }
 
         $this->artisan('fila-cms:make-user', ['--dry-run' => true])
@@ -49,7 +49,7 @@ class MakeUserTest extends TestCase
 
         // verify user has not been created
         $this->assertDatabaseMissing('users', [
-            'name' => 'test',
+            'name' => 'test@test.com',
         ]);
     }
 
@@ -93,7 +93,7 @@ class MakeUserTest extends TestCase
 
         // verify user has been created
         $this->assertDatabaseHas('users', [
-            'name' => 'test',
+            'name' => 'test@test.com',
         ]);
 
         // verify user has role
