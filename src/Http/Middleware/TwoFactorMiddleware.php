@@ -4,9 +4,9 @@ namespace Portable\FilaCms\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-use Portable\FilaCms\Facades\FilaCms;
+use Symfony\Component\HttpFoundation\Response;
 
 class TwoFactorMiddleware
 {
@@ -18,8 +18,11 @@ class TwoFactorMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        
-        // dd($user->hasEnabledTwoFactorAuthentication());
+        if(method_exists($user, 'hasEnabledTwoFactorAuthentication') && !$user->hasEnabledTwoFactorAuthentication()) {
+            if (!Str::contains(Route::current()->getName(), ['two-factor','user-settings'])) {
+                return redirect()->route('filament.admin.pages.user-settings');
+            }
+        }
 
         return $next($request);
     }

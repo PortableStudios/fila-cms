@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Contracts\TwoFactorConfirmedResponse as TwoFactorConfirmedResponseContract;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
 use Portable\FilaCms\Actions\Fortify\ResetUserPassword;
@@ -23,10 +24,10 @@ use Portable\FilaCms\FilaCms;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
 use Portable\FilaCms\Filament\Forms\Components\AddressInput;
 use Portable\FilaCms\Filament\Forms\Components\ImagePicker;
+use Portable\FilaCms\Fortify\Http\Responses\TwoFactorConfirmedResponse;
 use Portable\FilaCms\Listeners\AuthenticationListener;
 use Portable\FilaCms\Models\Setting;
 use Portable\FilaCms\Services\MediaLibrary;
-
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -83,6 +84,10 @@ class FilaCmsServiceProvider extends ServiceProvider
             return view('fila-cms::auth.login');
         });
 
+        Fortify::confirmPasswordView(function () {
+            return view('fila-cms::auth.confirm-password');
+        });
+
         $this->app->singleton(
             \Laravel\Fortify\Contracts\LoginResponse::class,
             \Portable\FilaCms\Http\Responses\LoginResponse::class
@@ -94,6 +99,8 @@ class FilaCmsServiceProvider extends ServiceProvider
         Fortify::twoFactorChallengeView(function () {
             return view('fila-cms::auth.two-factor-challenge');
         });
+
+        $this->app->singleton(TwoFactorConfirmedResponseContract::class, TwoFactorConfirmedResponse::class);
     }
 
     public function register()
