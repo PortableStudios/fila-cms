@@ -6,6 +6,7 @@ use Closure;
 use Filament\Facades\Filament;
 use FilamentTiptapEditor\Enums\TiptapOutput;
 use FilamentTiptapEditor\TiptapEditor;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -48,6 +49,7 @@ class FilaCms
         foreach ($userFields as $key => $field) {
             $data[$field] = 'SYSTEM';
         }
+        $data['email_verified_at'] = new Carbon();
 
         $systemUser = $userModel::create($data);
 

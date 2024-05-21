@@ -30,6 +30,6 @@ class WelcomeNotification extends Notification
     {
         return (new MailMessage())
             ->subject("Welcome to $this->appName")
-            ->view(config('filacms.email_views.welcome'));
+            ->view('fila-cms::notifications.welcome', ['user' => $this->user, 'appName' => $this->appName]);
     }
 }

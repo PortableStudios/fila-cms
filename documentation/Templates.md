@@ -34,3 +34,6 @@ The "User Profile" page
 
 **notifications/form-submitted.blade.php**
 This renders the contents of the form submittion notification email.
+
+**notifications/welcome.blade.php**
+The welcome email to users
