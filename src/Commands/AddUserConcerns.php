@@ -9,6 +9,7 @@ use ReflectionClass;
 use Spatie\Permission\Traits\HasRoles;
 use Portable\FilaCms\Contracts\HasLogin;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class AddUserConcerns extends Command
 {
@@ -28,6 +29,7 @@ class AddUserConcerns extends Command
             HasRoles::class,
             HasLogin::class,
             SoftDeletes::class,
+            TwoFactorAuthenticatable::class,
         ];
 
         $interfaces = [
