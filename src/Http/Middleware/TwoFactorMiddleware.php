@@ -19,7 +19,7 @@ class TwoFactorMiddleware
     {
         $user = $request->user();
         if(!app()->runningUnitTests()) {
-            if(method_exists($user, 'hasEnabledTwoFactorAuthentication') && !$user->hasEnabledTwoFactorAuthentication()) {
+            if($user && method_exists($user, 'hasEnabledTwoFactorAuthentication') && !$user->hasEnabledTwoFactorAuthentication()) {
                 if (!Str::contains(Route::current()->getName(), ['two-factor','user-settings'])) {
                     return redirect()->route('filament.admin.pages.user-settings');
                 }
