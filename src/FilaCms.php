@@ -130,19 +130,42 @@ class FilaCms
             $feIndexComponent = $resourceClass::getFrontendIndexComponent();
             $feShowComponent = $resourceClass::getFrontendShowComponent();
 
-            Route::group(
-                ['prefix' => $prefix, 'middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
-                function () use ($feShowComponent, $resourceClass, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
-                    if ($registerIndex) {
-                        Route::get('/', $feIndexComponent)
-                            ->name($resourceClass::getFrontendIndexRoute())
-                            ->defaults('model', $modelClass);
+            if($prefix !== '') {
+                Route::group(
+                    ['prefix' => $prefix, 'middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
+                    function () use ($feShowComponent, $resourceClass, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
+                        if ($registerIndex) {
+                            Route::get('/', $feIndexComponent)
+                                ->name($resourceClass::getFrontendIndexRoute())
+                                ->defaults('model', $modelClass);
+                        }
+                        if ($registerShow) {
+                            Route::get('/{slug}', $feShowComponent)->name($resourceClass::getFrontendShowRoute())->defaults('model', $modelClass);
+                        }
                     }
-                    if ($registerShow) {
-                        Route::get('/{slug}', $feShowComponent)->name($resourceClass::getFrontendShowRoute())->defaults('model', $modelClass);
+                );
+            } else {
+                // If there's no prefix, manually register all the routes, we don't create a catch-all hole
+                Route::group(
+                    ['middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
+                    function () use ($feShowComponent, $resourceClass, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
+                        if ($registerIndex) {
+                            Route::get('/', $feIndexComponent)
+                                ->name($resourceClass::getFrontendIndexRoute())
+                                ->defaults('model', $modelClass);
+                        }
+                        if ($registerShow) {
+                            try {
+                                foreach($modelClass::all() as $model) {
+                                    Route::get('/' . $model->slug, $feShowComponent)->name($resourceClass::getFrontendShowRoute())->defaults('model', $modelClass);
+                                }
+                            } catch(\Exception $e) {
+                                // Models may not exist yet, we might be running migrations, etc.
+                            }
+                        }
                     }
-                }
-            );
+                );
+            }
         }
     }
 
