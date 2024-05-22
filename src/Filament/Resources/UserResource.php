@@ -14,6 +14,7 @@ use Portable\FilaCms\Filament\Resources\UserResource\Pages;
 use Portable\FilaCms\Filament\Resources\UserResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Rawilk\FilamentPasswordInput\Password;
+use Filament\Tables\Columns\IconColumn;
 
 class UserResource extends AbstractConfigurableResource
 {
@@ -59,8 +60,22 @@ class UserResource extends AbstractConfigurableResource
     {
         static::$model = config('auth.providers.users.model');
 
+        $columns = static::getTableColumns();
+
+        // append 2fa column
+        $columns[] = IconColumn::make('has_2fa')
+            ->getStateUsing(function (Model $record) {
+                return $record->hasEnabledTwoFactorAuthentication();
+            })
+            ->label('2FA')
+            ->boolean()
+            ->trueIcon('heroicon-o-check')
+            ->falseIcon('heroicon-o-x-circle')
+            ->trueColor('primary')
+            ->falseColor('warning');
+
         return $table
-            ->columns(static::getTableColumns())
+            ->columns($columns)
             ->filters([
                 //
             ])
