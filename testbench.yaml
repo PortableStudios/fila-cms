@@ -28,6 +28,9 @@ migrations:
 seeders:
   - Workbench\Database\Seeders\DatabaseSeeder
 
+env:
+  - DB_DATABASE=database/database.sql
+
 workbench:
   start: "/"
   install: true
@@ -37,11 +40,9 @@ workbench:
     commands: true
     components: true
     views: true
-  build: [
-    - cache:clear
-  ]
+  build: [- cache:clear]
   assets: [
-    - laravel-assets
-    - filament-views
-  ]
+      - laravel-assets
+      - filament-views,
+    ]
   sync: []
