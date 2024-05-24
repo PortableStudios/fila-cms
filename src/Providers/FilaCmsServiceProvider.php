@@ -8,11 +8,13 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Contracts\TwoFactorConfirmedResponse as TwoFactorConfirmedResponseContract;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
 use Portable\FilaCms\Actions\Fortify\ResetUserPassword;
@@ -23,8 +25,11 @@ use Portable\FilaCms\FilaCms;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
 use Portable\FilaCms\Filament\Forms\Components\AddressInput;
 use Portable\FilaCms\Filament\Forms\Components\ImagePicker;
+use Portable\FilaCms\Fortify\Http\Responses\TwoFactorConfirmedResponse;
 use Portable\FilaCms\Listeners\AuthenticationListener;
+use Portable\FilaCms\Listeners\UserVerifiedListener;
 use Portable\FilaCms\Models\Setting;
+use Portable\FilaCms\Observers\AuthenticatableObserver;
 use Portable\FilaCms\Services\MediaLibrary;
 
 class FilaCmsServiceProvider extends ServiceProvider
@@ -73,6 +78,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         config(['scout.driver' => config('fila-cms.search.driver', 'meilisearch')]);
 
         Event::listen(Login::class, AuthenticationListener::class);
+        Event::listen(Verified::class, UserVerifiedListener::class);
 
         Fortify::resetPasswordView(function () {
             return view(config('fila-cms.auth.password_reset_view'));
@@ -86,6 +92,10 @@ class FilaCmsServiceProvider extends ServiceProvider
             return view('fila-cms::auth.login');
         });
 
+        Fortify::confirmPasswordView(function () {
+            return view('fila-cms::auth.confirm-password');
+        });
+
         $this->app->singleton(
             \Laravel\Fortify\Contracts\LoginResponse::class,
             \Portable\FilaCms\Http\Responses\LoginResponse::class
@@ -94,6 +104,13 @@ class FilaCmsServiceProvider extends ServiceProvider
         Fortify::verifyEmailView('fila-cms::auth.verify-email');
         Fortify::resetUserPasswordsUsing(config('fila-cms.auth.password_reset'));
         Fortify::updateUserProfileInformationUsing(config('fila-cms.users.profile_updater', UpdateUserProfileInformation::class));
+
+        config('auth.providers.users.model')::observe(AuthenticatableObserver::class);
+        Fortify::twoFactorChallengeView(function () {
+            return view('fila-cms::auth.two-factor-challenge');
+        });
+
+        $this->app->singleton(TwoFactorConfirmedResponseContract::class, TwoFactorConfirmedResponse::class);
     }
 
     public function register()

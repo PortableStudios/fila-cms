@@ -6,6 +6,7 @@ use Closure;
 use Filament\Facades\Filament;
 use FilamentTiptapEditor\Enums\TiptapOutput;
 use FilamentTiptapEditor\TiptapEditor;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -37,7 +38,7 @@ class FilaCms
 
         $userFieldsRaw = Schema::getColumnListing((new $userModel())->getTable());
 
-        $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'email_verified_at', 'password','email','two_factor_confirmed_at'];
+        $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'subscribed', 'email_verified_at', 'password','email','two_factor_confirmed_at'];
 
         $data = [
             'name' => 'System',
@@ -48,6 +49,7 @@ class FilaCms
         foreach ($userFields as $key => $field) {
             $data[$field] = 'SYSTEM';
         }
+        $data['email_verified_at'] = new Carbon();
 
         $systemUser = $userModel::create($data);
 
@@ -128,19 +130,42 @@ class FilaCms
             $feIndexComponent = $resourceClass::getFrontendIndexComponent();
             $feShowComponent = $resourceClass::getFrontendShowComponent();
 
-            Route::group(
-                ['prefix' => $prefix, 'middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
-                function () use ($feShowComponent, $resourceClass, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
-                    if ($registerIndex) {
-                        Route::get('/', $feIndexComponent)
-                            ->name($resourceClass::getFrontendIndexRoute())
-                            ->defaults('model', $modelClass);
+            if($prefix !== '') {
+                Route::group(
+                    ['prefix' => $prefix, 'middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
+                    function () use ($feShowComponent, $resourceClass, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
+                        if ($registerIndex) {
+                            Route::get('/', $feIndexComponent)
+                                ->name($resourceClass::getFrontendIndexRoute())
+                                ->defaults('model', $modelClass);
+                        }
+                        if ($registerShow) {
+                            Route::get('/{slug}', $feShowComponent)->name($resourceClass::getFrontendShowRoute())->defaults('model', $modelClass);
+                        }
                     }
-                    if ($registerShow) {
-                        Route::get('/{slug}', $feShowComponent)->name($resourceClass::getFrontendShowRoute())->defaults('model', $modelClass);
+                );
+            } else {
+                // If there's no prefix, manually register all the routes, we don't create a catch-all hole
+                Route::group(
+                    ['middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
+                    function () use ($feShowComponent, $resourceClass, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
+                        if ($registerIndex) {
+                            Route::get('/', $feIndexComponent)
+                                ->name($resourceClass::getFrontendIndexRoute())
+                                ->defaults('model', $modelClass);
+                        }
+                        if ($registerShow) {
+                            try {
+                                foreach($modelClass::all() as $model) {
+                                    Route::get('/' . $model->slug, $feShowComponent)->defaults('model', $modelClass);
+                                }
+                            } catch(\Exception $e) {
+                                // Models may not exist yet, we might be running migrations, etc.
+                            }
+                        }
                     }
-                }
-            );
+                );
+            }
         }
     }
 
