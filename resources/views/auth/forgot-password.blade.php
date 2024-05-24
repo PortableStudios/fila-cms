@@ -1,4 +1,9 @@
 <x-fila-cms::layouts.app>
+    @if (session('status'))
+        <div class="mb-4 text-sm font-medium text-green-600">
+            {{ session('status') }}
+        </div>
+    @endif
     <div class="w-full md:w-1/2">
         <form method="POST" action="{{ route('password.email') }}">
             @csrf
