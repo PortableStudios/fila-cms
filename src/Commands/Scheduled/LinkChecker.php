@@ -16,20 +16,20 @@ class LinkChecker extends Command
 
     public function handle()
     {
-        $models = (new FilaCms)->getRawContentModels();
+        $models = (new FilaCms())->getRawContentModels();
         $batch = Str::random(8);
 
         foreach ($models as $model => $resource) {
-            $modelClass = $model::orderBy('id', 'desc')->chunk(10, function($records) use ($resource, $batch) {
+            $modelClass = $model::orderBy('id', 'desc')->chunk(10, function ($records) use ($resource, $batch) {
                 foreach ($records as $key => $record) {
-                    $content = json_decode(tiptap_converter()->asJson($record->contents), TRUE);
+                    $content = json_decode(tiptap_converter()->asJson($record->contents), true);
                     $links = $this->extractLinks($content);
 
                     foreach ($links as $key => $link) {
                         $model = LinkCheck::create([
                             'title'             => $record->title,
                             'origin_resource'   => $resource,
-                            'edit_url'          => $resource::getUrl('edit', ['record' => $record->id]),
+                            'edit_url'          => $resource::getUrl('edit', ['record' => $record->slug]),
                             'url'               => $link,
                             'status_code'       => 0, //initially assigned as 0 to indicate it hasn't been checked yet
                             'timeout'           => 0,
@@ -52,16 +52,22 @@ class LinkChecker extends Command
         $links = [];
 
         foreach ($data as $key => $value) {
-            if ($key === 'type') $type = $value;
-            if ($key === 'content') $content = $value;
-            if ($key === 'marks') $marks = $value;
+            if ($key === 'type') {
+                $type = $value;
+            }
+            if ($key === 'content') {
+                $content = $value;
+            }
+            if ($key === 'marks') {
+                $marks = $value;
+            }
         }
 
         if ($type !== 'text') {
             if (count($content) > 0) {
                 foreach ($content as $row) {
                     $recursiveLinks = $this->extractLinks($row);
-    
+
                     $links = array_merge($links, $recursiveLinks);
                 }
             }

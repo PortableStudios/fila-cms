@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace Portable\FilaCms\Jobs;
 
 use Illuminate\Bus\Queueable;
@@ -13,27 +13,32 @@ use GuzzleHttp\TransferStats;
 
 class CheckLink implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
- 
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
+
     /**
      * Create a new job instance.
      */
     public function __construct(
         public LinkCheck $linkCheck,
-    ) {}
- 
+    ) {
+    }
+
     public function handle(): void
     {
         $timeOut = 0;
 
         $response = Http::withOptions([
-            'on_stats' => function(TransferStats $stats) use (&$timeOut) {
+            'on_stats' => function (TransferStats $stats) use (&$timeOut) {
                 $timeOut = $stats->getTransferTime();
             }
         ])
         ->get($this->linkCheck->url);
 
         $this->linkCheck->status_code = $response->status();
+        $this->linkCheck->status_text = $response->reason();
         $this->linkCheck->timeout = $timeOut;
         $this->linkCheck->save();
     }

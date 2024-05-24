@@ -17,6 +17,7 @@ return new class () extends Migration {
             $table->string('edit_url');
             $table->string('url');
             $table->unsignedInteger('status_code');
+            $table->string('status_text')->nullable();
             $table->decimal('timeout', total:12, places: 8)->default(0);
             $table->string('batch_id');
             $table->timestamps();

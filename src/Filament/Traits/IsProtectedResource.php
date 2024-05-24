@@ -18,6 +18,7 @@ trait IsProtectedResource
         if (! $user) {
             return false;
         }
+
         if (Permission::whereIn('name', ['view '.$permName, 'manage '.$permName])->count()) {
             if ($action == 'viewAny' || $action == 'view') {
                 $response = $user->hasPermissionTo('view '.$permName);
