@@ -24,6 +24,7 @@ return [
         \Portable\FilaCms\Plugins\PagesPlugin::class,
         \Portable\FilaCms\Plugins\FormsPlugin::class,
         \Portable\FilaCms\Plugins\MenusPlugin::class,
+        \Portable\FilaCms\Plugins\LinkChecksPlugin::class,
     ],
     'sso' => [
         'providers' => ['google','facebook','linkedin']
