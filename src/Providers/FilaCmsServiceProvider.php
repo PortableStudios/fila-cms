@@ -47,6 +47,10 @@ class FilaCmsServiceProvider extends ServiceProvider
                 \Portable\FilaCms\Commands\MakeContentPermissionSeeder::class,
                 \Portable\FilaCms\Commands\MakeContents::class,
             ]);
+        } else {
+            $this->commands([
+                \Portable\FilaCms\Commands\Scheduled\LinkChecker::class,
+            ]);
         }
         $this->loadRoutesFrom(__DIR__ . '/../../routes/filacms-routes.php');
 
