@@ -43,11 +43,9 @@ class PasswordResetTest extends TestCase
     {
         $user = $this->userModel::factory()->create();
 
-        $response = $this->post(route('password.email'), [
+        $this->post(route('password.email'), [
             'email' => $user->email,
         ])
             ->assertRedirect(url('/'));
-
-        dump($response);
     }
 }

@@ -12,7 +12,8 @@ class ResetUserPassword implements ResetsUserPasswords
 {
     public function reset(Model $user, array $input): void
     {
-        Validator::make($input,
+        Validator::make(
+            $input,
             [
                 'password' => [
                     'required',
@@ -25,7 +26,8 @@ class ResetUserPassword implements ResetsUserPasswords
                         ->symbols()
                         ->uncompromised()
             ],
-        ])->validate();
+        ]
+        )->validate();
 
         $user->forceFill([
             'password' => Hash::make($input['password']),

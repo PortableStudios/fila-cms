@@ -65,4 +65,15 @@ class PageFactory extends Factory
             ]
         ];
     }
+
+    public function isPublished(): self
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_draft' => false,
+                'publish_at' => now()->subDays(3),
+                'expire_at' => null,
+            ];
+        });
+    }
 }

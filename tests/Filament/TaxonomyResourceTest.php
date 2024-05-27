@@ -57,6 +57,7 @@ class TaxonomyResourceTest extends TestCase
     {
         Livewire::test(TargetResource\Pages\CreateTaxonomy::class)
             ->fillForm([
+                'code' => fake()->regexify('[A-Z]{3}'),
                 'name' => $this->faker->firstName,
                 'taxonomy_resources' => array_keys(FilaCms::getContentModels())
             ])
@@ -108,10 +109,12 @@ class TaxonomyResourceTest extends TestCase
             'record' => $data->getRoutekey(),
         ])
         ->fillForm([
+            'code' => fake()->regexify('[A-Z]{3}'),
             'name'  => $new->name,
             'taxonomy_resources' => array_keys(FilaCms::getContentModels())
         ])
         ->call('save')
+        ->dumpSession()
         ->assertHasNoFormErrors();
 
         $data->refresh();

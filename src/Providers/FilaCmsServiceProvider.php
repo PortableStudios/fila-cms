@@ -17,7 +17,6 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Contracts\TwoFactorConfirmedResponse as TwoFactorConfirmedResponseContract;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
-use Portable\FilaCms\Actions\Fortify\ResetUserPassword;
 use Portable\FilaCms\Actions\Fortify\UpdateUserProfileInformation;
 use Portable\FilaCms\Data\DummyForm;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
