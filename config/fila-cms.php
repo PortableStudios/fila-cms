@@ -15,6 +15,7 @@ use Portable\FilaCms\Filament\FormBlocks\TextInputBlock;
 
 return [
     'use_admin_panel' => true,
+    'admin_dark_mode' => true,
     'admin_prefix' => 'admin',
     'publish_content_routes' => true,
     'admin_plugins' => [
