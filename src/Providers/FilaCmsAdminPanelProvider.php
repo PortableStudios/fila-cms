@@ -5,11 +5,11 @@ namespace Portable\FilaCms\Providers;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Navigation\MenuItem;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -18,11 +18,11 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Portable\FilaCms\Http\Middleware\TwoFactorMiddleware;
 use Portable\FilaCms\Filament\Pages\EditSettings;
-use Portable\FilaCms\Filament\Pages\UserSettings;
 use Portable\FilaCms\Filament\Pages\MediaLibrary;
+use Portable\FilaCms\Filament\Pages\UserSettings;
 use Portable\FilaCms\Http\Middleware\FilaCmsAuthenticate;
+use Portable\FilaCms\Http\Middleware\TwoFactorMiddleware;
 
 class FilaCmsAdminPanelProvider extends PanelProvider
 {
@@ -74,6 +74,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->darkMode(config('fila-cms.admin_dark_mode', true))
             ->authMiddleware([
                 Authenticate::class,
                 FilaCmsAuthenticate::class,

@@ -46,6 +46,8 @@ class RoleAndPermissionSeeder extends Seeder
             ['name' => 'manage forms'],
             ['name' => 'view menus'],
             ['name' => 'manage menus'],
+            ['name' => 'view link checks'],
+            ['name' => 'manage link checks']
         ];
 
         foreach ($permissions as $permission) {
