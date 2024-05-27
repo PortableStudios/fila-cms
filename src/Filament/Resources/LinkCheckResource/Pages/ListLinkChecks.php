@@ -5,7 +5,7 @@ namespace Portable\FilaCms\Filament\Resources\LinkCheckResource\Pages;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Portable\FilaCms\Filament\Resources\LinkCheckResource;
-use Illuminate\Support\Facades\Artisan;
+use Portable\FilaCms\Jobs\LinkChecker;
 
 class ListLinkChecks extends ListRecords
 {
@@ -22,6 +22,6 @@ class ListLinkChecks extends ListRecords
 
     protected function executeScan()
     {
-        Artisan::call('fila-cms:verify-links');
+        LinkChecker::dispatch();
     }
 }

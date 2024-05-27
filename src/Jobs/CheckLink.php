@@ -30,16 +30,25 @@ class CheckLink implements ShouldQueue
     {
         $timeOut = 0;
 
-        $response = Http::withOptions([
-            'on_stats' => function (TransferStats $stats) use (&$timeOut) {
-                $timeOut = $stats->getTransferTime();
-            }
-        ])
-        ->get($this->linkCheck->url);
+        try {
+            $response = Http::timeout(10)
+            ->withOptions([
+                'on_stats' => function (TransferStats $stats) use (&$timeOut) {
+                    $timeOut = $stats->getTransferTime();
+                }
+            ])
+            ->head($this->linkCheck->url);
 
-        $this->linkCheck->status_code = $response->status();
-        $this->linkCheck->status_text = $response->reason();
-        $this->linkCheck->timeout = $timeOut;
-        $this->linkCheck->save();
+            $this->linkCheck->status_code = $response->status();
+            $this->linkCheck->status_text = $response->reason();
+            $this->linkCheck->timeout = $timeOut;
+            $this->linkCheck->save();
+
+        } catch (\Illuminate\Http\Client\ConnectionException $th) {
+            $this->linkCheck->status_code = 404;
+            $this->linkCheck->status_text = 'Not Found';
+            $this->linkCheck->timeout = 0;
+            $this->linkCheck->save();
+        }
     }
 }

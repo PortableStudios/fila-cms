@@ -2,7 +2,6 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
-use Filament\Forms\Form;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,36 +20,24 @@ class LinkCheckResource extends AbstractResource
 
     protected static ?string $navigationBadgeTooltip = 'The number of broken links';
 
-    public static function form(Form $form): Form
-    {
-        $model = $form->model;
-
-        return $form
-            ->schema([
-
-            ]);
-    }
-
     public static function getNavigationBadge(): ?string
     {
-        $batch = (new (static::getModel()))->latestBatch();
-
-        $count = static::getModel()::where('batch_id', $batch)
-            ->whereNotBetween('status_code', [200, 299])
-            ->count();
-
-        return $count;
+        return self::getFailedCount();
     }
 
     public static function getNavigationBadgeColor(): ?string
     {
-        $batch = (new (static::getModel()))->latestBatch();
-
-        $count = static::getModel()::where('batch_id', $batch)
-            ->whereNotBetween('status_code', [200, 299])
-            ->count();
+        $count = self::getFailedCount();
 
         return $count === 0 ? 'success' : 'warning';
+    }
+
+    protected static function getFailedCount()
+    {
+        $batch = (new (static::getModel()))->latestBatch();
+        $count = static::getModel()::failedCount($batch);
+
+        return $count;
     }
 
     public static function getModel(): string

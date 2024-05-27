@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class LinkCheck extends Model
 {
@@ -24,19 +25,34 @@ class LinkCheck extends Model
 
     public function latestBatch()
     {
-        $batch = (new LinkCheck())->orderBy('created_at', 'DESC')->limit(1)->first();
+        $batch = LinkCheck::orderBy('created_at', 'DESC')->limit(1)->first();
 
-        return optional($batch)->batch_id;
+        return $batch?->batch_id;
     }
 
     public function batchStatus($batchId)
     {
-        $total = (new LinkCheck())->where('batch_id', $batchId)->count();
+        $total = LinkCheck::where('batch_id', $batchId)->count();
         $scanned = (new LinkCheck())
             ->where('batch_id', $batchId)
             ->where('status_code', '!=', 0)
             ->count();
 
         return ($scanned / $total) * 100;
+    }
+
+    public function scopeSuccess(Builder $query): void
+    {
+        $query->whereBetween('status_code', [200, 399]);
+    }
+
+    public function scopeFailed(Builder $query): void
+    {
+        $query->whereNotBetween('status_code', [200, 399]);
+    }
+
+    public static function failedCount($batchId)
+    {
+        return LinkCheck::query()->failed()->where('batch_id', $batchId)->count();
     }
 }
