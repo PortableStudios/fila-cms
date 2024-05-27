@@ -57,7 +57,8 @@
         "orchestra/testbench": "^8.21",
         "nunomaduro/collision": "^7.8",
         "laravel/legacy-factories": "^1.4",
-        "pestphp/pest": "^2.34"
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-laravel": "^2.4"
     },
     "autoload-dev": {
         "psr-4": {

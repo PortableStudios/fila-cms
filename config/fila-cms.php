@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Fortify\ResetUserPassword;
 use Portable\FilaCms\Filament\FormBlocks\CheckboxBlock;
 use Portable\FilaCms\Filament\FormBlocks\CheckboxListBlock;
 use Portable\FilaCms\Filament\FormBlocks\ColumnBlock;
@@ -91,5 +92,10 @@ return [
             ]
         ]
     ],
-    'short_url_prefix' => env('FILACMS_SHORT_URL_PREFIX', 's')
+    'short_url_prefix' => env('FILACMS_SHORT_URL_PREFIX', 's'),
+    'auth' => [
+        'forgot_password_view' => 'fila-cms::auth.forgot-password',
+        'password_reset' => ResetUserPassword::class,
+        'password_reset_view' => 'fila-cms::auth.reset-password',
+    ]
 ];

@@ -2,15 +2,19 @@
 
 namespace Portable\FilaCms\Tests\Filament;
 
-use Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\PageResource as TargetResource;
+use Portable\FilaCms\Filament\Resources\PageResource;
+use Portable\FilaCms\Filament\Resources\PageResource\Pages\CreatePage;
+use Portable\FilaCms\Filament\Resources\PageResource\Pages\EditPage;
+use Portable\FilaCms\Filament\Resources\PageResource\Pages\ListPages;
 use Portable\FilaCms\Models\Author;
-use Portable\FilaCms\Models\Page as TargetModel;
+use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Taxonomy;
 use Portable\FilaCms\Models\TaxonomyTerm;
 use Portable\FilaCms\Tests\TestCase;
@@ -56,22 +60,21 @@ class PageResourceTest extends TestCase
 
     public function test_can_list_data(): void
     {
-        $data = [];
-        for ($i = 0; $i < 5; $i++) {
-            $data[] = $this->generateModel();
-        }
+        $data = Page::factory()
+            ->count(5)
+            ->create();
 
-        Livewire::test(TargetResource\Pages\ListPages::class)->assertCanSeeTableRecords($data);
+        Livewire::test(ListPages::class)->assertCanSeeTableRecords($data);
     }
 
     public function test_can_create_record(): void
     {
-        Livewire::test(TargetResource\Pages\CreatePage::class)
-            ->fillForm($this->generateModel(true))
+        Livewire::test(CreatePage::class)
+            ->fillForm(Page::factory()->make()->toArray())
             ->call('create')
             ->assertHasNoFormErrors();
 
-        Livewire::test(TargetResource\Pages\CreatePage::class)
+        Livewire::test(CreatePage::class)
             ->fillForm([])
             ->call('create')
             ->assertHasFormErrors([
@@ -82,7 +85,7 @@ class PageResourceTest extends TestCase
 
     public function test_can_save_seo(): void
     {
-        $data = $this->generateModel(true);
+        $data = Page::factory()->make();
         $data['seo.override_seo_description'] = true;
         $data['seo.description'] = 'Test Description';
         $data['is_draft'] = 0;
@@ -90,12 +93,12 @@ class PageResourceTest extends TestCase
         $data['expire_at'] = now()->addDay();
 
         Livewire::test(TargetResource\Pages\CreatePage::class)
-            ->fillForm($data)
+            ->fillForm($data->toArray())
             ->call('create')
             ->assertHasNoFormErrors();
 
         // check last record
-        $model = TargetModel::orderBy('id', 'desc')->first();
+        $model = Page::orderBy('id', 'desc')->first();
 
         $this->assertTrue($model->Seo instanceof SEO);
         $this->assertEquals($model->Seo->description, 'Test Description');
@@ -103,18 +106,18 @@ class PageResourceTest extends TestCase
 
     public function test_can_generate_seo(): void
     {
-        $data = $this->generateModel(true);
+        $data = Page::factory()->make();
         $data['is_draft'] = 0;
         $data['publish_at'] = now()->subday();
         $data['expire_at'] = now()->addDay();
 
         Livewire::test(TargetResource\Pages\CreatePage::class)
-            ->fillForm($data)
+            ->fillForm($data->toArray())
             ->call('create')
             ->assertHasNoFormErrors();
 
         // check last record
-        $model = TargetModel::orderBy('id', 'desc')->first();
+        $model = Page::orderBy('id', 'desc')->first();
 
         $this->assertTrue($model->Seo instanceof SEO);
         $this->assertEquals($model->Seo->title, Str::limit($model->title, 57));
@@ -122,31 +125,31 @@ class PageResourceTest extends TestCase
 
     public function test_can_update_generated_seo(): void
     {
-        $data = $this->generateModel(true);
+        $data = Page::factory()->make();
         $data['is_draft'] = 0;
         $data['publish_at'] = now()->subday();
         $data['expire_at'] = now()->addDay();
 
         Livewire::test(TargetResource\Pages\CreatePage::class)
 
-            ->fillForm($data)
+            ->fillForm($data->toArray())
             ->call('create')
             ->assertHasNoFormErrors();
 
         // check last record
-        $model = TargetModel::orderBy('id', 'desc')->first();
+        $model = Page::orderBy('id', 'desc')->first();
 
         $data['title'] = 'An updated title';
 
         Livewire::test(TargetResource\Pages\EditPage::class, [
             'record' => $model->getRoutekey(),
         ])
-        ->fillForm($data)
+        ->fillForm($data->toArray())
         ->call('save')
         ->assertHasNoFormErrors();
 
         // Reload model
-        $model = TargetModel::find($model->id);
+        $model = Page::find($model->id);
 
         $this->assertTrue($model->Seo instanceof SEO);
         $this->assertEquals($model->Seo->title, $model->title);
@@ -154,17 +157,17 @@ class PageResourceTest extends TestCase
 
     public function test_can_render_edit_page(): void
     {
-        $data = $this->generateModel();
+        $data = Page::factory()->create();
 
         $this->get(TargetResource::getUrl('edit', ['record' => $data]))->assertSuccessful();
     }
 
     public function test_can_retrieve_edit_data(): void
     {
-        $data = $this->generateModel();
+        $data = Page::factory()->create();
 
         Livewire::test(
-            TargetResource\Pages\EditPage::class,
+            EditPage::class,
             ['record' => $data->getRouteKey()]
         )
             ->assertFormSet([
@@ -174,7 +177,7 @@ class PageResourceTest extends TestCase
 
     public function test_can_save_form(): void
     {
-        $data = $this->generateModel();
+        $data = Page::factory()->create();
         $colour = Taxonomy::create([
             'name' => 'Colour',
         ]);
@@ -189,9 +192,9 @@ class PageResourceTest extends TestCase
             'taxonomy_id' => $colour->id,
         ]);
 
-        $new = TargetModel::make($this->generateModel(true));
+        $new = Page::factory()->make();
 
-        Livewire::test(TargetResource\Pages\EditPage::class, [
+        Livewire::test(EditPage::class, [
             'record' => $data->getRoutekey(),
         ])
             ->fillForm([
@@ -204,9 +207,9 @@ class PageResourceTest extends TestCase
             ->call('save')
             ->assertHasNoFormErrors();
 
-        $data->refresh();
+        $data->refresh(['authors']);
         $this->assertEquals($data->title, $new->title);
-        $this->assertEquals($data->authors->first(), $this->author->id);
+        $this->assertEquals($data->authors->first()?->id, $this->author->id);
         $this->assertEquals($data->is_draft, $new->is_draft);
     }
 
@@ -236,7 +239,7 @@ class PageResourceTest extends TestCase
             ->call('create')
             ->assertHasNoErrors();
 
-        $page = TargetModel::where('title', 'Test Page')->first();
+        $page = Page::where('title', 'Test Page')->first();
 
         $this->assertNotNull($page);
         $this->assertEquals($page->colours_ids->toArray(), [$red->id]);
@@ -254,14 +257,14 @@ class PageResourceTest extends TestCase
             ->call('create')
             ->assertHasNoErrors();
 
-        $page = TargetModel::where('title', 'Test Slug Title')->first();
+        $page = Page::where('title', 'Test Slug Title')->first();
 
         $this->assertEquals($page->slug, 'test-slug-title');
     }
 
     public function test_automatic_slug_doesnt_change_on_update(): void
     {
-        $data = TargetModel::factory()->create();
+        $data = Page::factory()->create();
         $oldSlug = $data->slug;
 
         Livewire::test(TargetResource\Pages\EditPage::class, [
@@ -289,7 +292,7 @@ class PageResourceTest extends TestCase
             ->call('create')
             ->assertHasNoErrors();
 
-        $page = TargetModel::where('title', 'Test Slug Title')->first();
+        $page = Page::where('title', 'Test Slug Title')->first();
 
         $this->assertEquals($page->slug, 'custom-slug');
     }
@@ -314,14 +317,14 @@ class PageResourceTest extends TestCase
             ->call('create')
             ->assertHasNoErrors();
 
-        $page = TargetModel::where('title', 'Test Slug Title')->orderBy('id', 'desc')->first();
+        $page = Page::where('title', 'Test Slug Title')->orderBy('id', 'desc')->first();
 
         $this->assertEquals($page->slug, 'test-slug-title-1');
     }
 
     public function test_duplicate_slug(): void
     {
-        TargetModel::create([
+        Page::create([
             'title' => $this->faker->words(15, true),
             'is_draft' => 1,
             'contents' => $this->createContent(),
@@ -353,7 +356,7 @@ class PageResourceTest extends TestCase
 
         $sampleUrl = Str::slug(Str::random(10));
         // check last record
-        $model = TargetModel::orderBy('id', 'desc')->first();
+        $model = Page::orderBy('id', 'desc')->first();
         $model->shortUrls()->create([
             'url' => $sampleUrl
         ]);
@@ -372,7 +375,7 @@ class PageResourceTest extends TestCase
             ->call('create')
             ->assertHasNoFormErrors();
 
-        $model = TargetModel::orderBy('id', 'desc')->first();
+        $model = Page::orderBy('id', 'desc')->first();
 
         $this->assertGreaterThan(0, $model->Roles->count());
     }
@@ -381,62 +384,40 @@ class PageResourceTest extends TestCase
     {
         $adminRole = Role::where('name', 'Admin')->first();
         $userRole = Role::where('name', 'User')->first();
-        Livewire::test(TargetResource\Pages\CreatePage::class)
-            ->set('data.roleRestrictions.role_id', [$adminRole->id])
-            ->fillForm([
-                'is_draft' => 0,
-                'title' => 'Test Page',
-                'contents' => $this->createContent()
-            ])
-            ->call('create')
-            ->assertHasNoFormErrors();
 
-        $model = TargetModel::orderBy('created_at', 'DESC')->first();
+        $model = Page::factory()
+            ->isPublished()
+            ->create();
 
         $user = $this->createUser();
-        $this->be($user);
-        $this->get(TargetResource::getUrl('edit', [
+
+        $this->actingAs($user)->get(TargetResource::getUrl('edit', [
             'record' => $model
         ]))
         ->assertForbidden();
 
         $user->assignRole($adminRole);
+
         $this->get(TargetResource::getUrl('edit', [
             'record' => $model
         ]))->assertSuccessful();
 
         $user = $this->createUser();
+
         $user->assignRole($userRole);
-        $this->be($user);
-        $this->get(TargetResource::getUrl('edit', [
+
+        $this->actingAs($user)->get(TargetResource::getUrl('edit', [
             'record' => $model
         ]))->assertForbidden();
 
         Auth::logout();
-        $this->call('GET', '/pages/' . $model->slug)->assertForbidden();
+
+        $prefix = Str::start(Str::finish(PageResource::getFrontendRoutePrefix(), '/'), '/');
+
+        $this->get($prefix . $model->slug)->assertForbidden();
 
         $model->roles()->delete();
-        $this->call('GET', '/pages/' . $model->slug)->assertSuccessful();
-    }
-
-    public function generateModel($raw = false): TargetModel|array
-    {
-        $draft = $this->faker->numberBetween(0, 1);
-
-        $data = [
-            'title' => $this->faker->words(15, true),
-            'is_draft' => $draft,
-            'publish_at' => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
-            'expire_at' => $draft === 1 ? $this->faker->dateTimeBetween('-1 week', '+1 week') : null,
-            'contents' => $this->createContent(),
-            'author_Id' => $this->author->id,
-        ];
-
-        if ($raw) {
-            return $data;
-        }
-
-        return TargetModel::create($data);
+        $this->get($prefix . $model->slug)->assertSuccessful();
     }
 
     protected function createContent()

@@ -2,24 +2,32 @@
 
 namespace Portable\FilaCms\Actions\Fortify;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
 
 class ResetUserPassword implements ResetsUserPasswords
 {
-    /**
-     * Validate and reset the user's forgotten password.
-     *
-     * @param  mixed  $user
-     * @param  array  $input
-     * @return void
-     */
-    public function reset($user, array $input)
+    public function reset(Model $user, array $input): void
     {
-        Validator::make($input, [
-            'password' => 'required|string|confirmed|min:16',
-        ])->validate();
+        Validator::make(
+            $input,
+            [
+                'password' => [
+                    'required',
+                    'string',
+                    'confirmed',
+                    Password::min(16)
+                        ->letters()
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                        ->uncompromised()
+            ],
+        ]
+        )->validate();
 
         $user->forceFill([
             'password' => Hash::make($input['password']),

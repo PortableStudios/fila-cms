@@ -17,7 +17,6 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Contracts\TwoFactorConfirmedResponse as TwoFactorConfirmedResponseContract;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
-use Portable\FilaCms\Actions\Fortify\ResetUserPassword;
 use Portable\FilaCms\Actions\Fortify\UpdateUserProfileInformation;
 use Portable\FilaCms\Data\DummyForm;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
@@ -81,7 +80,11 @@ class FilaCmsServiceProvider extends ServiceProvider
         Event::listen(Verified::class, UserVerifiedListener::class);
 
         Fortify::resetPasswordView(function () {
-            return view('fila-cms::auth.reset-password');
+            return view(config('fila-cms.auth.password_reset_view'));
+        });
+
+        Fortify::requestPasswordResetLinkView(function () {
+            return view(config('fila-cms.auth.forgot_password_view'));
         });
 
         Fortify::loginView(function () {
@@ -98,7 +101,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         );
 
         Fortify::verifyEmailView('fila-cms::auth.verify-email');
-        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        Fortify::resetUserPasswordsUsing(config('fila-cms.auth.password_reset'));
         Fortify::updateUserProfileInformationUsing(config('fila-cms.users.profile_updater', UpdateUserProfileInformation::class));
 
         config('auth.providers.users.model')::observe(AuthenticatableObserver::class);
