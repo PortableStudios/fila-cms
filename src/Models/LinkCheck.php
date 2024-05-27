@@ -51,6 +51,11 @@ class LinkCheck extends Model
         $query->whereNotBetween('status_code', [200, 399]);
     }
 
+    public function scopeUnscanned(Builder $query): void
+    {
+        $query->where('status_code', 0);
+    }
+
     public static function failedCount($batchId)
     {
         return LinkCheck::query()->failed()->where('batch_id', $batchId)->count();

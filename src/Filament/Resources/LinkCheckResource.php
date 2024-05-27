@@ -17,6 +17,7 @@ class LinkCheckResource extends AbstractResource
 
     protected static ?string $navigationIcon = 'heroicon-o-link';
     protected static ?string $navigationGroup = 'System';
+    protected static ?string $navigationLabel = 'Broken Links';
 
     protected static ?string $navigationBadgeTooltip = 'The number of broken links';
 
@@ -59,12 +60,13 @@ class LinkCheckResource extends AbstractResource
                     ->url(fn (LinkCheck $check): string => $check->url)
                     ->openUrlInNewTab(),
                 TextColumn::make('status_text')->label('Status')->sortable(),
+                TextColumn::make('status_code')->label('Code')->sortable(),
                 TextColumn::make('created_at')->sortable(),
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 $lastBatch = (new LinkCheck())->latestBatch();
 
-                $query->where('batch_id', $lastBatch);
+                $query->failed()->where('batch_id', $lastBatch);
             });
     }
 
