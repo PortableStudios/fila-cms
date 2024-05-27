@@ -85,6 +85,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $packages[] = \Portable\FilaCms\Providers\FilaCmsServiceProvider::class;
         $packages[] = \RalphJSmit\Laravel\SEO\LaravelSEOServiceProvider::class;
         $packages[] = \Rawilk\FilamentPasswordInput\FilamentPasswordInputServiceProvider::class;
+        $packages[] = \Laravel\Scout\ScoutServiceProvider::class;
         /*
 */
         // App\Providers\BroadcastServiceProvider::class,
