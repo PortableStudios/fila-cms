@@ -174,7 +174,11 @@ class FilaCmsServiceProvider extends ServiceProvider
 
     protected function loadSettings()
     {
-        if(!Schema::hasTable('settings')) {
+        try {
+            if(!Schema::hasTable('settings')) {
+                return;
+            }
+        } catch(\Exception $e) {
             return;
         }
 
