@@ -157,7 +157,9 @@ class FilaCms
                         if ($registerShow) {
                             try {
                                 foreach($modelClass::all() as $model) {
-                                    Route::get('/' . $model->slug, $feShowComponent)->defaults('model', $modelClass);
+                                    Route::get('/' . $model->slug, $feShowComponent)
+                                        ->defaults('slug', $model->slug)
+                                        ->defaults('model', $modelClass);
                                 }
                             } catch(\Exception $e) {
                                 // Models may not exist yet, we might be running migrations, etc.
