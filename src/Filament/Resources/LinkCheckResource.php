@@ -35,7 +35,7 @@ class LinkCheckResource extends AbstractResource
 
     protected static function getFailedCount()
     {
-        $batch = (new (static::getModel()))->latestBatch();
+        $batch = (static::getModel())::latestBatch();
         $count = static::getModel()::failedCount($batch);
 
         return $count;
@@ -64,7 +64,7 @@ class LinkCheckResource extends AbstractResource
                 TextColumn::make('created_at')->sortable(),
             ])
             ->modifyQueryUsing(function (Builder $query) {
-                $lastBatch = (new LinkCheck())->latestBatch();
+                $lastBatch = LinkCheck::latestBatch();
 
                 $query->failed()->where('batch_id', $lastBatch);
             });

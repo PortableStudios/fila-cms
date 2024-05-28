@@ -2,14 +2,15 @@
 
 namespace Portable\FilaCms\Jobs;
 
+use Filament\Notifications\Notification;
+use GuzzleHttp\TransferStats;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Portable\FilaCms\Models\LinkCheck;
 use Illuminate\Support\Facades\Http;
-use GuzzleHttp\TransferStats;
+use Portable\FilaCms\Models\LinkCheck;
 
 class CheckLink implements ShouldQueue
 {
@@ -49,6 +50,14 @@ class CheckLink implements ShouldQueue
             $this->linkCheck->status_text = 'Not Found';
             $this->linkCheck->timeout = 0;
             $this->linkCheck->save();
+        }
+
+        // Was this the last check in the batch?  If so, send a notification
+        if ($this->linkCheck->batchComplete()) {
+            Notification::make()
+                ->title('Links has been successfully rechecked')
+                ->success()
+                ->send();
         }
     }
 }

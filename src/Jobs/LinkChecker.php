@@ -7,7 +7,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Filament\Notifications\Notification;
 use Portable\FilaCms\FilaCms;
 use Portable\FilaCms\Models\LinkCheck;
 use Str;
@@ -51,11 +50,6 @@ class LinkChecker implements ShouldQueue
                 }
             });
         }
-
-        Notification::make()
-            ->title('Links has been successfully rechecked')
-            ->success()
-            ->send();
     }
 
     protected function extractLinks(array $data): array

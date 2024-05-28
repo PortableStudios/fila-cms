@@ -17,7 +17,7 @@ class ListLinkChecks extends ListRecords
 
     public function mount(): void
     {
-        $this->lastBatch = (new (static::getModel()))->latestBatch();
+        $this->lastBatch = (static::getModel())::latestBatch();
         parent::mount();
     }
 
@@ -34,7 +34,7 @@ class ListLinkChecks extends ListRecords
 
     protected function executeScan()
     {
-        LinkChecker::dispatchSync();
+        LinkChecker::dispatch();
     }
 
     public function getLastScan()
