@@ -10,18 +10,57 @@ use Portable\FilaCms\Jobs\LinkChecker;
 class ListLinkChecks extends ListRecords
 {
     protected static string $resource = LinkCheckResource::class;
+    protected static ?string $title = 'Broken Links';
+    protected static string $view = 'fila-cms::admin.pages.broken-links';
+
+    protected $lastBatch = '';
+
+    public function mount(): void
+    {
+        $this->lastBatch = (new (static::getModel()))->latestBatch();
+        parent::mount();
+    }
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\Action::make('scan')
                 ->label('Check Links')
-                ->action(fn () => $this->executeScan())
+                ->action(function () {
+                    $this->executeScan();
+                })
         ];
     }
 
     protected function executeScan()
     {
-        LinkChecker::dispatch();
+        LinkChecker::dispatchSync();
+    }
+
+    public function getLastScan()
+    {
+        $batchBeforeThat = (new (static::getModel()))
+            ->orderBy('id', 'DESC')->limit(1)
+            ->where('batch_id', '!=', $this->lastBatch)
+            ->first();
+
+        if (is_null($batchBeforeThat)) {
+            return 'N/A';
+        }
+        return $batchBeforeThat->created_at->diffForHumans();
+    }
+
+    public function lastScanStatus()
+    {
+        if (is_null($this->lastBatch)) {
+            return 'No prior scans';
+        }
+
+        $unscanned = (new (static::getModel()))->unscanned()->count();
+
+        if ($unscanned > 0) {
+            return 'Running';
+        }
+        return 'Completed';
     }
 }
