@@ -7,6 +7,7 @@ use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -24,8 +25,8 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
@@ -36,6 +37,7 @@ use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Livewire\ContentResourceList;
 use Portable\FilaCms\Livewire\ContentResourceShow;
+use Portable\FilaCms\Models\AbstractContentModel;
 use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
@@ -168,6 +170,8 @@ class AbstractContentResource extends AbstractResource
     {
         return Fieldset::make()
                 ->schema([
+                    Placeholder::make('creator')
+                         ->content(fn (AbstractContentModel $record): string => $record->createdBy->name ?? 'Unknown'),
                     HandyComponents\CreatedAt::make()
                         ->label('Created'),
                     HandyComponents\UpdatedAt::make()
@@ -183,7 +187,6 @@ class AbstractContentResource extends AbstractResource
                             'Deleted' => \Filament\Support\Colors\Color::Indigo,
                         })
                         ->default('Draft'),
-
                 ])
                 ->columns(1);
     }
