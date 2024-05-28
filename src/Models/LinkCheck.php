@@ -2,10 +2,10 @@
 
 namespace Portable\FilaCms\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 
 class LinkCheck extends Model
 {
@@ -23,20 +23,22 @@ class LinkCheck extends Model
         'batch_id',
     ];
 
-    public function latestBatch()
+    public static function latestBatch()
     {
-        $batch = LinkCheck::orderBy('created_at', 'DESC')->limit(1)->first();
+        $batch = static::orderBy('created_at', 'DESC')->limit(1)->first();
 
         return $batch?->batch_id;
+    }
+
+    public function batchComplete()
+    {
+        return static::unscanned()->where('batch_id', $this->batch_id)->count() == 0;
     }
 
     public function batchStatus($batchId)
     {
         $total = LinkCheck::where('batch_id', $batchId)->count();
-        $scanned = (new LinkCheck())
-            ->where('batch_id', $batchId)
-            ->where('status_code', '!=', 0)
-            ->count();
+        $scanned = LinkCheck::where('batch_id', $batchId)->where('status_code', '!=', 0)->count();
 
         return ($scanned / $total) * 100;
     }

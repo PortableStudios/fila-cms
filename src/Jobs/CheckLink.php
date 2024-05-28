@@ -53,7 +53,7 @@ class CheckLink implements ShouldQueue
         }
 
         // Was this the last check in the batch?  If so, send a notification
-        if ($this->linkCheck->batchStatus($this->linkCheck->bastch_id) === 100) {
+        if ($this->linkCheck->batchComplete()) {
             Notification::make()
                 ->title('Links has been successfully rechecked')
                 ->success()
