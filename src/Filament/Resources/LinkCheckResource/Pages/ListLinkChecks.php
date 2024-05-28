@@ -34,7 +34,7 @@ class ListLinkChecks extends ListRecords
 
     protected function executeScan()
     {
-        LinkChecker::dispatchSync();
+        LinkChecker::dispatch();
     }
 
     public function getLastScan()
