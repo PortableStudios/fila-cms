@@ -6,7 +6,6 @@ use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Portable\FilaCms\Filament\Resources\LinkCheckResource;
 use Portable\FilaCms\Jobs\LinkChecker;
-use Filament\Notifications\Notification;
 
 class ListLinkChecks extends ListRecords
 {
@@ -14,6 +13,13 @@ class ListLinkChecks extends ListRecords
     protected static ?string $title = 'Broken Links';
     protected static string $view = 'fila-cms::admin.pages.broken-links';
 
+    protected $lastBatch = '';
+
+    public function mount(): void
+    {
+        $this->lastBatch = (new (static::getModel()))->latestBatch();
+        parent::mount();
+    }
 
     protected function getHeaderActions(): array
     {
@@ -28,20 +34,14 @@ class ListLinkChecks extends ListRecords
 
     protected function executeScan()
     {
-        LinkChecker::dispatch();
-
-        Notification::make()
-            ->title('Links has been successfully rechecked')
-            ->success()
-            ->send();
+        LinkChecker::dispatchSync();
     }
 
     public function getLastScan()
     {
-        $lastBatch = (new (static::getModel()))->latestBatch();
         $batchBeforeThat = (new (static::getModel()))
             ->orderBy('id', 'DESC')->limit(1)
-            ->whereNot('batch_id', $lastBatch)
+            ->where('batch_id', '!=', $this->lastBatch)
             ->first();
 
         if (is_null($batchBeforeThat)) {
@@ -52,9 +52,7 @@ class ListLinkChecks extends ListRecords
 
     public function lastScanStatus()
     {
-        $lastBatch = (new (static::getModel()))->latestBatch();
-
-        if (is_null($lastBatch)) {
+        if (is_null($this->lastBatch)) {
             return 'No prior scans';
         }
 
