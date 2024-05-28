@@ -41,6 +41,9 @@ class UserResource extends AbstractConfigurableResource
                     ->required(),
                 Password::make('password')
                     ->requiredWithout('id')
+                    ->validationMessages([
+                        'required_without' => 'Password field is required when creating a new user.',
+                    ])
                     ->regeneratePassword(color: 'warning')
                     ->copyable(color: 'info')
                     ->newPasswordLength(16),
