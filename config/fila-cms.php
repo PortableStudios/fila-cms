@@ -96,6 +96,7 @@ return [
     ],
     'short_url_prefix' => env('FILACMS_SHORT_URL_PREFIX', 's'),
     'auth' => [
+        'force_2fa' => false,
         'forgot_password_view' => 'fila-cms::auth.forgot-password',
         'password_reset' => ResetUserPassword::class,
         'password_reset_view' => 'fila-cms::auth.reset-password',

@@ -286,7 +286,11 @@ class FilaCms
     public function tipTapEditor($name): TiptapEditor
     {
         return TiptapEditor::make($name)
-            ->profile('default')
+            ->tools([
+                    'heading', 'bullet-list', 'ordered-list', 'checked-list', 'blockquote', 'hr', '|',
+                    'bold', 'italic', 'strike', 'underline', 'superscript', 'subscript', 'lead', 'small', 'color', 'highlight', 'align-left', 'align-center', 'align-right', '|',
+                    'link', 'media', 'oembed', 'table', 'grid-builder', '|', 'code', 'code-block', 'source', 'blocks',
+                ])
             ->extraInputAttributes(['style' => 'min-height: 24rem;'])
             ->required()
             ->columnSpanFull()
