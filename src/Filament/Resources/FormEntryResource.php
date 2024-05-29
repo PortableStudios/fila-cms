@@ -66,10 +66,6 @@ class FormEntryResource extends AbstractResource
         foreach ($allFields as $field) {
             $fieldName = Arr::get($field, 'data.field_name', null);
 
-            if (!$fieldName) {
-                continue;
-            }
-
             $columns[] = Tables\Columns\TextColumn::make($fieldName)
                 ->label($fieldName)
                 ->getStateUsing(function ($record) use ($fieldName) {
