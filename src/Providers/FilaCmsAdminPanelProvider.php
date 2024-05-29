@@ -28,6 +28,23 @@ class FilaCmsAdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $middleware = [
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            AuthenticateSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+            SubstituteBindings::class,
+            DisableBladeIconComponents::class,
+            DispatchServingFilamentEvent::class,
+        ];
+
+        if(config('fila-cms.auth.force_2fa', true)) {
+            $middleware[] = TwoFactorMiddleware::class;
+        }
+
+
         return $panel
             ->default()
             ->id('admin')
@@ -62,18 +79,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-cog-6-tooth')
             ])
             ->databaseNotifications()
-            ->middleware([
-                EncryptCookies::class,
-                AddQueuedCookiesToResponse::class,
-                StartSession::class,
-                AuthenticateSession::class,
-                ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
-                SubstituteBindings::class,
-                TwoFactorMiddleware::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
-            ])
+            ->middleware($middleware)
             ->darkMode(config('fila-cms.admin_dark_mode', true))
             ->authMiddleware([
                 Authenticate::class,

@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages;
 
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Kenepa\ResourceLock\Resources\Pages\Concerns\UsesResourceLock;
 use Mansoor\FilamentVersionable\Page\RevisionsAction;
@@ -18,8 +19,20 @@ class EditAbstractContentResource extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            $this->getSaveFormAction()
+                ->submit(null)
+                ->action('save'),
             RevisionsAction::make(),
             Actions\DeleteAction::make(),
+            $this->getCancelFormAction(),
+        ];
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction()->extraAttributes(['style' => 'display:none']),
+            $this->getCancelFormAction()->extraAttributes(['style' => 'display:none']),
         ];
     }
 
@@ -33,5 +46,12 @@ class EditAbstractContentResource extends EditRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('edit', ['record' => $this->record]);
+    }
+
+    protected function getPreviewAction(): Action
+    {
+        return Action::make('preview')
+            ->label('Preview')
+            ->color('gray');
     }
 }

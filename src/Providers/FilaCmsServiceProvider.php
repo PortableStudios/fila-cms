@@ -21,6 +21,7 @@ use Portable\FilaCms\Actions\Fortify\UpdateUserProfileInformation;
 use Portable\FilaCms\Data\DummyForm;
 use Portable\FilaCms\Facades\FilaCms as FacadesFilaCms;
 use Portable\FilaCms\FilaCms;
+use Portable\FilaCms\Filament\Blocks\AccordionBlock;
 use Portable\FilaCms\Filament\Blocks\RelatedResourceBlock;
 use Portable\FilaCms\Filament\Forms\Components\AddressInput;
 use Portable\FilaCms\Filament\Forms\Components\ImagePicker;
@@ -169,6 +170,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                 ->mediaAction(config('fila-cms.editor.media_action'))
                 ->blocks([
                     RelatedResourceBlock::class,
+                    AccordionBlock::class,
                 ]);
         });
 
