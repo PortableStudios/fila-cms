@@ -37,7 +37,7 @@ class FormEntryResource extends AbstractResource
                     'New' => 'New',
                     'Open' => 'Open',
                     'Closed' => 'Closed',
-                    ]
+                ]
                 ),
                 Group::make(FormBuilder::getFields($owner->fields, true))->columnSpanFull(),
         ];
@@ -97,6 +97,7 @@ class FormEntryResource extends AbstractResource
                     ->view('fila-cms::tables.columns.created_at');
 
         return $columns;
+
     }
 
     public static function table(Table $table): Table
