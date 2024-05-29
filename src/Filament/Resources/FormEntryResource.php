@@ -70,7 +70,7 @@ class FormEntryResource extends AbstractResource
                 ->label($fieldName)
                 ->getStateUsing(function ($record) use ($fieldName) {
                     $value = isset($record->values[$fieldName]) ? $record->values[$fieldName] : '';
-                    if (is_array($value)) {
+                    if(is_array($value)) {
                         try {
                             $value = tiptap_converter()->asText($value);
                         } catch(\Exception $e) {
