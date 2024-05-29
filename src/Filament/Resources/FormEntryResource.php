@@ -9,6 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Arr;
 use Portable\FilaCms\Filament\Exports\FormEntryExporter;
 use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 use Portable\FilaCms\Filament\Resources\FormEntryResource\Actions\ExportBulkAction;
@@ -35,7 +36,7 @@ class FormEntryResource extends AbstractResource
                     'New' => 'New',
                     'Open' => 'Open',
                     'Closed' => 'Closed',
-                ]
+                    ]
                 ),
                 Group::make(FormBuilder::getFields($owner->fields, true))->columnSpanFull(),
         ];
@@ -49,7 +50,7 @@ class FormEntryResource extends AbstractResource
             TextColumn::make('status')
                 ->badge()
                 ->color(function ($state) {
-                    return match($state) {
+                    return match ($state) {
                         'New' => 'info',
                         'Open' => 'warning',
                         'Closed' => 'success',
@@ -62,16 +63,21 @@ class FormEntryResource extends AbstractResource
 
         // A flat collection of all form fields
         $allFields = FormBuilder::getFieldDefinitions($form->fields);
+        foreach ($allFields as $field) {
+            $fieldName = Arr::get($field, 'data.field_name', null);
 
-        foreach($allFields as $field) {
-            $columns[] = Tables\Columns\TextColumn::make($field['field_name'])
-                ->label($field->getLabel())
-                ->getStateUsing(function ($record) use ($field) {
-                    $value = isset($record->values[$field['field_name']]) ? $record->values[$field['field_name']] : '';
-                    if(is_array($value)) {
+            if (!$fieldName) {
+                continue;
+            }
+
+            $columns[] = Tables\Columns\TextColumn::make($fieldName)
+                ->label($fieldName)
+                ->getStateUsing(function ($record) use ($fieldName) {
+                    $value = isset($record->values[$fieldName]) ? $record->values[$fieldName] : '';
+                    if (is_array($value)) {
                         try {
                             $value = tiptap_converter()->asText($value);
-                        } catch(\Exception $e) {
+                        } catch (\Exception $e) {
                             return implode(", ", $value);
                         }
                     }
@@ -83,13 +89,11 @@ class FormEntryResource extends AbstractResource
                 ->words(10);
         }
 
-
         $columns[] = Tables\Columns\ViewColumn::make('created_at')
                     ->label('Submitted Time')
                     ->view('fila-cms::tables.columns.created_at');
 
         return $columns;
-
     }
 
     public static function table(Table $table): Table
