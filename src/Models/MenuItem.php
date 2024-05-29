@@ -74,9 +74,14 @@ class MenuItem extends Model
                 case 'index-page':
                     return route($resourceClass::getFrontendIndexRoute());
                 case 'content':
-                    $slug = ($resourceClass::getModel())::find($this->reference_content)?->slug;
-
-                    return route($resourceClass::getFrontendShowRoute(), ['slug' => $slug]);
+                    $model = ($resourceClass::getModel())::find($this->reference_content);
+                    $prefix = $resourceClass::getFrontendRoutePrefix();
+                    if($prefix == '') {
+                        return '/'.$model?->slug;
+                    } else {
+                        return route($resourceClass::getFrontendShowRoute(), ['slug' => $model?->slug]);
+                    }
+                    // no break
                 default: // 'url'
                     return $this->reference_text ?? '#';
             }
