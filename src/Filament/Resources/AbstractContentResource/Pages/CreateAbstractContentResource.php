@@ -14,7 +14,7 @@ class CreateAbstractContentResource extends CreateRecord
     protected function getHeaderActions(): array
     {
         return [
-            $this->getCreateFormAction(),
+            $this->getCreateFormAction()->submit(null)->action('create'),
             ...(static::canCreateAnother() ? [$this->getCreateAnotherFormAction()] : []),
             $this->getCancelFormAction(),
         ];
