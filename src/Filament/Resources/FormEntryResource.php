@@ -36,7 +36,7 @@ class FormEntryResource extends AbstractResource
                     'New' => 'New',
                     'Open' => 'Open',
                     'Closed' => 'Closed',
-                    ]
+                ]
                 ),
                 Group::make(FormBuilder::getFields($owner->fields, true))->columnSpanFull(),
         ];
@@ -50,7 +50,7 @@ class FormEntryResource extends AbstractResource
             TextColumn::make('status')
                 ->badge()
                 ->color(function ($state) {
-                    return match ($state) {
+                    return match($state) {
                         'New' => 'info',
                         'Open' => 'warning',
                         'Closed' => 'success',
@@ -77,7 +77,7 @@ class FormEntryResource extends AbstractResource
                     if (is_array($value)) {
                         try {
                             $value = tiptap_converter()->asText($value);
-                        } catch (\Exception $e) {
+                        } catch(\Exception $e) {
                             return implode(", ", $value);
                         }
                     }
@@ -89,11 +89,13 @@ class FormEntryResource extends AbstractResource
                 ->words(10);
         }
 
+
         $columns[] = Tables\Columns\ViewColumn::make('created_at')
                     ->label('Submitted Time')
                     ->view('fila-cms::tables.columns.created_at');
 
         return $columns;
+
     }
 
     public static function table(Table $table): Table
