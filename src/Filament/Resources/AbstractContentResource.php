@@ -171,7 +171,7 @@ class AbstractContentResource extends AbstractResource
         return Fieldset::make()
                 ->schema([
                     Placeholder::make('creator')
-                         ->content(fn (AbstractContentModel $record): string => $record->createdBy->name ?? 'Unknown'),
+                         ->content(fn (?AbstractContentModel $record): string => $record?->createdBy?->name ?? 'Unknown'),
                     HandyComponents\CreatedAt::make()
                         ->label('Created'),
                     HandyComponents\UpdatedAt::make()
