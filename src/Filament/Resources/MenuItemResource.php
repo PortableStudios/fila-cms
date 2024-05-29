@@ -153,9 +153,14 @@ class MenuItemResource extends AbstractResource
 
         $models = ($this->getSourceModel($source))
             ->select('id', 'title')
-            ->where(function ($q) use ($search) {
-                $q->where('contents', 'LIKE', '%' . $search . '%')
-                ->orWhere('title', 'LIKE', '%' . $search . '%');
+            ->where(function ($q) use ($search, $source) {
+                if($source == FormResource::class) {
+                    $q->where('title', 'LIKE', '%' . $search . '%');
+                } else {
+                    $q->where('contents', 'LIKE', '%' . $search . '%')
+                    ->orWhere('title', 'LIKE', '%' . $search . '%');
+
+                }
             })
             ->get();
 
