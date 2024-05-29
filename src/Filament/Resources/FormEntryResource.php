@@ -12,6 +12,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Arr;
 use Portable\FilaCms\Filament\Exports\FormEntryExporter;
 use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
+use Portable\FilaCms\Filament\FormBlocks\InformationBlock;
 use Portable\FilaCms\Filament\Resources\FormEntryResource\Actions\ExportBulkAction;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Form as ModelsForm;
@@ -64,6 +65,11 @@ class FormEntryResource extends AbstractResource
         // A flat collection of all form fields
         $allFields = FormBuilder::getFieldDefinitions($form->fields);
         foreach ($allFields as $field) {
+            // don't show information blocks in the table
+            if (Arr::get($field, 'type') === InformationBlock::getBlockName()) {
+                continue;
+            }
+
             $fieldName = Arr::get($field, 'data.field_name', null);
 
             $columns[] = Tables\Columns\TextColumn::make($fieldName)
