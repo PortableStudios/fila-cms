@@ -9,6 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Arr;
 use Portable\FilaCms\Filament\Exports\FormEntryExporter;
 use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 use Portable\FilaCms\Filament\Resources\FormEntryResource\Actions\ExportBulkAction;
@@ -62,12 +63,13 @@ class FormEntryResource extends AbstractResource
 
         // A flat collection of all form fields
         $allFields = FormBuilder::getFieldDefinitions($form->fields);
+        foreach ($allFields as $field) {
+            $fieldName = Arr::get($field, 'data.field_name', null);
 
-        foreach($allFields as $field) {
-            $columns[] = Tables\Columns\TextColumn::make($field['field_name'])
-                ->label($field->getLabel())
-                ->getStateUsing(function ($record) use ($field) {
-                    $value = isset($record->values[$field['field_name']]) ? $record->values[$field['field_name']] : '';
+            $columns[] = Tables\Columns\TextColumn::make($fieldName)
+                ->label($fieldName)
+                ->getStateUsing(function ($record) use ($fieldName) {
+                    $value = isset($record->values[$fieldName]) ? $record->values[$fieldName] : '';
                     if(is_array($value)) {
                         try {
                             $value = tiptap_converter()->asText($value);
