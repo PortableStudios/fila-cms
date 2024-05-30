@@ -34,7 +34,7 @@ class MediaAction extends Action
             ->modalWidth('6xl')
             ->mountUsing(function (TiptapEditor $component, ComponentContainer $form, array $arguments) {
                 $source = $arguments['src'] !== ''
-                    ? $component->getDirectory().Str::of($arguments['src'])
+                    ? $component->getDirectory() . Str::of($arguments['src'])
                         ->after($component->getDirectory())
                     : null;
 
@@ -47,7 +47,7 @@ class MediaAction extends Action
             })->modalHeading(function (TiptapEditor $component, array $arguments) {
                 $context = blank($arguments['src'] ?? null) ? 'insert' : 'update';
 
-                return __('filament-tiptap-editor::media-modal.heading.'.$context);
+                return __('filament-tiptap-editor::media-modal.heading.' . $context);
             })->form(function (TiptapEditor $component) {
                 return $this->getFormFields($component);
             })
@@ -61,7 +61,7 @@ class MediaAction extends Action
             })
             ->action(function (Action $action, TiptapEditor $component, $data, Get $get) {
                 $data['mediaModel'] = Media::find($data['media']);
-                if(!$data['mediaModel']) {
+                if (!$data['mediaModel']) {
                     $action->cancel();
                     return;
                 }
@@ -94,7 +94,7 @@ class MediaAction extends Action
 
         return [
             MediaTable::make('media')->grow(true)->columnSpan(3)->afterStateUpdated(function (Set $set, ?string $state) {
-                if($state) {
+                if ($state) {
                     $media = Media::find($state);
                     $set('mediaModel', $media);
                     $this->currentFile = $media;

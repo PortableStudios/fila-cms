@@ -48,7 +48,7 @@ abstract class AbstractFormBlock extends Block
 
         $field = static::createField($fieldData, $readOnly);
         $field = static::applyRequirementFields($field, $fieldData);
-        if($readOnly && method_exists($field, 'readOnly')) {
+        if ($readOnly && method_exists($field, 'readOnly')) {
             $field->readOnly();
         }
 
@@ -68,7 +68,7 @@ abstract class AbstractFormBlock extends Block
         $fieldName = data_get($fieldData, 'field_name');
         $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
 
-        if(is_array($value)) {
+        if (is_array($value)) {
             $value = implode(', ', $value);
         }
 

@@ -60,7 +60,7 @@ class MediaLibraryTest extends TestCase
 
         // Remove existing image in storage, if any
         $disk = Storage::disk(config('filesystems.default'));
-        if($disk->exists($subfolder->filepath . '/test.jpg')) {
+        if ($disk->exists($subfolder->filepath . '/test.jpg')) {
             $disk->delete($subfolder->filepath . '/test.jpg');
         }
 

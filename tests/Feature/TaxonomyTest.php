@@ -5,9 +5,7 @@ namespace Portable\FilaCms\Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Portable\FilaCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-
 use Portable\FilaCms\Models\Taxonomy;
-
 use Schema;
 
 class TaxonomyTest extends TestCase

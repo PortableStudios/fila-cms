@@ -41,9 +41,9 @@ class MakeContentModel extends Command
 
         $path = app_path('Models');
 
-        $this->copyStubToApp('Models/ContentModel', $path.'/'.$model.'.php', [
+        $this->copyStubToApp('Models/ContentModel', $path . '/' . $model . '.php', [
             'model' => $model,
-            'resourceName' => $model.'Resource',
+            'resourceName' => $model . 'Resource',
             'table' => Str::plural(Str::snake($model)),
         ]);
 
@@ -54,6 +54,6 @@ class MakeContentModel extends Command
 
     public function getDefaultStubPath(): string
     {
-        return realpath(__DIR__.'/../../stubs');
+        return realpath(__DIR__ . '/../../stubs');
     }
 }

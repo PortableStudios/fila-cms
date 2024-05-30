@@ -34,15 +34,17 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => $input['email'],
         ];
 
-        if(isset($input['password'])) {
+        if (isset($input['password'])) {
             $rules['password'] = ['required', 'string', 'min:8', 'confirmed'];
             $fields['password'] = Hash::make($input['password']);
         }
 
         Validator::make($input, $rules)->validateWithBag('updateProfileInformation');
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
+        if (
+            $input['email'] !== $user->email &&
+            $user instanceof MustVerifyEmail
+        ) {
             $this->updateVerifiedUser($user, $fields);
         } else {
             $user->forceFill($fields)->save();

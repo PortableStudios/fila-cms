@@ -26,7 +26,7 @@ class FilaCmsDiff extends Diff
                 $newData = $newContents[$key];
                 $oldData = $oldContents[$key];
 
-                if(is_array($newData) || is_array($oldData)) {
+                if (is_array($newData) || is_array($oldData)) {
                     $newData = tiptap_converter()->asText($newData);
                     $oldData = tiptap_converter()->asText($oldData);
                 }

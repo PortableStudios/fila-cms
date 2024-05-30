@@ -12,6 +12,5 @@ class SettingData
         public int $order,
         public Closure $fields,
     ) {
-
     }
 }

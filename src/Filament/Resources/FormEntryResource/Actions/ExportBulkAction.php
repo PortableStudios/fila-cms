@@ -21,7 +21,5 @@ class ExportBulkAction extends ActionsExportBulkAction
         $exporter = parent::getExporter();
         $exporter::form($this->_ownerRecord);
         return $exporter;
-
     }
-
 }

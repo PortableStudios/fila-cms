@@ -54,7 +54,7 @@ class MakeContentPermissionSeederTest extends TestCase
 
     public function loadSeeders($className)
     {
-        if(Str::contains($className, 'MyContentRoleAndPermissionSeeder')) {
+        if (Str::contains($className, 'MyContentRoleAndPermissionSeeder')) {
             require database_path('seeders/MyContentRoleAndPermissionSeeder.php');
         }
     }

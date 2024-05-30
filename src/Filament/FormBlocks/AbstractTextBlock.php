@@ -18,7 +18,7 @@ abstract class AbstractTextBlock extends AbstractFormBlock
         ->default($this->getName())
         ->required()];
         $typeSelector = static::getTypeSelector();
-        if($typeSelector) {
+        if ($typeSelector) {
             $generalFields[] = $typeSelector;
         }
 
@@ -57,16 +57,16 @@ abstract class AbstractTextBlock extends AbstractFormBlock
 
     protected static function applyRequirementFields(Component $field, array $fieldData): Component
     {
-        if(isset($fieldData['max_length']) && method_exists($field, 'maxLength')) {
+        if (isset($fieldData['max_length']) && method_exists($field, 'maxLength')) {
             $field->maxLength($fieldData['max_length']);
         }
 
-        if(isset($fieldData['required']) && $fieldData['required'] && method_exists($field, 'required')) {
+        if (isset($fieldData['required']) && $fieldData['required'] && method_exists($field, 'required')) {
             $field->required();
         }
 
-        if(isset($fieldData['text_type']) && method_exists($field, 'type')) {
-            if($fieldData['text_type'] == 'tel') {
+        if (isset($fieldData['text_type']) && method_exists($field, 'type')) {
+            if ($fieldData['text_type'] == 'tel') {
                 $field->tel();
             } else {
                 $field->type($fieldData['text_type']);

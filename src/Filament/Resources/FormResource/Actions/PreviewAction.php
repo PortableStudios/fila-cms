@@ -27,5 +27,4 @@ class PreviewAction extends Action
             return $action->getLivewire()->data['title'];
         });
     }
-
 }

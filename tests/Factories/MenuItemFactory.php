@@ -25,5 +25,4 @@ class MenuItemFactory extends Factory
             'reference_text' => 'http://google.com'
         ];
     }
-
 }

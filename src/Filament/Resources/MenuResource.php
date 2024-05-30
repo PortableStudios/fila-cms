@@ -7,7 +7,6 @@ use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-
 use Portable\FilaCms\Filament\Resources\MenuResource\Pages;
 use Portable\FilaCms\Filament\Resources\MenuResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;

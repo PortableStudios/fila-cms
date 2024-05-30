@@ -12,7 +12,7 @@ trait CreatesApplication
      */
     public function createApplication(): Application
     {
-        $app = require __DIR__.'/../vendor/orchestra/testbench-core/laravel/bootstrap/app.php';
+        $app = require __DIR__ . '/../vendor/orchestra/testbench-core/laravel/bootstrap/app.php';
 
         $app->make(Kernel::class)->bootstrap();
 

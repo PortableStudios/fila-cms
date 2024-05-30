@@ -19,15 +19,15 @@ trait IsProtectedResource
             return false;
         }
 
-        if (Permission::whereIn('name', ['view '.$permName, 'manage '.$permName])->count()) {
+        if (Permission::whereIn('name', ['view ' . $permName, 'manage ' . $permName])->count()) {
             if ($action == 'viewAny' || $action == 'view') {
-                $response = $user->hasPermissionTo('view '.$permName);
+                $response = $user->hasPermissionTo('view ' . $permName);
                 if ($response !== null) {
                     return (bool) $response;
                 }
             }
             if ($action == 'create' || $action == 'update' || $action == 'delete') {
-                $response = $user->hasPermissionTo('manage '.$permName);
+                $response = $user->hasPermissionTo('manage ' . $permName);
                 if ($response !== null) {
                     return (bool) $response;
                 }

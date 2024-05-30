@@ -59,7 +59,7 @@ class RelatedResourceBlock extends TiptapBlock
                                                         ->select('id', 'title')
                                                         ->where('id', $state)
                                                         ->first();
-                                                    if($article) {
+                                                    if ($article) {
                                                         $set('title', $article->title);
                                                     }
                                                 })
@@ -87,7 +87,6 @@ class RelatedResourceBlock extends TiptapBlock
             ->where(function ($q) use ($search) {
                 $q->where('contents', 'LIKE', '%' . $search . '%')
                 ->orWhere('title', 'LIKE', '%' . $search . '%');
-
             })
             ->get();
 

@@ -42,7 +42,7 @@ trait CanCheckSlug
         $data = ($modelName::withoutGlobalScopes())
             ->where('slug', $slug);
 
-        if($this->record?->exists) {
+        if ($this->record?->exists) {
             $data = $data->where('id', '!=', $this->record->id);
         }
         $data = $data->first();

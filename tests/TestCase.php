@@ -26,7 +26,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         }
         static::$hasInstalled = true;
 
-        $this->withFactories(__DIR__.'/tests/Factories');
+        $this->withFactories(__DIR__ . '/tests/Factories');
 
         // remove config files
         File::delete(config_path('fila-cms.php'));
@@ -46,7 +46,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             ->assertExitCode(0);
 
         Factory::guessFactoryNamesUsing(function (string $modelName) {
-            return (string) '\\Portable\\FilaCms\\Tests\\Factories\\'.(class_basename($modelName)).'Factory';
+            return (string) '\\Portable\\FilaCms\\Tests\\Factories\\' . (class_basename($modelName)) . 'Factory';
         });
 
         File::copy(getcwd() . '/vite.config.js', resource_path('../vite.config.js'));
@@ -54,7 +54,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         File::copy(getcwd() . '/resources/css/filacms.css', resource_path('css/filacms.css'));
         File::copy(getcwd() . '/package.json', resource_path('../package.json'));
         Process::path(app_path())->run('npm run build');
-
     }
 
     protected function defineEnvironment($app)
@@ -97,7 +96,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         return User::create([
             'name' => 'Jeremy Layson',
-            'email' => 'jeremy.layson+'.mt_rand(1111, 9999).'@portable.com.au',
+            'email' => 'jeremy.layson+' . mt_rand(1111, 9999) . '@portable.com.au',
             'password' => 'password',
         ]);
     }

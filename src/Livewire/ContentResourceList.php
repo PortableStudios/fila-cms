@@ -40,7 +40,6 @@ class ContentResourceList extends Component implements HasForms
 
     public function submit()
     {
-
     }
 
     protected function getFilters()
@@ -60,7 +59,7 @@ class ContentResourceList extends Component implements HasForms
         $query = $modelClass::query();
 
         if (isset($this->data['title']) && $this->data['title']) {
-            $query->where('title', 'like', '%'.$this->data['title'].'%');
+            $query->where('title', 'like', '%' . $this->data['title'] . '%');
         }
 
         $modelClass = $this->model;

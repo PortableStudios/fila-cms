@@ -14,5 +14,4 @@ class TextInputBlock extends AbstractTextBlock
     {
         return 'Text Field';
     }
-
 }

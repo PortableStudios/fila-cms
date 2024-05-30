@@ -30,7 +30,7 @@ class RichTextBlock extends AbstractTextBlock
         $fieldName = data_get($fieldData, 'field_name');
         $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
 
-        if(is_array($value)) {
+        if (is_array($value)) {
             $value = tiptap_converter()->asHTML($value);
         }
 

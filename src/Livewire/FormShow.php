@@ -23,7 +23,7 @@ class FormShow extends Component implements HasForms
     public function mount(string $slug): void
     {
         $this->record = ModelsForm::where('slug', $slug)->first();
-        if(!$this->record || ($this->record->only_for_logged_in && !auth()->user())) {
+        if (!$this->record || ($this->record->only_for_logged_in && !auth()->user())) {
             abort(404);
         }
         $this->form->fill();
@@ -51,5 +51,4 @@ class FormShow extends Component implements HasForms
     {
         return view($this->view);
     }
-
 }

@@ -25,7 +25,7 @@ class ColumnBlock extends AbstractFormBlock
         $count = is_numeric($count) ? $count : 2;
 
         $html = '<table width="100%"><tr>';
-        for($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $fieldData['column_' . $i] = isset($fieldData['column_' . $i]) ? $fieldData['column_' . $i] : [];
             $html .= '<td width="' . (100 / $count) . '%">';
             $html .= FormBuilder::getDisplayFields($fieldData['column_' . $i], $values);
@@ -53,7 +53,7 @@ class ColumnBlock extends AbstractFormBlock
                         $columns = [];
                         $count = $get('column_count');
                         $count = is_numeric($count) ? $count : 2;
-                        for($i = 0; $i < $count; $i++) {
+                        for ($i = 0; $i < $count; $i++) {
                             $columns[] = FormBuilder::make('column_' . $i)->columns(1);
                         }
                         return $columns;
@@ -68,7 +68,7 @@ class ColumnBlock extends AbstractFormBlock
         $count = is_numeric($count) ? $count : 2;
 
         $fields = collect();
-        for($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $kids = FormBuilder::getFieldDefinitions(isset($schema['column_' . $i]) ? $schema['column_' . $i] : []);
             $fields = $fields->merge($kids);
         }
@@ -82,7 +82,7 @@ class ColumnBlock extends AbstractFormBlock
         $count = is_numeric($count) ? $count : 2;
 
         $fields = collect();
-        for($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $kids = FormBuilder::getChildren(isset($schema['column_' . $i]) ? $schema['column_' . $i] : []);
             $fields = $fields->merge($kids);
         }
@@ -96,7 +96,7 @@ class ColumnBlock extends AbstractFormBlock
         $count = is_numeric($count) ? $count : 2;
 
         $columns = [];
-        for($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $columns[] = Group::make(FormBuilder::getFields(isset($fieldData['column_' . $i]) ? $fieldData['column_' . $i] : [], $readOnly));
         }
 

@@ -30,13 +30,13 @@ class CheckboxBlock extends AbstractTextBlock
                         ->default($this->getName())
                         ->required(),
                         ...static::getRequirementFields()
-        ]),
+            ]),
                 ];
     }
 
     protected static function applyRequirementFields(Component $field, array $fieldData): Component
     {
-        if(isset($fieldData['required']) && $fieldData['required']) {
+        if (isset($fieldData['required']) && $fieldData['required']) {
             $field->required();
         }
 
@@ -50,5 +50,4 @@ class CheckboxBlock extends AbstractTextBlock
                 ->inline(false),
         ];
     }
-
 }

@@ -26,7 +26,7 @@ class FormEntryExporter extends Exporter
         // A flat collection of all form fields
         $allFields = FormBuilder::getChildren(static::$_form->fields);
         $columns = [];
-        foreach($allFields as $field) {
+        foreach ($allFields as $field) {
             $columns[] = ExportColumn::make($field->getName())
                 ->label($field->getLabel())
                 ->getStateUsing(function ($record) use ($field) {

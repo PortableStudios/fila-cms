@@ -53,5 +53,4 @@ class UserNoImplements
         // This is required on Front and Back end.  Add more specific controls with authenticate middleware.
         return true;
     }
-
 }

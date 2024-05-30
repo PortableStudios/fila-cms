@@ -15,8 +15,8 @@ trait UserConfigurableResource
         $columns = [];
 
         // Then the rest
-        foreach (config(static::$configKey.'.default_columns') as $defaultColumn) {
-            if (in_array($defaultColumn, config(static::$configKey.'.exclude_fields'))) {
+        foreach (config(static::$configKey . '.default_columns') as $defaultColumn) {
+            if (in_array($defaultColumn, config(static::$configKey . '.exclude_fields'))) {
                 continue;
             }
 
@@ -29,7 +29,7 @@ trait UserConfigurableResource
     protected static function makeColumn($name)
     {
         if (static::getReflection()->hasMethod($name)) {
-            return TextColumn::make($name.'.name')
+            return TextColumn::make($name . '.name')
                 ->distinctList();
         }
 

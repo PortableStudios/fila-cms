@@ -43,7 +43,7 @@ class MakeContentPermissionSeeder extends Command
 
         $plural = Str::plural(\Filament\Support\get_model_label($model));
 
-        $this->copyStubToApp('database/seeders/add_permissions_seeder', $path.'/'.$model.'RoleAndPermissionSeeder.php', [
+        $this->copyStubToApp('database/seeders/add_permissions_seeder', $path . '/' . $model . 'RoleAndPermissionSeeder.php', [
             'class' => $model,
             'plural' => $plural,
         ]);
@@ -53,8 +53,8 @@ class MakeContentPermissionSeeder extends Command
         $answer = $this->ask('Would you like to run the seeder now? (Y/n)');
 
         if (Str::lower($answer) === 'y') {
-            require_once($path . '/'.$model.'RoleAndPermissionSeeder.php');
-            $this->call('db:seed', ['--class' => $model.'RoleAndPermissionSeeder']);
+            require_once($path . '/' . $model . 'RoleAndPermissionSeeder.php');
+            $this->call('db:seed', ['--class' => $model . 'RoleAndPermissionSeeder']);
         }
 
         return static::SUCCESS;
@@ -62,6 +62,6 @@ class MakeContentPermissionSeeder extends Command
 
     public function getDefaultStubPath(): string
     {
-        return realpath(__DIR__.'/../../stubs');
+        return realpath(__DIR__ . '/../../stubs');
     }
 }

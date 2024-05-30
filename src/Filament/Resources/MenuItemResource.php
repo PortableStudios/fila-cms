@@ -154,12 +154,11 @@ class MenuItemResource extends AbstractResource
         $models = ($this->getSourceModel($source))
             ->select('id', 'title')
             ->where(function ($q) use ($search, $source) {
-                if($source == FormResource::class) {
+                if ($source == FormResource::class) {
                     $q->where('title', 'LIKE', '%' . $search . '%');
                 } else {
                     $q->where('contents', 'LIKE', '%' . $search . '%')
                     ->orWhere('title', 'LIKE', '%' . $search . '%');
-
                 }
             })
             ->get();
@@ -186,7 +185,7 @@ class MenuItemResource extends AbstractResource
     protected function getSourceModel($source)
     {
         $className = FilaCms::getModelFromResource($source);
-        if(!$className) {
+        if (!$className) {
             $className = FormModel::class;
         }
 

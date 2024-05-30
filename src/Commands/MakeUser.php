@@ -48,7 +48,7 @@ class MakeUser extends Command
         $userFields = array_diff($userFieldsRaw, $excludeFields);
 
         foreach ($userFields as $key => $field) {
-            $userModel->{$field} = $this->ask('Enter admin '.$field);
+            $userModel->{$field} = $this->ask('Enter admin ' . $field);
         }
 
         // auto-populate other fields

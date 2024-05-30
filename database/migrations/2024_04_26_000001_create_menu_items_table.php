@@ -33,7 +33,7 @@ return new class () extends Migration {
     public function down(): void
     {
         Schema::table('menu_items', function (Blueprint $table) {
-            if(DB::connection()->getDriverName() !== 'sqlite') {
+            if (DB::connection()->getDriverName() !== 'sqlite') {
                 $table->dropForeign('menu_items_parent_id_foreign');
             }
         });

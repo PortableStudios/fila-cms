@@ -45,7 +45,6 @@ class InstallTest extends TestCase
         config([
             'auth.providers.users.model' => $oldModel,
         ]);
-
     }
 
     public function test_install_command_has_implements(): void
@@ -134,7 +133,7 @@ class InstallTest extends TestCase
         ];
 
         $fileContents = file_get_contents($userReflection->getFileName());
-        foreach($traitsAndInterfaces as $traitOrInterface) {
+        foreach ($traitsAndInterfaces as $traitOrInterface) {
             $this->assertStringContainsString($traitOrInterface, $fileContents, "User model does not have $traitOrInterface");
         }
     }

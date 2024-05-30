@@ -77,7 +77,6 @@ class RoleResourceTest extends TestCase
             ])
             ->call('create')
             ->assertHasFormErrors(['name' => 'unique']);
-
     }
 
     public function test_can_render_edit_page(): void
