@@ -171,6 +171,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                 ->blocks([
                     RelatedResourceBlock::class,
                     AccordionBlock::class,
+                    ...config('fila-cms.tip_tap_blocks')
                 ]);
         });
 
