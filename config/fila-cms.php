@@ -100,5 +100,6 @@ return [
         'forgot_password_view' => 'fila-cms::auth.forgot-password',
         'password_reset' => ResetUserPassword::class,
         'password_reset_view' => 'fila-cms::auth.reset-password',
-    ]
+    ],
+    'tip_tap_blocks' => [],
 ];
