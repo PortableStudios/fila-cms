@@ -25,8 +25,8 @@ class ResetUserPassword implements ResetsUserPasswords
                         ->numbers()
                         ->symbols()
                         ->uncompromised()
-            ],
-        ]
+                ],
+            ]
         )->validate();
 
         $user->forceFill([

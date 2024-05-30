@@ -37,16 +37,16 @@ class EditSettings extends Page implements HasForms
     {
         $settings = FilaCms::getSettingsFields();
 
-        foreach($settings as $tabName => $groups) {
+        foreach ($settings as $tabName => $groups) {
             $fieldsets = [];
-            foreach($groups as $groupName => $groupFields) {
+            foreach ($groups as $groupName => $groupFields) {
                 $fieldsets[] = Fieldset::make($groupName)->schema($groupFields);
             }
             $tabs[] = Tab::make($tabName)->schema($fieldsets);
         }
 
         return $form
-            ->schema([Tabs::make('Tab')->schema($tabs)])
+            ->schema([Tabs::make('Tab')->schema($tabs)->persistTabInQueryString('settings-tab')])
             ->statePath('data');
     }
 
@@ -55,7 +55,7 @@ class EditSettings extends Page implements HasForms
         $formData = $this->form->getState();
         $records = [];
         collect(FilaCms::getSettingsFields())->flatten()->each(function ($field) use (&$formData, &$records) {
-            if(method_exists($field, 'getName')) {
+            if (method_exists($field, 'getName')) {
                 $records[] = [
                     'key' => $field->getName(),
                     'value' => data_get($formData, $field->getName())

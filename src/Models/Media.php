@@ -30,7 +30,7 @@ class Media extends Model
         parent::boot();
 
         static::deleting(function ($media) {
-            if($media->is_folder) {
+            if ($media->is_folder) {
                 $media->children->each->delete();
             } else {
                 Storage::disk($media->disk)->delete($media->filepath . '/' . $media->filename);
@@ -74,7 +74,7 @@ class Media extends Model
     public function displaySize(): Attribute
     {
         return Attribute::make(function ($value) {
-            if($this->is_folder) {
+            if ($this->is_folder) {
                 return $this->children->count() > 0 ? $this->children->count() . ' items' : 'Empty';
             } else {
                 return HumanReadableFileSize::getHumanSize($this->size);
@@ -89,8 +89,8 @@ class Media extends Model
 
     public function move($newParent, $newName = null)
     {
-        if($newParent?->id !== $this->parent_id) {
-            if($newParent->disk !== $this->disk) {
+        if ($newParent?->id !== $this->parent_id) {
+            if ($newParent->disk !== $this->disk) {
                 throw new \Exception('Cannot move media to a different disk');
             }
         }

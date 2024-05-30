@@ -40,7 +40,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
             DispatchServingFilamentEvent::class,
         ];
 
-        if(config('fila-cms.auth.force_2fa', true)) {
+        if (config('fila-cms.auth.force_2fa', true)) {
             $middleware[] = TwoFactorMiddleware::class;
         }
 

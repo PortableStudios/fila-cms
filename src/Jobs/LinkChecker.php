@@ -62,13 +62,17 @@ class LinkChecker implements ShouldQueue
 
         foreach ($data as $key => $value) {
             switch ($key) {
-                case 'type': $type = $value;
+                case 'type':
+                    $type = $value;
                     break;
-                case 'content': $content = $value;
+                case 'content':
+                    $content = $value;
                     break;
-                case 'marks': $marks = $value;
+                case 'marks':
+                    $marks = $value;
                     break;
-                default: break;
+                default:
+                    break;
             }
         }
 

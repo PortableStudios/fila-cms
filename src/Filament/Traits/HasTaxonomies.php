@@ -65,7 +65,7 @@ trait HasTaxonomies
     {
         $this->taxonomyable()->delete();
         foreach ($this->_virtualTaxonomyFields as $fieldName) {
-            $items = isset($this->_saveTaxonomyFields[$fieldName.'_ids']) ? $this->_saveTaxonomyFields[$fieldName.'_ids'] : [];
+            $items = isset($this->_saveTaxonomyFields[$fieldName . '_ids']) ? $this->_saveTaxonomyFields[$fieldName . '_ids'] : [];
             $this->terms()->attach($items);
         }
     }
@@ -80,13 +80,13 @@ trait HasTaxonomies
                     $this->original[$field] = $this->attributes[$field];
                 }
             }
-            if (isset($this->attributes[$field.'_ids'])) {
-                $this->_saveTaxonomyFields[$field.'_ids'] = $this->attributes[$field.'_ids'];
+            if (isset($this->attributes[$field . '_ids'])) {
+                $this->_saveTaxonomyFields[$field . '_ids'] = $this->attributes[$field . '_ids'];
                 if ($creating) {
                     unset($this->attributes[$field . '_ids']);
                 } else {
                     $this->original[$field] = $this->attributes[$field] = null;
-                    $this->original[$field.'_ids'] = $this->attributes[$field.'_ids'];
+                    $this->original[$field . '_ids'] = $this->attributes[$field . '_ids'];
                 }
             }
         }
@@ -101,19 +101,18 @@ trait HasTaxonomies
             if (!Schema::hasTable('taxonomy_resources')) {
                 return;
             }
-        } catch(\Exception $e) {
-
+        } catch (\Exception $e) {
         }
 
 
 
         TaxonomyResource::where('resource_class', static::$resourceName)->get()->each(function (TaxonomyResource $taxonomyResource) use (&$fields) {
             $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_');
-            $this->casts[$fieldName] = DynamicTermList::class.':'.$taxonomyResource->taxonomy_id;
-            $this->casts[$fieldName.'_ids'] = DynamicTermIds::class.':'.$taxonomyResource->taxonomy_id;
+            $this->casts[$fieldName] = DynamicTermList::class . ':' . $taxonomyResource->taxonomy_id;
+            $this->casts[$fieldName . '_ids'] = DynamicTermIds::class . ':' . $taxonomyResource->taxonomy_id;
             $this->append($fieldName);
-            $this->append($fieldName.'_ids');
-            $this->fillable[] = $fieldName.'_ids';
+            $this->append($fieldName . '_ids');
+            $this->fillable[] = $fieldName . '_ids';
             $this->_virtualTaxonomyFields[] = $fieldName;
         });
     }

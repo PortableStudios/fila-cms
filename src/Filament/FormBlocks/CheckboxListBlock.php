@@ -19,5 +19,4 @@ class CheckboxListBlock extends AbstractOptionsBlock
     {
         return [];
     }
-
 }

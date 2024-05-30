@@ -63,5 +63,4 @@ class User extends Authenticatable implements \Filament\Models\Contracts\Filamen
         // This is required on Front and Back end.  Add more specific controls with authenticate middleware.
         return true;
     }
-
 }

@@ -42,10 +42,10 @@ class SSOController extends Controller
         $ssoUser = Socialite::driver($driver)->user();
         $ssoLink = UserSsoLink::where('driver', $driver)->where('provider_id', $ssoUser->getId())->first();
 
-        if(!$ssoLink) {
+        if (!$ssoLink) {
             // Do we already have a user with this email?
             $user = $userModel::withTrashed()->where('email', $ssoUser->getEmail())->first();
-            if(!$user) {
+            if (!$user) {
                 $user = $userModel::create([
                     'name' => $ssoUser->getName(),
                     'email' => $ssoUser->getEmail(),
@@ -61,7 +61,7 @@ class SSOController extends Controller
             ]);
         }
 
-        if(!$ssoLink->user) {
+        if (!$ssoLink->user) {
             $user = $userModel::withTrashed()->find($ssoLink->user_id);
             $user->roles()->detach();
             $user->restore();

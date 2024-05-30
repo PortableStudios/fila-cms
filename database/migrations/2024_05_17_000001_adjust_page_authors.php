@@ -13,14 +13,14 @@ return new class () extends Migration {
     public function up(): void
     {
         Page::withoutGlobalScopes()->get()->each(function (Page $page) {
-            if($page->author_id) {
+            if ($page->author_id) {
                 $page->authors()->sync($page->author_id);
             }
         });
 
 
         Schema::table('pages', function (Blueprint $table) {
-            if(DB::connection()->getDriverName() !== 'sqlite') {
+            if (DB::connection()->getDriverName() !== 'sqlite') {
                 $table->dropConstrainedForeignId('author_id');
             }
         });
@@ -36,7 +36,7 @@ return new class () extends Migration {
         });
 
         Page::withoutGlobalScopes()->get()->each(function (Page $page) {
-            if($page->authors()->count() > 0) {
+            if ($page->authors()->count() > 0) {
                 $page->author_id = $page->authors->first()->id;
             }
         });

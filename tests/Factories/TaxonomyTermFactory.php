@@ -23,5 +23,4 @@ class TaxonomyTermFactory extends Factory
             'name' => fake()->words(2, true),
         ];
     }
-
 }

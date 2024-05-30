@@ -18,8 +18,8 @@ class TwoFactorMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        if(!app()->runningUnitTests()) {
-            if($user && method_exists($user, 'hasEnabledTwoFactorAuthentication') && !$user->hasEnabledTwoFactorAuthentication()) {
+        if (!app()->runningUnitTests()) {
+            if ($user && method_exists($user, 'hasEnabledTwoFactorAuthentication') && !$user->hasEnabledTwoFactorAuthentication()) {
                 if (!Str::contains(Route::current()->getName(), ['two-factor','user-settings']) && Route::current()->getName() !== 'filament.admin.auth.logout') {
                     return redirect()->route('filament.admin.pages.user-settings');
                 }

@@ -5,9 +5,7 @@ namespace Portable\FilaCms\Tests\Feature;
 use Schema;
 use Illuminate\Support\Str;
 use Portable\FilaCms\Models\Page;
-
 use Portable\FilaCms\Tests\TestCase;
-
 use Portable\FilaCms\Models\ShortUrl;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;

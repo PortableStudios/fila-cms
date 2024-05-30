@@ -112,7 +112,6 @@ class FormResourceTest extends TestCase
 
         $data->refresh();
         $this->assertEquals($data->title, $new->title);
-
     }
 
     public function test_can_render_form()

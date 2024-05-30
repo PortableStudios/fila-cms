@@ -57,9 +57,9 @@ class InstallCommand extends CommandsInstallCommand
         $this->info('Creating Custom Filament Theme');
 
         // @codeCoverageIgnoreStart
-        if(!app()->runningUnitTests()) {
+        if (!app()->runningUnitTests()) {
             // Only call this if there isn't already a filament theme
-            if(!File::exists(resource_path('css/filament/admin/theme.css'))) {
+            if (!File::exists(resource_path('css/filament/admin/theme.css'))) {
                 $this->callSilent('make:filament-theme');
             }
         }

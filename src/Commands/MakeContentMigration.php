@@ -39,10 +39,10 @@ class MakeContentMigration extends Command
             ->studly()
             ->replace('/', '\\');
 
-        $migrationFile = now()->format('Y_m_d_His').'_create_'.Str::plural(Str::snake($model)).'_table.php';
+        $migrationFile = now()->format('Y_m_d_His') . '_create_' . Str::plural(Str::snake($model)) . '_table.php';
         $path = database_path('migrations');
 
-        $this->copyStubToApp('database/migrations/create_content_model', $path.'/'.$migrationFile, [
+        $this->copyStubToApp('database/migrations/create_content_model', $path . '/' . $migrationFile, [
             'table' => Str::plural(Str::snake($model)),
         ]);
 
@@ -53,6 +53,6 @@ class MakeContentMigration extends Command
 
     public function getDefaultStubPath(): string
     {
-        return realpath(__DIR__.'/../../stubs');
+        return realpath(__DIR__ . '/../../stubs');
     }
 }

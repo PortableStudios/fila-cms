@@ -33,7 +33,6 @@ class PageTest extends TestCase
             'first_name'    => 'Portable',
             'is_individual' => 0
         ]);
-
     }
     public function test_table_exists(): void
     {

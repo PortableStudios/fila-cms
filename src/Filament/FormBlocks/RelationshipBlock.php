@@ -60,9 +60,9 @@ class RelationshipBlock extends AbstractFormBlock
     {
         $relationshipClass = $fieldData['relationship'];
         $taxonomyId = $fieldData['taxonomy_id'] ?? null;
-        if(is_subclass_of($relationshipClass, Model::class)) {
+        if (is_subclass_of($relationshipClass, Model::class)) {
             $modelClass = $relationshipClass;
-        } elseif($taxonomyId) {
+        } elseif ($taxonomyId) {
             $modelClass = TaxonomyTerm::class;
         } else {
             $modelClass = FilaCms::getModelFromResource($relationshipClass);
@@ -73,9 +73,9 @@ class RelationshipBlock extends AbstractFormBlock
 
     protected static function getTitleField($modelClass)
     {
-        if($modelClass == Author::class || is_subclass_of($modelClass, Author::class)) {
+        if ($modelClass == Author::class || is_subclass_of($modelClass, Author::class)) {
             $titleField = 'display_name';
-        } elseif(is_subclass_of($modelClass, AbstractContentModel::class)) {
+        } elseif (is_subclass_of($modelClass, AbstractContentModel::class)) {
             $titleField = 'title';
         } else {
             $titleField = 'name';
@@ -90,15 +90,15 @@ class RelationshipBlock extends AbstractFormBlock
         $titleField = static::getTitleField($modelClass);
         $taxonomyId = $fieldData['taxonomy_id'] ?? null;
 
-        if(is_subclass_of($modelClass, TaxonomyTerm::class)) {
+        if (is_subclass_of($modelClass, TaxonomyTerm::class)) {
             $query = TaxonomyTerm::where('taxonomy_id', $taxonomyId);
             $titleField = 'name';
         } else {
             $query = $modelClass::query();
         }
 
-        if($search) {
-            $query = $query->where($titleField, 'LIKE', '%'. $search . '%');
+        if ($search) {
+            $query = $query->where($titleField, 'LIKE', '%' . $search . '%');
         }
 
         return $query->orderBy($titleField);
@@ -106,14 +106,14 @@ class RelationshipBlock extends AbstractFormBlock
 
     protected static function createField($fieldData, $readOnly = false)
     {
-        if(!isset($fieldData['component_class'])) {
+        if (!isset($fieldData['component_class'])) {
             $fieldData['component_class'] = Select::class;
         }
 
         $field = ($fieldData['component_class'])::make($fieldData['field_name'])
             ->default(isset($fieldData['default_value']) ? $fieldData['default_value'] : null);
 
-        if($fieldData['component_class'] == Select::class) {
+        if ($fieldData['component_class'] == Select::class) {
             $field = $field->searchable()->getSearchResultsUsing(function (string $search) use ($fieldData) {
                 $query = static::getOptionsQuery($fieldData, $search);
                 $titleField = static::getTitleField($fieldData);
@@ -137,15 +137,15 @@ class RelationshipBlock extends AbstractFormBlock
 
     protected static function applyRequirementFields(Component $field, array $fieldData): Component
     {
-        if(isset($fieldData['required']) && $fieldData['required']) {
+        if (isset($fieldData['required']) && $fieldData['required']) {
             $field->required();
         }
 
-        if(isset($fieldData['multiselect']) && $fieldData['multiselect'] && (!in_array($fieldData['componentClass'], [Radio::class, CheckboxList::class]))) {
+        if (isset($fieldData['multiselect']) && $fieldData['multiselect'] && (!in_array($fieldData['componentClass'], [Radio::class, CheckboxList::class]))) {
             $field->multiple();
         }
 
-        if(isset($fieldData['searchable']) && $fieldData['searchable']) {
+        if (isset($fieldData['searchable']) && $fieldData['searchable']) {
             $field->searchable();
         }
 
@@ -198,7 +198,7 @@ class RelationshipBlock extends AbstractFormBlock
     {
         $fieldName = data_get($fieldData, 'field_name');
         $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
-        if(!is_array($value)) {
+        if (!is_array($value)) {
             $value = [$value];
         }
 

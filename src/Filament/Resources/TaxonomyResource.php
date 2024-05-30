@@ -37,12 +37,11 @@ class TaxonomyResource extends AbstractResource
                     ->parentItem(static::getNavigationParentItem())
                     ->icon(static::getNavigationIcon())
                     ->activeIcon(static::getActiveNavigationIcon())
-                    ->isActiveWhen(fn () => request()->routeIs(route(static::getRouteBaseName().'.edit', $taxonomy)))
+                    ->isActiveWhen(fn () => request()->routeIs(route(static::getRouteBaseName() . '.edit', $taxonomy)))
                     ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                     ->badgeTooltip(static::getNavigationBadgeTooltip())
                     ->sort(static::getNavigationSort())
-                    ->url(route(static::getRouteBaseName().'.edit', $taxonomy));
-
+                    ->url(route(static::getRouteBaseName() . '.edit', $taxonomy));
         }
 
         $navItems[] =
@@ -51,14 +50,13 @@ class TaxonomyResource extends AbstractResource
                 ->parentItem(static::getNavigationParentItem())
                 ->icon(static::getNavigationIcon())
                 ->activeIcon(static::getActiveNavigationIcon())
-                ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName().'.create'))
+                ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName() . '.create'))
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->badgeTooltip(static::getNavigationBadgeTooltip())
                 ->sort(static::getNavigationSort())
-                ->url(route(static::getRouteBaseName().'.create'));
+                ->url(route(static::getRouteBaseName() . '.create'));
 
         return $navItems;
-
     }
 
     public static function form(Form $form): Form

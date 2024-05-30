@@ -10,7 +10,7 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        if(Schema::hasTable('job_batches')) {
+        if (Schema::hasTable('job_batches')) {
             return;
         }
 

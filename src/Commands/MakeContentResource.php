@@ -41,15 +41,15 @@ class MakeContentResource extends Command
 
         $path = app_path('Filament/Resources/');
 
-        $baseResourcePath = (string) str($model.'Resource')
+        $baseResourcePath = (string) str($model . 'Resource')
             ->prepend('/')
             ->prepend($path)
             ->replace('\\', '/')
             ->replace('//', '/');
 
-        $listResourcePageClass = 'List'.Str::plural($model);
-        $createResourcePageClass = 'Create'.$model;
-        $editResourcePageClass = 'Edit'.$model;
+        $listResourcePageClass = 'List' . Str::plural($model);
+        $createResourcePageClass = 'Create' . $model;
+        $editResourcePageClass = 'Edit' . $model;
 
         $resourcePath = "{$baseResourcePath}.php";
         $resourcePagesDirectory = "{$baseResourcePath}/Pages";
@@ -88,6 +88,6 @@ class MakeContentResource extends Command
 
     public function getDefaultStubPath(): string
     {
-        return realpath(__DIR__.'/../../stubs');
+        return realpath(__DIR__ . '/../../stubs');
     }
 }

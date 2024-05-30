@@ -29,7 +29,7 @@ class UserConcernsTest extends TestCase
         ];
 
         $fileContents = file_get_contents($userReflection->getFileName());
-        foreach($traitsAndInterfaces as $traitOrInterface) {
+        foreach ($traitsAndInterfaces as $traitOrInterface) {
             $this->assertStringNotContainsString($traitOrInterface, $fileContents, "User model does not have $traitOrInterface");
         }
 

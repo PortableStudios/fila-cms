@@ -150,7 +150,7 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         Blade::directive('filaCmsStyles', function (string $expression): string {
             try {
-                if(file_exists(realpath(resource_path('../../../../../resources/css/filacms.css')))) {
+                if (file_exists(realpath(resource_path('../../../../../resources/css/filacms.css')))) {
                     return app('Illuminate\Foundation\Vite')('../../../../resources/css/filacms.css');
                 }
 
@@ -180,10 +180,10 @@ class FilaCmsServiceProvider extends ServiceProvider
     protected function loadSettings()
     {
         try {
-            if(!Schema::hasTable('settings')) {
+            if (!Schema::hasTable('settings')) {
                 return;
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return;
         }
 
@@ -195,8 +195,8 @@ class FilaCmsServiceProvider extends ServiceProvider
         $container->schema($fields->toArray());
 
         $values = [];
-        foreach($fields as $field) {
-            if(!method_exists($field, 'getName')) {
+        foreach ($fields as $field) {
+            if (!method_exists($field, 'getName')) {
                 continue;
             }
             $values[$field->getName()] = Setting::get($field->getName());
@@ -206,21 +206,20 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         $data = (array)$form;
 
-        foreach(array_keys($values) as $fieldName) {
-            config(['settings.'.$fieldName => data_get($data, $fieldName)]);
+        foreach (array_keys($values) as $fieldName) {
+            config(['settings.' . $fieldName => data_get($data, $fieldName)]);
         }
 
         $providers = config('fila-cms.sso.providers', ['google','facebook','linkedin']);
-        foreach($providers as $provider) {
-            if(config('settings.sso.'. $provider . '.client_id') && config('settings.sso.'. $provider . '.client_secret')) {
-                config(['services.'.$provider.'.client_id' => config('settings.sso.'. $provider . '.client_id')]);
-                config(['services.'.$provider.'.client_secret' => config('settings.sso.'. $provider . '.client_secret')]);
-                config(['services.'.$provider.'.redirect' => '/login/' . $provider . '/callback']);
+        foreach ($providers as $provider) {
+            if (config('settings.sso.' . $provider . '.client_id') && config('settings.sso.' . $provider . '.client_secret')) {
+                config(['services.' . $provider . '.client_id' => config('settings.sso.' . $provider . '.client_id')]);
+                config(['services.' . $provider . '.client_secret' => config('settings.sso.' . $provider . '.client_secret')]);
+                config(['services.' . $provider . '.redirect' => '/login/' . $provider . '/callback']);
             }
         }
 
         return true;
-
     }
 
     protected function registerSettingsFields()
@@ -234,7 +233,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                 ->mutateDehydratedStateUsing(function ($state) {
                     return json_encode($state);
                 })->afterStateHydrated(function (AddressInput $component, $state) {
-                    if(is_string($state)) {
+                    if (is_string($state)) {
                         $component->state(json_decode($state, true));
                     }
                 })->columnSpanFull(),

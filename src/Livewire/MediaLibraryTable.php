@@ -45,12 +45,12 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
     {
         $paths = [];
 
-        if($this->current_parent) {
+        if ($this->current_parent) {
             $currentItem = Media::find($this->current_parent);
             $key = $currentItem->id;
             $paths['id-' . $key] = $currentItem->filename;
 
-            while($currentItem = Media::find($currentItem->parent_id)) {
+            while ($currentItem = Media::find($currentItem->parent_id)) {
                 $key = $currentItem->id;
                 $paths['id-' . $key] = $currentItem->filename;
             }
@@ -107,10 +107,9 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
         return Action::make('delete')->requiresConfirmation()
             ->action(function (Media $media) {
                 $media->delete();
-                if($this->current_file == $media->id) {
+                if ($this->current_file == $media->id) {
                     $this->setFile(null);
                 }
-
             })
             ->label('Delete')
             ->icon('heroicon-o-trash')
@@ -127,7 +126,7 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
             ->icon('heroicon-o-eye')
             ->form(function (Media $media) {
                 return [
-Split::make([
+                Split::make([
 
                     Placeholder::make('url')->label('')
                     ->content($this->getMediaPreviewHtml($media, 'large')),
@@ -174,7 +173,7 @@ Split::make([
                             ->inlineLabel(true)
                             ->label('ID'),
                     ])
-])
+                ])
                 ];
             })
             ->slideover()
@@ -252,7 +251,7 @@ Split::make([
                 ]);
 
                 $image = getimagesize(Storage::disk($disk)->path($path . '/' . $filename));
-                if(is_array($image)) {
+                if (is_array($image)) {
                     $width = $image[0];
                     $height = $image[1];
                 } else {
@@ -266,7 +265,7 @@ Split::make([
                     'alt_text' => $data['alt_text'],
                     'size' => $data['upload_media']->getSize(),
                     'extension' => $data['upload_media']->getClientOriginalExtension(),
-                    'mime_type' => mime_content_type(Storage::disk($disk)->path($path .'/'. $filename)),
+                    'mime_type' => mime_content_type(Storage::disk($disk)->path($path . '/' . $filename)),
                     'width' => $width,
                     'height' => $height,
                     'is_folder' => false,
@@ -302,7 +301,7 @@ Split::make([
             $searchQuery = '%' . $searchQuery . '%';
             $query->where('filename', 'LIKE', $searchQuery)
                 ->orWhere('alt_text', 'LIKE', $searchQuery);
-        } elseif($this->current_parent) {
+        } elseif ($this->current_parent) {
             $query->where('parent_id', $this->current_parent);
         } else {
             $query->whereNull('parent_id');
@@ -322,7 +321,7 @@ Split::make([
                 ->label(''),
             TextColumn::make('filename')
                 ->action(function (Media $media): void {
-                    if($media->is_folder) {
+                    if ($media->is_folder) {
                         $this->setParent($media->id);
                     } else {
                         $this->setFile($media->id);
@@ -344,7 +343,7 @@ Split::make([
                     return $record->display_size;
                 })
                 ->color(function ($state, $record) {
-                    if($record->is_folder) {
+                    if ($record->is_folder) {
                         return $record->children->count() > 0 ? 'info' : 'gray';
                     } else {
                         return 'white';
@@ -362,7 +361,7 @@ Split::make([
         $storage = Storage::disk($disk);
         $filename = $name;
         $i = 1;
-        while($storage->exists($path . '/' . $filename)) {
+        while ($storage->exists($path . '/' . $filename)) {
             $filename = pathinfo($name, PATHINFO_FILENAME) . '-' . $i . '.' . pathinfo($name, PATHINFO_EXTENSION);
             $i++;
         }
@@ -386,7 +385,7 @@ Split::make([
                         return $this->getEditForm($media);
                     })
                     ->action(function (Media $media, $data): void {
-                        if($media->filename !== $data['filename']) {
+                        if ($media->filename !== $data['filename']) {
                             $media->move($media->currentParent, $data['filename']);
                         }
                         $media->update([ 'alt_text' => isset($data['alt_text']) ? $data['alt_text'] : '']);
@@ -414,10 +413,10 @@ Split::make([
                             function (Get $get) {
                                 return function (string $attribute, $value, Closure $fail) use ($get) {
                                     $media = Media::find($get('id'));
-                                    if($value == $media->filename) {
+                                    if ($value == $media->filename) {
                                         return true;
                                     }
-                                    if(Media::where('filename', $value)->where('parent_id', $media->parent_id)->where('id', '<>', $media->id)->exists()) {
+                                    if (Media::where('filename', $value)->where('parent_id', $media->parent_id)->where('id', '<>', $media->id)->exists()) {
                                         $fail('There is already a file called ' . $value . ' in this folder');
                                     }
                                 };

@@ -15,7 +15,7 @@ class CommandStartingListener
 {
     public function handle(CommandStarting $event): void
     {
-        if($event->command !== 'serve') {
+        if ($event->command !== 'serve') {
             return;
         }
 
@@ -47,7 +47,7 @@ class CommandStartingListener
         // Ensure there's an admin user
         $userModel = config('auth.providers.users.model');
         $admin = $userModel::where('email', 'admin@test.com')->first();
-        if(!$admin) {
+        if (!$admin) {
             $admin = new $userModel();
         }
         $admin->email = 'admin@test.com';

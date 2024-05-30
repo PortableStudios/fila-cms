@@ -56,6 +56,5 @@ class Form extends Model
     public function routeNotificationForMail($notification)
     {
         return collect($this->notification_emails)->pluck('email')->toArray();
-
     }
 }

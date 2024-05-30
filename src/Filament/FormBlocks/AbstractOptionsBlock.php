@@ -43,7 +43,7 @@ abstract class AbstractOptionsBlock extends AbstractFormBlock
                             TextInput::make('option_value')
                                 ->label('Option Value')
                                 ->required(),
-                        ]),
+                            ]),
                         ];
                     }),
                 ];
@@ -59,7 +59,7 @@ abstract class AbstractOptionsBlock extends AbstractFormBlock
     protected static function getOptions($optionsArray)
     {
         $options = [];
-        foreach($optionsArray as $option) {
+        foreach ($optionsArray as $option) {
             $options[$option['option_name']] = $option['option_value'];
         }
         return $options;
@@ -67,19 +67,19 @@ abstract class AbstractOptionsBlock extends AbstractFormBlock
 
     protected static function applyRequirementFields(Component $field, array $fieldData): Component
     {
-        if(isset($fieldData['required']) && $fieldData['required']) {
+        if (isset($fieldData['required']) && $fieldData['required']) {
             $field->required();
         }
 
-        if(isset($fieldData['multiselect']) && $fieldData['multiselect']) {
+        if (isset($fieldData['multiselect']) && $fieldData['multiselect']) {
             $field->multiple();
         }
 
-        if(isset($fieldData['inline']) && $fieldData['inline']) {
+        if (isset($fieldData['inline']) && $fieldData['inline']) {
             $field->inline();
         }
 
-        if(isset($fieldData['searchable']) && $fieldData['searchable']) {
+        if (isset($fieldData['searchable']) && $fieldData['searchable']) {
             $field->searchable();
         }
 
@@ -102,7 +102,7 @@ abstract class AbstractOptionsBlock extends AbstractFormBlock
     {
         $fieldName = data_get($fieldData, 'field_name');
         $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
-        if(!is_array($value)) {
+        if (!is_array($value)) {
             $value = [$value];
         }
         $options = data_get($fieldData, 'options', []);

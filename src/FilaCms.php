@@ -32,7 +32,7 @@ class FilaCms
     {
         $userModel = config('auth.providers.users.model');
         $system = $userModel::query()->where('email', 'system@filacms')->first();
-        if($system) {
+        if ($system) {
             return $system;
         }
 
@@ -58,7 +58,7 @@ class FilaCms
 
     public function getModelFromResource($resource)
     {
-        if(!is_array(self::$contentModels)) {
+        if (!is_array(self::$contentModels)) {
             $this->getContentModels();
         }
         return array_search($resource, self::$contentModels);
@@ -103,7 +103,7 @@ class FilaCms
             ['prefix' => FormResource::getFrontendRoutePrefix(), 'middleware' => 'web'],
             function () {
                 Route::get('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name(FormResource::getFrontendShowRoute());
-                Route::post('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name(FormResource::getFrontendShowRoute().'.submit');
+                Route::post('/{slug}', \Portable\FilaCms\Livewire\FormShow::class)->name(FormResource::getFrontendShowRoute() . '.submit');
             }
         );
     }
@@ -130,7 +130,7 @@ class FilaCms
             $feIndexComponent = $resourceClass::getFrontendIndexComponent();
             $feShowComponent = $resourceClass::getFrontendShowComponent();
 
-            if($prefix !== '') {
+            if ($prefix !== '') {
                 Route::group(
                     ['prefix' => $prefix, 'middleware' => ['web', \Portable\FilaCms\Http\Middleware\ContentRoleMiddleware::class]],
                     function () use ($feShowComponent, $resourceClass, $registerIndex, $registerShow, $feIndexComponent, $modelClass) {
@@ -156,12 +156,12 @@ class FilaCms
                         }
                         if ($registerShow) {
                             try {
-                                foreach($modelClass::all() as $model) {
+                                foreach ($modelClass::all() as $model) {
                                     Route::get('/' . $model->slug, $feShowComponent)
                                         ->defaults('slug', $model->slug)
                                         ->defaults('model', $modelClass);
                                 }
-                            } catch(\Exception $e) {
+                            } catch (\Exception $e) {
                                 // Models may not exist yet, we might be running migrations, etc.
                             }
                         }
@@ -173,7 +173,7 @@ class FilaCms
 
     public function getRawContentModels()
     {
-        if(is_null(static::$contentModels)) {
+        if (is_null(static::$contentModels)) {
             static::getContentModels();
         }
         return static::$contentModels;
@@ -184,7 +184,7 @@ class FilaCms
         Route::get(config('fila-cms.short_url_prefix') . '/{slug}', function ($slug) {
 
             $shortUrl = ShortUrl::where('url', $slug)->first();
-            if(empty($shortUrl)) {
+            if (empty($shortUrl)) {
                 abort(404);
             }
 
@@ -193,7 +193,7 @@ class FilaCms
             $target = new $modelClass();
             $page = $target->find($shortUrl->shortable_id);
 
-            if($shortUrl->enable === false || empty($page)) {
+            if ($shortUrl->enable === false || empty($page)) {
                 abort(404);
             }
 
@@ -207,13 +207,13 @@ class FilaCms
     public function thumbnail(Media $media, $size = 'small')
     {
         $thumbnailSizes = config('fila-cms.media_library.thumbnails');
-        if(!isset($thumbnailSizes[$size])) {
+        if (!isset($thumbnailSizes[$size])) {
             throw new \Exception("Invalid thumbnail size");
         }
         $width = $thumbnailSizes[$size]['width'];
         $height = $thumbnailSizes[$size]['height'];
 
-        switch($media->mime_type) {
+        switch ($media->mime_type) {
             case 'application/pdf':
                 $filePath = dirname(__FILE__) . '/../resources/images/pdf-icon.png';
                 $manager = new ImageManager(GDDriver::class);
@@ -241,7 +241,7 @@ class FilaCms
 
     public function registerSetting(string $tab, string $group, int $order, Closure $fieldsCallback)
     {
-        if(static::$settings === null) {
+        if (static::$settings === null) {
             static::$settings = collect();
         }
 
@@ -258,11 +258,11 @@ class FilaCms
     {
         $settings = static::$settings;
         $tabs = [];
-        foreach($settings->groupBy(['tabName','groupName'])->sortBy('order') as $tabName => $groups) {
+        foreach ($settings->groupBy(['tabName','groupName'])->sortBy('order') as $tabName => $groups) {
             $tabs[$tabName] = [];
-            foreach($groups as $groupName => $settingsData) {
+            foreach ($groups as $groupName => $settingsData) {
                 $groupFields = [];
-                foreach($settingsData as $settingsDatum) {
+                foreach ($settingsData as $settingsDatum) {
                     $groupFields = array_merge($groupFields, call_user_func($settingsDatum->fields));
                 }
                 $tabs[$tabName][$groupName] = $groupFields;
@@ -275,8 +275,8 @@ class FilaCms
     public function getFormBlock(string $name)
     {
         $blocks = config('fila-cms.forms.blocks');
-        foreach($blocks as $block) {
-            if($block::getBlockName() === $name) {
+        foreach ($blocks as $block) {
+            if ($block::getBlockName() === $name) {
                 return $block;
             }
         }
@@ -301,8 +301,8 @@ class FilaCms
     public function ssoRoutes()
     {
         $providers = config('fila-cms.sso.providers', ['google','facebook','linkedin']);
-        foreach($providers as $provider) {
-            if(config('settings.sso.'. $provider . '.client_id') && config('settings.sso.'. $provider . '.client_secret')) {
+        foreach ($providers as $provider) {
+            if (config('settings.sso.' . $provider . '.client_id') && config('settings.sso.' . $provider . '.client_secret')) {
                 Route::get('/login/' . $provider, [\Portable\FilaCms\Http\Controllers\SSOController::class, 'redirectToProvider'])
                     ->middleware('web')->name('login.' . $provider);
                 Route::get('/login/' . $provider . '/callback', [\Portable\FilaCms\Http\Controllers\SSOController::class, 'handleProviderCallback'])
@@ -314,7 +314,7 @@ class FilaCms
     public function search($term)
     {
         $results = [];
-        foreach(static::$contentModels as $modelClass => $resourceClass) {
+        foreach (static::$contentModels as $modelClass => $resourceClass) {
             $results = array_merge($results, $modelClass::search($term)->get()->toArray());
         }
 

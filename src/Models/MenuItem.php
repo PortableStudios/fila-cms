@@ -70,14 +70,14 @@ class MenuItem extends Model
     {
         return new Attribute(function ($value) {
             $resourceClass = $this->reference_page;
-            switch($this->type) {
+            switch ($this->type) {
                 case 'index-page':
                     return route($resourceClass::getFrontendIndexRoute());
                 case 'content':
                     $model = ($resourceClass::getModel())::find($this->reference_content);
                     $prefix = $resourceClass::getFrontendRoutePrefix();
-                    if($prefix == '') {
-                        return '/'.$model?->slug;
+                    if ($prefix == '') {
+                        return '/' . $model?->slug;
                     } else {
                         return route($resourceClass::getFrontendShowRoute(), ['slug' => $model?->slug]);
                     }

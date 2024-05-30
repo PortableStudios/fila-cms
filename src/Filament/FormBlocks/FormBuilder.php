@@ -11,7 +11,7 @@ class FormBuilder extends Builder
     public static function make(string $name): static
     {
         $availableBlocks = [];
-        foreach(config('fila-cms.forms.blocks') as $block) {
+        foreach (config('fila-cms.forms.blocks') as $block) {
             $availableBlocks[] = $block::make($block::getBlockName());
         }
 
@@ -25,7 +25,7 @@ class FormBuilder extends Builder
     public static function getFieldDefinitions($schema): Collection
     {
         $fields = collect();
-        foreach($schema as $field) {
+        foreach ($schema as $field) {
             $kids = FilaCms::getFormBlock($field['type'])::getFieldDefinitions($field['data']);
             $fields = $fields->merge($kids);
         }
@@ -37,7 +37,7 @@ class FormBuilder extends Builder
     {
         $fields = collect();
 
-        foreach($schema as $field) {
+        foreach ($schema as $field) {
             $kids = FilaCms::getFormBlock($field['type'])::getChildren($field['data']);
             $fields = $fields->merge($kids);
         }
@@ -58,12 +58,11 @@ class FormBuilder extends Builder
     public function displayHtml($fieldDefs, $values)
     {
         $html = '';
-        foreach($fieldDefs as $fieldDef) {
+        foreach ($fieldDefs as $fieldDef) {
             $field = FilaCms::getFormBlock($fieldDef['type']);
             $html .= $field::displayHtml($fieldDef['data'], $values);
         }
         return $html;
-
     }
 
     public static function getDisplayFields($fieldData, $fieldValues): string

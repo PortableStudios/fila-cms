@@ -25,7 +25,6 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -334,7 +333,7 @@ class AbstractContentResource extends AbstractResource
                 ->schema($seoFields)
                 ->afterStateHydrated(function (Group $component, ?Model $record) use ($only): void {
                     $data = $record?->seo?->only($only) ?: [];
-                    if($record) {
+                    if ($record) {
                         $data['override_seo_title'] = $data['title'] !== Str::limit($record?->title, 57);
                         $data['override_seo_description'] = $data['description'] !== Str::limit($record?->excerpt, 157);
                     }
@@ -348,11 +347,11 @@ class AbstractContentResource extends AbstractResource
                     $formData = $group->getContainer()->getLivewire()->data;
                     $record->title = $formData['title'];
                     $record->contents = $formData['contents'];
-                    if($state['override_seo_title'] === false) {
+                    if ($state['override_seo_title'] === false) {
                         $state['title'] = Str::limit($record->title, 57);
                     }
 
-                    if($state['override_seo_description'] === false) {
+                    if ($state['override_seo_description'] === false) {
                         $state['description'] = Str::limit($record->excerpt, 157);
                     }
 
@@ -365,7 +364,6 @@ class AbstractContentResource extends AbstractResource
                     }
                 })
         ];
-
     }
 
     public static function getVanityURLFields(): array
@@ -414,7 +412,7 @@ class AbstractContentResource extends AbstractResource
                         ])
                         ->itemLabel(function (array $state) use ($prefixUrl) {
                             $label = '';
-                            if($state['enable'] === false) {
+                            if ($state['enable'] === false) {
                                 $label .= '[Disabled] - ';
                             }
                             $label .= $prefixUrl . Str::slug($state['url'] ?? null);
@@ -438,7 +436,6 @@ class AbstractContentResource extends AbstractResource
                 ->statePath('shortUrls')
                 ->dehydrated(false)
         ];
-
     }
 
     public static function getRoleRestrictionFields(): array

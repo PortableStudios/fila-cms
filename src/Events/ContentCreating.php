@@ -23,7 +23,7 @@ class ContentCreating
         $page->created_user_id = auth()->user() ? auth()->user()->id : FilaCms::systemUser()->id;
         $page->updated_user_id = auth()->user() ? auth()->user()->id : FilaCms::systemUser()->id;
 
-        if(!$page->is_draft && is_null($page->publish_at)) {
+        if (!$page->is_draft && is_null($page->publish_at)) {
             $page->publish_at = Carbon::now()->subMinute();
         }
     }

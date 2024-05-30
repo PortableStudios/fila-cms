@@ -68,7 +68,7 @@ class AddressInput extends Component implements CanEntangleWithSingularRelations
                 Select::make('state')->placeholder('State')
                     ->afterStateUpdated(function ($state, Set $set, Get $get) {
                         $currentState = $get('state');
-                        if($currentState == '') {
+                        if ($currentState == '') {
                             return;
                         }
                         $set('country', static::getCountry($currentState));
@@ -103,7 +103,7 @@ class AddressInput extends Component implements CanEntangleWithSingularRelations
 
     public static function getStates($country = null)
     {
-        if($country) {
+        if ($country) {
             return collect(country(\Str::lower($country))->getDivisions() ?: [])->map(
                 function ($state, $key) {
                     return [
@@ -122,5 +122,4 @@ class AddressInput extends Component implements CanEntangleWithSingularRelations
             })->pluck('states', 'label')->toArray();
         }
     }
-
 }

@@ -72,7 +72,7 @@ class MediaPicker extends Field implements HasExtraItemActions
                     $livewire = $this->getLivewire();
                     $currentFile = data_get($livewire, $this->getStatePath() . '_current_selection');
 
-                    if(!$currentFile) {
+                    if (!$currentFile) {
                         return true;
                     }
 
