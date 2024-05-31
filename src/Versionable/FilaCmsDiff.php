@@ -10,14 +10,13 @@ use Overtrue\LaravelVersionable\Diff;
 
 class FilaCmsDiff extends Diff
 {
-    public function getStatistics(array $differOptions = []): array
+    public function getStatistics(array $differOptions = [], bool $stripTags = false): array
     {
         if (empty($differOptions)) {
             $differOptions = $this->differOptions;
         }
-
-        $oldContents = $this->fromVersion->contents;
-        $newContents = $this->toVersion->contents;
+        $oldContents = $this->oldVersion->contents;
+        $newContents = $this->newVersion->contents;
 
         $diffStats = new Collection();
 
@@ -49,7 +48,7 @@ class FilaCmsDiff extends Diff
     }
 
 
-    public function render(?string $renderer = null, array $differOptions = [], array $renderOptions = []): array
+    public function render(?string $renderer = null, array $differOptions = [], array $renderOptions = [], bool $stripTags = false): array
     {
         if (empty($differOptions)) {
             $differOptions = $this->differOptions;
@@ -59,8 +58,8 @@ class FilaCmsDiff extends Diff
             $renderOptions = $this->renderOptions;
         }
 
-        $oldContents = $this->fromVersion->contents;
-        $newContents = $this->toVersion->contents;
+        $oldContents = $this->oldVersion->contents;
+        $newContents = $this->newVersion->contents;
 
         $diff = [];
         $createDiff = function ($key, $old, $new) use (&$diff, $renderer, $differOptions, $renderOptions) {
