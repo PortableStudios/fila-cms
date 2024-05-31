@@ -56,9 +56,11 @@ class EditSettings extends Page implements HasForms
         $records = [];
         collect(FilaCms::getSettingsFields())->flatten()->each(function ($field) use (&$formData, &$records) {
             if (method_exists($field, 'getName')) {
+                $data = data_get($formData, $field->getName());
+
                 $records[] = [
                     'key' => $field->getName(),
-                    'value' => data_get($formData, $field->getName())
+                    'value' => is_array($data) ? json_encode($data) : $data,
                 ];
             }
         });
