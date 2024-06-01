@@ -48,17 +48,12 @@ class FilaCmsServiceProvider extends ServiceProvider
                 \Portable\FilaCms\Commands\MakeContentPermissionSeeder::class,
                 \Portable\FilaCms\Commands\MakeContents::class,
             ]);
-        } else {
-            $this->commands([
-                \Portable\FilaCms\Commands\Scheduled\LinkChecker::class,
-            ]);
         }
         $this->loadRoutesFrom(__DIR__ . '/../../routes/filacms-routes.php');
 
         if (config('fila-cms.publish_content_routes')) {
             $this->loadRoutesFrom(__DIR__ . '/../../routes/frontend-routes.php');
         }
-        //$this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
 
         $this->loadViewsFrom(
             [

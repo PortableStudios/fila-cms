@@ -13,6 +13,7 @@ use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 use Portable\FilaCms\Filament\Resources\FormResource\Pages;
@@ -121,6 +122,9 @@ class FormResource extends AbstractResource
         return $table
             ->columns([
                 TextColumn::make('title')->sortable(),
+                TextColumn::make('user.name')->label("Creator"),
+                TextColumn::make('entries_count')->counts('entries')->label("Entries")
+
             ])
             ->searchable()
             ->filters([
@@ -128,6 +132,12 @@ class FormResource extends AbstractResource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->url(
+                    function (Model $record) {
+                        return static::getUrl('edit', ['record' => $record, 'activeRelationManager' => 0]);
+                    }
+                )->label('Entries'),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

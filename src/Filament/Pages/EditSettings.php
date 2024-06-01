@@ -8,7 +8,9 @@ use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Artisan;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Setting;
@@ -64,5 +66,13 @@ class EditSettings extends Page implements HasForms
         });
 
         Setting::upsert($records, ['key'], ['value']);
+
+        // Clear the config cache
+        Artisan::call('config:clear');
+
+        Notification::make()
+            ->title('Saved successfully')
+            ->success()
+            ->send();
     }
 }
