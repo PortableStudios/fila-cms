@@ -19,6 +19,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Portable\FilaCms\Filament\Pages\EditSettings;
+use Portable\FilaCms\Filament\Pages\Login;
 use Portable\FilaCms\Filament\Pages\MediaLibrary;
 use Portable\FilaCms\Filament\Pages\UserSettings;
 use Portable\FilaCms\Http\Middleware\FilaCmsAuthenticate;
@@ -49,7 +50,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(Login::class)
             ->unsavedChangesAlerts()
             ->colors([
                 'primary' => Color::Amber,

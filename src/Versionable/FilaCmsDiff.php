@@ -21,10 +21,11 @@ class FilaCmsDiff extends Diff
         $diffStats = new Collection();
 
         foreach ($oldContents as $key => $value) {
-            if ($newContents[$key] !== $oldContents[$key]) {
-                $newData = $newContents[$key];
-                $oldData = $oldContents[$key];
-
+            // If the table schema has changed, there may not be
+            // data for all fields in new or old contents
+            $newData = isset($newContents[$key]) ? $newContents[$key] : '';
+            $oldData = isset($oldContents[$key]) ? $oldContents[$key] : '';
+            if ($newData !== $oldData) {
                 if (is_array($newData) || is_array($oldData)) {
                     $newData = tiptap_converter()->asText($newData);
                     $oldData = tiptap_converter()->asText($oldData);
