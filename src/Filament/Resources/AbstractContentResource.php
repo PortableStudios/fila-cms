@@ -117,7 +117,7 @@ class AbstractContentResource extends AbstractResource
                 ->schema(static::getSeoFields()),
             Tabs\Tab::make('Short URLs')
                 ->schema(static::getVanityURLFields()),
-            Tabs\Tab::make('Access Control')
+            Tabs\Tab::make('Content Permission')
                 ->schema(static::getRoleRestrictionFields()),
         ];
 
@@ -443,7 +443,7 @@ class AbstractContentResource extends AbstractResource
         $roleRestrictionFields = [
             Section::make('Allowed Roles')
                 ->compact()
-                ->description('List of roles that are allowed to access this content. If a role is selected, the content is hidden to non-authenticated viewers.')
+                ->description('You can limit who can see particular types of content by their role. Choose from the list of roles below to provide exclusive access to this content.  If a role is selected, the content is hidden to non-authenticated viewers.')
                 ->schema([
                     Select::make('role_id')
                         ->relationship(name: 'roles', titleAttribute: 'name')
