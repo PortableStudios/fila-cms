@@ -372,7 +372,7 @@ class AbstractContentResource extends AbstractResource
         $vanityURLFields = [
             Section::make('Legacy or Vanity URLs')
                 ->compact()
-                ->description('Users visiting the supplied URL will be redirected to the canonical URL for this entry')
+                ->description('When you have a piece of content with a long URL (slug) you can use this tool to create a shorter, more user-friendly URL for marketing and online activities. When a user visits the supplied URL they will be redirected to the original entry.')
                 ->schema([
                     Repeater::make('shortUrls')
                         ->relationship()
