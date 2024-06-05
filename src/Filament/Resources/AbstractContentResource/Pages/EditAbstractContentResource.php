@@ -23,6 +23,7 @@ class EditAbstractContentResource extends EditRecord
                 ->submit(null)
                 ->action('save'),
             RevisionsAction::make(),
+            RestoreAction::make(),
             Actions\DeleteAction::make(),
             $this->getCancelFormAction(),
         ];
