@@ -1,8 +1,8 @@
 <?php
 
-namespace Portable\FilaCms\Filament\Actions;
+namespace Portable\FilaCms\Filament\Tables\Actions;
 
-use Filament\Pages\Actions\Action;
+use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Support\Facades\FilamentIcon;
 
