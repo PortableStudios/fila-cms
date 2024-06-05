@@ -131,7 +131,6 @@ abstract class AbstractContentModel extends Model
             title: $this->title,
             description: $this->descriptionField,
             author: $this->display_author,
-
         );
     }
 
