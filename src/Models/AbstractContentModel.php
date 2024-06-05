@@ -45,6 +45,8 @@ abstract class AbstractContentModel extends Model
 
     protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
+    protected ?string $descriptionField = null;
+
     // This is required to handle TipTap content
     public string $versionModel = FilaCmsVersion::class;
 
@@ -127,6 +129,7 @@ abstract class AbstractContentModel extends Model
     {
         return new SEOData(
             title: $this->title,
+            description: $this->descriptionField,
             author: $this->display_author,
         );
     }

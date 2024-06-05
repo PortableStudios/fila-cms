@@ -243,6 +243,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         FacadesFilaCms::registerSetting('SEO & Analytics', 'Global SEO', 1, function () {
             return [
                 TextInput::make('seo.global.site_name')->label('Site Name'),
+                Textarea::make('seo.global.description')->label('Site Description'),
                 ImagePicker::make('seo.global.image')->label('SEO Image'),
             ];
         });
