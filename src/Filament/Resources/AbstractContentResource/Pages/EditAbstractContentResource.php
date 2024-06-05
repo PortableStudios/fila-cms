@@ -8,6 +8,7 @@ use Filament\Resources\Pages\EditRecord;
 use Kenepa\ResourceLock\Resources\Pages\Concerns\UsesResourceLock;
 use Mansoor\FilamentVersionable\Page\RevisionsAction;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource;
+use Portable\FilaCms\Filament\Actions\RestoreAction;
 
 class EditAbstractContentResource extends EditRecord
 {

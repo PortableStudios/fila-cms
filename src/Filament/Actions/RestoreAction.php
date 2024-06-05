@@ -5,7 +5,6 @@ namespace Portable\FilaCms\Filament\Actions;
 use Filament\Pages\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Support\Facades\FilamentIcon;
-use Filament\Actions\Concerns\CanCustomizeProcess;
 
 class RestoreAction extends Action
 {
@@ -17,7 +16,7 @@ class RestoreAction extends Action
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->label(__('filament-actions::restore.single.label'));
 
         $this->modalHeading(fn (): string => __('filament-actions::restore.single.modal.heading', ['label' => $this->getRecordTitle()]));
