@@ -117,7 +117,7 @@ class AbstractContentResource extends AbstractResource
                 ->schema(static::getSeoFields()),
             Tabs\Tab::make('Short URLs')
                 ->schema(static::getVanityURLFields()),
-            Tabs\Tab::make('Access Control')
+            Tabs\Tab::make('Content Permission')
                 ->schema(static::getRoleRestrictionFields()),
         ];
 
@@ -372,7 +372,7 @@ class AbstractContentResource extends AbstractResource
         $vanityURLFields = [
             Section::make('Legacy or Vanity URLs')
                 ->compact()
-                ->description('Users visiting the supplied URL will be redirected to the canonical URL for this entry')
+                ->description('When you have a piece of content with a long URL (slug) you can use this tool to create a shorter, more user-friendly URL for marketing and online activities. When a user visits the supplied URL they will be redirected to the original entry.')
                 ->schema([
                     Repeater::make('shortUrls')
                         ->relationship()
@@ -443,7 +443,7 @@ class AbstractContentResource extends AbstractResource
         $roleRestrictionFields = [
             Section::make('Allowed Roles')
                 ->compact()
-                ->description('List of roles that are allowed to access this content. If a role is selected, the content is hidden to non-authenticated viewers.')
+                ->description('You can limit who can see particular types of content by their role. Choose from the list of roles below to provide exclusive access to this content.  If a role is selected, the content is hidden to non-authenticated viewers.')
                 ->schema([
                     Select::make('role_id')
                         ->relationship(name: 'roles', titleAttribute: 'name')
