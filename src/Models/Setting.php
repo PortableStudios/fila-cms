@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Models;
 
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Portable\FilaCms\Observers\SettingObserver;
@@ -10,19 +11,10 @@ use Portable\FilaCms\Observers\SettingObserver;
 #[ObservedBy(SettingObserver::class)]
 class Setting extends Model
 {
-    protected string $cacheKey;
-
     protected $fillable = [
         'key',
         'value'
     ];
-
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->cacheKey = 'setting-' . $this->key;
-    }
 
     public static function get($key)
     {
@@ -32,5 +24,11 @@ class Setting extends Model
                 return self::where('key', $key)->first()?->value;
             }
         );
+    }
+
+    // Attibutes
+    public function cacheKey(): Attribute
+    {
+        return Attribute::make(get: fn () => 'setting-' . $this->key);
     }
 }
