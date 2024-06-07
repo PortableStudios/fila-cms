@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use Portable\FilaCms\Filament\Tables\Columns\ThumbnailColumn;
 use Portable\FilaCms\Models\Media;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class MediaLibraryTable extends Component implements HasForms, HasTable
 {
@@ -241,45 +242,25 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
         $action = Action::make('upload')
             ->form([
                 FileUpload::make('upload_media')
-                    ->label('Upload File')
+                    ->label('Upload File')                    
                     ->storeFiles(false)
+                    ->multiple()
                     ->required(),
                 TextInput::make('alt_text')
                     ->label('Alt Text')
                     ->required()
 
             ])
-            ->action(function (array $data) {
-                $currentItem = $this->current_parent ? Media::find($this->current_parent) : null;
-                $disk = $currentItem ? $currentItem->disk : config('filesystems.default');
-                $path = $currentItem ? $currentItem->filepath : '';
-                $filename = $this->uniqueFilename($disk, $path, $data['upload_media']->getClientOriginalName());
-
-                $data['upload_media']->storeAs($path, $filename, [
-                    'disk' => $disk,
-                ]);
-
-                $image = getimagesize(Storage::disk($disk)->path($path . '/' . $filename));
-                if (is_array($image)) {
-                    $width = $image[0];
-                    $height = $image[1];
-                } else {
-                    $width = $height = 0;
+            ->action(function (array $data) {                
+                if(!is_array($data['upload_media'])) {
+                    $this->saveFile($data['upload_media'], $data['alt_text']);                    
+                    return;
+                } 
+                if(count($data['upload_media'])) {
+                    foreach( $data['upload_media'] as $item ) {
+                        $this->saveFile($item, $data['alt_text']);
+                    }
                 }
-
-                $media = Media::create([
-                    'filename' => $filename,
-                    'filepath' => $path,
-                    'disk' => $disk,
-                    'alt_text' => $data['alt_text'],
-                    'size' => $data['upload_media']->getSize(),
-                    'extension' => $data['upload_media']->getClientOriginalExtension(),
-                    'mime_type' => mime_content_type(Storage::disk($disk)->path($path . '/' . $filename)),
-                    'width' => $width,
-                    'height' => $height,
-                    'is_folder' => false,
-                    'parent_id' => $this->current_parent,
-                ]);
             })
             ->disabled(function () {
                 return !($this->current_parent || config('fila-cms.media_library.allow_root_uploads'));
@@ -290,6 +271,40 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
             ->icon('heroicon-m-arrow-up-tray');
 
         return $action;
+    }
+
+    protected function saveFile(TemporaryUploadedFile $uploadedFile, string $altText): Media
+    {
+        $currentItem = $this->current_parent ? Media::find($this->current_parent) : null;
+        $disk = $currentItem ? $currentItem->disk : config('filesystems.default');
+        $path = $currentItem ? $currentItem->filepath : '';
+        $filename = $this->uniqueFilename($disk, $path, $uploadedFile->getClientOriginalName());
+
+        $uploadedFile->storeAs($path, $filename, [
+            'disk' => $disk,
+        ]);
+
+        $image = getimagesize(Storage::disk($disk)->path($path . '/' . $filename));
+        if (is_array($image)) {
+            $width = $image[0];
+            $height = $image[1];
+        } else {
+            $width = $height = 0;
+        }
+
+        return Media::create([
+            'filename' => $filename,
+            'filepath' => $path,
+            'disk' => $disk,
+            'alt_text' => $altText,
+            'size' => $uploadedFile->getSize(),
+            'extension' => $uploadedFile->getClientOriginalExtension(),
+            'mime_type' => mime_content_type(Storage::disk($disk)->path($path . '/' . $filename)),
+            'width' => $width,
+            'height' => $height,
+            'is_folder' => false,
+            'parent_id' => $this->current_parent,
+        ]);
     }
 
     /**
