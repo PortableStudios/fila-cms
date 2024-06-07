@@ -242,7 +242,7 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
         $action = Action::make('upload')
             ->form([
                 FileUpload::make('upload_media')
-                    ->label('Upload File')                    
+                    ->label('Upload File')
                     ->storeFiles(false)
                     ->multiple()
                     ->required(),
@@ -251,13 +251,13 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
                     ->required()
 
             ])
-            ->action(function (array $data) {                
+            ->action(function (array $data) {
                 if(!is_array($data['upload_media'])) {
-                    $this->saveFile($data['upload_media'], $data['alt_text']);                    
+                    $this->saveFile($data['upload_media'], $data['alt_text']);
                     return;
-                } 
+                }
                 if(count($data['upload_media'])) {
-                    foreach( $data['upload_media'] as $item ) {
+                    foreach($data['upload_media'] as $item) {
                         $this->saveFile($item, $data['alt_text']);
                     }
                 }
