@@ -35,10 +35,13 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
     public $current_parent;
     public $current_file;
     public $jsKey;
+    public $cookieKey = 'media_library_parent';
 
     public function mount($jsKey = null)
     {
         $this->jsKey = $jsKey ?: $this->id();
+
+        $this->setParent($_COOKIE[$this->cookieKey] ?? null);
     }
 
     public function breadcrumbs()
@@ -62,9 +65,15 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
 
     public function setParent($id)
     {
+        if(!Media::find($id)) {
+            $id = null;
+        }
+
         $this->current_parent = Str::replace('id-', '', $id);
         $this->current_file = null;
         $this->dispatch('media-file-selected', ['id' => null, 'jsKey' => $this->jsKey ]);
+        $this->dispatch('set-current-parent-cookie', $id);
+
     }
 
     public function setFile($id)

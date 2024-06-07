@@ -30,6 +30,15 @@
         $wire.call('setParent', id);
         $wire.$refresh();
       }
+      Livewire.on('set-current-parent-cookie', (id) => {        
+        var currentDate = new Date();
+        // Calculate the expiry time for one week
+        var expiryDate = new Date(currentDate.getTime() + (24 * 60 * 60 * 1000));
+        // Convert the expiry date to UTC format
+        var expires = expiryDate.toUTCString();
+        // Set the cookie with the specified key, value, and expiry
+        document.cookie = "{{$this->cookieKey}}=" + encodeURIComponent(id) + "; expires=" + expires + "; path=/";  
+      });
     </script>
   @endscript
   {{ $this->table }}
