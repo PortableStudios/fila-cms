@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Filament\Actions;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Collection;
 
 class CloneAction extends Action
 {
@@ -27,11 +28,45 @@ class CloneAction extends Action
             $result = true;
             $model = get_class($record);
             $data = $record->toArray();
-            $data['slug'] = $this->getNewSlug($data['slug']);
+            $data['slug'] = $this->getNewSlug($model, $data['slug']);
 
             // no need to remove ID and dates
             // because it'll be ignored on mass assignment
             $newRecord = $model::create($data);
+
+            // clone roles
+            $roles = $record->roles()->pluck('role_id');
+            $newRecord->roles()->sync($roles);
+
+            // clone SEO
+            $seo = $record->Seo->toArray();
+            unset($seo['id']);
+            unset($seo['created_at']);
+            unset($seo['updated_at']);
+            unset($seo['model_id']);
+            $newRecord->seo()->update($seo);
+
+            // check for cloneables
+            if ($newRecord->cloneables != null) {
+                $cloneables = $newRecord->cloneables;
+
+                foreach ($cloneables as $modelName => $fields) {
+                    $newData = $record->{$modelName};
+
+                    // then 1-to-1 relationship
+                    if ($newData instanceof Model) {
+                        $newRecord->{$modelName}()->create($this->pickData($newData, $fields));
+                    }
+
+                    // then 1 to many
+                    if ($newData instanceof Collection) {
+                        foreach ($newData as $key => $newRow) {
+                            $newRecord->{$modelName}()->create($this->pickData($newRow, $fields));
+                        }
+                    }
+
+                }
+            }
 
             if (! $newRecord) {
                 $this->failure();
@@ -47,10 +82,37 @@ class CloneAction extends Action
         });
     }
 
-    protected function getNewSlug($slug)
+    protected function pickData(Model $data, $fields)
     {
-        // if other rules will be applied for the slug
-        // apply here
-        return $slug . '-clone';
+        $newData = [];
+
+        foreach ($fields as $key => $field) {
+            $newData[$field] = $data->$field;
+        }
+
+        return $newData;
+    }
+
+    protected function getNewSlug($model, $slug)
+    {
+        $newSlug = $slug . '-clone';
+
+        // if there is a -clone already, then append 1 or increment
+        $result = $model::withoutGlobalScopes()->where('slug', $newSlug)->first();
+
+        $count = 1;
+        while ($result != null) {
+            $incrementedSlug = $newSlug . '-' . $count;
+
+            $result = $model::withoutGlobalScopes()->where('slug', $incrementedSlug)->first();
+            $count++;
+
+            if ($result == null) {
+                $newSlug = $incrementedSlug;
+                break;
+            }
+        }
+
+        return $newSlug;
     }
 }
