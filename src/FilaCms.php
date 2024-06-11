@@ -38,7 +38,7 @@ class FilaCms
 
         $userFieldsRaw = Schema::getColumnListing((new $userModel())->getTable());
 
-        $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'subscribed', 'email_verified_at', 'password','email','two_factor_confirmed_at'];
+        $excludeFields = ['id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'subscribed', 'email_verified_at', 'password', 'email', 'two_factor_confirmed_at'];
 
         $data = [
             'name' => 'System',
@@ -77,7 +77,7 @@ class FilaCms
 
     public function getContentModels()
     {
-        if (! is_null(self::$contentResources) && ! is_null(self::$contentModels)) {
+        if (!is_null(self::$contentResources) && !is_null(self::$contentModels)) {
             return self::$contentResources;
         }
 
@@ -258,7 +258,7 @@ class FilaCms
     {
         $settings = static::$settings;
         $tabs = [];
-        foreach ($settings->groupBy(['tabName','groupName'])->sortBy('order') as $tabName => $groups) {
+        foreach ($settings->groupBy(['tabName', 'groupName'])->sortBy('order') as $tabName => $groups) {
             $tabs[$tabName] = [];
             foreach ($groups as $groupName => $settingsData) {
                 $groupFields = [];
@@ -285,6 +285,20 @@ class FilaCms
 
     public function tipTapEditor($name): TiptapEditor
     {
+        config(['filament-tiptap-editor.extensions' => [
+            [
+                'id' => 'characterCount',
+                'name' => 'Character Count',
+                'button' => 'fila-cms::tiptap.cc',
+                'parser' => \Portable\FilaCms\TiptapExtensions\DummyParser::class,
+            ],
+            [
+                'id' => 'eventHandler',
+                'name' => 'EventHandler',
+                'button' => 'fila-cms::tiptap.cc',
+                'parser' => \Portable\FilaCms\TiptapExtensions\DummyParser::class,
+            ],
+        ]]);
         return TiptapEditor::make($name)
             ->tools(config('fila-cms.editor.tools', [
                     'heading', 'bullet-list', 'ordered-list', 'checked-list', 'blockquote', 'hr', '|',
@@ -300,13 +314,13 @@ class FilaCms
 
     public function ssoRoutes()
     {
-        $providers = config('fila-cms.sso.providers', ['google','facebook','linkedin']);
+        $providers = config('fila-cms.sso.providers', ['google', 'facebook', 'linkedin']);
         foreach ($providers as $provider) {
             if (config('settings.sso.' . $provider . '.client_id') && config('settings.sso.' . $provider . '.client_secret')) {
                 Route::get('/login/' . $provider, [\Portable\FilaCms\Http\Controllers\SSOController::class, 'redirectToProvider'])
                     ->middleware('web')->name('login.' . $provider);
                 Route::get('/login/' . $provider . '/callback', [\Portable\FilaCms\Http\Controllers\SSOController::class, 'handleProviderCallback'])
-                ->middleware('web');
+                    ->middleware('web');
             }
         }
     }
