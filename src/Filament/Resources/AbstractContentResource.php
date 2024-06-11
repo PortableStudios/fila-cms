@@ -152,8 +152,19 @@ class AbstractContentResource extends AbstractResource
             Select::make('authors')
                 ->label('Author(s)')
                 ->relationship()
+                ->getSearchResultsUsing(function ($search) {
+                    return Author::where('first_name', 'like', "%$search%")
+                        ->orWhere('last_name', 'like', "%$search%")
+                        ->limit(50)->get()->pluck('display_name', 'id')->toArray();
+                })
+                ->getOptionLabelFromRecordUsing(function (Author $author) {
+                    return $author->display_name;
+                })
                 ->multiple()
-                ->options(Author::all()->pluck('display_name', 'id'))
+                ->createOptionForm(static::getCreateAuthorForm())
+                ->createOptionUsing(function (array $data) {
+                    return Author::create($data)->getKey();
+                })
                 ->searchable(),
             View::make('fila-cms::components.hr'),
             DatePicker::make('publish_at')
@@ -193,6 +204,11 @@ class AbstractContentResource extends AbstractResource
     public static function getSidebar()
     {
         return [ static::getSidebarFieldSection(), static::getSidebarInfoSection()];
+    }
+
+    protected static function getCreateAuthorForm()
+    {
+        return AuthorResource::getFormFields();
     }
 
     public static function form(Form $form): Form
