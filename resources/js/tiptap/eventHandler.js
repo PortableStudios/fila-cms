@@ -1,7 +1,6 @@
 import { Extension } from "@tiptap/core";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 
-console.log("Loading eventHandler");
 export const EventHandler = Extension.create({
     name: "eventHandler",
     addProseMirrorPlugins() {
