@@ -21,6 +21,7 @@ use Portable\FilaCms\Models\Form;
 use Portable\FilaCms\Models\Media;
 use Portable\FilaCms\Models\ShortUrl;
 use ReflectionClass;
+use Stevebauman\Purify\Facades\Purify;
 
 class FilaCms
 {
@@ -299,12 +300,17 @@ class FilaCms
                 'parser' => \Portable\FilaCms\TiptapExtensions\DummyParser::class,
             ],
         ]]);
+
+        $tools = config('fila-cms.editor.tools', [
+            'heading', 'bullet-list', 'ordered-list', 'checked-list', 'blockquote', 'hr', '|',
+            'bold', 'italic', 'strike', 'underline', 'superscript', 'subscript', 'align-left', 'align-center', 'align-right', '|',
+            'link', 'media', 'oembed', 'table', 'grid-builder', '|', 'code', 'code-block', 'source', 'blocks',
+        ]);
+
+        $tools = array_merge($tools, ['eventHandler','characterCount']);
+
         return TiptapEditor::make($name)
-            ->tools(config('fila-cms.editor.tools', [
-                    'heading', 'bullet-list', 'ordered-list', 'checked-list', 'blockquote', 'hr', '|',
-                    'bold', 'italic', 'strike', 'underline', 'superscript', 'subscript', 'align-left', 'align-center', 'align-right', '|',
-                    'link', 'media', 'oembed', 'table', 'grid-builder', '|', 'code', 'code-block', 'source', 'blocks',
-                ]))
+            ->tools($tools)
             ->extraInputAttributes(['style' => 'min-height: 24rem;'])
             ->required()
             ->columnSpanFull()
@@ -335,5 +341,16 @@ class FilaCms
         $results = array_merge($results, Form::search($term)->get()->toArray());
 
         return $results;
+    }
+
+    public function purifyHtml($html)
+    {
+        $oldConfig = config('purify.configs.default');
+        $config = config('fila-cms.purify', []);
+        config('purify.configs.default', $config);
+        $result = Purify::clean($html);
+        config('purify.configs.default', $oldConfig);
+
+        return $result;
     }
 }
