@@ -22,6 +22,10 @@ export default defineConfig({
             input: [
                 "resources/css/app.css",
                 "resources/js/app.js",
+                "resources/js/tiptap/extensions.js",
+                "resources/js/tiptap/eventHandler.js",
+                "../../../../resources/js/tiptap/extensions.js",
+                "../../../../resources/js/tiptap/eventHandler.js",
                 "../../../../resources/css/filament/admin/theme.css",
                 "../../../../resources/css/filacms.css",
             ],
