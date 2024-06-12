@@ -42,6 +42,7 @@ use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
 use RalphJSmit\Filament\Components\Forms as HandyComponents;
+use Portable\FilaCms\Filament\Actions\CloneAction;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -695,6 +696,7 @@ class AbstractContentResource extends AbstractResource
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
                 Tables\Actions\EditAction::make(),
+                CloneAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
