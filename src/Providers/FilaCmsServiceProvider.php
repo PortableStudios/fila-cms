@@ -117,8 +117,12 @@ class FilaCmsServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $assets[] = Js::make('tiptap-custom-extension-scripts', Vite::asset('resources/js/tiptap/extensions.js'))->module(true);
-        FilamentAsset::register($assets, 'awcodes/tiptap-editor');
+        try {
+            $assets[] = Js::make('tiptap-custom-extension-scripts', Vite::asset('resources/js/tiptap/extensions.js'))->module(true);
+            FilamentAsset::register($assets, 'awcodes/tiptap-editor');
+        } catch(\Exception $e) {
+            // Do nothing, assets may not yet be built
+        }
 
         $this->app->bind('FilaCms', FilaCms::class);
         $this->app->bind('MediaLibrary', \Portable\FilaCms\Services\MediaLibrary::class);
