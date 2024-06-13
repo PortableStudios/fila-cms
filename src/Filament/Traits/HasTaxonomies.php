@@ -33,13 +33,7 @@ trait HasTaxonomies
 
     public static function taxonomies()
     {
-        if (isset(static::$_taxonomies)) {
-            return static::$_taxonomies;
-        }
-
-        static::$_taxonomies = Taxonomy::whereIn('id', TaxonomyResource::where('resource_class', static::$resourceName)->pluck('taxonomy_id'))->get();
-
-        return static::$_taxonomies;
+        return Taxonomy::whereIn('id', TaxonomyResource::where('resource_class', static::$resourceName)->pluck('taxonomy_id'))->get();
     }
 
     public static function bootHasTaxonomies()
