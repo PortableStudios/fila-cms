@@ -44,6 +44,23 @@ return [
     ],
     'editor' => [
         'media_action' => \Portable\FilaCms\Filament\Actions\MediaAction::class,
+        'tools' => [
+            'heading', 'bullet-list', 'ordered-list', 'checked-list', 'blockquote', 'hr', '|',
+            'bold', 'italic', 'strike', 'underline', 'superscript', 'subscript', 'align-left', 'align-center', 'align-right', '|',
+            'link', 'media', 'oembed', 'table', 'grid-builder', '|', 'code', 'code-block', 'source', 'blocks',
+        ],
+    ],
+    'purify' => [
+        'Core.Encoding' => 'utf-8',
+        'HTML.Doctype' => 'XHTML 1.0 Transitional',
+        // phpcs:ignore
+        'HTML.Allowed' => 'h1,h2,h3,h4,h5,h6,b,strong,i,em,s,del,a[href|title],ul,ol,li,p,br,span,img[width|height|alt|src],blockquote,iframe[src|width|height|frameborder]',
+        'HTML.SafeIframe' => 'true',
+        'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%',
+        'HTML.ForbiddenElements' => '',
+        'CSS.AllowedProperties' => '',
+        'AutoFormat.AutoParagraph' => false,
+        'AutoFormat.RemoveEmpty' => false,
     ],
     'forms' => [
         'blocks' => [

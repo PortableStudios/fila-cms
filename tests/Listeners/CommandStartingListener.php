@@ -37,11 +37,14 @@ class CommandStartingListener
         File::delete(resource_path('css/filament/admin/tailwind.config.js'));
         File::delete(resource_path('css/filament/admin/theme.css'));
 
-        Artisan::call('fila-cms:install', ['--publish-config' => true,'--run-migrations' => true,'--add-user-traits' => true]);
+        Artisan::call('fila-cms:install', ['--publish-config' => true, '--run-migrations' => true, '--add-user-traits' => true]);
 
         File::copy(getcwd() . '/vite.config.js', resource_path('../vite.config.js'));
         File::ensureDirectoryExists(resource_path('css'));
+        File::ensureDirectoryExists(resource_path('js/tiptap'));
         File::copy(getcwd() . '/resources/css/filacms.css', resource_path('css/filacms.css'));
+        File::copy(getcwd() . '/resources/js/tiptap/extensions.js', resource_path('js/tiptap/extensions.js'));
+        File::copy(getcwd() . '/resources/js/tiptap/eventHandler.js', resource_path('js/tiptap/eventHandler.js'));
         File::copy(getcwd() . '/package.json', resource_path('../package.json'));
 
         // Ensure there's an admin user
