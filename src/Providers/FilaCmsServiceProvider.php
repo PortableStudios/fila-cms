@@ -6,6 +6,8 @@ use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Verified;
@@ -13,6 +15,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Contracts\TwoFactorConfirmedResponse as TwoFactorConfirmedResponseContract;
 use Laravel\Fortify\Fortify;
@@ -47,6 +50,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                 \Portable\FilaCms\Commands\MakeContentModel::class,
                 \Portable\FilaCms\Commands\MakeContentPermissionSeeder::class,
                 \Portable\FilaCms\Commands\MakeContents::class,
+                \Portable\FilaCms\Commands\SyncSearch::class
             ]);
         }
         $this->loadRoutesFrom(__DIR__ . '/../../routes/filacms-routes.php');
@@ -114,6 +118,13 @@ class FilaCmsServiceProvider extends ServiceProvider
 
     public function register()
     {
+        try {
+            $assets[] = Js::make('tiptap-custom-extension-scripts', Vite::asset('resources/js/tiptap/extensions.js'))->module(true);
+            FilamentAsset::register($assets, 'awcodes/tiptap-editor');
+        } catch(\Exception $e) {
+            // Do nothing, assets may not yet be built
+        }
+
         $this->app->bind('FilaCms', FilaCms::class);
         $this->app->bind('MediaLibrary', \Portable\FilaCms\Services\MediaLibrary::class);
 
@@ -243,6 +254,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         FacadesFilaCms::registerSetting('SEO & Analytics', 'Global SEO', 1, function () {
             return [
                 TextInput::make('seo.global.site_name')->label('Site Name'),
+                Textarea::make('seo.global.description')->label('Site Description'),
                 ImagePicker::make('seo.global.image')->label('SEO Image'),
             ];
         });

@@ -43,6 +43,7 @@ use Portable\FilaCms\Models\Scopes\PublishedScope;
 use Portable\FilaCms\Models\TaxonomyResource;
 use RalphJSmit\Filament\Components\Forms as HandyComponents;
 use Portable\FilaCms\Filament\Tables\Actions\RestoreAction;
+use Portable\FilaCms\Filament\Actions\CloneAction;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -118,7 +119,7 @@ class AbstractContentResource extends AbstractResource
                 ->schema(static::getSeoFields()),
             Tabs\Tab::make('Short URLs')
                 ->schema(static::getVanityURLFields()),
-            Tabs\Tab::make('Access Control')
+            Tabs\Tab::make('Content Permission')
                 ->schema(static::getRoleRestrictionFields()),
         ];
 
@@ -153,8 +154,19 @@ class AbstractContentResource extends AbstractResource
             Select::make('authors')
                 ->label('Author(s)')
                 ->relationship()
+                ->getSearchResultsUsing(function ($search) {
+                    return Author::where('first_name', 'like', "%$search%")
+                        ->orWhere('last_name', 'like', "%$search%")
+                        ->limit(50)->get()->pluck('display_name', 'id')->toArray();
+                })
+                ->getOptionLabelFromRecordUsing(function (Author $author) {
+                    return $author->display_name;
+                })
                 ->multiple()
-                ->options(Author::all()->pluck('display_name', 'id'))
+                ->createOptionForm(static::getCreateAuthorForm())
+                ->createOptionUsing(function (array $data) {
+                    return Author::create($data)->getKey();
+                })
                 ->searchable(),
             View::make('fila-cms::components.hr'),
             DatePicker::make('publish_at')
@@ -194,6 +206,11 @@ class AbstractContentResource extends AbstractResource
     public static function getSidebar()
     {
         return [ static::getSidebarFieldSection(), static::getSidebarInfoSection()];
+    }
+
+    protected static function getCreateAuthorForm()
+    {
+        return AuthorResource::getFormFields();
     }
 
     public static function form(Form $form): Form
@@ -373,7 +390,7 @@ class AbstractContentResource extends AbstractResource
         $vanityURLFields = [
             Section::make('Legacy or Vanity URLs')
                 ->compact()
-                ->description('Users visiting the supplied URL will be redirected to the canonical URL for this entry')
+                ->description('When you have a piece of content with a long URL (slug) you can use this tool to create a shorter, more user-friendly URL for marketing and online activities. When a user visits the supplied URL they will be redirected to the original entry.')
                 ->schema([
                     Repeater::make('shortUrls')
                         ->relationship()
@@ -444,7 +461,7 @@ class AbstractContentResource extends AbstractResource
         $roleRestrictionFields = [
             Section::make('Allowed Roles')
                 ->compact()
-                ->description('List of roles that are allowed to access this content. If a role is selected, the content is hidden to non-authenticated viewers.')
+                ->description('You can limit who can see particular types of content by their role. Choose from the list of roles below to provide exclusive access to this content.  If a role is selected, the content is hidden to non-authenticated viewers.')
                 ->schema([
                     Select::make('role_id')
                         ->relationship(name: 'roles', titleAttribute: 'name')
@@ -680,6 +697,7 @@ class AbstractContentResource extends AbstractResource
                 Tables\Actions\ForceDeleteAction::make(),
                 RestoreAction::make(),
                 Tables\Actions\EditAction::make(),
+                CloneAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
