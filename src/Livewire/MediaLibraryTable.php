@@ -3,16 +3,19 @@
 namespace Portable\FilaCms\Livewire;
 
 use Closure;
+use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -24,15 +27,16 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Portable\FilaCms\Filament\Tables\Columns\ThumbnailColumn;
 use Portable\FilaCms\Models\Media;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Filament\Forms\Components\Repeater;
 
 class MediaLibraryTable extends Component implements HasForms, HasTable
 {
     use InteractsWithTable;
-    use InteractsWithForms;
+    use InteractsWithForms {
+        removeFormUploadedFile as protected parentRemoveFormUploadedFile;
+    }
 
     public $current_parent;
     public $current_file;
@@ -215,7 +219,6 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
                     $storage = Storage::disk($disk);
                     $storage->createDirectory($path . '/' . $folderName);
 
-
                     $media = Media::create([
                         'filename' => $folderName,
                         'filepath' => $path . '/' . $folderName,
@@ -235,6 +238,30 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
         return $action;
     }
 
+    public function removeFormUploadedFile(string $statePath, string $fileKey): void
+    {
+        foreach($this->getCachedForms() as $form) {
+            foreach ($form->getComponents() as $component) {
+                if ($component instanceof BaseFileUpload && $component->getStatePath() === $statePath) {
+                    $state = $form->getState();
+                    $state['alts'] = collect($state['alts'])->reject(function ($file) use ($fileKey) {
+                        return $file['key'] === $fileKey;
+                    })->values()->all();
+
+                    data_set(
+                        $this,
+                        $component->generateRelativeStatePath('alts'),
+                        $state['alts']
+                    );
+                }
+            }
+        }
+
+        $this->parentRemoveFormUploadedFile($statePath, $fileKey);
+
+    }
+
+
     /**
      * Return the action for uploading a file
      */
@@ -242,17 +269,46 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
     {
         $action = Action::make('upload')
             ->form([
-                Repeater::make('upload_media_group')
+                FileUpload::make('upload_media')
+                    ->label('Upload File')
+                    ->storeFiles(false)
+                    ->multiple()
+                    ->live()
+                    ->afterStateUpdated(function (Get $get, Set $set, $state) {
+                        $alts = collect($get('alts'));
+                        foreach($state as $key => $item) {
+                            $arrItem = [
+                                'key' => $key,
+                                'tmppath' => $item->getFilename(),
+                                'filename' => $item->getClientOriginalName(),
+                                'alt_text' => $item->getClientOriginalName(),
+                            ];
+                            $alt = $alts->where('key', $key)->first();
+                            if(!$alt) {
+                                $alts->push($arrItem);
+                            }
+                        }
+                        $set('alts', $alts->toArray());
+                    })
+                    ->required(),
+                Repeater::make('alts')
+                    ->addable(false)
+                    ->deletable(false)
                     ->label('')
+                    ->defaultItems(0)
                     ->schema([
                         Group::make()
                             ->schema([
-                                FileUpload::make('upload_media')
-                                    ->label('Upload File')
-                                    ->storeFiles(false)
-                                    ->required(),
+                                Placeholder::make('filename')
+                                    ->content(function ($state) {
+                                        return new HtmlString(
+                                            '<strong>Alt Text for ' . $state . '</strong>' .
+                                            '<sup class="text-danger-600 dark:text-danger-400 font-medium">*</sup>'
+                                        );
+                                    })
+                                    ->hiddenLabel(),
                                 TextInput::make('alt_text')
-                                        ->label('Alt Text')
+                                        ->hiddenLabel()
                                         ->required(),
                                 ]),
                     ])
@@ -261,9 +317,12 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
 
             ])
             ->action(function (array $data) {
-                if(count($data['upload_media_group'])) {
-                    foreach($data['upload_media_group'] as $item) {
-                        $this->saveFile($item['upload_media'], $item['alt_text']);
+                if(count($data['upload_media'])) {
+                    $alts = collect($data['alts']);
+                    foreach($data['upload_media'] as $item) {
+                        $alt = $alts->where('tmppath', $item->getFilename())->first();
+                        $alt = $alt ? $alt['alt_text'] : $item->getClientOriginalName();
+                        $this->saveFile($item, $alt);
                     }
                 }
             })
