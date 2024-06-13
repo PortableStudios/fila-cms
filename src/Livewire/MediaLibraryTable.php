@@ -3,16 +3,19 @@
 namespace Portable\FilaCms\Livewire;
 
 use Closure;
+use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -24,21 +27,27 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Portable\FilaCms\Filament\Tables\Columns\ThumbnailColumn;
 use Portable\FilaCms\Models\Media;
 
 class MediaLibraryTable extends Component implements HasForms, HasTable
 {
     use InteractsWithTable;
-    use InteractsWithForms;
+    use InteractsWithForms {
+        removeFormUploadedFile as protected parentRemoveFormUploadedFile;
+    }
 
     public $current_parent;
     public $current_file;
     public $jsKey;
+    public $cookieKey = 'media_library_parent';
 
     public function mount($jsKey = null)
     {
         $this->jsKey = $jsKey ?: $this->id();
+
+        $this->setParent($_COOKIE[$this->cookieKey] ?? null);
     }
 
     public function breadcrumbs()
@@ -62,9 +71,15 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
 
     public function setParent($id)
     {
+        if(!Media::find($id)) {
+            $id = null;
+        }
+
         $this->current_parent = Str::replace('id-', '', $id);
         $this->current_file = null;
         $this->dispatch('media-file-selected', ['id' => null, 'jsKey' => $this->jsKey ]);
+        $this->dispatch('set-current-parent-cookie', $id);
+
     }
 
     public function setFile($id)
@@ -204,7 +219,6 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
                     $storage = Storage::disk($disk);
                     $storage->createDirectory($path . '/' . $folderName);
 
-
                     $media = Media::create([
                         'filename' => $folderName,
                         'filepath' => $path . '/' . $folderName,
@@ -224,6 +238,30 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
         return $action;
     }
 
+    public function removeFormUploadedFile(string $statePath, string $fileKey): void
+    {
+        foreach($this->getCachedForms() as $form) {
+            foreach ($form->getComponents() as $component) {
+                if ($component instanceof BaseFileUpload && $component->getStatePath() === $statePath) {
+                    $state = $form->getState();
+                    $state['alts'] = collect($state['alts'])->reject(function ($file) use ($fileKey) {
+                        return $file['key'] === $fileKey;
+                    })->values()->all();
+
+                    data_set(
+                        $this,
+                        $component->generateRelativeStatePath('alts'),
+                        $state['alts']
+                    );
+                }
+            }
+        }
+
+        $this->parentRemoveFormUploadedFile($statePath, $fileKey);
+
+    }
+
+
     /**
      * Return the action for uploading a file
      */
@@ -234,43 +272,57 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
                 FileUpload::make('upload_media')
                     ->label('Upload File')
                     ->storeFiles(false)
+                    ->multiple()
+                    ->live()
+                    ->afterStateUpdated(function (Get $get, Set $set, $state) {
+                        $alts = collect($get('alts'));
+                        foreach($state as $key => $item) {
+                            $arrItem = [
+                                'key' => $key,
+                                'tmppath' => $item->getFilename(),
+                                'filename' => $item->getClientOriginalName(),
+                                'alt_text' => $item->getClientOriginalName(),
+                            ];
+                            $alt = $alts->where('key', $key)->first();
+                            if(!$alt) {
+                                $alts->push($arrItem);
+                            }
+                        }
+                        $set('alts', $alts->toArray());
+                    })
                     ->required(),
-                TextInput::make('alt_text')
-                    ->label('Alt Text')
-                    ->required()
-
+                Repeater::make('alts')
+                    ->addable(false)
+                    ->deletable(false)
+                    ->label('')
+                    ->defaultItems(0)
+                    ->schema([
+                        Group::make()
+                            ->schema([
+                                Placeholder::make('filename')
+                                    ->content(function ($state) {
+                                        return new HtmlString(
+                                            '<strong>Alt Text for ' . $state . '</strong>' .
+                                            '<sup class="text-danger-600 dark:text-danger-400 font-medium">*</sup>'
+                                        );
+                                    })
+                                    ->hiddenLabel(),
+                                TextInput::make('alt_text')
+                                        ->hiddenLabel()
+                                        ->required(),
+                                ]),
+                    ])
+                    ->reorderable(false)
             ])
             ->action(function (array $data) {
-                $currentItem = $this->current_parent ? Media::find($this->current_parent) : null;
-                $disk = $currentItem ? $currentItem->disk : config('filesystems.default');
-                $path = $currentItem ? $currentItem->filepath : '';
-                $filename = $this->uniqueFilename($disk, $path, $data['upload_media']->getClientOriginalName());
-
-                $data['upload_media']->storeAs($path, $filename, [
-                    'disk' => $disk,
-                ]);
-
-                $image = getimagesize(Storage::disk($disk)->path($path . '/' . $filename));
-                if (is_array($image)) {
-                    $width = $image[0];
-                    $height = $image[1];
-                } else {
-                    $width = $height = 0;
+                if(count($data['upload_media'])) {
+                    $alts = collect($data['alts']);
+                    foreach($data['upload_media'] as $item) {
+                        $alt = $alts->where('tmppath', $item->getFilename())->first();
+                        $alt = $alt ? $alt['alt_text'] : $item->getClientOriginalName();
+                        $this->saveFile($item, $alt);
+                    }
                 }
-
-                $media = Media::create([
-                    'filename' => $filename,
-                    'filepath' => $path,
-                    'disk' => $disk,
-                    'alt_text' => $data['alt_text'],
-                    'size' => $data['upload_media']->getSize(),
-                    'extension' => $data['upload_media']->getClientOriginalExtension(),
-                    'mime_type' => mime_content_type(Storage::disk($disk)->path($path . '/' . $filename)),
-                    'width' => $width,
-                    'height' => $height,
-                    'is_folder' => false,
-                    'parent_id' => $this->current_parent,
-                ]);
             })
             ->disabled(function () {
                 return !($this->current_parent || config('fila-cms.media_library.allow_root_uploads'));
@@ -281,6 +333,40 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
             ->icon('heroicon-m-arrow-up-tray');
 
         return $action;
+    }
+
+    protected function saveFile(TemporaryUploadedFile $uploadedFile, string $altText): Media
+    {
+        $currentItem = $this->current_parent ? Media::find($this->current_parent) : null;
+        $disk = $currentItem ? $currentItem->disk : config('filesystems.default');
+        $path = $currentItem ? $currentItem->filepath : '';
+        $filename = $this->uniqueFilename($disk, $path, $uploadedFile->getClientOriginalName());
+
+        $uploadedFile->storeAs($path, $filename, [
+            'disk' => $disk,
+        ]);
+
+        $image = getimagesize(Storage::disk($disk)->path($path . '/' . $filename));
+        if (is_array($image)) {
+            $width = $image[0];
+            $height = $image[1];
+        } else {
+            $width = $height = 0;
+        }
+
+        return Media::create([
+            'filename' => $filename,
+            'filepath' => $path,
+            'disk' => $disk,
+            'alt_text' => $altText,
+            'size' => $uploadedFile->getSize(),
+            'extension' => $uploadedFile->getClientOriginalExtension(),
+            'mime_type' => mime_content_type(Storage::disk($disk)->path($path . '/' . $filename)),
+            'width' => $width,
+            'height' => $height,
+            'is_folder' => false,
+            'parent_id' => $this->current_parent,
+        ]);
     }
 
     /**
