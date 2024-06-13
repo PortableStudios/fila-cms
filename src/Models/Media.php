@@ -80,7 +80,6 @@ class Media extends Model
                 try {
                     $readableSize = new HumanReadableFileSize();
                     $readableSize->setSpaceBeforeUnit(true);
-                    $readableSize->useNumberFormatter('en-AU');
                     return preg_replace('/\.\d{1,2}(K?B)/', '$1', $readableSize->compute($this->size));
                 } catch(\Exception $e) {
                     // Dealing with nulls
