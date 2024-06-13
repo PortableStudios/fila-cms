@@ -27,6 +27,7 @@ use Livewire\Component;
 use Portable\FilaCms\Filament\Tables\Columns\ThumbnailColumn;
 use Portable\FilaCms\Models\Media;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Filament\Forms\Components\Repeater;
 
 class MediaLibraryTable extends Component implements HasForms, HasTable
 {
@@ -241,24 +242,28 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
     {
         $action = Action::make('upload')
             ->form([
-                FileUpload::make('upload_media')
-                    ->label('Upload File')
-                    ->storeFiles(false)
-                    ->multiple()
-                    ->required(),
-                TextInput::make('alt_text')
-                    ->label('Alt Text')
-                    ->required()
+                Repeater::make('upload_media_group')
+                    ->label('')
+                    ->schema([
+                        Group::make()
+                            ->schema([
+                                FileUpload::make('upload_media')
+                                    ->label('Upload File')
+                                    ->storeFiles(false)
+                                    ->required(),
+                                TextInput::make('alt_text')
+                                        ->label('Alt Text')
+                                        ->required(),
+                                ]),
+                    ])
+                    ->reorderable(false)
+                    ->addActionLabel('Upload more')
 
             ])
             ->action(function (array $data) {
-                if(!is_array($data['upload_media'])) {
-                    $this->saveFile($data['upload_media'], $data['alt_text']);
-                    return;
-                }
-                if(count($data['upload_media'])) {
-                    foreach($data['upload_media'] as $item) {
-                        $this->saveFile($item, $data['alt_text']);
+                if(count($data['upload_media_group'])) {
+                    foreach($data['upload_media_group'] as $item) {
+                        $this->saveFile($item['upload_media'], $item['alt_text']);
                     }
                 }
             })
