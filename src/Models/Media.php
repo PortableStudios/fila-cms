@@ -80,9 +80,26 @@ class Media extends Model
                 $readableSize = new HumanReadableFileSize();
                 $readableSize->setSpaceBeforeUnit(true);
                 $readableSize->useNumberFormatter('en-AU');
-                return preg_replace('/\.\d{1,2}(K?B)/', '$1', $readableSize->compute($this->size));
+                return preg_replace('/\.\d{1,2}(K?B)/', '$1', $this->readableSizeCompute($readableSize, $this->size));
             }
         });
+    }
+
+    /**
+     * Computes a human readable size.
+     *
+     * @param int $bytes
+     * @param int $decimals
+     * @return string
+     */
+    public function readableSizeCompute(HumanReadableFileSize $readableSize, int $bytes, int $decimals = 2): string
+    {
+        $factor = floor((strlen((string)$bytes) - 1) / 3);
+        $number = floatval(sprintf("%.{$decimals}f", $bytes / pow($readableSize->getBytesPeyKilo(), $factor)));
+        if($readableSize->getNumberFormatter()) {
+            $number = $readableSize->getNumberFormatter()->format($number);
+        }
+        return $number.($readableSize->hasSpaceBeforeUnit() ? ' ' : '').@$readableSize->getUnits()[$factor];
     }
 
     public function currentParent()
