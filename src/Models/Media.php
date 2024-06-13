@@ -77,10 +77,15 @@ class Media extends Model
             if ($this->is_folder) {
                 return $this->children->count() > 0 ? $this->children->count() . ' items' : 'Empty';
             } else {
-                $readableSize = new HumanReadableFileSize();
-                $readableSize->setSpaceBeforeUnit(true);
-                $readableSize->useNumberFormatter('en-AU');
-                return preg_replace('/\.\d{1,2}(K?B)/', '$1', $readableSize->compute($this->size));
+                try {
+                    $readableSize = new HumanReadableFileSize();
+                    $readableSize->setSpaceBeforeUnit(true);
+                    $readableSize->useNumberFormatter('en-AU');
+                    return preg_replace('/\.\d{1,2}(K?B)/', '$1', $readableSize->compute($this->size));
+                } catch(\Exception $e) {
+                    // Dealing with nulls
+                    return '?';
+                }
             }
         });
     }
