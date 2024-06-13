@@ -313,8 +313,6 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
                                 ]),
                     ])
                     ->reorderable(false)
-                    ->addActionLabel('Upload more')
-
             ])
             ->action(function (array $data) {
                 if(count($data['upload_media'])) {
