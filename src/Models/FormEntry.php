@@ -27,7 +27,9 @@ class FormEntry extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->form->notify(new FormSubmittedNotification($model));
+            if(!empty($model->email)) {
+                $model->form->notify(new FormSubmittedNotification($model));
+            }
         });
     }
 
