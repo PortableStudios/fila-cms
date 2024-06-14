@@ -52,4 +52,11 @@ class FormSubmittedNotification extends Notification
             ->subject('Form ' . $this->formEntry->form->title . ' submitted')
             ->view('fila-cms::notifications.form-submitted', ['entry' => $this->formEntry]);
     }
+
+    public function shouldSend($notifiable)
+    {
+        return count(array_filter($this->formEntry->form?->notification_emails ?? [], function ($item) {
+            return !empty($item['email']) && filter_var($item['email'], FILTER_VALIDATE_EMAIL);
+        }));
+    }
 }
