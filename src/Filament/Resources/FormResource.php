@@ -103,7 +103,7 @@ class FormResource extends AbstractResource
                 Toggle::make('only_for_logged_in')->label('Restrict to logged in users'),
                 Repeater::make('notification_emails')
                         ->schema([
-                            TextInput::make('email')->email(),
+                            TextInput::make('email')->email()->required(),
                         ])->helperText('Email to send form submissions to.  Leave blank for no notifications.'),
                 TextInput::make('confirmation_title')->required(),
                 FilaCms::tipTapEditor('confirmation_text')->required()->default(
