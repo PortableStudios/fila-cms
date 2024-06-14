@@ -55,6 +55,8 @@ class FormSubmittedNotification extends Notification
 
     public function shouldSend($notifiable)
     {
-        return filter_var($notifiable->email, FILTER_VALIDATE_EMAIL);
+        return count(array_filter($this->formEntry->form?->notification_emails ?? [], function($item) {
+            return !empty($item['email']) && filter_var($item['email'], FILTER_VALIDATE_EMAIL);
+        }));
     }
 }
