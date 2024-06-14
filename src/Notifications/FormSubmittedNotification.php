@@ -55,6 +55,6 @@ class FormSubmittedNotification extends Notification
 
     public function shouldSend($notifiable)
     {
-        return $notifiable->email !== null;
+        return filter_var($notifiable->email, FILTER_VALIDATE_EMAIL);
     }
 }
