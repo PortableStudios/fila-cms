@@ -128,6 +128,9 @@ class FormEntryResource extends AbstractResource
                 Tables\Actions\BulkActionGroup::make([
                     ExportBulkAction::make()
                         ->exporter(FormEntryExporter::class)
+                        ->options([
+                            'form' => $table->getLivewire()->ownerRecord,
+                        ])
                         ->ownerRecord($table->getLivewire()->ownerRecord),
                     Tables\Actions\BulkAction::make('mark-as-new')
                         ->label('Mark as New')

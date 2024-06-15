@@ -14,6 +14,20 @@ class FormEntryExporter extends Exporter
     protected static ?string $model = FormEntry::class;
     protected static Form $_form;
 
+    /**
+     * @param  array<string, string>  $columnMap
+     * @param  array<string, mixed>  $options
+     */
+    public function __construct(
+        protected Export $export,
+        protected array $columnMap,
+        protected array $options,
+    ) {
+        if(isset($options['form'])) {
+            static::form($options['form']);
+        }
+    }
+
     public static function form(Form $form)
     {
         static::$_form = $form;

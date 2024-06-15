@@ -16,13 +16,20 @@ class FormEntryFactory extends Factory
      */
     public function definition(): array
     {
+        $fields = FormFactory::getFields();
+        $values = [];
+        foreach($fields as $field) {
+            $fieldName = data_get($field, 'data.field_name');
+            if(!$fieldName) {
+                continue;
+            }
+
+            $values[$fieldName] = $this->faker->word;
+        }
         return [
             'status'     => $this->faker->randomElement(['New', 'Open', 'Closed']),
-            'values' => [
-                'Your Name' => $this->faker->name,
-                'Telephone' => $this->faker->phoneNumber
-            ],
-            'fields' => FormFactory::getFields()
+            'values' => $values,
+            'fields' => $fields
         ];
     }
 }
