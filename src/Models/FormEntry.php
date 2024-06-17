@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 use Portable\FilaCms\Notifications\FormSubmittedNotification;
+use Portable\FilaCms\Notifications\FormSubmittedSenderNotification;
 
 class FormEntry extends Model
 {
@@ -27,6 +28,7 @@ class FormEntry extends Model
         parent::boot();
 
         static::creating(function ($model) {
+            auth()->user()?->notify(new FormSubmittedSenderNotification($model));
             $model->form->notify(new FormSubmittedNotification($model));
         });
     }
