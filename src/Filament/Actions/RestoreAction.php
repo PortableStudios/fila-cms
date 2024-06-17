@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Filament\Actions;
 use Filament\Pages\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Support\Facades\FilamentIcon;
+use Illuminate\Support\Facades\Schema;
 
 class RestoreAction extends Action
 {
@@ -38,7 +39,6 @@ class RestoreAction extends Action
         $this->action(function (Model $record): void {
             if (! method_exists($record, 'restore')) {
                 $this->failure();
-
                 return;
             }
 
@@ -46,12 +46,15 @@ class RestoreAction extends Action
 
             if (! $result) {
                 $this->failure();
-
                 return;
             }
 
-            $record->is_draft = true;
-            $record->save();
+            if (Schema::hasColumn($record->getTable(), 'is_draft')) {
+                $record->update([
+                    'is_draft' => true
+                ]);
+            }
+
             $this->redirect('edit');
             $this->success();
         });
