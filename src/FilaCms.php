@@ -290,13 +290,13 @@ class FilaCms
             [
                 'id' => 'characterCount',
                 'name' => 'Character Count',
-                'button' => 'fila-cms::tiptap.cc',
+                'button' => 'fila-cms::tiptap.blank',
                 'parser' => \Portable\FilaCms\TiptapExtensions\DummyParser::class,
             ],
             [
                 'id' => 'eventHandler',
                 'name' => 'EventHandler',
-                'button' => 'fila-cms::tiptap.cc',
+                'button' => 'fila-cms::tiptap.blank',
                 'parser' => \Portable\FilaCms\TiptapExtensions\DummyParser::class,
             ],
         ]]);
