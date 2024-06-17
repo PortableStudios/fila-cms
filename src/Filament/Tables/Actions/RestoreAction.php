@@ -50,6 +50,8 @@ class RestoreAction extends Action
                 return;
             }
 
+            $record->is_draft = true;
+            $record->save();
             $this->success();
         });
 
