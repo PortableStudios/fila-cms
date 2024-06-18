@@ -13,6 +13,7 @@ use Mansoor\FilamentVersionable\Table\RevisionsAction;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource\Pages;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\TaxonomyTerm;
+use Portable\FilaCms\Facades\FilaCms;
 
 class TaxonomyTermResource extends AbstractResource
 {
@@ -29,12 +30,11 @@ class TaxonomyTermResource extends AbstractResource
 
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                FilaCms::maxTextInput('name', 255)
                     ->required()
                     ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule) use ($owner) {
                         return $rule->where('taxonomy_id', $owner->id);
-                    })
-                    ->maxLength(255),
+                    }),
                 Forms\Components\Select::make('parent_id')
                     ->label('Parent')
                     ->options(function (RelationManager $livewire) {

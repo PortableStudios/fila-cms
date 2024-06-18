@@ -8,6 +8,8 @@ use Filament\Resources\Pages\EditRecord;
 use Kenepa\ResourceLock\Resources\Pages\Concerns\UsesResourceLock;
 use Mansoor\FilamentVersionable\Page\RevisionsAction;
 use Portable\FilaCms\Filament\Resources\AbstractContentResource;
+use Portable\FilaCms\Filament\Actions\RestoreAction;
+use Illuminate\Support\Facades\Schema;
 
 class EditAbstractContentResource extends EditRecord
 {
@@ -21,9 +23,18 @@ class EditAbstractContentResource extends EditRecord
         return [
             $this->getSaveFormAction()
                 ->submit(null)
+                ->hidden(fn ($record) => $record->trashed())
                 ->action('save'),
-            RevisionsAction::make(),
-            Actions\DeleteAction::make(),
+            RevisionsAction::make()->hidden(fn ($record) => $record->trashed()),
+            RestoreAction::make(),
+            Actions\DeleteAction::make()
+                ->before(function ($record) {
+                    if (Schema::hasColumn($record->getTable(), 'is_draft')) {
+                        $record->update([
+                            'is_draft' => true
+                        ]);
+                    }
+                }),
             $this->getCancelFormAction(),
         ];
     }

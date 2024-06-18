@@ -2,11 +2,11 @@
 
 namespace Portable\FilaCms\Filament\Resources\UserResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Portable\FilaCms\Facades\FilaCms;
 
 class UserLoginsRelationManager extends RelationManager
 {
@@ -16,9 +16,8 @@ class UserLoginsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
+                FilaCms::maxTextInput('name', 255)
+                    ->required(),
             ]);
     }
 

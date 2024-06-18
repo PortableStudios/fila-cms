@@ -25,25 +25,29 @@ class AuthorResource extends AbstractResource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Fieldset::make()
-                    ->schema([
-                        TextInput::make('first_name')
+        return $form->schema(static::getFormFields());
+    }
+
+    public static function getFormFields()
+    {
+        return [
+            Fieldset::make()
+                ->schema([
+                    TextInput::make('first_name')
                             ->label(fn (Get $get) => $get('is_individual') ? 'First Name' : 'Organization Name')
                             ->required()
                             ->autofocus(),
-                        TextInput::make('last_name')
-                            ->label('Last Name')
-                            ->visible(fn (Get $get) => $get('is_individual') ? true : false),
-                    ])
-                    ->columns(2),
-                Toggle::make('is_individual')
-                    ->onIcon('heroicon-m-user')
-                    ->offIcon('heroicon-m-user-group')
-                    ->default(true)
-                    ->live(),
-            ]);
+                    TextInput::make('last_name')
+                        ->label('Last Name')
+                        ->visible(fn (Get $get) => $get('is_individual') ? true : false),
+                ])
+                ->columns(2),
+            Toggle::make('is_individual')
+                ->onIcon('heroicon-m-user')
+                ->offIcon('heroicon-m-user-group')
+                ->default(true)
+                ->live()
+        ];
     }
 
     public static function table(Table $table): Table

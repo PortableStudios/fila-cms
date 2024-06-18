@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Artisan;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 
 class EditSettings extends Page implements HasForms
 {
@@ -62,6 +63,10 @@ class EditSettings extends Page implements HasForms
                     'key' => $field->getName(),
                     'value' => data_get($formData, $field->getName())
                 ];
+                $cacheKey = 'setting-' . $field->getName();
+                if(Cache::has($cacheKey)) {
+                    Cache::forget($cacheKey);
+                }
             }
         });
 

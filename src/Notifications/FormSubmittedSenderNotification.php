@@ -6,7 +6,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Portable\FilaCms\Models\FormEntry;
 
-class FormSubmittedNotification extends Notification
+class FormSubmittedSenderNotification extends Notification
 {
     /**
      * Create a notification instance.
@@ -49,14 +49,12 @@ class FormSubmittedNotification extends Notification
     protected function buildMailMessage()
     {
         return (new MailMessage())
-            ->subject('Form ' . $this->formEntry->form->title . ' submitted')
-            ->view('fila-cms::notifications.form-submitted', ['entry' => $this->formEntry]);
+            ->subject('Form ' . $this->formEntry->form->title . ' submission copy')
+            ->view('fila-cms::notifications.form-submitted-sender-copy', ['entry' => $this->formEntry]);
     }
 
     public function shouldSend($notifiable)
     {
-        return count(array_filter($this->formEntry->form?->notification_emails ?? [], function ($item) {
-            return !empty($item['email']) && filter_var($item['email'], FILTER_VALIDATE_EMAIL);
-        }));
+        return !empty($notifiable->email) && filter_var($notifiable->email, FILTER_VALIDATE_EMAIL);
     }
 }

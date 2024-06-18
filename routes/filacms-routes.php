@@ -16,4 +16,16 @@ foreach (config('fila-cms.media_library.thumbnails') as $size => $dimensions) {
         $media = Media::findOrFail($media);
         return response(Storage::disk($media->disk)->get($media->filepath . '/' . $media->filename))->withHeaders(['Content-Type' => $media->mime_type]);
     })->name('media.show');
+
+    Route::get('media/{media}/download', function ($media) {
+        $media = Media::findOrFail($media);
+        return response(Storage::disk($media->disk)->get($media->filepath . '/' . $media->filename))->withHeaders([
+            'Content-Type' => $media->mime_type,
+            'Content-Disposition' => 'attachment; filename="' . $media->filename . '"'
+        ]);
+    })->name('media.download');
 }
+
+Route::post('purify', function () {
+    return FilaCms::purifyHtml(request()->input('html'));
+})->name('purify');

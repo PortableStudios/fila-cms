@@ -21,6 +21,9 @@ use Portable\FilaCms\Models\Form;
 use Portable\FilaCms\Models\Media;
 use Portable\FilaCms\Models\ShortUrl;
 use ReflectionClass;
+use Stevebauman\Purify\Facades\Purify;
+use Schmeits\FilamentCharacterCounter\Forms\Components\TextInput;
+use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea;
 
 class FilaCms
 {
@@ -38,7 +41,7 @@ class FilaCms
 
         $userFieldsRaw = Schema::getColumnListing((new $userModel())->getTable());
 
-        $excludeFields = [ 'id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'subscribed', 'email_verified_at', 'password','email','two_factor_confirmed_at'];
+        $excludeFields = ['id', 'created_at', 'updated_at', 'deleted_at', 'remember_token', 'subscribed', 'email_verified_at', 'password', 'email', 'two_factor_confirmed_at'];
 
         $data = [
             'name' => 'System',
@@ -77,7 +80,7 @@ class FilaCms
 
     public function getContentModels()
     {
-        if (! is_null(self::$contentResources) && ! is_null(self::$contentModels)) {
+        if (!is_null(self::$contentResources) && !is_null(self::$contentModels)) {
             return self::$contentResources;
         }
 
@@ -258,7 +261,7 @@ class FilaCms
     {
         $settings = static::$settings;
         $tabs = [];
-        foreach ($settings->groupBy(['tabName','groupName'])->sortBy('order') as $tabName => $groups) {
+        foreach ($settings->groupBy(['tabName', 'groupName'])->sortBy('order') as $tabName => $groups) {
             $tabs[$tabName] = [];
             foreach ($groups as $groupName => $settingsData) {
                 $groupFields = [];
@@ -285,12 +288,31 @@ class FilaCms
 
     public function tipTapEditor($name): TiptapEditor
     {
+        config(['filament-tiptap-editor.extensions' => [
+            [
+                'id' => 'characterCount',
+                'name' => 'Character Count',
+                'button' => 'fila-cms::tiptap.blank',
+                'parser' => \Portable\FilaCms\TiptapExtensions\DummyParser::class,
+            ],
+            [
+                'id' => 'eventHandler',
+                'name' => 'EventHandler',
+                'button' => 'fila-cms::tiptap.blank',
+                'parser' => \Portable\FilaCms\TiptapExtensions\DummyParser::class,
+            ],
+        ]]);
+
+        $tools = config('fila-cms.editor.tools', [
+            'heading', 'bullet-list', 'ordered-list', 'checked-list', 'blockquote', 'hr', '|',
+            'bold', 'italic', 'strike', 'underline', 'superscript', 'subscript', 'align-left', 'align-center', 'align-right', '|',
+            'link', 'media', 'oembed', 'table', 'grid-builder', '|', 'code', 'code-block', 'source', 'blocks',
+        ]);
+
+        $tools = array_merge($tools, ['eventHandler','characterCount']);
+
         return TiptapEditor::make($name)
-            ->tools([
-                    'heading', 'bullet-list', 'ordered-list', 'checked-list', 'blockquote', 'hr', '|',
-                    'bold', 'italic', 'strike', 'underline', 'superscript', 'subscript', 'lead', 'small', 'color', 'highlight', 'align-left', 'align-center', 'align-right', '|',
-                    'link', 'media', 'oembed', 'table', 'grid-builder', '|', 'code', 'code-block', 'source', 'blocks',
-                ])
+            ->tools($tools)
             ->extraInputAttributes(['style' => 'min-height: 24rem;'])
             ->required()
             ->columnSpanFull()
@@ -300,13 +322,13 @@ class FilaCms
 
     public function ssoRoutes()
     {
-        $providers = config('fila-cms.sso.providers', ['google','facebook','linkedin']);
+        $providers = config('fila-cms.sso.providers', ['google', 'facebook', 'linkedin']);
         foreach ($providers as $provider) {
             if (config('settings.sso.' . $provider . '.client_id') && config('settings.sso.' . $provider . '.client_secret')) {
                 Route::get('/login/' . $provider, [\Portable\FilaCms\Http\Controllers\SSOController::class, 'redirectToProvider'])
                     ->middleware('web')->name('login.' . $provider);
                 Route::get('/login/' . $provider . '/callback', [\Portable\FilaCms\Http\Controllers\SSOController::class, 'handleProviderCallback'])
-                ->middleware('web');
+                    ->middleware('web');
             }
         }
     }
@@ -321,5 +343,30 @@ class FilaCms
         $results = array_merge($results, Form::search($term)->get()->toArray());
 
         return $results;
+    }
+
+    public function purifyHtml($html)
+    {
+        $oldConfig = config('purify.configs.default');
+        $config = config('fila-cms.purify', []);
+        config('purify.configs.default', $config);
+        $result = Purify::clean($html);
+        config('purify.configs.default', $oldConfig);
+
+        return $result;
+    }
+
+    public function maxTextInput($name, int $length = null, bool $insideControl = false): TextInput
+    {
+        return TextInput::make($name)
+                ->maxlength($length)
+                ->showInsideControl($insideControl);
+    }
+
+    public function maxTextArea($name, int $length = null, bool $insideControl = true): TextArea
+    {
+        return TextArea::make($name)
+                ->maxlength($length)
+                ->showInsideControl($insideControl);
     }
 }
