@@ -121,15 +121,6 @@ class GenerateSitemap extends Command
         xmlwriter_end_attribute($xw);
 
         foreach ($routes as $key => $route) {
-            /**
-             *
-             * <url>
-             *      <loc>http://www.example.com/</loc>
-             *      <lastmod>2005-01-01</lastmod>
-             *      <changefreq>monthly</changefreq>
-             *      <priority>0.8</priority>
-             *  </url>
-             */
             xmlwriter_start_element($xw, 'url');
             xmlwriter_start_element($xw, 'loc');
             xmlwriter_text($xw, $route[0]);
