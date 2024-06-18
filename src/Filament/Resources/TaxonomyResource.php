@@ -2,7 +2,6 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Form;
 use Filament\Navigation\NavigationItem;
@@ -63,17 +62,15 @@ class TaxonomyResource extends AbstractResource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')
+                FilaCms::maxTextInput('code', 255)
                     ->disabledOn('edit')
                     ->unique(ignoreRecord: true)
                     ->required()
-                    ->columnSpanFull()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('name')
+                    ->columnSpanFull(),
+                FilaCms::maxTextInput('name', 255)
                     ->unique(ignoreRecord: true)
                     ->required()
-                    ->columnSpanFull()
-                    ->maxLength(255),
+                    ->columnSpanFull(),
                 CheckboxList::make('taxonomy_resources')
                     ->label('Applies To')
                     ->options(FilaCms::getContentModels())
