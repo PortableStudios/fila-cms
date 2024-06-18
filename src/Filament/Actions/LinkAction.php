@@ -57,6 +57,7 @@ class LinkAction extends Action
                                 'index-page' => 'Content Listing Page',
                                 'content' => 'Content Detail Page',
                                 'media' => 'Media',
+                                'download' => 'Download',
                                 'url'  => 'URL',
                             ])
                             ->default('content')
@@ -71,14 +72,14 @@ class LinkAction extends Action
                                     ->label('Media')
                                     ->visible(function (Get $get) {
                                         $type = $get('link_type');
-                                        return ($type === 'media');
+                                        return ($type === 'media' || $type == 'download');
                                     })
                                     ->columnSpanFull(),
                                 Select::make('reference_page')
                                     ->label('Content Type')
                                     ->visible(function (Get $get) {
                                         $type = $get('link_type');
-                                        return ($type !== 'url' && $type !== 'media');
+                                        return ($type !== 'url' && $type !== 'media' && $type !== 'download');
                                     })
                                     ->options(static::getContentSources())
                                     ->required()
@@ -166,6 +167,8 @@ class LinkAction extends Action
                 // no break
             case 'media':
                 return Media::find($data['reference_media'])?->url;
+            case 'download':
+                return route('media.download', ['media' => $data['reference_media']]);
             default:
                 return $data['reference_text'];
         }
@@ -234,8 +237,12 @@ class LinkAction extends Action
                 $args['link_type'] = 'content';
                 $args['reference_content'] = $model::query()->where('slug', $route->parameters['slug'])->first()?->id;
             } elseif(isset($route->parameters['media'])) {
-                $args['link_type'] = 'media';
                 $args['reference_media'] = $route->parameters['media'];
+                if(isset($route->parameters['mediaExtension'])) {
+                    $args['link_type'] = 'media';
+                } else {
+                    $args['link_type'] = 'download';
+                }
             } else {
                 $args['link_type'] = 'index-page';
             }
