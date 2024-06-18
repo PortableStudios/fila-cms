@@ -85,7 +85,7 @@ class FormResource extends AbstractResource
 
             Section::make('Form Information')->schema([
                 TextInput::make('title')->required()->autofocus(),
-                TextInput::make('slug')
+                FilaCms::maxTextInput('slug', 255)
                     ->rules([
                         function (Get $get) {
                             return function (string $attribute, $value, \Closure $fail) use ($get) {
@@ -99,7 +99,7 @@ class FormResource extends AbstractResource
                                 }
                             };
                         }
-                    ])->maxLength(255),
+                    ]),
                 Toggle::make('only_for_logged_in')->label('Restrict to logged in users'),
                 Repeater::make('notification_emails')
                         ->schema([

@@ -48,7 +48,8 @@
         "laravel/scout": "^10.9",
         "meilisearch/meilisearch-php": "^1.8",
         "http-interop/http-factory-guzzle": "^1.2",
-        "stevebauman/purify": "^6.2"
+        "stevebauman/purify": "^6.2",
+        "schmeits/filament-character-counter": "^1.2"
     },
     "require-dev": {
         "laravel/sanctum": "^3.3",
