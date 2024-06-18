@@ -173,6 +173,7 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         TiptapEditor::configureUsing(function (TiptapEditor $component) {
             $component
+                ->linkAction(config('fila-cms.editor.link_action', \Portable\FilaCms\Filament\Actions\LinkAction::class))
                 ->mediaAction(config('fila-cms.editor.media_action'))
                 ->blocks([
                     RelatedResourceBlock::class,
