@@ -131,7 +131,7 @@ class AbstractContentResource extends AbstractResource
     {
         return Section::make()
         ->schema([
-            TextInput::make('slug')
+            FilaCms::maxTextInput('slug', 255)
                 ->rules([
                     function (Get $get) {
                         return function (string $attribute, $value, \Closure $fail) use ($get) {
@@ -146,8 +146,7 @@ class AbstractContentResource extends AbstractResource
                             }
                         };
                     }
-                ])
-                ->maxLength(255),
+                ]),
             Toggle::make('is_draft')
                 ->label('Draft?')
                 ->offIcon('heroicon-m-eye')
