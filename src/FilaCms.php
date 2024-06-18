@@ -22,6 +22,8 @@ use Portable\FilaCms\Models\Media;
 use Portable\FilaCms\Models\ShortUrl;
 use ReflectionClass;
 use Stevebauman\Purify\Facades\Purify;
+use Schmeits\FilamentCharacterCounter\Forms\Components\TextInput;
+use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea;
 
 class FilaCms
 {
@@ -290,13 +292,13 @@ class FilaCms
             [
                 'id' => 'characterCount',
                 'name' => 'Character Count',
-                'button' => 'fila-cms::tiptap.cc',
+                'button' => 'fila-cms::tiptap.blank',
                 'parser' => \Portable\FilaCms\TiptapExtensions\DummyParser::class,
             ],
             [
                 'id' => 'eventHandler',
                 'name' => 'EventHandler',
-                'button' => 'fila-cms::tiptap.cc',
+                'button' => 'fila-cms::tiptap.blank',
                 'parser' => \Portable\FilaCms\TiptapExtensions\DummyParser::class,
             ],
         ]]);
@@ -352,5 +354,19 @@ class FilaCms
         config('purify.configs.default', $oldConfig);
 
         return $result;
+    }
+
+    public function maxTextInput($name, int $length = null, bool $insideControl = false): TextInput
+    {
+        return TextInput::make($name)
+                ->maxlength($length)
+                ->showInsideControl($insideControl);
+    }
+
+    public function maxTextArea($name, int $length = null, bool $insideControl = true): TextArea
+    {
+        return TextArea::make($name)
+                ->maxlength($length)
+                ->showInsideControl($insideControl);
     }
 }

@@ -44,6 +44,7 @@ use Portable\FilaCms\Models\TaxonomyResource;
 use RalphJSmit\Filament\Components\Forms as HandyComponents;
 use Portable\FilaCms\Filament\Tables\Actions\RestoreAction;
 use Portable\FilaCms\Filament\Actions\CloneAction;
+use Illuminate\Support\Facades\Schema;
 
 class AbstractContentResource extends AbstractResource
 {
@@ -130,7 +131,7 @@ class AbstractContentResource extends AbstractResource
     {
         return Section::make()
         ->schema([
-            TextInput::make('slug')
+            FilaCms::maxTextInput('slug', 255)
                 ->rules([
                     function (Get $get) {
                         return function (string $attribute, $value, \Closure $fail) use ($get) {
@@ -145,8 +146,7 @@ class AbstractContentResource extends AbstractResource
                             }
                         };
                     }
-                ])
-                ->maxLength(255),
+                ]),
             Toggle::make('is_draft')
                 ->label('Draft?')
                 ->offIcon('heroicon-m-eye')
@@ -693,7 +693,14 @@ class AbstractContentResource extends AbstractResource
                         ->label('Filter'),
             )
             ->actions([
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->before(function ($record) {
+                        if (Schema::hasColumn($record->getTable(), 'is_draft')) {
+                            $record->update([
+                                'is_draft' => true
+                            ]);
+                        }
+                    }),
                 Tables\Actions\ForceDeleteAction::make(),
                 RestoreAction::make(),
                 Tables\Actions\EditAction::make(),
