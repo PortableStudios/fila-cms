@@ -1,7 +1,10 @@
-<fila-cms::layouts.email>
-    <p>You've got a new form submission.</p>
+<x-mail::message>
+# You've got a new form submission.
 
-    {!! $entry->display_html !!}
+{!! $entry->display_html !!}
 
-    <a href="{{ route('filament.admin.resources.forms.edit', $entry->form->id) }}">View Form</a>
-</fila-cms::layouts.email>
+<x-mail::button :url="route('filament.admin.resources.forms.edit', $entry->form->id)">
+    View form
+</x-mail::button>
+
+</x-mail::message>

@@ -50,7 +50,7 @@ class FormSubmittedNotification extends Notification
     {
         return (new MailMessage())
             ->subject('Form ' . $this->formEntry->form->title . ' submitted')
-            ->view('fila-cms::notifications.form-submitted', ['entry' => $this->formEntry]);
+            ->markdown('fila-cms::notifications.form-submitted', ['entry' => $this->formEntry]);
     }
 
     public function shouldSend($notifiable)
