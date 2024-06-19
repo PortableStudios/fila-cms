@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Scout\Searchable;
 use Portable\FilaCms\Contracts\HasSlug;
 use Portable\FilaCms\Facades\FilaCms;
+use Portable\FilaCms\Filament\Resources\FormResource;
 
 class Form extends Model
 {
@@ -15,6 +16,8 @@ class Form extends Model
     use HasFactory;
     use Notifiable;
     use Searchable;
+
+    protected static $resourceName = FormResource::class;
 
     protected $fillable = [
         'title',
@@ -56,5 +59,12 @@ class Form extends Model
     public function routeNotificationForMail($notification)
     {
         return collect($this->notification_emails)->pluck('email')->toArray();
+    }
+
+    public function url(): Attribute
+    {
+        return new Attribute(function () {
+            return route(self::$resourceName::getRoutePrefix() . '.{slug}', $this->slug);
+        });
     }
 }

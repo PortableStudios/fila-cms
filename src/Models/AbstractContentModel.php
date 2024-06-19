@@ -229,4 +229,11 @@ abstract class AbstractContentModel extends Model
             PublishedScope::class,
         );
     }
+
+    public function url(): Attribute
+    {
+        return new Attribute(function () {
+            return route(static::$resourceName::getRoutePrefix() . '.{slug}', $this->slug);
+        });
+    }
 }
