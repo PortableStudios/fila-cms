@@ -82,7 +82,7 @@ class GenerateSitemap extends Command
         $sitemap = $this->generateSitemap($filteredRoutes);
 
         // Storage::disk('public')->put('/../sitemap.xml', $sitemap);
-        /** 
+        /**
          * @todo try to use storage facade instead
          */
         file_put_contents(public_path('/sitemap.xml'), $sitemap);
