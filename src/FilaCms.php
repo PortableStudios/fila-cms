@@ -365,7 +365,7 @@ class FilaCms
 
     public function maxTextArea($name, int $length = null, bool $insideControl = true): TextArea
     {
-        return TextArea::make($name)
+        return Textarea::make($name)
                 ->maxlength($length)
                 ->showInsideControl($insideControl);
     }
