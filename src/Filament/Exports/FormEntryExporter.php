@@ -44,7 +44,8 @@ class FormEntryExporter extends Exporter
             $columns[] = ExportColumn::make($field->getName())
                 ->label($field->getLabel())
                 ->getStateUsing(function ($record) use ($field) {
-                    return isset($record->values[$field->getName()]) ? $record->values[$field->getName()] : '';
+                    $fieldName = trim($field->getName());
+                    return isset($record->values[$fieldName]) ? $record->values[$fieldName] : '';
                 });
         }
 

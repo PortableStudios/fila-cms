@@ -2,9 +2,9 @@
 
 namespace Portable\FilaCms\Filament\Actions;
 
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
 
 class CloneAction extends Action
@@ -25,11 +25,11 @@ class CloneAction extends Action
         $this->icon('heroicon-m-document-duplicate');
 
         $this->action(function (Model $record): void {
-            $result = true;
             $model = get_class($record);
             $data = $record->toArray();
             $data['slug'] = $this->getNewSlug($model, $data['slug']);
             $data['title'] = '[CLONE] ' . $data['title'];
+            $data['is_draft'] = true;
 
             // no need to remove ID and dates
             // because it'll be ignored on mass assignment
@@ -82,9 +82,7 @@ class CloneAction extends Action
 
             $this->success();
 
-            \Log::info(get_class($newRecord));
             $resource = $newRecord::getResourceName();
-            \Log::info($resource);
             redirect($resource::getUrl('edit', ['record' => $newRecord]));
         });
     }
