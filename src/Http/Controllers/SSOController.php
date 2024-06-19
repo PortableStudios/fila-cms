@@ -32,6 +32,7 @@ class SSOController extends Controller
     public function handleProviderCallback(LoginResponse $loginResponse)
     {
         $driver = preg_match("/login\/(.*)\//", Route::current()->uri(), $matches) ? $matches[1] : null;
+
         config(['services.' . $driver => [
             'client_id' => config('settings.sso.' . $driver . '.client_id'),
             'client_secret' => config('settings.sso.' . $driver . '.client_secret'),
