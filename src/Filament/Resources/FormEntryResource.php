@@ -75,6 +75,7 @@ class FormEntryResource extends AbstractResource
             $columns[] = Tables\Columns\TextColumn::make($fieldName)
                 ->label($fieldName)
                 ->getStateUsing(function ($record) use ($fieldName) {
+                    $fieldName = trim($fieldName);
                     $value = isset($record->values[$fieldName]) ? $record->values[$fieldName] : '';
                     if (is_array($value)) {
                         try {
