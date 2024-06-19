@@ -39,6 +39,7 @@ class FilaCmsServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->bootLinkedInSocialite();
         $this->loadSettings();
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -299,5 +300,20 @@ class FilaCmsServiceProvider extends ServiceProvider
                     ->helperText('Use this as the redirect url in your LinkedIn app settings'),
             ];
         });
+    }
+
+    protected function bootLinkedInSocialite()
+    {
+        $socialite = $this->app->make('Laravel\Socialite\Contracts\Factory');
+        $socialite->extend(
+            'linkedin',
+            function ($app) use ($socialite) {
+                $config = config('services.linkedin');
+                return $socialite->buildProvider(
+                    \Portable\FilaCms\Socialite\FilaCmsLinkedInProvider::class,
+                    $config
+                );
+            }
+        );
     }
 }
