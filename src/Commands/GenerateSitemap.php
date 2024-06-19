@@ -48,24 +48,30 @@ class GenerateSitemap extends Command
             $shouldInclude = true;
 
             // only GET routes
-            if (collect($route->methods())->search('GET') !== false) {
-                foreach ($this->exemptedWords as $word) {
-                    if (Str::of($route->uri)->startsWith($word)) {
-                        $shouldInclude = false;
-                    }
-                }
+            if (collect($route->methods())->search('GET') === false) {
+                continue;
+            }
 
-                foreach ($this->exemptedMiddleware as $middleware) {
-                    if (collect($route->gatherMiddleware())->search($middleware) !== false) {
-                        $shouldInclude = false;
-                    }
+            foreach ($this->exemptedWords as $word) {
+                if (Str::of($route->uri)->startsWith($word)) {
+                    $shouldInclude = false;
+                    break;
                 }
+            }
 
-                if ($shouldInclude) {
-                    if (Str::of($route->uri)->contains('{slug}') == false) {
-                        $filteredRoutes[] = [url($route->uri), now()->subDays(7)];
-                    }
+            foreach ($this->exemptedMiddleware as $middleware) {
+                if (collect($route->gatherMiddleware())->search($middleware) !== false) {
+                    $shouldInclude = false;
+                    break;
                 }
+            }
+
+            if ($shouldInclude === false) {
+                continue;
+            }
+
+            if (Str::of($route->uri)->contains('{slug}') == false) {
+                $filteredRoutes[] = [url($route->uri), now()->subDays(7)];
             }
         }
 
@@ -86,12 +92,10 @@ class GenerateSitemap extends Command
         $records = [];
 
         foreach ($models as $model => $resource) {
-            $data = $model::where('publish_at', '<=', now())
-                ->where('is_draft', 0)
-                ->whereDoesntHave('seo', function ($query) {
-                    $query->where('robots', 'noindex, nofollow')
-                        ->orWhere('robots', 'noindex, follow');
-                })
+            $data = $model::whereDoesntHave('seo', function ($query) {
+                $query->where('robots', 'noindex, nofollow')
+                    ->orWhere('robots', 'noindex, follow');
+            })
                 ->get();
 
             foreach ($data as $key => $record) {
