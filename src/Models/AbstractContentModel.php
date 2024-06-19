@@ -83,6 +83,11 @@ abstract class AbstractContentModel extends Model
         'updating' => ContentUpdating::class,
     ];
 
+    public static function getResourceName()
+    {
+        return static::$resourceName;
+    }
+
     public function getVersionUserId()
     {
         return auth()->user() ? auth()->user()->id : FilaCms::systemUser()->id;

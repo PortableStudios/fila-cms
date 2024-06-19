@@ -29,6 +29,7 @@ class CloneAction extends Action
             $model = get_class($record);
             $data = $record->toArray();
             $data['slug'] = $this->getNewSlug($model, $data['slug']);
+            $data['title'] = '[CLONE] ' . $data['title'];
 
             // no need to remove ID and dates
             // because it'll be ignored on mass assignment
@@ -78,7 +79,13 @@ class CloneAction extends Action
                 ->title('Item cloned successfully')
                 ->success()
                 ->send();
+
             $this->success();
+
+            \Log::info(get_class($newRecord));
+            $resource = $newRecord::getResourceName();
+            \Log::info($resource);
+            redirect($resource::getUrl('edit', ['record' => $newRecord]));
         });
     }
 
@@ -95,7 +102,7 @@ class CloneAction extends Action
 
     protected function getNewSlug($model, $slug)
     {
-        $newSlug = $slug . '-clone';
+        $newSlug = $slug;
 
         // if there is a -clone already, then append 1 or increment
         $result = $model::withoutGlobalScopes()->where('slug', $newSlug)->first();
