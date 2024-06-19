@@ -238,7 +238,12 @@ abstract class AbstractContentModel extends Model
     public function url(): Attribute
     {
         return new Attribute(function () {
-            return route(static::$resourceName::getRoutePrefix() . '.{slug}', $this->slug);
+            $resource = static::$resourceName;
+            if($resource::getFrontendRoutePrefix() == '') {
+                return '/' . $this->slug;
+            } else {
+                return route(static::$resourceName::getFrontendShowRoute(), $this->slug);
+            }
         });
     }
 }
