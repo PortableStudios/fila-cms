@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 use Portable\FilaCms\Models\Form;
 use Portable\FilaCms\Facades\FilaCms;
 use Str;
-use Storage;
 
 class GenerateSitemap extends Command
 {
@@ -82,8 +81,11 @@ class GenerateSitemap extends Command
 
         $sitemap = $this->generateSitemap($filteredRoutes);
 
-        Storage::disk('public')->put('/sitemap.xml', $sitemap);
-        // file_put_contents(public_path('/sitemap.xml'), $sitemap);
+        // Storage::disk('public')->put('/../sitemap.xml', $sitemap);
+        /** 
+         * @todo try to use storage facade instead
+         */
+        file_put_contents(public_path('/sitemap.xml'), $sitemap);
     }
 
     protected function generateSlugs()
