@@ -1,1 +1,1 @@
-<hr class="border-0 border-gray-100 dark:border-gray-700 bt-1">
+<hr class="border-0 border-gray-100 bt-1">
