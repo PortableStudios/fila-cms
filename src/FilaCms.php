@@ -21,9 +21,9 @@ use Portable\FilaCms\Models\Form;
 use Portable\FilaCms\Models\Media;
 use Portable\FilaCms\Models\ShortUrl;
 use ReflectionClass;
-use Stevebauman\Purify\Facades\Purify;
-use Schmeits\FilamentCharacterCounter\Forms\Components\TextInput;
 use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea;
+use Schmeits\FilamentCharacterCounter\Forms\Components\TextInput;
+use Stevebauman\Purify\Facades\Purify;
 
 class FilaCms
 {
@@ -202,8 +202,7 @@ class FilaCms
 
             $shortUrl->increment('hits');
 
-            // TODO: make it more dynamic instead of direct using "pages"
-            return redirect(route('pages.show', $page->slug ?? $page->id), $shortUrl->redirect_status ?? 302);
+            return redirect($page->url, $shortUrl->redirect_status ?? 302);
         });
     }
 
