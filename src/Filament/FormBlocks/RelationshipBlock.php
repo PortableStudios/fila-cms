@@ -98,14 +98,14 @@ class RelationshipBlock extends AbstractFormBlock
         }
 
         if ($search) {
-            if($titleField == 'display_name'){
-                $query = $query->where('first_name', 'LIKE', '%' . $search . '%')->orWhere('last_name','LIKE','%'. $search . '%');
-            }else{
+            if($titleField == 'display_name') {
+                $query = $query->where('first_name', 'LIKE', '%' . $search . '%')->orWhere('last_name', 'LIKE', '%'. $search . '%');
+            } else {
                 $query = $query->where($titleField, 'LIKE', '%' . $search . '%');
             }
         }
 
-        return ($titleField=='display_name') ? $query->orderBy('first_name')->orderBy('last_name') ?$query->orderBy($titleField);
+        return ($titleField == 'display_name') ? $query->orderBy('first_name')->orderBy('last_name') : $query->orderBy($titleField);
     }
 
     protected static function createField($fieldData, $readOnly = false)
