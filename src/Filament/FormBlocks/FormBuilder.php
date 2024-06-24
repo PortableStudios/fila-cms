@@ -49,7 +49,13 @@ class FormBuilder extends Builder
     {
         $fields = [];
         foreach ($fieldData as $key => $field) {
+
+            if($readOnly) {
+                $field['data']['required'] = false;
+            }
+
             $fields[] = (FilaCms::getFormBlock($field['type']))::getField($field['data'], $readOnly);
+
         }
 
         return $fields;
