@@ -27,6 +27,11 @@ class Login extends FilamentLogin
     protected function getSSOActions()
     {
         $ssoButtons = [];
+
+        if (config('fila-cms.enable_admin_sso') === false) {
+            return $ssoButtons;
+        }
+
         $providers = config('fila-cms.sso.providers', ['google','facebook','linkedin']);
         foreach ($providers as $provider) {
             if (config('settings.sso.' . $provider . '.client_id') && config('settings.sso.' . $provider . '.client_secret')) {
