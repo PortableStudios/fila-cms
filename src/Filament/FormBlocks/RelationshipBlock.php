@@ -145,7 +145,7 @@ class RelationshipBlock extends AbstractFormBlock
             $field->required();
         }
 
-        if (isset($fieldData['multiselect']) && $fieldData['multiselect'] && (!in_array($fieldData['componentClass'], [Radio::class, CheckboxList::class]))) {
+        if (isset($fieldData['multiselect']) && $fieldData['multiselect'] && (!in_array($fieldData['component_class'], [Radio::class, CheckboxList::class]))) {
             $field->multiple();
         }
 
