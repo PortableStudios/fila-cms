@@ -24,7 +24,12 @@ class FormEntryFactory extends Factory
                 continue;
             }
 
-            $values[$fieldName] = $this->faker->word;
+            if($fieldName === 'Text Area') {
+                $values[$fieldName] = $this->faker->sentence;
+
+            } else {
+                $values[$fieldName] = $this->faker->word;
+            }
         }
         return [
             'status'     => $this->faker->randomElement(['New', 'Open', 'Closed']),
