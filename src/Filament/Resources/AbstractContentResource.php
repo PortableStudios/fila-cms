@@ -489,8 +489,13 @@ class AbstractContentResource extends AbstractResource
                     ->searchable()
                     ->limit(35)
                     ->sortable(),
-                TextColumn::make('author.display_name')->label('Author')
-                    ->sortable(['first_name', 'last_name']),
+                TextColumn::make('authors')
+                    ->label('Author(s)')
+                    ->placeholder('No author')
+                    ->getStateUsing(function (Model $record) {
+                        return $record->authors->pluck('display_name');
+                    })
+                    ->limitList(2),
                 TextColumn::make('status')->label('Status')
                     ->badge()
                     ->color(fn (string $state): mixed => match ($state) {
@@ -579,10 +584,7 @@ class AbstractContentResource extends AbstractResource
                             }
                         });
                     }),
-                SelectFilter::make('author')
-                    ->multiple()
-                    ->options(Author::all()->pluck('display_name', 'id'))
-                    ->attribute('author_id'),
+                static::getAuthorFilter(),
                 SelectFilter::make('terms')
                     ->multiple()
                     ->relationship('terms', 'name'),
@@ -713,6 +715,33 @@ class AbstractContentResource extends AbstractResource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
+    }
+
+    protected static function getAuthorFilter()
+    {
+        return SelectFilter::make('author')
+            ->multiple()
+            ->getSearchResultsUsing(function ($search) {
+                return Author::where('first_name', 'like', "%$search%")
+                    ->orWhere('last_name', 'like', "%$search%")->get()->pluck('display_name', 'id')->toArray();
+            })
+            ->getOptionLabelFromRecordUsing(function ($record) {
+                return $record->display_name;
+            })
+            ->indicateUsing(function (array $data): ?string {
+                if (empty($data)) {
+                    return null;
+                }
+                $authors = Author::whereIn('id', $data['values'])->get()->pluck('display_name');
+
+                if(count($authors) === 0) {
+                    return null;
+                }
+
+                return Str::plural('Author', count($authors)) .': ' . implode(', ', $authors->toArray());
+            })
+            ->relationship('authors', 'id')
+            ->preload();
     }
 
     public static function getRelations(): array
