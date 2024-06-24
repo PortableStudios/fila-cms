@@ -2,7 +2,6 @@
 
 namespace Portable\FilaCms\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -11,6 +10,7 @@ use Portable\FilaCms\Filament\Resources\MenuResource\Pages;
 use Portable\FilaCms\Filament\Resources\MenuResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Menu;
+use Portable\FilaCms\Facades\FilaCms;
 
 class MenuResource extends AbstractResource
 {
@@ -27,8 +27,8 @@ class MenuResource extends AbstractResource
 
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
-                Forms\Components\TextInput::make('note'),
+                FilaCms::maxTextInput('name', 255)->required(),
+                FilaCms::maxTextInput('note', 255),
             ]);
     }
 
