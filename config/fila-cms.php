@@ -119,4 +119,5 @@ return [
         'password_reset_view' => 'fila-cms::auth.reset-password',
     ],
     'tip_tap_blocks' => [],
+    'enable_admin_sso' => env('FILACMS_ENABLE_ADMIN_SSO', true), // VG-376
 ];
