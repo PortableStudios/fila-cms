@@ -34,6 +34,7 @@ use Portable\FilaCms\Listeners\UserVerifiedListener;
 use Portable\FilaCms\Models\Setting;
 use Portable\FilaCms\Observers\AuthenticatableObserver;
 use Portable\FilaCms\Services\MediaLibrary;
+use Illuminate\Support\HtmlString;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -296,8 +297,12 @@ class FilaCmsServiceProvider extends ServiceProvider
                 TextInput::make('sso.linkedin.client_secret')->label('Client Secret'),
                 Placeholder::make('sso.linkedin.redirect')
                     ->label('Redirect Url')
-                    ->content(url('login/linked/callback'))
+                    ->content(url('login/linkedin/callback'))
                     ->helperText('Use this as the redirect url in your LinkedIn app settings'),
+                Placeholder::make('added_product')
+                    ->label('App Requirement')
+                    ->content(new HtmlString('<strong>OpenID Connect</strong>'))
+                    ->helperText('Within the Products section, locate and enable "Sign In with LinkedIn using OpenID Connect"'),
             ];
         });
     }

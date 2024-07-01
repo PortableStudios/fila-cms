@@ -211,4 +211,140 @@ class SsoTest extends TestCase
         ]);
         $this->assertAuthenticatedAs($user);
     }
+
+    public function test_linkedin_callback_create_user()
+    {
+        $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
+        $abstractUser
+            ->shouldReceive('getId')
+            ->andReturn($this->faker->uuid)
+            ->shouldReceive('getName')
+            ->andReturn($this->faker->name)
+            ->shouldReceive('getEmail')
+            ->andReturn($this->faker->email);
+        $abstractUser->token = $this->faker->uuid;
+        $abstractUser->refreshToken = $this->faker->uuid;
+
+        Socialite::shouldReceive('driver->user')->andReturn($abstractUser);
+
+        config(['settings.sso.linkedin' => [
+            'client_id' => 'test',
+            'client_secret' => 'test']
+        ]);
+        FilaCms::ssoRoutes();
+
+        $response = $this->get('/login/linkedin/callback');
+        $response->assertStatus(302);
+
+        $userModel = config('auth.providers.users.model');
+        $user = $userModel::where('email', $abstractUser->getEmail())->first();
+        $this->assertNotNull($user);
+
+        $this->assertDatabaseHas('user_sso_links', [
+            'user_id' => $user->id,
+            'driver' => 'linkedin',
+            'provider_id' => $abstractUser->getId(),
+        ]);
+        $this->assertAuthenticatedAs($user);
+    }
+
+    public function test_linkedin_callback_link_user()
+    {
+        $email = $this->faker->email;
+        $name = $this->faker->name;
+        $providerId = $this->faker->uuid;
+
+        $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
+        $abstractUser
+            ->shouldReceive('getId')
+            ->andReturn($providerId)
+            ->shouldReceive('getName')
+            ->andReturn($name)
+            ->shouldReceive('getEmail')
+            ->andReturn($email);
+        $abstractUser->token = $this->faker->uuid;
+        $abstractUser->refreshToken = $this->faker->uuid;
+
+        Socialite::shouldReceive('driver->user')->andReturn($abstractUser);
+
+        config(['settings.sso.linkedin' => [
+            'client_id' => 'test',
+            'client_secret' => 'test']
+        ]);
+        FilaCms::ssoRoutes();
+
+        $userModel = config('auth.providers.users.model');
+        $user = $userModel::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => Hash::make(Str::random(28))
+        ]);
+
+        $this->assertDatabaseMissing('user_sso_links', [
+            'user_id' => $user->id,
+            'driver' => 'linkedin',
+            'provider_id' => $abstractUser->getId(),
+        ]);
+
+        $response = $this->get('/login/linkedin/callback');
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('user_sso_links', [
+            'user_id' => $user->id,
+            'driver' => 'linkedin',
+            'provider_id' => $abstractUser->getId(),
+        ]);
+        $this->assertAuthenticatedAs($user);
+    }
+
+    public function test_linkedin_callback_login_user()
+    {
+        $email = $this->faker->email;
+        $name = $this->faker->name;
+        $providerId = $this->faker->uuid;
+
+        $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
+        $abstractUser
+            ->shouldReceive('getId')
+            ->andReturn($providerId)
+            ->shouldReceive('getName')
+            ->andReturn($name)
+            ->shouldReceive('getEmail')
+            ->andReturn($email);
+        $abstractUser->token = $this->faker->uuid;
+        $abstractUser->refreshToken = $this->faker->uuid;
+
+        Socialite::shouldReceive('driver->user')->andReturn($abstractUser);
+
+        config(['settings.sso.linkedin' => [
+            'client_id' => 'test',
+            'client_secret' => 'test']
+        ]);
+        FilaCms::ssoRoutes();
+
+        $userModel = config('auth.providers.users.model');
+        $user = $userModel::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => Hash::make(Str::random(28))
+        ]);
+
+        UserSsoLink::create([
+            'user_id' => $user->id,
+            'driver' => 'linkedin',
+            'provider_id' => $providerId,
+            'provider_token' => $abstractUser->token,
+            'provider_refresh_token' => $abstractUser->refreshToken,
+        ]);
+
+        $response = $this->get('/login/linkedin/callback');
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('user_sso_links', [
+            'user_id' => $user->id,
+            'driver' => 'linkedin',
+            'provider_id' => $abstractUser->getId(),
+        ]);
+        $this->assertAuthenticatedAs($user);
+    }
 }
