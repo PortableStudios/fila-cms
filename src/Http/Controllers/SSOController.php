@@ -20,27 +20,37 @@ class SSOController extends Controller
     {
         $driver = preg_match("/login\/(.*)/", Route::current()->uri(), $matches) ? $matches[1] : null;
 
-        config(['services.' . $driver => [
+        $socialiteDriver = $driver;
+        if(Str::lower($socialiteDriver) === 'linkedin') {
+            $socialiteDriver = 'linkedin-openid';
+        }
+
+        config(['services.' . $socialiteDriver => [
             'client_id' => config('settings.sso.' . $driver . '.client_id'),
             'client_secret' => config('settings.sso.' . $driver . '.client_secret'),
             'redirect' => config('app.url') . '/login/' . $driver . '/callback',
         ]]);
 
-        return Socialite::driver($driver)->redirect();
+        return Socialite::driver($socialiteDriver)->redirect();
     }
 
     public function handleProviderCallback(LoginResponse $loginResponse)
     {
         $driver = preg_match("/login\/(.*)\//", Route::current()->uri(), $matches) ? $matches[1] : null;
 
-        config(['services.' . $driver => [
+        $socialiteDriver = $driver;
+        if(Str::lower($socialiteDriver) === 'linkedin') {
+            $socialiteDriver = 'linkedin-openid';
+        }
+
+        config(['services.' . $socialiteDriver => [
             'client_id' => config('settings.sso.' . $driver . '.client_id'),
             'client_secret' => config('settings.sso.' . $driver . '.client_secret'),
             'redirect' => config('app.url') . '/login/' . $driver . '/callback',
         ]]);
 
         $userModel = config('auth.providers.users.model');
-        $ssoUser = Socialite::driver($driver)->user();
+        $ssoUser = Socialite::driver($socialiteDriver)->user();
         $ssoLink = UserSsoLink::where('driver', $driver)->where('provider_id', $ssoUser->getId())->first();
 
         if (!$ssoLink) {
