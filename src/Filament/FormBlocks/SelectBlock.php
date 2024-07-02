@@ -5,6 +5,7 @@ namespace Portable\FilaCms\Filament\FormBlocks;
 use Closure;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class SelectBlock extends AbstractOptionsBlock
 {
@@ -18,7 +19,8 @@ class SelectBlock extends AbstractOptionsBlock
 
     protected static function getRequirementFields(): array
     {
-        return [
+        return [                           
+            FormBuilder::formFieldId(),
             Toggle::make('multiselect')
                 ->inline(false)
                 ->label('Multi-select'),
