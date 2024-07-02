@@ -9,6 +9,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 abstract class AbstractOptionsBlock extends AbstractFormBlock
 {
@@ -100,8 +101,8 @@ abstract class AbstractOptionsBlock extends AbstractFormBlock
 
     public static function displayValue($fieldData, $values): string
     {
-        $fieldName = data_get($fieldData, 'field_name');
-        $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
+        $value = FormBuilder::getFormInputValue($fieldData, $values);
+                
         if (!is_array($value)) {
             $value = [$value];
         }
