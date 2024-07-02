@@ -13,10 +13,13 @@ abstract class AbstractTextBlock extends AbstractFormBlock
 {
     public function getSchema(): Closure|array
     {
-        $generalFields = [TextInput::make('field_name')
-        ->label('Field Name')
-        ->default($this->getName())
-        ->required()];
+        $generalFields = [
+            TextInput::make('field_name')
+                ->label('Field Name')
+                ->default($this->getName())
+                ->required()
+        ];
+
         $typeSelector = static::getTypeSelector();
         if ($typeSelector) {
             $generalFields[] = $typeSelector;
@@ -79,6 +82,7 @@ abstract class AbstractTextBlock extends AbstractFormBlock
     protected static function getRequirementFields(): array
     {
         return [
+            FormBuilder::formFieldId(),
             Toggle::make('required')
                 ->inline(false),
             TextInput::make('max_length')

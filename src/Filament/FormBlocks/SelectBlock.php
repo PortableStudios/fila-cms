@@ -19,6 +19,7 @@ class SelectBlock extends AbstractOptionsBlock
     protected static function getRequirementFields(): array
     {
         return [
+            FormBuilder::formFieldId(),
             Toggle::make('multiselect')
                 ->inline(false)
                 ->label('Multi-select'),

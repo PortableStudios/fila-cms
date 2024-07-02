@@ -27,6 +27,7 @@ class RelationshipBlock extends AbstractFormBlock
         return 'Relationship Field';
     }
 
+
     public function getSchema(): Closure|array
     {
         return [
@@ -46,7 +47,7 @@ class RelationshipBlock extends AbstractFormBlock
                         ->default(Select::class)
                         ->label('Component Class')
                         ->live()
-                        ->required(),
+                        ->required()
                 ]),
                 Grid::make('settings')
                     ->columns(3)
@@ -159,6 +160,7 @@ class RelationshipBlock extends AbstractFormBlock
     protected static function getRequirementFields(): array
     {
         return [
+            FormBuilder::formFieldId(),
             Toggle::make('required')
                 ->inline(false),
             Toggle::make('multiselect')
@@ -200,8 +202,7 @@ class RelationshipBlock extends AbstractFormBlock
 
     public static function displayValue($fieldData, $values): string
     {
-        $fieldName = data_get($fieldData, 'field_name');
-        $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
+        $value = FormBuilder::getFormInputValue($fieldData, $values);
         if (!is_array($value)) {
             $value = [$value];
         }
