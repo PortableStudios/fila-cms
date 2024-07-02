@@ -4,6 +4,7 @@ namespace Portable\FilaCms\Filament\FormBlocks;
 
 use Closure;
 use Portable\FilaCms\Facades\FilaCms;
+use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class RichTextBlock extends AbstractTextBlock
 {
@@ -27,8 +28,7 @@ class RichTextBlock extends AbstractTextBlock
 
     public static function displayValue($fieldData, $values): string
     {
-        $fieldName = data_get($fieldData, 'field_name');
-        $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
+        $value = FormBuilder::getFormInputValue($fieldData, $values);
 
         if (is_array($value)) {
             $value = tiptap_converter()->asHTML($value);
