@@ -74,15 +74,19 @@ trait HasTaxonomies
                     $this->original[$field] = $this->attributes[$field];
                 }
             }
-            if (isset($this->attributes[$field . '_ids'])) {
-                $this->_saveTaxonomyFields[$field . '_ids'] = $this->attributes[$field . '_ids'];
-                if ($creating) {
-                    unset($this->attributes[$field . '_ids']);
-                } else {
-                    $this->original[$field] = $this->attributes[$field] = null;
-                    $this->original[$field . '_ids'] = $this->attributes[$field . '_ids'];
-                }
+            if (!isset($this->attributes[$field . '_ids'])) {
+                $caster = $this->resolveCasterClass($field . '_ids');
+                $values = $caster->get($this, $field . '_ids', null, $this->attributes);
+                $this->attributes[$field . '_ids'] = $values;
             }
+            $this->_saveTaxonomyFields[$field . '_ids'] = $this->attributes[$field . '_ids'];
+            if ($creating) {
+                unset($this->attributes[$field . '_ids']);
+            } else {
+                $this->original[$field] = $this->attributes[$field] = null;
+                $this->original[$field . '_ids'] = $this->attributes[$field . '_ids'];
+            }
+
         }
     }
 
