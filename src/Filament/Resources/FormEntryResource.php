@@ -17,7 +17,6 @@ use Portable\FilaCms\Filament\Resources\FormEntryResource\Actions\ExportBulkActi
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Portable\FilaCms\Models\Form as ModelsForm;
 use Portable\FilaCms\Models\FormEntry;
-use Illuminate\Support\Str;
 
 class FormEntryResource extends AbstractResource
 {
@@ -65,7 +64,7 @@ class FormEntryResource extends AbstractResource
 
         // A flat collection of all form fields
         $allFields = FormBuilder::getFieldDefinitions($form->fields);
-        
+
         $formBuilderFieldId = FormBuilder::$fieldId;
 
         foreach ($allFields as $field) {
@@ -73,7 +72,7 @@ class FormEntryResource extends AbstractResource
             if (Arr::get($field, 'type') === InformationBlock::getBlockName()) {
                 continue;
             }
-            
+
             $fieldName = Arr::get($field, 'data.field_name', null);
             $fieldId = Arr::get($field, 'data.' . $formBuilderFieldId, null);
 

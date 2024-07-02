@@ -8,14 +8,12 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Illuminate\Support\Str;
-use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 abstract class AbstractTextBlock extends AbstractFormBlock
 {
     public function getSchema(): Closure|array
     {
-        $generalFields = [               
+        $generalFields = [
             TextInput::make('field_name')
                 ->label('Field Name')
                 ->default($this->getName())
@@ -83,7 +81,7 @@ abstract class AbstractTextBlock extends AbstractFormBlock
 
     protected static function getRequirementFields(): array
     {
-        return [            
+        return [
             FormBuilder::formFieldId(),
             Toggle::make('required')
                 ->inline(false),
@@ -91,7 +89,7 @@ abstract class AbstractTextBlock extends AbstractFormBlock
                 ->label('Max Length')
                 ->integer(true),
             TextInput::make('default_value')
-                ->label('Default Value'),                
+                ->label('Default Value'),
         ];
     }
 }

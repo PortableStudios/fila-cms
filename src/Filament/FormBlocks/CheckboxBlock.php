@@ -8,8 +8,6 @@ use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Illuminate\Support\Str;
-use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class CheckboxBlock extends AbstractTextBlock
 {
@@ -31,7 +29,7 @@ class CheckboxBlock extends AbstractTextBlock
                         ->label('Field Name')
                         ->default($this->getName())
                         ->required(),
-                    ...static::getRequirementFields(),                    
+                    ...static::getRequirementFields(),
             ]),
                 ];
     }
@@ -50,7 +48,7 @@ class CheckboxBlock extends AbstractTextBlock
         return [
             FormBuilder::formFieldId(),
             Toggle::make('required')
-                ->inline(false),                           
+                ->inline(false),
         ];
     }
 }

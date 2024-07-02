@@ -7,8 +7,6 @@ use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Placeholder;
 use Illuminate\Support\HtmlString;
 use Portable\FilaCms\Facades\FilaCms;
-use Illuminate\Support\Str;
-use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class InformationBlock extends AbstractFormBlock
 {
@@ -39,7 +37,7 @@ class InformationBlock extends AbstractFormBlock
     }
 
     public static function displayValue($fieldData, $values): string
-    {        
-        return tiptap_converter()->asHTML($fieldData['contents']);       
+    {
+        return tiptap_converter()->asHTML($fieldData['contents']);
     }
 }

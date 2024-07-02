@@ -4,7 +4,6 @@ namespace Portable\FilaCms\Filament\FormBlocks;
 
 use Closure;
 use Portable\FilaCms\Facades\FilaCms;
-use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class RichTextBlock extends AbstractTextBlock
 {

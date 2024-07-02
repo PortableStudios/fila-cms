@@ -6,7 +6,6 @@ use Closure;
 use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\Component;
 use Illuminate\Support\Collection;
-use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 abstract class AbstractFormBlock extends Block
 {
@@ -70,7 +69,7 @@ abstract class AbstractFormBlock extends Block
     public static function displayValue($fieldData, $values): string
     {
         $value = FormBuilder::getFormInputValue($fieldData, $values);
-        
+
         if (is_array($value)) {
             $value = implode(', ', $value);
         }

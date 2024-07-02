@@ -4,7 +4,6 @@ namespace Portable\FilaCms\Filament\FormBlocks;
 
 use Closure;
 use Filament\Forms\Components\CheckboxList;
-use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class CheckboxListBlock extends AbstractOptionsBlock
 {
@@ -18,7 +17,7 @@ class CheckboxListBlock extends AbstractOptionsBlock
 
     protected static function getRequirementFields(): array
     {
-        return [                           
+        return [
             FormBuilder::formFieldId(),
         ];
     }

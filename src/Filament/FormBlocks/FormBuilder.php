@@ -69,7 +69,7 @@ class FormBuilder extends Builder
     {
         $html = '';
         foreach ($fieldDefs as $fieldDef) {
-            $field = FilaCms::getFormBlock($fieldDef['type']);            
+            $field = FilaCms::getFormBlock($fieldDef['type']);
             $html .= $field::displayHtml($fieldDef['data'], $values);
         }
         return $html;
@@ -91,7 +91,7 @@ class FormBuilder extends Builder
                 ->hidden()
                 ->readOnly()
                 ->required()
-                ->afterStateHydrated(function (TextInput $component, $state) use ($fieldId) {                            
+                ->afterStateHydrated(function (TextInput $component, $state) use ($fieldId) {
                     if(empty($state)) {
                         $component->state($fieldId);
                     }
@@ -101,6 +101,6 @@ class FormBuilder extends Builder
     public static function getFormInputValue($fieldData, $values)
     {
         $fieldId = data_get($fieldData, static::$fieldId);
-        return isset($values[$fieldId]) ? $values[$fieldId] : [];        
+        return isset($values[$fieldId]) ? $values[$fieldId] : [];
     }
 }

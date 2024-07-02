@@ -17,7 +17,6 @@ use Portable\FilaCms\Models\AbstractContentModel;
 use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Taxonomy;
 use Portable\FilaCms\Models\TaxonomyTerm;
-use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class RelationshipBlock extends AbstractFormBlock
 {
@@ -27,7 +26,7 @@ class RelationshipBlock extends AbstractFormBlock
     {
         return 'Relationship Field';
     }
-    
+
 
     public function getSchema(): Closure|array
     {
@@ -48,7 +47,7 @@ class RelationshipBlock extends AbstractFormBlock
                         ->default(Select::class)
                         ->label('Component Class')
                         ->live()
-                        ->required()                    
+                        ->required()
                 ]),
                 Grid::make('settings')
                     ->columns(3)
@@ -160,7 +159,7 @@ class RelationshipBlock extends AbstractFormBlock
 
     protected static function getRequirementFields(): array
     {
-        return [                           
+        return [
             FormBuilder::formFieldId(),
             Toggle::make('required')
                 ->inline(false),
@@ -202,7 +201,7 @@ class RelationshipBlock extends AbstractFormBlock
     }
 
     public static function displayValue($fieldData, $values): string
-    {        
+    {
         $value = FormBuilder::getFormInputValue($fieldData, $values);
         if (!is_array($value)) {
             $value = [$value];

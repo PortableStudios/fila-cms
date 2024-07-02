@@ -10,8 +10,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
-use Illuminate\Support\Str;
-use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class DateTimeInputBlock extends AbstractTextBlock
 {
@@ -76,7 +74,7 @@ class DateTimeInputBlock extends AbstractTextBlock
     {
         $default = (isset($this->date_type) ? $this->date_type : DatePicker::class)::make('default_value')
             ->label('Default Value');
-        return [            
+        return [
             FormBuilder::formFieldId(),
             Toggle::make('required')
                 ->inline(false)->live(),
