@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class FormBuilder extends Builder
 {
-    protected static $fieldId = 'field_id';
+    public static $fieldId = 'field_id';
 
     public static function make(string $name): static
     {
@@ -88,7 +88,7 @@ class FormBuilder extends Builder
         return TextInput::make(static::$fieldId)
                 ->label('FormBuilder:field_id')
                 ->default($fieldId)
-                // ->hidden()
+                ->hidden()
                 ->readOnly()
                 ->required()
                 ->afterStateHydrated(function (TextInput $component, $state) use ($fieldId) {                            
