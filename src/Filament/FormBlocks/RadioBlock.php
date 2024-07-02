@@ -4,6 +4,7 @@ namespace Portable\FilaCms\Filament\FormBlocks;
 
 use Closure;
 use Filament\Forms\Components\Radio;
+use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class RadioBlock extends AbstractOptionsBlock
 {
@@ -14,9 +15,10 @@ class RadioBlock extends AbstractOptionsBlock
     {
         return 'Radio Field';
     }
-
     protected static function getRequirementFields(): array
     {
-        return [];
+        return [                           
+            FormBuilder::formFieldId(),
+        ];
     }
 }
