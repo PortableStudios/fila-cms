@@ -7,6 +7,8 @@ use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Placeholder;
 use Illuminate\Support\HtmlString;
 use Portable\FilaCms\Facades\FilaCms;
+use Illuminate\Support\Str;
+use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 class InformationBlock extends AbstractFormBlock
 {
@@ -23,6 +25,7 @@ class InformationBlock extends AbstractFormBlock
             FilaCms::tipTapEditor('contents')
                 ->label('Contents')
                 ->required(),
+            FormBuilder::formFieldId(),
         ];
     }
 
@@ -33,5 +36,10 @@ class InformationBlock extends AbstractFormBlock
             ->content(new HtmlString(tiptap_converter()->asHTML(isset($fieldData['contents']) ? $fieldData['contents'] : ['content' => ''])));
 
         return $field;
+    }
+
+    public static function displayValue($fieldData, $values): string
+    {        
+        return tiptap_converter()->asHTML($fieldData['contents']);       
     }
 }
