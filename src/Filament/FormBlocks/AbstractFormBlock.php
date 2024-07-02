@@ -6,6 +6,7 @@ use Closure;
 use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\Component;
 use Illuminate\Support\Collection;
+use Portable\FilaCms\Filament\FormBlocks\FormBuilder;
 
 abstract class AbstractFormBlock extends Block
 {
@@ -45,11 +46,14 @@ abstract class AbstractFormBlock extends Block
     public static function getField($fieldData, $readOnly = false): Component
     {
         // Validate field data
-
         $field = static::createField($fieldData, $readOnly);
         $field = static::applyRequirementFields($field, $fieldData);
         if ($readOnly && method_exists($field, 'readOnly')) {
             $field->readOnly();
+        }
+        $field->label($fieldData['field_name'] ?? $fieldData['field_id'] ?? '-');
+        if(!empty($fieldData['field_id'])) {
+            $field->statePath($fieldData['field_id']);
         }
 
         return $field;
@@ -65,13 +69,11 @@ abstract class AbstractFormBlock extends Block
 
     public static function displayValue($fieldData, $values): string
     {
-        $fieldName = data_get($fieldData, 'field_name');
-        $value = isset($values[$fieldName]) ? $values[$fieldName] : [];
-
+        $value = FormBuilder::getFormInputValue($fieldData, $values);
+        
         if (is_array($value)) {
             $value = implode(', ', $value);
         }
-
         return $value;
     }
 
