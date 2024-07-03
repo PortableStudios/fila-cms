@@ -79,7 +79,6 @@ class SSOController extends Controller
             $ssoLink->refresh();
         }
 
-
         Auth::login($ssoLink->user);
 
         return $loginResponse->toResponse(request());
