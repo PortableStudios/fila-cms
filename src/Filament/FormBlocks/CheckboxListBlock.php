@@ -17,6 +17,8 @@ class CheckboxListBlock extends AbstractOptionsBlock
 
     protected static function getRequirementFields(): array
     {
-        return [];
+        return [
+            FormBuilder::formFieldId(),
+        ];
     }
 }

@@ -75,6 +75,7 @@ class DateTimeInputBlock extends AbstractTextBlock
         $default = (isset($this->date_type) ? $this->date_type : DatePicker::class)::make('default_value')
             ->label('Default Value');
         return [
+            FormBuilder::formFieldId(),
             Toggle::make('required')
                 ->inline(false)->live(),
             $default

@@ -64,6 +64,9 @@ class FormEntryResource extends AbstractResource
 
         // A flat collection of all form fields
         $allFields = FormBuilder::getFieldDefinitions($form->fields);
+
+        $formBuilderFieldId = FormBuilder::$fieldId;
+
         foreach ($allFields as $field) {
             // don't show information blocks in the table
             if (Arr::get($field, 'type') === InformationBlock::getBlockName()) {
@@ -71,12 +74,13 @@ class FormEntryResource extends AbstractResource
             }
 
             $fieldName = Arr::get($field, 'data.field_name', null);
+            $fieldId = Arr::get($field, 'data.' . $formBuilderFieldId, null);
 
-            $columns[] = Tables\Columns\TextColumn::make($fieldName)
+            $columns[] = Tables\Columns\TextColumn::make($fieldId)
                 ->label($fieldName)
-                ->getStateUsing(function ($record) use ($fieldName) {
-                    $fieldName = trim($fieldName);
-                    $value = isset($record->values[$fieldName]) ? $record->values[$fieldName] : '';
+                ->getStateUsing(function ($record) use ($fieldId) {
+                    $fieldId = trim($fieldId);
+                    $value = isset($record->values[$fieldId]) ? $record->values[$fieldId] : '';
                     if (is_array($value)) {
                         try {
                             $value = tiptap_converter()->asText($value);

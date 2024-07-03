@@ -29,7 +29,7 @@ class CheckboxBlock extends AbstractTextBlock
                         ->label('Field Name')
                         ->default($this->getName())
                         ->required(),
-                        ...static::getRequirementFields()
+                    ...static::getRequirementFields(),
             ]),
                 ];
     }
@@ -46,6 +46,7 @@ class CheckboxBlock extends AbstractTextBlock
     protected static function getRequirementFields(): array
     {
         return [
+            FormBuilder::formFieldId(),
             Toggle::make('required')
                 ->inline(false),
         ];

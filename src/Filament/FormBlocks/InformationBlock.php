@@ -23,6 +23,7 @@ class InformationBlock extends AbstractFormBlock
             FilaCms::tipTapEditor('contents')
                 ->label('Contents')
                 ->required(),
+            FormBuilder::formFieldId(),
         ];
     }
 
@@ -33,5 +34,10 @@ class InformationBlock extends AbstractFormBlock
             ->content(new HtmlString(tiptap_converter()->asHTML(isset($fieldData['contents']) ? $fieldData['contents'] : ['content' => ''])));
 
         return $field;
+    }
+
+    public static function displayValue($fieldData, $values): string
+    {
+        return tiptap_converter()->asHTML($fieldData['contents']);
     }
 }
