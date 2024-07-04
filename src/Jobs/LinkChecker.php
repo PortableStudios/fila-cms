@@ -27,16 +27,18 @@ class LinkChecker implements ShouldQueue
 
     public function handle()
     {
+
         $models = (new FilaCms())->getRawContentModels();
         $batch = Str::random(8);
 
+        $collectedLinks = [];
         foreach ($models as $model => $resource) {
-            $modelClass = $model::orderBy('id', 'desc')->lazy()->each(function ($record) use ($resource, $batch) {
+            $modelClass = $model::orderBy('id', 'desc')->lazy()->each(function ($record) use ($resource, $batch, &$collectedLinks) {
                 $content = json_decode(tiptap_converter()->asJson($record->contents), true);
                 $links = $this->extractLinks($content);
 
                 foreach ($links as $key => $link) {
-                    $model = LinkCheck::create([
+                    $collectedLinks[] = LinkCheck::create([
                         'title'             => $record->title,
                         'origin_resource'   => $resource,
                         'edit_url'          => $resource::getUrl('edit', ['record' => $record->slug]),
@@ -46,9 +48,15 @@ class LinkChecker implements ShouldQueue
                         'batch_id'          => $batch,
                     ]);
 
-                    CheckLink::dispatch($model);
                 }
             });
+        }
+
+        // Since the models are inserted one at a time
+        // the notification checker always gets triggered
+        // So I have to move it here to avoid that
+        foreach ($collectedLinks as $key => $linkModel) {
+            CheckLink::dispatch($linkModel);
         }
     }
 

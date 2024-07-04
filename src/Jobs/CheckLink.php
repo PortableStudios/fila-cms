@@ -44,7 +44,7 @@ class CheckLink implements ShouldQueue
             $this->linkCheck->status_text = $response->reason();
             $this->linkCheck->timeout = $timeOut;
             $this->linkCheck->save();
-        } catch (\Illuminate\Http\Client\ConnectionException $th) {
+        } catch (\Illuminate\Http\Client\ConnectionException | \GuzzleHttp\Exception\TransferException $th) {
             $this->linkCheck->status_code = 404;
             $this->linkCheck->status_text = 'Not Found';
             $this->linkCheck->timeout = 0;
