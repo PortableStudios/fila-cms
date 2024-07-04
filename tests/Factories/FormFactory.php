@@ -47,6 +47,7 @@ class FormFactory extends Factory
                 "type" => CheckboxBlock::getBlockName(),
                 "data" => [
                     "field_name" => "Checkbox",
+                    "field_id" => Str::slug(Str::random(10)),
                     "required" => true,
                     "default_value" => null
                 ]
@@ -55,6 +56,7 @@ class FormFactory extends Factory
                 "type" => CheckboxListBlock::getBlockName(),
                 "data" => [
                     "field_name" => "Checkbox List",
+                    "field_id" => Str::slug(Str::random(10)),
                     "required" => true,
                     "default_value" => null,
                     "options" => [
@@ -68,6 +70,7 @@ class FormFactory extends Factory
                 "type" => DateTimeInputBlock::getBlockName(),
                 "data" => [
                     "field_name" => "Date Picker",
+                    "field_id" => Str::slug(Str::random(10)),
                     "required" => true,
                     'date_type' => DatePicker::class,
                     "default_value" => null
@@ -77,6 +80,7 @@ class FormFactory extends Factory
                 "type" => InformationBlock::getBlockName(),
                 "data" => [
                     "field_name" => "Information",
+                    "field_id" => Str::slug(Str::random(10)),
                     "contents" => [
                         "type" => "paragraph",
                         "attrs" => [
@@ -97,6 +101,7 @@ class FormFactory extends Factory
                 "type" => RadioBlock::getBlockName(),
                 "data" => [
                     "field_name" => "Radio",
+                    "field_id" => Str::slug(Str::random(10)),
                     "required" => true,
                     "default_value" => null,
                     "options" => [
@@ -110,6 +115,7 @@ class FormFactory extends Factory
                 "type" => RelationshipBlock::getBlockName(),
                 "data" => [
                     "field_name" => "Relationship",
+                    "field_id" => Str::slug(Str::random(10)),
                     "required" => true,
                     "component_class" => CheckboxList::class,
                     'relationship' => PageResource::class,
@@ -120,6 +126,7 @@ class FormFactory extends Factory
                 "data" => [
                     "max_length" => 100,
                     "field_name" => "Rich Text",
+                    "field_id" => Str::slug(Str::random(10)),
                     "required" => true,
                     "default_value" => null
                 ]
@@ -128,6 +135,7 @@ class FormFactory extends Factory
                 "type" => SelectBlock::getBlockName(),
                 "data" => [
                     "field_name" => "Select",
+                    "field_id" => Str::slug(Str::random(10)),
                     "required" => true,
                     "default_value" => null,
                     "options" => [
@@ -141,6 +149,7 @@ class FormFactory extends Factory
                 "type" => TextAreaBlock::getBlockName(),
                 "data" => [
                     "field_name" => "Text Area",
+                    "field_id" => Str::slug(Str::random(10)),
                     "required" => true,
                     "max_length" => 100,
                     "default_value" => null
@@ -150,6 +159,7 @@ class FormFactory extends Factory
                 "type" => TextInputBlock::getBlockName(),
                 "data" => [
                     "field_name" => "Text Input",
+                    "field_id" => Str::slug(Str::random(10)),
                     "text_type" => "text",
                     "required" => true,
                     "max_length" => 100,
