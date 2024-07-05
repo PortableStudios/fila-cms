@@ -39,7 +39,7 @@ class ListLinkChecks extends ListRecords
 
     protected function executeScan()
     {
-        LinkChecker::dispatch();
+        LinkChecker::dispatchSync();
     }
 
     public function getLastScan()
@@ -61,7 +61,9 @@ class ListLinkChecks extends ListRecords
             return 'No prior scans';
         }
 
-        $unscanned = (new (static::getModel()))->unscanned()->count();
+        $unscanned = (new (static::getModel()))
+            ->where('batch_id', $this->lastBatch)
+            ->unscanned()->count();
 
         if ($unscanned > 0) {
             return 'Running';
