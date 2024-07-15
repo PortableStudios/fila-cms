@@ -23,6 +23,7 @@ use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasShortUrl;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
+use Portable\FilaCms\Models\Traits\ProvidesSearchSettings;
 use Portable\FilaCms\Versionable\FilaCmsVersion;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
@@ -40,6 +41,7 @@ abstract class AbstractContentModel extends Model
     use HasContentRoles;
     use HasSlug;
     use Searchable;
+    use ProvidesSearchSettings;
 
     protected $table = 'contents';
 
@@ -82,6 +84,25 @@ abstract class AbstractContentModel extends Model
         'creating' => ContentCreating::class,
         'updating' => ContentUpdating::class,
     ];
+
+    public static $searchableAttributes = ['title','contents'];
+    public static $filterableAttributes = [];
+    public static $sortableAttributes = ['title','created_at','updated_at'];
+
+    public static function getSearchableAttributes()
+    {
+        return static::$searchableAttributes;
+    }
+
+    public static function getSortableAttributes()
+    {
+        return static::$sortableAttributes;
+    }
+
+    public static function getFilterableAttributes()
+    {
+        return static::$filterableAttributes;
+    }
 
     public static function getResourceName()
     {

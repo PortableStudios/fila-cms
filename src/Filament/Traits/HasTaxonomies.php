@@ -38,6 +38,16 @@ trait HasTaxonomies
 
     public static function bootHasTaxonomies()
     {
+        if(property_exists(static::class, 'searchableAttributes')) {
+            TaxonomyResource::where('resource_class', static::$resourceName)->get()->each(
+                function (TaxonomyResource $taxonomyResource) use (&$fields) {
+                    $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_');
+                    static::$searchableAttributes[] = $fieldName . 's';
+                    static::$filterableAttributes[] = $fieldName . 's_ids';
+                }
+            );
+        }
+
         static::creating(function ($model) {
             $model->undirtyVirtualAttributes(true);
         });

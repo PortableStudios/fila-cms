@@ -11,11 +11,14 @@ use Filament\Support\Facades\FilamentAsset;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Console\Events\CommandFinished;
+use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Contracts\TwoFactorConfirmedResponse as TwoFactorConfirmedResponseContract;
 use Laravel\Fortify\Fortify;
@@ -30,11 +33,12 @@ use Portable\FilaCms\Filament\Forms\Components\AddressInput;
 use Portable\FilaCms\Filament\Forms\Components\ImagePicker;
 use Portable\FilaCms\Fortify\Http\Responses\TwoFactorConfirmedResponse;
 use Portable\FilaCms\Listeners\AuthenticationListener;
+use Portable\FilaCms\Listeners\CommandFinishedListener;
+use Portable\FilaCms\Listeners\CommandStartingListener;
 use Portable\FilaCms\Listeners\UserVerifiedListener;
 use Portable\FilaCms\Models\Setting;
 use Portable\FilaCms\Observers\AuthenticatableObserver;
 use Portable\FilaCms\Services\MediaLibrary;
-use Illuminate\Support\HtmlString;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
@@ -55,6 +59,10 @@ class FilaCmsServiceProvider extends ServiceProvider
                 \Portable\FilaCms\Commands\SyncSearch::class,
                 \Portable\FilaCms\Commands\GenerateSitemap::class
             ]);
+
+            // Check if we're running a command that requires Scout settings, and do the appropriate things
+            Event::listen(CommandStarting::class, CommandStartingListener::class);
+            Event::listen(CommandFinished::class, CommandFinishedListener::class);
         }
         $this->loadRoutesFrom(__DIR__ . '/../../routes/filacms-routes.php');
 
@@ -305,6 +313,26 @@ class FilaCmsServiceProvider extends ServiceProvider
                     ->helperText('Within the Products section, locate and enable "Sign In with LinkedIn using OpenID Connect"'),
             ];
         });
+
+        FacadesFilaCms::registerSetting('Search', 'Search', 0, function () {
+            return [
+                Textarea::make('search.stop_words')
+                    ->label('Ignored Search Words')
+                    ->mutateDehydratedStateUsing(function ($state) {
+                        $words = array_values(array_filter(preg_split("/[\n\,\ ]/", $state)));
+                        return json_encode($words);
+                    })->afterStateHydrated(function (Textarea $component, $state) {
+                        $state = json_decode($state);
+                        if(is_array($state)) {
+                            $state = join("\n", $state);
+                        }
+                        $component->state($state);
+                    })
+                    ->helperText('Enter a list of words to ignore when searching.  Separate each word with a line return, space or comma.')
+                    ->columnSpanFull(),
+            ];
+        });
+
     }
 
     protected function bootLinkedInSocialite()
