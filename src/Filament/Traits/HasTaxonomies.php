@@ -54,6 +54,15 @@ trait HasTaxonomies
             $model->persistVirtualTaxonomies();
         });
 
+        if(property_exists(static::class, 'searchableAttributes')) {
+            TaxonomyResource::where('resource_class', static::$resourceName)->get()->each(
+                function (TaxonomyResource $taxonomyResource) {
+                    $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_');
+                    static::$searchableAttributes[] = $fieldName . 's';
+                    static::$filterableAttributes[] = $fieldName . 's_ids';
+                }
+            );
+        }
     }
 
     protected function persistVirtualTaxonomies()
