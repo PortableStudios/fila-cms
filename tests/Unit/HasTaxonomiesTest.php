@@ -22,7 +22,7 @@ class HasTaxonomiesTest extends TestCase
             PageResource::class
         ])->create(['name' => 'property_one']);
 
-        $model = Page::factory()->create();
+        $model = Page::factory()->isPublished()->create();
         $model->terms()->delete();
         $model->terms()->attach($taxonomy->terms->pluck('id'));
         $model->refresh();
@@ -36,7 +36,7 @@ class HasTaxonomiesTest extends TestCase
             PageResource::class
         ])->create(['name' => 'property_one']);
 
-        $model = Page::factory()->create();
+        $model = Page::factory()->isPublished()->create();
         $model->terms()->delete();
         $model->terms()->attach($taxonomy->terms->pluck('id'));
         $model->refresh();
