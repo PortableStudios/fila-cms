@@ -371,7 +371,7 @@ class FilaCms
 
     public function setMeilisearchConfigs()
     {
-            // Pre-setup all the models we can reasonably know about
+        // Pre-setup all the models we can reasonably know about
         foreach (FilaCms::getRawContentModels() as $model => $resource) {
             if (method_exists($model, 'getSearchableAttributes')) {
                 $searchableAttributes = $model::getSearchableAttributes();
