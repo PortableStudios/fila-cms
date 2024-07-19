@@ -64,6 +64,12 @@ class FilaCmsServiceProvider extends ServiceProvider
             Event::listen(CommandStarting::class, CommandStartingListener::class);
             Event::listen(CommandFinished::class, CommandFinishedListener::class);
         }
+
+        // If we're running unit tests, always load the configs
+        if ($this->app->runningUnitTests()) {
+            FacadesFilaCms::setMeilisearchConfigs();
+        }
+
         $this->loadRoutesFrom(__DIR__ . '/../../routes/filacms-routes.php');
 
         if (config('fila-cms.publish_content_routes')) {
@@ -92,7 +98,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         config(['scout.driver' => config('fila-cms.search.driver', 'meilisearch')]);
 
         Event::listen(Login::class, AuthenticationListener::class);
-        Event::listen(Verified::class, UserVerifiedListener::class);
+        Event::listen(Verified::class, UserVerifiedListener::class);        
 
         Fortify::resetPasswordView(function () {
             return view(config('fila-cms.auth.password_reset_view'));
