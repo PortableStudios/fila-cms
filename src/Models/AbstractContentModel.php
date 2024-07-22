@@ -85,25 +85,6 @@ abstract class AbstractContentModel extends Model
         'updating' => ContentUpdating::class,
     ];
 
-    public static $searchableAttributes = ['title','contents'];
-    public static $filterableAttributes = [];
-    public static $sortableAttributes = ['title','created_at','updated_at'];
-
-    public static function getSearchableAttributes()
-    {
-        return static::$searchableAttributes;
-    }
-
-    public static function getSortableAttributes()
-    {
-        return static::$sortableAttributes;
-    }
-
-    public static function getFilterableAttributes()
-    {
-        return static::$filterableAttributes;
-    }
-
     public static function getResourceName()
     {
         return static::$resourceName;
