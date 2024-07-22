@@ -64,6 +64,12 @@ class FilaCmsServiceProvider extends ServiceProvider
             Event::listen(CommandStarting::class, CommandStartingListener::class);
             Event::listen(CommandFinished::class, CommandFinishedListener::class);
         }
+
+        // If we're running unit tests, always load the configs
+        if ($this->app->runningUnitTests()) {
+            FacadesFilaCms::setMeilisearchConfigs();
+        }
+
         $this->loadRoutesFrom(__DIR__ . '/../../routes/filacms-routes.php');
 
         if (config('fila-cms.publish_content_routes')) {
@@ -132,7 +138,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         try {
             $assets[] = Js::make('tiptap-custom-extension-scripts', Vite::asset('resources/js/tiptap/extensions.js'))->module(true);
             FilamentAsset::register($assets, 'awcodes/tiptap-editor');
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             // Do nothing, assets may not yet be built
         }
 
@@ -323,7 +329,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                         return json_encode($words);
                     })->afterStateHydrated(function (Textarea $component, $state) {
                         $state = json_decode($state);
-                        if(is_array($state)) {
+                        if (is_array($state)) {
                             $state = join("\n", $state);
                         }
                         $component->state($state);
@@ -332,7 +338,6 @@ class FilaCmsServiceProvider extends ServiceProvider
                     ->columnSpanFull(),
             ];
         });
-
     }
 
     protected function bootLinkedInSocialite()

@@ -53,19 +53,6 @@ trait HasTaxonomies
         static::created(function ($model) {
             $model->persistVirtualTaxonomies();
         });
-
-        if(property_exists(static::class, 'searchableAttributes')) {
-            try {
-                TaxonomyResource::where('resource_class', static::$resourceName)->get()->each(
-                    function (TaxonomyResource $taxonomyResource) {
-                        $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_');
-                        static::$searchableAttributes[] = $fieldName . 's';
-                        static::$filterableAttributes[] = $fieldName . 's_ids';
-                    }
-                );
-            } catch (\Exception $e) {
-            }
-        }
     }
 
     protected function persistVirtualTaxonomies()
