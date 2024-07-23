@@ -12,21 +12,7 @@ class CommandStartingListener
     {
         $indexCommands = ['scout:sync-index-settings','tinker'];
         if(in_array($event->command, $indexCommands)) {
-            // Pre-setup all the models we can reasonably know about
-            foreach(FilaCms::getRawContentModels() as $model => $resource) {
-                if(method_exists($model, 'getSearchableAttributes')) {
-                    $searchableAttributes = $model::getSearchableAttributes();
-                    $sortableAttributes = $model::getSortableAttributes();
-                    $filterableAttributes = $model::getFilterableAttributes();
-                    $indexName = (new $model())->searchableAs();
-                    $indexSettings = [
-                        'searchableAttributes' => $searchableAttributes,
-                        'sortableAttributes' => $sortableAttributes,
-                        'filterableAttributes' => $filterableAttributes,
-                    ];
-                    config(['scout.meilisearch.index-settings' => array_merge(config('scout.meilisearch.index-settings'), [$indexName => $indexSettings])]);
-                }
-            }
+            FilaCms::setMeilisearchConfigs();
             BeforeSyncSearchSettings::dispatch();
         }
     }

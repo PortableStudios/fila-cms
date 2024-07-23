@@ -9,7 +9,7 @@ class CommandFinishedListener
 {
     public function handle(CommandFinished $event): void
     {
-        if($event->command === 'scout:sync-index-settings') {
+        if($event->command === 'scout:sync-index-settings' || $event->command == 'fila-cms:sync-search') {
             AfterSyncSearchSettings::dispatch();
             // Now update the stop words for all the models
             // that are searchable
@@ -18,8 +18,9 @@ class CommandFinishedListener
             if(!is_array($stopWords)){
                 $stopWords = [];
             }
-            $client = app(\MeiliSearch\Client::class);
-            foreach($indexes as $indexName) {
+            
+            $client = app(\Laravel\Scout\EngineManager::class)->createMeilisearchDriver();
+            foreach($indexes as $indexName => $settings) {
                 $client->index($indexName)->updateStopWords($stopWords);
             }
         }
