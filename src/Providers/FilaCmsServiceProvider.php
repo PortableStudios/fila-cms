@@ -442,6 +442,10 @@ class FilaCmsServiceProvider extends ServiceProvider
 
     protected function registerHealthChecks()
     {
+        if(app()->runningUnitTests()) {
+            return;
+        }
+
         $checks = [
             UsedDiskSpaceCheck::new(),
             DatabaseCheck::new(),
