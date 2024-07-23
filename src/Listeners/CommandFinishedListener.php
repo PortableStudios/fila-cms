@@ -9,7 +9,9 @@ class CommandFinishedListener
 {
     public function handle(CommandFinished $event): void
     {
-        if($event->command === 'scout:sync-index-settings' || $event->command == 'fila-cms:sync-search') {
+        $indexCommands = ['scout:sync-index-settings','tinker','fila-cms:sync-search'];
+        if(in_array($event->command, $indexCommands)) {
+
             AfterSyncSearchSettings::dispatch();
             // Now update the stop words for all the models
             // that are searchable
