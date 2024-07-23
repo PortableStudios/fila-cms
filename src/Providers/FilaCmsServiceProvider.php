@@ -371,7 +371,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                 ->live()
             ];
         });
-        
+
         FacadesFilaCms::registerSetting('Search', 'Search', 0, function () {
             return [
                 Textarea::make('search.stop_words')

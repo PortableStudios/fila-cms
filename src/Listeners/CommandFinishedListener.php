@@ -15,6 +15,9 @@ class CommandFinishedListener
             // that are searchable
             $indexes = config('scout.meilisearch.index-settings');
             $stopWords = json_decode(config('settings.search.stop-words'));
+            if(!is_array($stopWords)){
+                $stopWords = [];
+            }
             $client = app(\MeiliSearch\Client::class);
             foreach($indexes as $indexName) {
                 $client->index($indexName)->updateStopWords($stopWords);
