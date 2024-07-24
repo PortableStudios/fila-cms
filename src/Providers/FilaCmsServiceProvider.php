@@ -449,8 +449,13 @@ class FilaCmsServiceProvider extends ServiceProvider
         $checks = [
             UsedDiskSpaceCheck::new(),
             DatabaseCheck::new(),
-            MeiliSearchCheck::new(),
         ];
+        $meili = MeiliSearchCheck::new()->url(config('scout.meilisearch.host') . '/health');
+        if(config('scout.meilisearch.key')) {
+            $meili = $meili->token(config('scout.meilisearch.key'));
+        }
+        $checks[] = $meili;
+
         // Check if we're using Redis
         if (config('cache.default') === 'redis' || config('session.driver') === 'redis' || config('queue.default') === 'redis') {
             $checks[] = RedisCheck::new();
