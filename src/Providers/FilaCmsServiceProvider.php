@@ -24,6 +24,12 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Contracts\TwoFactorConfirmedResponse as TwoFactorConfirmedResponseContract;
 use Laravel\Fortify\Fortify;
+use Laravel\Scout\Console\DeleteAllIndexesCommand;
+use Laravel\Scout\Console\DeleteIndexCommand;
+use Laravel\Scout\Console\FlushCommand;
+use Laravel\Scout\Console\ImportCommand;
+use Laravel\Scout\Console\IndexCommand;
+use Laravel\Scout\Console\SyncIndexSettingsCommand;
 use Livewire\Livewire;
 use Portable\FilaCms\Actions\Fortify\UpdateUserProfileInformation;
 use Portable\FilaCms\Data\DummyForm;
@@ -68,23 +74,33 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         $this->bootLinkedInSocialite();
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                \Portable\FilaCms\Commands\InstallCommand::class,
-                \Portable\FilaCms\Commands\AddUserConcerns::class,
-                \Portable\FilaCms\Commands\MakeUser::class,
-                \Portable\FilaCms\Commands\MakeContentResource::class,
-                \Portable\FilaCms\Commands\MakeContentMigration::class,
-                \Portable\FilaCms\Commands\MakeContentModel::class,
-                \Portable\FilaCms\Commands\MakeContentPermissionSeeder::class,
-                \Portable\FilaCms\Commands\MakeContents::class,
-                \Portable\FilaCms\Commands\SyncSearch::class,
-                \Portable\FilaCms\Commands\GenerateSitemap::class
-            ]);
+        $this->commands([
+            \Portable\FilaCms\Commands\InstallCommand::class,
+            \Portable\FilaCms\Commands\AddUserConcerns::class,
+            \Portable\FilaCms\Commands\MakeUser::class,
+            \Portable\FilaCms\Commands\MakeContentResource::class,
+            \Portable\FilaCms\Commands\MakeContentMigration::class,
+            \Portable\FilaCms\Commands\MakeContentModel::class,
+            \Portable\FilaCms\Commands\MakeContentPermissionSeeder::class,
+            \Portable\FilaCms\Commands\MakeContents::class,
+            \Portable\FilaCms\Commands\SyncSearch::class,
+            \Portable\FilaCms\Commands\GenerateSitemap::class
+        ]);
 
-            // Check if we're running a command that requires Scout settings, and do the appropriate things
-            Event::listen(CommandStarting::class, CommandStartingListener::class);
-            Event::listen(CommandFinished::class, CommandFinishedListener::class);
+        // Check if we're running a command that requires Scout settings, and do the appropriate things
+        Event::listen(CommandStarting::class, CommandStartingListener::class);
+        Event::listen(CommandFinished::class, CommandFinishedListener::class);
+
+        // Force the Scout commands to be registered, in case we're running jobs syncronously
+        if(!$this->app->runningInConsole()) {
+            $this->commands([
+                FlushCommand::class,
+                ImportCommand::class,
+                IndexCommand::class,
+                SyncIndexSettingsCommand::class,
+                DeleteIndexCommand::class,
+                DeleteAllIndexesCommand::class,
+            ]);
         }
 
         // If we're running unit tests, always load the configs

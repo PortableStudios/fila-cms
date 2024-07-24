@@ -11,12 +11,11 @@ class CommandFinishedListener
     {
         $indexCommands = ['scout:sync-index-settings','tinker','fila-cms:sync-search'];
         if(in_array($event->command, $indexCommands)) {
-
             AfterSyncSearchSettings::dispatch();
             // Now update the stop words for all the models
             // that are searchable
             $indexes = config('scout.meilisearch.index-settings');
-            $stopWords = json_decode(config('settings.search.stop-words'));
+            $stopWords = json_decode(\Portable\FilaCms\Models\Setting::get('search.stop_words'));
             if(!is_array($stopWords)) {
                 $stopWords = [];
             }

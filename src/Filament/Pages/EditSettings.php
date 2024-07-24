@@ -11,10 +11,11 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
+use Portable\FilaCms\Jobs\ReindexSearch;
 use Portable\FilaCms\Models\Setting;
-use Illuminate\Support\Facades\Cache;
 
 class EditSettings extends Page implements HasForms
 {
@@ -57,6 +58,8 @@ class EditSettings extends Page implements HasForms
     {
         $formData = $this->form->getState();
         $records = [];
+
+        $oldStopWords = Setting::get('search.stop_words');
         collect(FilaCms::getSettingsFields())->flatten()->each(function ($field) use (&$formData, &$records) {
             if (method_exists($field, 'getName')) {
                 $records[] = [
@@ -71,6 +74,16 @@ class EditSettings extends Page implements HasForms
         });
 
         Setting::upsert($records, ['key'], ['value']);
+
+        // If the stop words have changed, kick off a reindex
+        if($oldStopWords !== Setting::get('search.stop_words')) {
+            $user = auth()->user();
+            ReindexSearch::dispatch($user);
+            Notification::make()
+                ->title('Stop words updated, commencing search re-index')
+                ->warning()
+                ->send();
+        }
 
         // Clear the config cache
         Artisan::call('config:clear');
