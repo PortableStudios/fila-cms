@@ -19,6 +19,7 @@ providers:
   - Overtrue\LaravelVersionable\ServiceProvider
   - Laravel\Socialite\SocialiteServiceProvider
   - Laravel\Scout\ScoutServiceProvider
+  - Spatie\Health\HealthServiceProvider
 
 migrations:
   - workbench/database/migrations

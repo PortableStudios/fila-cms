@@ -41,12 +41,23 @@ use Portable\FilaCms\Listeners\UserVerifiedListener;
 use Portable\FilaCms\Models\Setting;
 use Portable\FilaCms\Observers\AuthenticatableObserver;
 use Portable\FilaCms\Services\MediaLibrary;
+use Spatie\Health\Checks\Checks\DatabaseCheck;
+use Spatie\Health\Checks\Checks\HorizonCheck;
+use Spatie\Health\Checks\Checks\MeiliSearchCheck;
+use Spatie\Health\Checks\Checks\RedisCheck;
+use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
+use Spatie\Health\Facades\Health;
+use Spatie\Health\HealthServiceProvider;
+use Spatie\Health\ResultStores\InMemoryHealthResultStore;
 use Spatie\ScheduleMonitor\Models\MonitoredScheduledTaskLogItem;
 
 class FilaCmsServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->registerHealthChecks();
+        $this->loadSettings();
+
         $this->app->booted(function ($app) {
             $schedule = $app->make('Illuminate\Console\Scheduling\Schedule');
             $schedule->command('fila-cms:generate-sitemap')->daily();
@@ -56,7 +67,6 @@ class FilaCmsServiceProvider extends ServiceProvider
 
 
         $this->bootLinkedInSocialite();
-        $this->loadSettings();
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -262,14 +272,28 @@ class FilaCmsServiceProvider extends ServiceProvider
             }
         }
 
-        if('settings.monitoring.sentry.dsn') {
+        if(config('settings.monitoring.sentry.dsn')) {
             config(['sentry.dsn' => config('settings.monitoring.sentry.dsn')]);
         }
 
-        if('monitoring.ohdear.enabled') {
+        if(config('settings.monitoring.ohdear.enabled')) {
             config(['schedule-monitor.api_token' => config('settings.monitoring.ohdear.api_token')]);
             config(['schedule-monitor.site_id' => config('settings.monitoring.ohdear.site_id')]);
             config(['schedule-monitor.queue' => env('OH_DEAR_QUEUE', 'default')]);
+
+            config(['health.oh_dear_endpoint' => [
+                'enabled' => true,
+                'always_send_fresh_results' => true,
+                'secret' => config('settings.monitoring.ohdear.health_check_secret'),
+                'url' => '/oh-dear-health-check-results'
+            ]]);
+
+            config(['health.notifications.enabled' => false]);
+            config(['health.result_stores' => [InMemoryHealthResultStore::class]]);
+
+            // Reboot the health package with our configs
+            $healthProvider = app()->getProviders(HealthServiceProvider::class);
+            collect($healthProvider)->first()?->packageBooted();
         }
 
         return true;
@@ -367,14 +391,17 @@ class FilaCmsServiceProvider extends ServiceProvider
                 })
                 ->helperText(new HtmlString(
                     'You can generate an API token at the Oh Dear ' .
-                    '<a href="https://ohdear.app/user/api-tokens">user settings screen</a>"'
+                    '<a href="https://ohdear.app/user/api-tokens">user settings screen</a>'
                 ))
                 ->live(),
                 TextInput::make('monitoring.ohdear.site_id')->label('Site ID')->disabled(function (Get $get) {
                     return $get('monitoring.ohdear.enabled') !== true;
                 })
                 ->helperText("You'll find this id on the settings page of a site at Oh Dear.")
-                ->live()
+                ->live(),
+                TextInput::make('monitoring.ohdear.health_check_secret')->label('Health Check Secret')->disabled(function (Get $get) {
+                    return $get('monitoring.ohdear.enabled') !== true;
+                })
             ];
         });
 
@@ -411,5 +438,27 @@ class FilaCmsServiceProvider extends ServiceProvider
                 );
             }
         );
+    }
+
+    protected function registerHealthChecks()
+    {
+        if(app()->runningUnitTests()) {
+            return;
+        }
+
+        $checks = [
+            UsedDiskSpaceCheck::new(),
+            DatabaseCheck::new(),
+            MeiliSearchCheck::new(),
+        ];
+        // Check if we're using Redis
+        if (config('cache.default') === 'redis' || config('session.driver') === 'redis' || config('queue.default') === 'redis') {
+            $checks[] = RedisCheck::new();
+        }
+
+        if(config('queue.default') === 'redis') {
+            $checks[] = HorizonCheck::new();
+        }
+        Health::checks($checks);
     }
 }

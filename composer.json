@@ -51,7 +51,8 @@
         "stevebauman/purify": "^6.2",
         "schmeits/filament-character-counter": "^1.2",
         "sentry/sentry-laravel": "^4.7",
-        "spatie/laravel-schedule-monitor": "^3.8"
+        "spatie/laravel-schedule-monitor": "^3.8",
+        "spatie/laravel-health": "^1.29"
     },
     "require-dev": {
         "laravel/sanctum": "^3.3",
