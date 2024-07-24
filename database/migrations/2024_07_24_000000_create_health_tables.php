@@ -30,4 +30,10 @@ return new class () extends Migration {
             $table->index('batch');
         });
     }
+
+    public function down()
+    {
+        $tableName = EloquentHealthResultStore::getHistoryItemInstance()->getTable();
+        Schema::drop($tableName);
+    }
 };
