@@ -2,11 +2,14 @@
 
 namespace Portable\FilaCms\Commands;
 
+use Illuminate\Bus\Queueable;
 use Illuminate\Console\Command;
 use Portable\FilaCms\Facades\FilaCms;
 
 class SyncSearch extends Command
 {
+    use Queueable;
+
     protected $signature = 'fila-cms:sync-search';
 
     protected $description = 'Sync search settings, flush indexes and reimport content models';

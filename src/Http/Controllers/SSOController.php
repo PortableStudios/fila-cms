@@ -76,6 +76,7 @@ class SSOController extends Controller
             $user = $userModel::withTrashed()->find($ssoLink->user_id);
             $user->roles()->detach();
             $user->restore();
+            $ssoLink->refresh();
         }
 
         Auth::login($ssoLink->user);

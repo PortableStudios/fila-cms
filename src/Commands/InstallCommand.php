@@ -29,6 +29,10 @@ class InstallCommand extends CommandsInstallCommand
         $this->call('vendor:publish', ['--tag' => "seo-config"]);
         $this->call('vendor:publish', ['--tag' => "config"]);
         $this->call('vendor:publish', ['--tag' => "filament-actions-migrations"]);
+        $this->call('vendor:publish', [
+            '--provider' => "Spatie\ScheduleMonitor\ScheduleMonitorServiceProvider",
+            '--tag' => "schedule-monitor-migrations"
+        ]);
 
         $this->info('Installed Spatie Permissions. Installing Fila CMS Config...');
 

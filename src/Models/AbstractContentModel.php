@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Kenepa\ResourceLock\Models\Concerns\HasLocks;
 use Laravel\Scout\Searchable;
-use Overtrue\LaravelVersionable\Version;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
 use Portable\FilaCms\Contracts\HasSlug;
@@ -23,6 +22,7 @@ use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasShortUrl;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
+use Portable\FilaCms\Models\Traits\ProvidesSearchSettings;
 use Portable\FilaCms\Versionable\FilaCmsVersion;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
@@ -40,6 +40,7 @@ abstract class AbstractContentModel extends Model
     use HasContentRoles;
     use HasSlug;
     use Searchable;
+    use ProvidesSearchSettings;
 
     protected $table = 'contents';
 
@@ -91,22 +92,6 @@ abstract class AbstractContentModel extends Model
     public function getVersionUserId()
     {
         return auth()->user() ? auth()->user()->id : FilaCms::systemUser()->id;
-    }
-
-    // This is overriden from Overtrue's Versionable trait
-    // in order to run the query without scopes
-    public function createInitialVersion(Model $model): Version
-    {
-        /** @var \Overtrue\LaravelVersionable\Versionable|Model $refreshedModel */
-        $refreshedModel = static::query()->withoutGlobalScopes()->findOrFail($model->getKey());
-
-        /**
-         * As initial version should include all $versionable fields,
-         * we need to get the latest version from database.
-         */
-        $attributes = $refreshedModel->getSnapshotAttributes();
-
-        return Version::createForModel($refreshedModel, $attributes, $refreshedModel->updated_at);
     }
 
     public function shortDescription($length = 50, $omission = '...'): string

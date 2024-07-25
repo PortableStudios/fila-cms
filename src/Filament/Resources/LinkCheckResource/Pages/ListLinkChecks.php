@@ -6,6 +6,7 @@ use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Portable\FilaCms\Filament\Resources\LinkCheckResource;
 use Portable\FilaCms\Jobs\LinkChecker;
+use Filament\Notifications\Notification;
 
 class ListLinkChecks extends ListRecords
 {
@@ -27,6 +28,10 @@ class ListLinkChecks extends ListRecords
             Actions\Action::make('scan')
                 ->label('Check Links')
                 ->action(function () {
+                    Notification::make()
+                        ->title('Manual scan started')
+                        ->success()
+                        ->send();
                     $this->executeScan();
                 })
         ];
