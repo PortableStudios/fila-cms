@@ -7,6 +7,7 @@ use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Placeholder;
 use Illuminate\Support\HtmlString;
 use Portable\FilaCms\Facades\FilaCms;
+use Filament\Forms\Components\TextInput;
 
 class InformationBlock extends AbstractFormBlock
 {
@@ -23,6 +24,17 @@ class InformationBlock extends AbstractFormBlock
             FilaCms::tipTapEditor('contents')
                 ->label('Contents')
                 ->required(),
+            TextInput::make('field_name')
+                ->label('Information')
+                ->default('Information')
+                ->hidden()
+                ->readOnly()
+                ->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    if(empty($state)) {
+                        $component->state('Information');
+                    }
+                }),
             FormBuilder::formFieldId(),
         ];
     }
