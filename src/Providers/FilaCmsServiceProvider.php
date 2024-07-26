@@ -293,9 +293,9 @@ class FilaCmsServiceProvider extends ServiceProvider
         }
 
         if(config('settings.monitoring.ohdear.enabled')) {
-            config(['schedule-monitor.api_token' => config('settings.monitoring.ohdear.api_token')]);
-            config(['schedule-monitor.site_id' => config('settings.monitoring.ohdear.site_id')]);
-            config(['schedule-monitor.queue' => env('OH_DEAR_QUEUE', 'default')]);
+            config(['schedule-monitor.oh_dear.api_token' => config('settings.monitoring.ohdear.api_token')]);
+            config(['schedule-monitor.oh_dear.site_id' => config('settings.monitoring.ohdear.site_id')]);
+            config(['schedule-monitor.oh_dear.queue' => env('OH_DEAR_QUEUE', 'default')]);
 
             config(['health.oh_dear_endpoint' => [
                 'enabled' => true,
