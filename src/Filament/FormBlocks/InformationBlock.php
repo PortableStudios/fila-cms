@@ -5,9 +5,9 @@ namespace Portable\FilaCms\Filament\FormBlocks;
 use Closure;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Support\HtmlString;
 use Portable\FilaCms\Facades\FilaCms;
-use Filament\Forms\Components\TextInput;
 
 class InformationBlock extends AbstractFormBlock
 {
@@ -51,5 +51,12 @@ class InformationBlock extends AbstractFormBlock
     public static function displayValue($fieldData, $values): string
     {
         return tiptap_converter()->asHTML($fieldData['contents']);
+    }
+
+    public static function displayHtml($fieldData, $values): string
+    {
+        $value = static::displayValue($fieldData, $values);
+
+        return '<div>' . $value . '</div>';
     }
 }
