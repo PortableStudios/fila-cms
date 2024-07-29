@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Kenepa\ResourceLock\Models\Concerns\HasLocks;
-use Laravel\Scout\Searchable;
+use App\Models\Traits\Searchable;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
 use Portable\FilaCms\Contracts\HasSlug;
