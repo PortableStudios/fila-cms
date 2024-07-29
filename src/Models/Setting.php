@@ -17,6 +17,15 @@ class Setting extends Model
         'value'
     ];
 
+    public static function set($key, $value)
+    {
+        $setting = self::firstOrNew(['key' => $key]);
+        $setting->value = $value;
+        $setting->save();
+        Cache::forget('setting-' . $key);
+        Cache::set('setting-'. $key, $value);
+    }
+
     public static function get($key)
     {
         try {
