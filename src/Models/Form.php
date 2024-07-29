@@ -2,7 +2,6 @@
 
 namespace Portable\FilaCms\Models;
 
-use App\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Portable\FilaCms\Contracts\HasSlug;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\FormResource;
+use Portable\FilaCms\Models\Traits\Searchable;
 
 class Form extends Model
 {

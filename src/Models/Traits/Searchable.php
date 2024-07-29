@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Traits;
+namespace Portable\FilaCms\Models\Traits;
 
 use Laravel\Scout\Searchable as ScoutSearchable;
 
