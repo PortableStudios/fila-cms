@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Portable\FilaCms\Facades\FilaCms;
@@ -25,6 +26,11 @@ foreach (config('fila-cms.media_library.thumbnails') as $size => $dimensions) {
         ]);
     })->name('media.download');
 }
+
+Route::get('impersonate/leave', function () {
+    Auth::user()->leaveImpersonation();
+    return redirect(route('filament.admin.pages.dashboard'));
+})->name('impersonate.leave')->middleware('web');
 
 Route::post('purify', function () {
     return FilaCms::purifyHtml(request()->input('html'));

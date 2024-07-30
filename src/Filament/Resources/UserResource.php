@@ -7,14 +7,15 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Password as PasswordReset;
 use Portable\FilaCms\Filament\Resources\UserResource\Pages;
 use Portable\FilaCms\Filament\Resources\UserResource\RelationManagers;
 use Portable\FilaCms\Filament\Traits\IsProtectedResource;
 use Rawilk\FilamentPasswordInput\Password;
-use Filament\Tables\Columns\IconColumn;
 
 class UserResource extends AbstractConfigurableResource
 {
@@ -62,6 +63,34 @@ class UserResource extends AbstractConfigurableResource
     public static function table(Table $table): Table
     {
         static::$model = config('auth.providers.users.model');
+        $actions = [
+            Tables\Actions\EditAction::make(),
+            Action::make('send_reset_link')
+                ->label('Send Password Reset')
+                ->icon('heroicon-s-inbox')
+                ->action(function (Model $user) {
+                    PasswordReset::broker()->sendResetLink(['email' => $user->email]);
+                    Notification::make()
+                        ->title('Reset Link Sent')
+                        ->body('Password reset link has been sent to ' . $user->email)
+                        ->success()
+                        ->send();
+                })
+        ];
+
+        if(auth()->user()->can('impersonate users')) {
+            $actions[] = Action::make('impersonate')
+                ->label('Impersonate')
+                ->icon('heroicon-s-eye')
+                ->action(function (Model $user) {
+                    Auth::user()->impersonate($user);
+                    if($user->can('access filacms-backend')) {
+                        return redirect(route('filament.admin.pages.dashboard'));
+                    } else {
+                        return redirect('/');
+                    }
+                });
+        }
 
         $columns = static::getTableColumns();
 
@@ -82,20 +111,7 @@ class UserResource extends AbstractConfigurableResource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Action::make('send_reset_link')
-                    ->label('Send Password Reset')
-                    ->icon('heroicon-s-inbox')
-                    ->action(function (Model $user) {
-                        PasswordReset::broker()->sendResetLink(['email' => $user->email]);
-                        Notification::make()
-                            ->title('Reset Link Sent')
-                            ->body('Password reset link has been sent to ' . $user->email)
-                            ->success()
-                            ->send();
-                    })
-            ])
+            ->actions($actions)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

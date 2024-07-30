@@ -30,6 +30,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         $middleware = [
+            'web',
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
             StartSession::class,
@@ -44,6 +45,20 @@ class FilaCmsAdminPanelProvider extends PanelProvider
         if (config('fila-cms.auth.force_2fa', true)) {
             $middleware[] = TwoFactorMiddleware::class;
         }
+
+        $userMenu = [
+            MenuItem::make()
+                ->label('Settings')
+                ->url('/admin/user-settings')
+                ->icon('heroicon-o-cog-6-tooth'),
+            MenuItem::make()
+                ->label('Leave Impersonation')
+                ->icon('heroicon-o-arrow-left-start-on-rectangle')
+                ->url('/impersonate/leave')
+                ->visible(function () {
+                    return !is_null(app('impersonate')->isImpersonating());
+                })
+        ];
 
 
         return $panel
@@ -73,12 +88,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
                 'Taxonomies',
                 'System',
             ])
-            ->userMenuItems([
-                MenuItem::make()
-                    ->label('Settings')
-                    ->url('/admin/user-settings')
-                    ->icon('heroicon-o-cog-6-tooth')
-            ])
+            ->userMenuItems($userMenu)
             ->databaseNotifications()
             ->middleware($middleware)
             ->darkMode(config('fila-cms.admin_dark_mode', true))
