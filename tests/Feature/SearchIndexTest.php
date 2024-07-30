@@ -2,16 +2,14 @@
 
 namespace Portable\FilaCms\Tests\Unit;
 
-use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Event;
 use Portable\FilaCms\Filament\Resources\PageResource;
 use Portable\FilaCms\Models\Page;
+use Portable\FilaCms\Models\Setting;
 use Portable\FilaCms\Models\Taxonomy;
-use Portable\FilaCms\Tests\TestCase;
 
-use function Pest\Laravel\artisan;
+use Portable\FilaCms\Tests\TestCase;
 
 class SearchIndexTest extends TestCase
 {
@@ -40,25 +38,22 @@ class SearchIndexTest extends TestCase
         $this->assertEquals([], $filterableAttributes);
     }
 
-    public function test_no_stop_words()
+    public function test_stop_search()
     {
-        $meili = app(\Laravel\Scout\EngineManager::class)->createMeilisearchDriver();
-        $stopWords = $meili->index('pages')->getStopWords();
-        $this->assertEquals([], $stopWords);
-    }
+        Page::factory()->isPublished()->create(['title' => 'flighty parrots']);
+        Page::factory()->isPublished()->create(['title' => 'flighty finches']);
 
-    public function test_set_stop_words()
-    {
+        $flightyParrotSearch = Page::search('flighty parrots')->raw();
+        $this->assertEquals($flightyParrotSearch['query'], 'flighty parrots');
+        $flightySearch = Page::search('flighty')->raw();
+        $this->assertEquals($flightySearch['query'], 'flighty');
+
         $stopWords = ['parrots'];
-        config(['settings.search.stop-words' => json_encode($stopWords)]);
+        Setting::set('settings.search.stop_words', json_encode($stopWords));
 
-        artisan('fila-cms:sync-search')->assertExitCode(0);
-        $input = new \Symfony\Component\Console\Input\ArrayInput([]);
-        $output = new \Symfony\Component\Console\Output\BufferedOutput();
-        Event::dispatch(new CommandFinished('fila-cms:sync-search', $input, $output, 0));
-
-        $meili = app(\Laravel\Scout\EngineManager::class)->createMeilisearchDriver();
-        $stopWords = $meili->index('pages')->getStopWords();
-        $this->assertEquals(['parrots'], $stopWords);
+        $flightyParrotSearch = Page::search('flighty parrots')->raw();
+        $this->assertEquals($flightyParrotSearch['query'], 'flighty');
+        $flightySearch = Page::search('flighty')->raw();
+        $this->assertEquals($flightySearch['query'], 'flighty');
     }
 }
