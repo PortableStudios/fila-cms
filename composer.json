@@ -52,7 +52,8 @@
         "schmeits/filament-character-counter": "^1.2",
         "sentry/sentry-laravel": "^4.7",
         "spatie/laravel-schedule-monitor": "^3.8",
-        "spatie/laravel-health": "^1.29"
+        "spatie/laravel-health": "^1.29",
+        "lab404/laravel-impersonate": "^1.7"
     },
     "require-dev": {
         "laravel/sanctum": "^3.3",

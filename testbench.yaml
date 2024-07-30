@@ -20,6 +20,7 @@ providers:
   - Laravel\Socialite\SocialiteServiceProvider
   - Laravel\Scout\ScoutServiceProvider
   - Spatie\Health\HealthServiceProvider
+  - Lab404\Impersonate\ImpersonateServiceProvider
 
 migrations:
   - workbench/database/migrations

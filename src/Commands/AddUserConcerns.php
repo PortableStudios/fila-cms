@@ -4,12 +4,13 @@ namespace Portable\FilaCms\Commands;
 
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\File;
+use Lab404\Impersonate\Models\Impersonate;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Portable\FilaCms\Contracts\HasLogin;
 use ReflectionClass;
 use Spatie\Permission\Traits\HasRoles;
-use Portable\FilaCms\Contracts\HasLogin;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class AddUserConcerns extends Command
 {
@@ -30,6 +31,7 @@ class AddUserConcerns extends Command
             HasLogin::class,
             SoftDeletes::class,
             TwoFactorAuthenticatable::class,
+            Impersonate::class,
         ];
 
         $interfaces = [
@@ -95,6 +97,14 @@ class AddUserConcerns extends Command
             $part2 = substr($userContents, $part1End);
 
             $userContents = $part1 . "\n\n    public function canAccessPanel(\$panel): bool\n    {\n        // This is required on Front and Back end.  Add more specific controls with authenticate middleware.\n        return true;\n    }\n\n" . $part2;
+        }
+
+        if(!strpos($userContents, 'canImpersonate')) {
+            $part1End = strrpos($userContents, '}');
+            $part1 = substr($userContents, 0, $part1End);
+            $part2 = substr($userContents, $part1End);
+
+            $userContents = $part1 . "\n\n    public function canImpersonate()\n    {\n        return \$this->can('impersonate users');\n    }\n\n" . $part2;
         }
 
         if ($dryRun) {

@@ -47,7 +47,8 @@ class RoleAndPermissionSeeder extends Seeder
             ['name' => 'view menus'],
             ['name' => 'manage menus'],
             ['name' => 'view link checks'],
-            ['name' => 'manage link checks']
+            ['name' => 'manage link checks'],
+            ['name' => 'impersonate users']
         ];
 
         foreach ($permissions as $permission) {

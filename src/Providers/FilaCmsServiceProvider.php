@@ -64,6 +64,20 @@ class FilaCmsServiceProvider extends ServiceProvider
         $this->registerHealthChecks();
         $this->loadSettings();
 
+        Event::listen(
+            \Lab404\Impersonate\Events\TakeImpersonation::class,
+            function (\Lab404\Impersonate\Events\TakeImpersonation $event) {
+                session()->put('password_hash_' . auth()->getDefaultDriver(), $event->impersonated->getAuthPassword());
+            }
+        );
+
+        Event::listen(
+            \Lab404\Impersonate\Events\LeaveImpersonation::class,
+            function (\Lab404\Impersonate\Events\LeaveImpersonation  $event) {
+                session()->put('password_hash_' . auth()->getDefaultDriver(), $event->impersonator->getAuthPassword());
+            }
+        );
+
         $this->app->booted(function ($app) {
             $schedule = $app->make('Illuminate\Console\Scheduling\Schedule');
             $schedule->command('fila-cms:generate-sitemap')->daily();
