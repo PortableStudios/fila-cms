@@ -30,7 +30,6 @@ class FilaCmsAdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         $middleware = [
-            'web',
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
             StartSession::class,
