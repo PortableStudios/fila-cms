@@ -33,7 +33,7 @@ trait Searchable
      */
     protected static function removeStopWords($query)
     {
-        $stopWords = json_decode(Setting::get('settings.search.stop_words'));
+        $stopWords = json_decode(Setting::get('search.stop_words'));
         if (empty($stopWords) || !is_array($stopWords)) {
             return $query;
         }
