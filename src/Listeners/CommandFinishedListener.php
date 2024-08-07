@@ -15,7 +15,7 @@ class CommandFinishedListener
             // Now update the stop words for all the models
             // that are searchable
             $indexes = config('scout.meilisearch.index-settings');
-            $stopWords = json_decode(\Portable\FilaCms\Models\Setting::get('settings.search.stop_words'));
+            $stopWords = json_decode(\Portable\FilaCms\Models\Setting::get('search.stop_words'));
             if(!is_array($stopWords)) {
                 $stopWords = [];
             }
