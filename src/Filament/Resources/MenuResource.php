@@ -18,7 +18,7 @@ class MenuResource extends AbstractResource
 
     protected static ?string $model = Menu::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bars-3';
     protected static ?string $navigationGroup = 'Content';
 
     public static function form(Form $form): Form
@@ -45,9 +45,7 @@ class MenuResource extends AbstractResource
                 TextColumn::make('note')->label('Note'),
                 TextColumn::make('items.count')->label('Items'),
             ])
-            ->filters([
-
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
