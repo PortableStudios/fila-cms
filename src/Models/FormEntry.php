@@ -41,7 +41,7 @@ class FormEntry extends Model
     public function displayHtml(): Attribute
     {
         return new Attribute(function () {
-            return FormBuilder::getDisplayFields($this->fields, $this->values);
+            return FormBuilder::getDisplayFields($this->fields, $this->values['newEvent']);
         });
     }
 }
