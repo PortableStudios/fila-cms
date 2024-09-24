@@ -50,12 +50,14 @@ class MakeContentResource extends Command
         $listResourcePageClass = 'List' . Str::plural($model);
         $createResourcePageClass = 'Create' . $model;
         $editResourcePageClass = 'Edit' . $model;
+        $reviseResourcePageClass = $model . 'Revisions';
 
         $resourcePath = "{$baseResourcePath}.php";
         $resourcePagesDirectory = "{$baseResourcePath}/Pages";
         $listResourcePagePath = "{$resourcePagesDirectory}/{$listResourcePageClass}.php";
         $createResourcePagePath = "{$resourcePagesDirectory}/{$createResourcePageClass}.php";
         $editResourcePagePath = "{$resourcePagesDirectory}/{$editResourcePageClass}.php";
+        $reviseResourcePagePath = "{$resourcePagesDirectory}/{$reviseResourcePageClass}.php";
 
         $this->copyStubToApp('Resources/ContentResource', $resourcePath, [
             'class' => $model,
@@ -76,6 +78,12 @@ class MakeContentResource extends Command
         ]);
 
         $this->copyStubToApp('Resources/ContentResource/Pages/ListResources', $listResourcePagePath, [
+            'class' => $model,
+            'pluralClass' => Str::plural($model),
+            'model' => $model,
+        ]);
+
+        $this->copyStubToApp('Resources/ContentResource/Pages/ResourceRevisions', $reviseResourcePagePath, [
             'class' => $model,
             'pluralClass' => Str::plural($model),
             'model' => $model,
