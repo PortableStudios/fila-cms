@@ -15,7 +15,9 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Console\Events\CommandStarting;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
@@ -218,6 +220,10 @@ class FilaCmsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../../config/fila-cms.php' => config_path('fila-cms.php'),
         ], 'fila-cms-config');
+
+        $this->publishes([
+            __DIR__.'/../database/stubs/create_content_roles.php.stub' => $this->getMigrationFileName('create_content_roles.php'),
+        ], 'fila-cms-migrations');
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
@@ -495,5 +501,21 @@ class FilaCmsServiceProvider extends ServiceProvider
             $checks[] = HorizonCheck::new();
         }
         Health::checks($checks);
+    }
+
+
+    /**
+     * Returns existing migration file if found, else uses the current timestamp.
+     */
+    protected function getMigrationFileName(string $migrationFileName): string
+    {
+        $timestamp = date('Y_m_d_His');
+
+        $filesystem = $this->app->make(Filesystem::class);
+
+        return Collection::make([$this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR])
+            ->flatMap(fn ($path) => $filesystem->glob($path.'*_'.$migrationFileName))
+            ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
+            ->first();
     }
 }

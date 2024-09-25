@@ -18,6 +18,7 @@ class MakeContentResourceTest extends TestCase
         $this->assertFileExists(app_path('Filament/Resources/MyContentResource/Pages/ListMyContents.php'));
         $this->assertFileExists(app_path('Filament/Resources/MyContentResource/Pages/EditMyContent.php'));
         $this->assertFileExists(app_path('Filament/Resources/MyContentResource/Pages/CreateMyContent.php'));
+        $this->assertFileExists(app_path('Filament/Resources/MyContentResource/Pages/MyContentRevisions.php'));
     }
 
     public function test_creates_resource_no_argument(): void

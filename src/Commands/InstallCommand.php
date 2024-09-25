@@ -39,6 +39,8 @@ class InstallCommand extends CommandsInstallCommand
         if ($this->option('publish-config') || ($this->ask('Would you like to publish the FilaCMS config?(Y/n)', 'Y') == 'Y')) {
             $this->call('vendor:publish', ['--tag' => 'fila-cms-config']);
         }
+        $this->call('vendor:publish', ['--tag' => "fila-cms-migrations"]);
+
         // we need this for revisionable package
         $this->call('vendor:publish', ['--tag' => 'migrations']);
         $this->call('vendor:publish', ['--tag' => 'resource-lock-migrations']);
