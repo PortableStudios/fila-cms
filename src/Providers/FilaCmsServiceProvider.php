@@ -221,8 +221,10 @@ class FilaCmsServiceProvider extends ServiceProvider
             __DIR__ . '/../../config/fila-cms.php' => config_path('fila-cms.php'),
         ], 'fila-cms-config');
 
+        $file = (__DIR__.'/../../database/stubs/create_content_roles.php.stub');
+
         $this->publishes([
-            __DIR__.'/../database/stubs/create_content_roles.php.stub' => $this->getMigrationFileName('create_content_roles.php'),
+            $file => $this->getMigrationFileName('create_content_roles.php'),
         ], 'fila-cms-migrations');
 
         // use the vendor configuration file as fallback
