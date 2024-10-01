@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
+use Portable\FilaCms\Database\Seeders\RoleAndPermissionSeeder;
 use Portable\FilaCms\Filament\Actions\CloneAction;
 use Portable\FilaCms\Filament\Resources\PageResource\Pages\ListPages;
 use Portable\FilaCms\Models\Author;
@@ -24,6 +25,7 @@ class PageTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->artisan('db:seed', ['--class' => RoleAndPermissionSeeder::class]);
         $this->userModel = config('auth.providers.users.model');
         $user = $this->userModel::create([
             'name'  => 'Jeremy Layson',
