@@ -55,8 +55,10 @@ class LinkChecker implements ShouldQueue
         // Since the models are inserted one at a time
         // the notification checker always gets triggered
         // So I have to move it here to avoid that
+        $user = request()->user();
+
         foreach ($collectedLinks as $key => $linkModel) {
-            CheckLink::dispatch($linkModel);
+            CheckLink::dispatch($user, $linkModel);
         }
     }
 

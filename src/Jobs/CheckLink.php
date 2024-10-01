@@ -2,7 +2,6 @@
 
 namespace Portable\FilaCms\Jobs;
 
-use Filament\Notifications\Notification;
 use GuzzleHttp\TransferStats;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,6 +10,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Portable\FilaCms\Models\LinkCheck;
+use Illuminate\Support\Facades\Notification;
+use Portable\FilaCms\Notifications\ScanCompleteNotification;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class CheckLink implements ShouldQueue
 {
@@ -23,6 +25,7 @@ class CheckLink implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
+        public Authenticatable $user,
         public LinkCheck $linkCheck,
     ) {
     }
@@ -53,10 +56,7 @@ class CheckLink implements ShouldQueue
 
         // Was this the last check in the batch?  If so, send a notification
         if ($this->linkCheck->batchComplete()) {
-            Notification::make()
-                ->title('Links has been successfully rechecked')
-                ->success()
-                ->send();
+            Notification::send($this->user, new ScanCompleteNotification());
         }
     }
 }
