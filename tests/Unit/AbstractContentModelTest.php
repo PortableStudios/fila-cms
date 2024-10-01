@@ -16,6 +16,35 @@ class AbstractContentModelTest extends TestCase
 
     protected $author = null;
 
+    public function test_duplicate_slugs_prevented()
+    {
+        $page = Page::factory()->create();
+        $page2 = Page::factory()->create(['title' => $page->title, 'slug' => $page->slug]);
+
+        $this->assertNotEquals($page->slug, $page2->slug);
+    }
+
+    public function test_can_edit_slugs_dont_change()
+    {
+        $page = Page::factory()->create();
+        $originalSlug = $page->slug;
+        $page->title = $this->faker->sentence;
+        $page->save();
+        $page->refresh();
+
+        $this->assertEquals($originalSlug, $page->slug);
+    }
+
+    public function test_can_supply_slug()
+    {
+        $page = Page::factory()->create();
+        $page->slug = 'test-slug';
+        $page->save();
+        $page->refresh();
+
+        $this->assertEquals('test-slug', $page->slug);
+    }
+
     public function test_with_pending()
     {
         $page = Page::factory()->create();

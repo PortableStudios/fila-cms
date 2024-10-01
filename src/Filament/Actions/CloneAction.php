@@ -27,7 +27,6 @@ class CloneAction extends Action
         $this->action(function (Model $record): void {
             $model = get_class($record);
             $data = $record->toArray();
-            $data['slug'] = $this->getNewSlug($model, $data['slug']);
             $data['title'] = '[CLONE] ' . $data['title'];
             $data['is_draft'] = true;
 
@@ -96,28 +95,5 @@ class CloneAction extends Action
         }
 
         return $newData;
-    }
-
-    protected function getNewSlug($model, $slug)
-    {
-        $newSlug = $slug;
-
-        // if there is a -clone already, then append 1 or increment
-        $result = $model::withoutGlobalScopes()->where('slug', $newSlug)->first();
-
-        $count = 1;
-        while ($result != null) {
-            $incrementedSlug = $newSlug . '-' . $count;
-
-            $result = $model::withoutGlobalScopes()->where('slug', $incrementedSlug)->first();
-            $count++;
-
-            if ($result == null) {
-                $newSlug = $incrementedSlug;
-                break;
-            }
-        }
-
-        return $newSlug;
     }
 }
