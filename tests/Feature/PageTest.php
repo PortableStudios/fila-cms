@@ -110,7 +110,8 @@ class PageTest extends TestCase
 
     public function test_clone(): void
     {
-        $this->actingAs($this->userModel);
+        $user = $this->userModel::first();
+        $this->actingAs($user);
         $page = Page::factory()->create([
             'is_draft' => 0,
             'publish_at' => $this->faker->dateTimeBetween('-1 week', '-1 day'),
