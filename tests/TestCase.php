@@ -9,12 +9,16 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Orchestra\Testbench\Attributes\WithMigration;
 use Orchestra\Testbench\Concerns\WithWorkbench;
+use Portable\FilaCms\Database\Seeders\RoleAndPermissionSeeder;
 
 #[WithMigration]
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     use RefreshDatabase;
     use WithWorkbench;
+
+    protected $seeder = RoleAndPermissionSeeder::class;
+    protected $seed = true;
 
     protected static $hasInstalled = false;
 

@@ -6,9 +6,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Livewire\Livewire;
+use Portable\FilaCms\Filament\Actions\CloneAction;
+use Portable\FilaCms\Filament\Resources\PageResource\Pages\ListPages;
 use Portable\FilaCms\Models\Author;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Tests\TestCase;
+use Spatie\Permission\Models\Role;
 
 class PageTest extends TestCase
 {
@@ -26,8 +30,10 @@ class PageTest extends TestCase
             'email' => 'jeremy.layson@portable.com.au',
             'password'  => 'password'
         ]);
+        $adminRole = Role::where('name', 'Admin')->first();
+        $user->assignRole($adminRole);
 
-        $this->be($user);
+        $this->actingAs($user);
 
         Author::create([
             'first_name'    => 'Portable',
@@ -100,6 +106,20 @@ class PageTest extends TestCase
         ]);
 
         $this->assertEquals($page->status, 'Published');
+    }
+
+    public function test_clone(): void
+    {
+        $page = Page::factory()->create([
+            'is_draft' => 0,
+            'publish_at' => $this->faker->dateTimeBetween('-1 week', '-1 day'),
+            'expire_at' => $this->faker->dateTimeBetween('+1 day', '+1 week'),
+        ]);
+
+        Livewire::test(ListPages::class)->callTableAction(CloneAction::class, $page->id);
+
+        $this->assertDatabaseHas('pages', [ 'title' => '[CLONE] ' . $page->title ]);
+        $this->assertDatabaseHas('pages', [ 'slug' => $page->slug . '-1' ]);
     }
 
     public function test_expired_status(): void
