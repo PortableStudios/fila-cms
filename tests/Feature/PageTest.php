@@ -111,7 +111,9 @@ class PageTest extends TestCase
     public function test_clone(): void
     {
         $user = $this->userModel::first();
-        $user->assignRole('Admin');
+        $adminRole = Role::where('name', 'Admin')->first();
+        $this->assertNotNull($adminRole);
+        $user->assignRole($adminRole);
         $this->actingAs($user);
         $page = Page::factory()->create([
             'is_draft' => 0,
