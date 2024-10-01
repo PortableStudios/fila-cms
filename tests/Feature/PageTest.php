@@ -110,12 +110,12 @@ class PageTest extends TestCase
 
     public function test_clone(): void
     {
+        $this->actingAs($this->userModel);
         $page = Page::factory()->create([
             'is_draft' => 0,
             'publish_at' => $this->faker->dateTimeBetween('-1 week', '-1 day'),
             'expire_at' => $this->faker->dateTimeBetween('+1 day', '+1 week'),
         ]);
-
         Livewire::test(ListPages::class)->callTableAction(CloneAction::class, $page->id);
 
         $this->assertDatabaseHas('pages', [ 'title' => '[CLONE] ' . $page->title ]);
