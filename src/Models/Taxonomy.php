@@ -23,11 +23,13 @@ class Taxonomy extends Model
     protected $versionable = [
         'name',
         'taxonomy_resources',
+        'order',
     ];
 
     protected $fillable = [
         'name',
         'code',
+        'order',
     ];
 
     protected $appends = [
@@ -38,7 +40,7 @@ class Taxonomy extends Model
 
     public function terms()
     {
-        return $this->hasMany(TaxonomyTerm::class, 'taxonomy_id');
+        return $this->hasMany(TaxonomyTerm::class, 'taxonomy_id')->orderBy('order');
     }
 
     public function resources()
@@ -55,16 +57,16 @@ class Taxonomy extends Model
 
     public function newQuery(): Builder
     {
-        return parent::newQuery();
+        return parent::newQuery()->orderBy('order');
     }
 
     public static function booted(): void
     {
-        // static::created(function (Taxonomy $item) {
-        //     // auto-add order with end of list
-        //     $count = Taxonomy::max('order');
-        //     $item->order = $count + 1;
-        //     $item->save();
-        // });
+        static::created(function (Taxonomy $item) {
+            // auto-add order with end of list
+            $count = Taxonomy::max('order');
+            $item->order = $count + 1;
+            $item->save();
+        });
     }
 }
