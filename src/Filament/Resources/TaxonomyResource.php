@@ -125,7 +125,8 @@ class TaxonomyResource extends AbstractResource
                 ]),
             ])
             ->defaultSort('order')
-            ->reorderable('order', auth()->user()->can('manage taxonomies'));
+            ->authorizeReorder(auth()->user()->can('manage taxonomies'))
+            ->reorderable('order');
     }
 
     public static function getRelations(): array
