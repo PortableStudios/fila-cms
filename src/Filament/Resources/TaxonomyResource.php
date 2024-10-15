@@ -37,7 +37,7 @@ class TaxonomyResource extends AbstractResource
             ->parentItem(static::getNavigationParentItem())
             ->icon(static::getNavigationIcon())
             ->activeIcon(static::getActiveNavigationIcon())
-            ->isActiveWhen(fn() => request()->routeIs(static::getRouteBaseName() . '.index'))
+            ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName() . '.index'))
             ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
             ->badgeTooltip(static::getNavigationBadgeTooltip())
             ->sort(static::getNavigationSort())
@@ -50,7 +50,7 @@ class TaxonomyResource extends AbstractResource
                 ->group(static::getNavigationGroup())
                 ->parentItem(static::getNavigationParentItem())
                 ->icon('heroicon-o-square-2-stack')
-                ->isActiveWhen(fn() => request()->routeIs(static::getRouteBaseName() . '.edit') && request()->route('record') == $taxonomy->id)
+                ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName() . '.edit') && request()->route('record') == $taxonomy->id)
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->badgeTooltip(static::getNavigationBadgeTooltip())
                 ->sort(static::getNavigationSort())
@@ -63,7 +63,7 @@ class TaxonomyResource extends AbstractResource
             ->group(static::getNavigationGroup())
             ->parentItem(static::getNavigationParentItem())
             ->icon('heroicon-o-plus-circle')
-            ->isActiveWhen(fn() => request()->routeIs(static::getRouteBaseName() . '.create'))
+            ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName() . '.create'))
             ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
             ->badgeTooltip(static::getNavigationBadgeTooltip())
             ->sort(static::getNavigationSort())
@@ -108,11 +108,11 @@ class TaxonomyResource extends AbstractResource
                 Tables\Columns\TextColumn::make('terms')
                     ->sortable()
                     ->badge()
-                    ->color(fn(string $state): string => $state > 0 ? 'primary' : 'gray')
-                    ->state(fn(Taxonomy $record): float => $record->terms->count()),
+                    ->color(fn (string $state): string => $state > 0 ? 'primary' : 'gray')
+                    ->state(fn (Taxonomy $record): float => $record->terms->count()),
             ])
             ->reorderRecordsTriggerAction(
-                fn(Tables\Actions\Action $action, bool $isReordering) => $action
+                fn (Tables\Actions\Action $action, bool $isReordering) => $action
                     ->button()
                     ->label($isReordering ? 'Disable reordering' : 'Enable reordering'),
             )

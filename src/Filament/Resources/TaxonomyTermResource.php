@@ -123,7 +123,7 @@ class TaxonomyTermResource extends AbstractResource
                 ]),
             ])
             ->reorderRecordsTriggerAction(
-                fn(Tables\Actions\Action $action, bool $isReordering) => $action
+                fn (Tables\Actions\Action $action, bool $isReordering) => $action
                     ->button()
                     ->label($isReordering ? 'Finish reordering' : 'Reorder terms'),
             )

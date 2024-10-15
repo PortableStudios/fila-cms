@@ -6,7 +6,6 @@ use Filament\Actions\DeleteAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
-use Mockery;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource\Pages\EditTaxonomy;
 use Portable\FilaCms\Filament\Resources\TaxonomyResource\RelationManagers\TermsRelationManager;
 use Portable\FilaCms\Models\Page;
