@@ -21,7 +21,7 @@ class AuthorResource extends AbstractResource
 
     protected static ?string $model = Author::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -34,12 +34,12 @@ class AuthorResource extends AbstractResource
             Fieldset::make()
                 ->schema([
                     TextInput::make('first_name')
-                        ->label(fn(Get $get) => $get('is_individual') ? 'First Name' : 'Organization Name')
-                        ->required()
-                        ->autofocus(),
+                            ->label(fn (Get $get) => $get('is_individual') ? 'First Name' : 'Organization Name')
+                            ->required()
+                            ->autofocus(),
                     TextInput::make('last_name')
                         ->label('Last Name')
-                        ->visible(fn(Get $get) => $get('is_individual') ? true : false),
+                        ->visible(fn (Get $get) => $get('is_individual') ? true : false),
                 ])
                 ->columns(2),
             Toggle::make('is_individual')
@@ -56,9 +56,11 @@ class AuthorResource extends AbstractResource
             ->columns([
                 TextColumn::make('display_name')->sortable(),
                 IconColumn::make('is_individual')->label('Category')
-                    ->icon(fn(bool $state) => $state ? 'heroicon-m-user' : 'heroicon-m-user-group'),
+                    ->icon(fn (bool $state) => $state ? 'heroicon-m-user' : 'heroicon-m-user-group'),
             ])
-            ->filters([])
+            ->filters([
+
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
