@@ -80,7 +80,7 @@ class FormEntryResource extends AbstractResource
                 ->label($fieldName)
                 ->getStateUsing(function ($record) use ($fieldId) {
                     $fieldId = trim($fieldId);
-                    $value = isset($record->values[$fieldId]) ? $record->values[$fieldId] : '';
+                    $value = isset($record->values['newEvent'][$fieldId]) ? $record->values['newEvent'][$fieldId] : '';
                     if (is_array($value)) {
                         try {
                             $value = tiptap_converter()->asText($value);

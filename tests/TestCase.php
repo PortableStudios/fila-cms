@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Orchestra\Testbench\Attributes\WithMigration;
 use Orchestra\Testbench\Concerns\WithWorkbench;
+use Portable\FilaCms\Database\Seeders\RoleAndPermissionSeeder;
 
 #[WithMigration]
 abstract class TestCase extends \Orchestra\Testbench\TestCase
@@ -54,6 +55,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         File::copy(getcwd() . '/resources/css/filacms.css', resource_path('css/filacms.css'));
         File::copy(getcwd() . '/package.json', resource_path('../package.json'));
         Process::path(app_path())->run('npm run build');
+
+        $this->artisan('db:seed', ['--class' => RoleAndPermissionSeeder::class]);
     }
 
     protected function defineEnvironment($app)

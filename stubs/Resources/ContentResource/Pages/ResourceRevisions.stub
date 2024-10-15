@@ -1,0 +1,10 @@
+<?php
+namespace App\Filament\Resources\{{ class }}Resource\Pages;
+
+use Portable\FilaCms\Filament\Resources\AbstractContentResource\Pages\AbstractContentResourceRevisions;
+use Portable\FilaCms\Filament\Resources\PageResource;
+
+class {{ class }}Revisions extends AbstractContentResourceRevisions
+{
+    protected static string $resource = {{ class }}Resource::class;
+}

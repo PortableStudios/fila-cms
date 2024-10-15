@@ -21,6 +21,7 @@ providers:
   - Laravel\Scout\ScoutServiceProvider
   - Spatie\Health\HealthServiceProvider
   - Lab404\Impersonate\ImpersonateServiceProvider
+  - Schmeits\FilamentCharacterCounter\FilamentCharacterCounterServiceProvider
 
 migrations:
   - workbench/database/migrations

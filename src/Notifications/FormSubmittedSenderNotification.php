@@ -50,7 +50,7 @@ class FormSubmittedSenderNotification extends Notification
     {
         return (new MailMessage())
             ->subject('Form ' . $this->formEntry->form->title . ' submission copy')
-            ->view('fila-cms::notifications.form-submitted-sender-copy', ['entry' => $this->formEntry]);
+            ->markdown('fila-cms::notifications.form-submitted-sender-copy', ['entry' => $this->formEntry]);
     }
 
     public function shouldSend($notifiable)

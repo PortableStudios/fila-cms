@@ -12,24 +12,33 @@ class InstallCommand extends CommandsInstallCommand
 
     protected $description = 'Install Fila CMS';
 
+    protected function callOrFail($command, $args = [])
+    {
+        $result = $this->call($command, $args);
+        if ($result !== 0) {
+            $this->error("Failed to run command: $command");
+            exit($result);
+        }
+    }
+
     public function handle()
     {
         $this->info('Installing Filament Base...');
 
         $this->installScaffolding();
-        $this->call(UpgradeCommand::class);
+        $this->callOrFail(UpgradeCommand::class);
         $this->installUpgradeCommand();
 
         $this->info('Installed Filament Base.  Installing Spatie Permissions');
 
-        $this->call('fortify:install');
+        $this->callOrFail('fortify:install');
 
-        $this->call('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
-        $this->call('vendor:publish', ['--tag' => "seo-migrations"]);
-        $this->call('vendor:publish', ['--tag' => "seo-config"]);
-        $this->call('vendor:publish', ['--tag' => "config"]);
-        $this->call('vendor:publish', ['--tag' => "filament-actions-migrations"]);
-        $this->call('vendor:publish', [
+        $this->callOrFail('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
+        $this->callOrFail('vendor:publish', ['--tag' => "seo-migrations"]);
+        $this->callOrFail('vendor:publish', ['--tag' => "seo-config"]);
+        $this->callOrFail('vendor:publish', ['--tag' => "config"]);
+        $this->callOrFail('vendor:publish', ['--tag' => "filament-actions-migrations"]);
+        $this->callOrFail('vendor:publish', [
             '--provider' => "Spatie\ScheduleMonitor\ScheduleMonitorServiceProvider",
             '--tag' => "schedule-monitor-migrations"
         ]);
@@ -37,26 +46,28 @@ class InstallCommand extends CommandsInstallCommand
         $this->info('Installed Spatie Permissions. Installing Fila CMS Config...');
 
         if ($this->option('publish-config') || ($this->ask('Would you like to publish the FilaCMS config?(Y/n)', 'Y') == 'Y')) {
-            $this->call('vendor:publish', ['--tag' => 'fila-cms-config']);
+            $this->callOrFail('vendor:publish', ['--tag' => 'fila-cms-config']);
         }
+        $this->callOrFail('vendor:publish', ['--tag' => "fila-cms-migrations"]);
+
         // we need this for revisionable package
-        $this->call('vendor:publish', ['--tag' => 'migrations']);
-        $this->call('vendor:publish', ['--tag' => 'resource-lock-migrations']);
+        $this->callOrFail('vendor:publish', ['--tag' => 'migrations']);
+        $this->callOrFail('vendor:publish', ['--tag' => 'resource-lock-migrations']);
 
 
         if ($this->option('run-migrations') || strtoupper($this->ask('Would you like to run migrations(Y/n)?', 'Y')) == 'Y') {
             $this->info('Running migrations...');
-            $this->call('migrate');
+            $this->callOrFail('migrate');
         }
 
         if ($this->option('add-user-traits') || strtoupper($this->ask('Would you like to add the required trait to your App\\Models\\User model?(Y/n)', 'Y')) == 'Y') {
-            $this->call('fila-cms:add-user-concerns');
+            $this->callOrFail('fila-cms:add-user-concerns');
         }
 
-        $this->call('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
-        $this->call('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RootMediaFoldersSeeder']);
-
         $this->info('Adding permissions');
+
+        $this->callOrFail('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RoleAndPermissionSeeder']);
+        $this->callOrFail('db:seed', ['--class' => '\\Portable\\FilaCms\\Database\\Seeders\\RootMediaFoldersSeeder']);
 
         $this->info('Creating Custom Filament Theme');
 
@@ -69,7 +80,7 @@ class InstallCommand extends CommandsInstallCommand
         }
         // @codeCoverageIgnoreEnd
 
-        $this->call('vendor:publish', ['--tag' => 'filament-tiptap-editor-config']);
+        $this->callOrFail('vendor:publish', ['--tag' => 'filament-tiptap-editor-config']);
         $this->info('Finished');
     }
 }
