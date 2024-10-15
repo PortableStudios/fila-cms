@@ -18,12 +18,14 @@ class TaxonomyTerm extends Model
 
     protected $versionable = [
         'name',
+        'order',
     ];
 
     protected $fillable = [
         'name',
         'taxonomy_id',
         'parent_id',
+        'order',
     ];
 
     public function taxonomy()
@@ -39,5 +41,15 @@ class TaxonomyTerm extends Model
     public function taxonomyables()
     {
         return $this->hasMany(Taxonomyable::class);
+    }
+
+    public static function booted(): void
+    {
+        static::created(function (TaxonomyTerm $item) {
+            // auto-add order with end of list
+            $count = TaxonomyTerm::where('taxonomy_id', $item->taxonomy_id)->max('order');
+            $item->order = $count + 1;
+            $item->save();
+        });
     }
 }

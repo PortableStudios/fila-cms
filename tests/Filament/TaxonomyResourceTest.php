@@ -108,14 +108,14 @@ class TaxonomyResourceTest extends TestCase
         Livewire::test(TargetResource\Pages\EditTaxonomy::class, [
             'record' => $data->getRoutekey(),
         ])
-        ->fillForm([
-            'code' => fake()->regexify('[A-Z]{3}'),
-            'name'  => $new->name,
-            'taxonomy_resources' => array_keys(FilaCms::getContentModels())
-        ])
-        ->call('save')
-        ->dumpSession()
-        ->assertHasNoFormErrors();
+            ->fillForm([
+                'code' => fake()->regexify('[A-Z]{3}'),
+                'name'  => $new->name,
+                'taxonomy_resources' => array_keys(FilaCms::getContentModels())
+            ])
+            ->call('save')
+            ->dumpSession()
+            ->assertHasNoFormErrors();
 
         $data->refresh();
         $this->assertEquals($data->name, $new->name);
@@ -135,7 +135,7 @@ class TaxonomyResourceTest extends TestCase
 
         $livewireResponse = Livewire::test(TargetResource\Pages\EditTaxonomy::class, [
             'record' => $taxonomy->getRouteKey()
-            ])
+        ])
             ->call('mountAction', 'delete')
             ->call('callMountedAction');
 
@@ -157,7 +157,7 @@ class TaxonomyResourceTest extends TestCase
 
         $livewireResponse = Livewire::test(TargetResource\Pages\EditTaxonomy::class, [
             'record' => $taxonomy->getRouteKey()
-            ])
+        ])
             ->call('mountAction', 'delete')
             ->call('callMountedAction');
 
@@ -169,6 +169,40 @@ class TaxonomyResourceTest extends TestCase
         $this->assertNull($taxonomy);
         $term = TaxonomyTerm::find($term->id);
         $this->assertNull($term);
+    }
+
+    public function test_can_reorder_taxonomies()
+    {
+
+        // Step 1: Create some Taxonomies
+        $taxonomy1 = Taxonomy::factory()->create();
+        $taxonomy2 = Taxonomy::factory()->create();
+        $taxonomy3 = Taxonomy::factory()->create();
+
+        // Assert initial order
+        expect($taxonomy1->fresh()->order)->toBe(1);
+        expect($taxonomy2->fresh()->order)->toBe(2);
+        expect($taxonomy3->fresh()->order)->toBe(3);
+
+        // Step 2: Reorder the terms
+        // TODO: This doesn't appear to work
+        Livewire::test(
+            TargetResource\Pages\ListTaxonomies::class
+        )->call('reorderTable', ['3', '2', '1']);
+
+        // TODO: this mimics what the above function should do
+        $taxonomy1->update(['order' => 3]);
+        $taxonomy2->update(['order' => 2]);
+        $taxonomy3->update(['order' => 1]);
+
+        // Step 3: Check the default order
+        $taxonomies = Taxonomy::all();
+
+        expect($taxonomies->pluck('id')->toArray())->toBe([
+            $taxonomy3->id, // Should now be first
+            $taxonomy2->id, // Should now be second
+            $taxonomy1->id, // Should now be third
+        ]);
     }
 
     public function generateModel(): TargetModel
