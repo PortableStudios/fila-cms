@@ -10,12 +10,16 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('taxonomies', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            if (config('fila-cms.multitenancy')) {
+                $table->unsignedBigInteger(config('fila-cms.tenant_id_field'))->nullable();
+                $table->foreign(config('fila-cms.tenant_id_field'))->references('id')->on('tenants')->onDelete('cascade');
+            }
             $table->string('name');
+            $table->string('note')->nullable();
+            $table->softDeletes();
             $table->timestamps();
-
-            $table->index('name');
         });
     }
 
@@ -24,6 +28,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('taxonomies');
+        Schema::dropIfExists('menus');
     }
 };

@@ -137,7 +137,6 @@ class FilaCmsServiceProvider extends ServiceProvider
             ],
             'fila-cms'
         );
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
         \Filament\Support\Facades\FilamentIcon::register([
             'filament-password-input::regenerate' => 'heroicon-m-key',
@@ -150,6 +149,8 @@ class FilaCmsServiceProvider extends ServiceProvider
         Blade::componentNamespace('Portable\\FilaCms\\Views\\Components', 'fila-cms');
         config(['versionable.user_model' => config('auth.providers.users.model')]);
         config(['scout.driver' => config('fila-cms.search.driver', 'meilisearch')]);
+        config(['permission.teams' => config('fila-cms.multitenancy')]);
+        config(['permission.column_names.team_foreign_key' => config('fila-cms.tenant_id_field')]);
 
         Event::listen(Login::class, AuthenticationListener::class);
         Event::listen(Verified::class, UserVerifiedListener::class);
@@ -221,11 +222,14 @@ class FilaCmsServiceProvider extends ServiceProvider
             __DIR__ . '/../../config/fila-cms.php' => config_path('fila-cms.php'),
         ], 'fila-cms-config');
 
-        $file = (__DIR__.'/../../database/stubs/create_content_roles.php.stub');
-
-        $this->publishes([
-            $file => $this->getMigrationFileName('create_content_roles.php'),
-        ], 'fila-cms-migrations');
+        // Get all the migration stubs and publish them
+        $filePath = __DIR__.'/../../stubs/database/migrations/auto*.stub';
+        $files = glob($filePath);
+        foreach ($files as $file) {
+            $this->publishes([
+                $file => $this->getMigrationFileName(basename($file, '.stub') . '.php'),
+            ], 'fila-cms-migrations');
+        }
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
