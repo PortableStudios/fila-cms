@@ -518,6 +518,9 @@ class FilaCmsServiceProvider extends ServiceProvider
     {
         $timestamp = date('Y_m_d_His');
 
+        // Remove the auto_ prefix from the migration file name
+        $migrationFileName = preg_replace("/auto\_[0-9]+\_/", "", $migrationFileName);
+
         $filesystem = $this->app->make(Filesystem::class);
 
         return Collection::make([$this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR])
