@@ -149,8 +149,9 @@ class FilaCmsServiceProvider extends ServiceProvider
         Blade::componentNamespace('Portable\\FilaCms\\Views\\Components', 'fila-cms');
         config(['versionable.user_model' => config('auth.providers.users.model')]);
         config(['scout.driver' => config('fila-cms.search.driver', 'meilisearch')]);
-        config(['permission.teams' => config('fila-cms.multitenancy')]);
-        config(['permission.column_names.team_foreign_key' => config('fila-cms.tenant_id_field')]);
+        // Temporary, will be reverted in next PR
+        //config(['permission.teams' => config('fila-cms.multitenancy')]);
+        //config(['permission.column_names.team_foreign_key' => config('fila-cms.tenant_id_field')]);
 
         Event::listen(Login::class, AuthenticationListener::class);
         Event::listen(Verified::class, UserVerifiedListener::class);
