@@ -226,11 +226,11 @@ class FilaCmsServiceProvider extends ServiceProvider
         // Get all the migration stubs and publish them
         $filePath = __DIR__.'/../../stubs/database/migrations/auto*.stub';
         $files = glob($filePath);
+        $publishedFiles = [];
         foreach ($files as $file) {
-            $this->publishes([
-                $file => $this->getMigrationFileName(basename($file, '.stub') . '.php'),
-            ], 'fila-cms-migrations');
+            $publishedFiles[$file] = $this->getMigrationFileName(basename($file, '.stub') . '.php');
         }
+        $this->publishes($publishedFiles, 'fila-cms-migrations');
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
@@ -516,10 +516,12 @@ class FilaCmsServiceProvider extends ServiceProvider
      */
     protected function getMigrationFileName(string $migrationFileName): string
     {
-        $timestamp = date('Y_m_d_His');
+        // Offset the timestamp by the migration order, to make sure everything stays sequential
+        $offset = preg_match("/auto\_([0-9]+)\_/", $migrationFileName, $matches) ? $matches[1] : 0;
+        $timestamp = date('Y_m_d_His', strtotime("+$offset seconds"));
 
         // Remove the auto_ prefix from the migration file name
-        $migrationFileName = preg_replace("/auto\_[0-9]+\_/", "", $migrationFileName);
+        $migrationFileName = preg_replace("/auto\_([0-9])+\_/", "", $migrationFileName);
 
         $filesystem = $this->app->make(Filesystem::class);
 
