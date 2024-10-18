@@ -223,16 +223,13 @@ class FilaCmsServiceProvider extends ServiceProvider
             __DIR__ . '/../../config/fila-cms.php' => config_path('fila-cms.php'),
         ], 'fila-cms-config');
 
-        // Only publish migrations if we're running inthe cli
-        if ($this->app->runningInConsole() || $this->app->runningUnitTests()) {
-            // Get all the migration stubs and publish them
-            $filePath = __DIR__.'/../../stubs/database/migrations/auto*.stub';
-            $files = glob($filePath);
-            foreach ($files as $file) {
-                $this->publishes([
-                    $file => $this->getMigrationFileName(basename($file, '.stub') . '.php'),
-                ], 'fila-cms-migrations');
-            }
+        // Get all the migration stubs and publish them
+        $filePath = __DIR__.'/../../stubs/database/migrations/auto*.stub';
+        $files = glob($filePath);
+        foreach ($files as $file) {
+            $this->publishes([
+                $file => $this->getMigrationFileName(basename($file, '.stub') . '.php'),
+            ], 'fila-cms-migrations');
         }
 
         // use the vendor configuration file as fallback
