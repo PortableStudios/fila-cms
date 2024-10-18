@@ -224,7 +224,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         ], 'fila-cms-config');
 
         // Only publish migrations if we're running inthe cli
-        if ($this->app->runningInConsole()) {
+        if ($this->app->runningInConsole() || $this->app->runningUnitTests()) {
             // Get all the migration stubs and publish them
             $filePath = __DIR__.'/../../stubs/database/migrations/auto*.stub';
             $files = glob($filePath);
