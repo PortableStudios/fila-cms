@@ -18,9 +18,7 @@ return [
     'admin_dark_mode' => true,
     'admin_prefix' => 'admin',
     'publish_content_routes' => true,
-    'multitenancy' => false,
-    'tenant_id_field' => 'tenant_id',
-    'tenants_use_domains' => true,
+    'multitenancy' => true,
     'admin_plugins' => [
         \Portable\FilaCms\Plugins\UsersPlugin::class,
         \Portable\FilaCms\Plugins\PermissionsPlugin::class,

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
+use Portable\FilaCms\Models\Traits\IsTenanted;
 
 class Taxonomy extends Model
 {
@@ -16,7 +17,7 @@ class Taxonomy extends Model
     use SoftDeletes;
     use CascadeSoftDeletes;
     use HasFactory;
-
+    use IsTenanted;
     protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
     protected $versionable = [

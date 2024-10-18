@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Portable\FilaCms\Models\Traits\IsTenanted;
 
 class Media extends Model
 {
+    use IsTenanted;
+
     protected $fillable = [
         'parent_id',
         'is_folder',

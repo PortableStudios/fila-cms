@@ -13,7 +13,7 @@ return new class () extends Migration {
         Schema::create('taxonomies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('code')->nullable()->after('name');
+            $table->string('code')->nullable();
             if (config('fila-cms.multitenancy')) {
                 $table->unsignedBigInteger(config('fila-cms.tenant_id_field'))->nullable();
                 $table->foreign(config('fila-cms.tenant_id_field'))->references('id')->on('tenants')->onDelete('cascade');

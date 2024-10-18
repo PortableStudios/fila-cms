@@ -24,6 +24,7 @@ use Portable\FilaCms\Filament\Pages\MediaLibrary;
 use Portable\FilaCms\Filament\Pages\UserSettings;
 use Portable\FilaCms\Http\Middleware\FilaCmsAuthenticate;
 use Portable\FilaCms\Http\Middleware\TwoFactorMiddleware;
+use Portable\FilaCms\Models\Tenant;
 
 class FilaCmsAdminPanelProvider extends PanelProvider
 {
@@ -60,7 +61,7 @@ class FilaCmsAdminPanelProvider extends PanelProvider
         ];
 
 
-        return $panel
+        $panel = $panel
             ->default()
             ->id('admin')
             ->path('admin')
@@ -95,6 +96,15 @@ class FilaCmsAdminPanelProvider extends PanelProvider
                 Authenticate::class,
                 FilaCmsAuthenticate::class,
             ]);
+
+        if(config('fila-cms.multitenancy')) {
+            $panel = $panel->tenant(Tenant::class);
+            if(config('fila-cms.tenants_use_domains')) {
+                $panel = $panel->tenantDomain('{tenant:domain}');
+            }
+        }
+
+        return $panel;
     }
 
     protected function getPlugins(): array

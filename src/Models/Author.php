@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
+use Portable\FilaCms\Models\Traits\IsTenanted;
 use Portable\FilaCms\Models\Traits\Searchable;
 
 class Author extends Model
@@ -16,6 +17,7 @@ class Author extends Model
     use Versionable;
     use SoftDeletes;
     use Searchable;
+    use IsTenanted;
 
     protected $versionStrategy = VersionStrategy::SNAPSHOT;
 

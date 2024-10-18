@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Portable\FilaCms\Contracts\HasSlug;
 use Portable\FilaCms\Facades\FilaCms;
 use Portable\FilaCms\Filament\Resources\FormResource;
+use Portable\FilaCms\Models\Traits\IsTenanted;
 use Portable\FilaCms\Models\Traits\Searchable;
 
 class Form extends Model
@@ -17,6 +18,7 @@ class Form extends Model
     use HasFactory;
     use Notifiable;
     use Searchable;
+    use IsTenanted;
 
     protected static $resourceName = FormResource::class;
 

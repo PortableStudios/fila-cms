@@ -21,6 +21,7 @@ use Portable\FilaCms\Filament\Traits\HasExcerpt;
 use Portable\FilaCms\Filament\Traits\HasShortUrl;
 use Portable\FilaCms\Filament\Traits\HasTaxonomies;
 use Portable\FilaCms\Models\Scopes\PublishedScope;
+use Portable\FilaCms\Models\Traits\IsTenanted;
 use Portable\FilaCms\Models\Traits\ProvidesSearchSettings;
 use Portable\FilaCms\Models\Traits\Searchable;
 use Portable\FilaCms\Versionable\FilaCmsVersion;
@@ -41,6 +42,7 @@ abstract class AbstractContentModel extends Model
     use HasSlug;
     use Searchable;
     use ProvidesSearchSettings;
+    use IsTenanted;
 
     protected $table = 'contents';
 

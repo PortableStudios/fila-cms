@@ -3,6 +3,7 @@
 namespace Portable\FilaCms\Commands;
 
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasTenants;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\File;
@@ -37,6 +38,11 @@ class AddUserConcerns extends Command
         $interfaces = [
             FilamentUser::class,
         ];
+
+        if(config('fila-cms.multitenancy')) {
+            $interfaces[] = HasTenants::class;
+        }
+
 
         $userContents = File::get((new ReflectionClass($userModel))->getFileName());
 
@@ -105,6 +111,32 @@ class AddUserConcerns extends Command
             $part2 = substr($userContents, $part1End);
 
             $userContents = $part1 . "\n\n    public function canImpersonate()\n    {\n        return \$this->can('impersonate users');\n    }\n\n" . $part2;
+        }
+
+        if(config('fila-cms.multitenancy')) {
+            if (!strpos($userContents, 'tenants')) {
+                $part1End = strrpos($userContents, '}');
+                $part1 = substr($userContents, 0, $part1End);
+                $part2 = substr($userContents, $part1End);
+
+                $userContents = $part1 . "\n\n    public function tenants()\n    {\n        return \$this->belongsToMany(config('fila-cms.models.tenant'), 'tenant_members');\n    }\n\n" . $part2;
+            }
+
+            if (!strpos($userContents, 'getTenants')) {
+                $part1End = strrpos($userContents, '}');
+                $part1 = substr($userContents, 0, $part1End);
+                $part2 = substr($userContents, $part1End);
+
+                $userContents = $part1 . "\n\n    public function getTenants(Panel \$panel): Collection\n    {\n        return \$this->tenants;\n    }\n\n" . $part2;
+            }
+
+            if(!strpos($userContents, 'canAccessTenant')) {
+                $part1End = strrpos($userContents, '}');
+                $part1 = substr($userContents, 0, $part1End);
+                $part2 = substr($userContents, $part1End);
+
+                $userContents = $part1 . "\n\n    public function canAccessTenant(\Illuminate\Database\Eloquent\Model \$tenant): bool\n    {\n        return \$this->tenants()->whereKey(\$tenant)->exists();\n    }\n\n" . $part2;
+            }
         }
 
         if ($dryRun) {

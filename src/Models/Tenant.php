@@ -7,35 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
-use Portable\FilaCms\Models\Traits\IsTenanted;
 
-class Menu extends Model
+class Tenant extends Model
 {
     use Versionable;
     use SoftDeletes;
     use HasFactory;
-    use IsTenanted;
 
     protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
     protected $versionable = [
         'name',
-        'note',
+        'domain',
     ];
 
     protected $fillable = [
         'name',
-        'note',
+        'domain',
     ];
 
-    public function items()
+    public function members()
     {
-        return $this->hasMany(MenuItem::class, 'menu_id')->orderBy('order');
-    }
-
-    // Return only direct descendants
-    public function children()
-    {
-        return $this->items()->whereNull('parent_id');
+        return $this->belongsToMany(config('fila-cms.models.user'), 'tenant_members');
     }
 }
