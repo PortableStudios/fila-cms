@@ -12,6 +12,10 @@ return new class () extends Migration {
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
+            if (config('fila-cms.multitenancy')) {
+                $table->unsignedBigInteger(config('fila-cms.tenant_id_field'))->nullable();
+                $table->foreign(config('fila-cms.tenant_id_field'))->references('id')->on('tenants')->onDelete('cascade');
+            }
             $table->string('title');
             $table->string('slug');
             $table->boolean('is_draft')->default(true);
@@ -21,7 +25,6 @@ return new class () extends Migration {
 
             $table->foreignId('created_user_id')->constrained('users');
             $table->foreignId('updated_user_id')->constrained('users');
-            $table->foreignId('author_id')->nullable()->constrained('authors');
 
             $table->index('title');
             $table->index('slug');

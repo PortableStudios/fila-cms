@@ -137,7 +137,6 @@ class FilaCmsServiceProvider extends ServiceProvider
             ],
             'fila-cms'
         );
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
         \Filament\Support\Facades\FilamentIcon::register([
             'filament-password-input::regenerate' => 'heroicon-m-key',
@@ -150,6 +149,9 @@ class FilaCmsServiceProvider extends ServiceProvider
         Blade::componentNamespace('Portable\\FilaCms\\Views\\Components', 'fila-cms');
         config(['versionable.user_model' => config('auth.providers.users.model')]);
         config(['scout.driver' => config('fila-cms.search.driver', 'meilisearch')]);
+        // Temporary, will be reverted in next PR
+        //config(['permission.teams' => config('fila-cms.multitenancy')]);
+        //config(['permission.column_names.team_foreign_key' => config('fila-cms.tenant_id_field')]);
 
         Event::listen(Login::class, AuthenticationListener::class);
         Event::listen(Verified::class, UserVerifiedListener::class);
@@ -221,11 +223,14 @@ class FilaCmsServiceProvider extends ServiceProvider
             __DIR__ . '/../../config/fila-cms.php' => config_path('fila-cms.php'),
         ], 'fila-cms-config');
 
-        $file = (__DIR__.'/../../database/stubs/create_content_roles.php.stub');
-
-        $this->publishes([
-            $file => $this->getMigrationFileName('create_content_roles.php'),
-        ], 'fila-cms-migrations');
+        // Get all the migration stubs and publish them
+        $filePath = __DIR__.'/../../stubs/database/migrations/auto*.stub';
+        $files = glob($filePath);
+        $publishedFiles = [];
+        foreach ($files as $file) {
+            $publishedFiles[$file] = $this->getMigrationFileName(basename($file, '.stub') . '.php');
+        }
+        $this->publishes($publishedFiles, 'fila-cms-migrations');
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
@@ -511,7 +516,12 @@ class FilaCmsServiceProvider extends ServiceProvider
      */
     protected function getMigrationFileName(string $migrationFileName): string
     {
-        $timestamp = date('Y_m_d_His');
+        // Offset the timestamp by the migration order, to make sure everything stays sequential
+        $offset = preg_match("/auto\_([0-9]+)\_/", $migrationFileName, $matches) ? $matches[1] : 0;
+        $timestamp = date('Y_m_d_His', strtotime("+$offset seconds"));
+
+        // Remove the auto_ prefix from the migration file name
+        $migrationFileName = preg_replace("/auto\_([0-9])+\_/", "", $migrationFileName);
 
         $filesystem = $this->app->make(Filesystem::class);
 

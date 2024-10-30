@@ -10,15 +10,14 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('authors', function (Blueprint $table) {
+        Schema::create('user_sso_links', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name')->nullable();
-            $table->boolean('is_individual')->default(true);
+            $table->string('driver');
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->string('provider_id');
+            $table->text('provider_token');
+            $table->text('provider_refresh_token')->nullable();
             $table->timestamps();
-            $table->index('first_name');
-            $table->index('last_name');
-            $table->index('is_individual');
         });
     }
 
@@ -27,6 +26,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('authors');
+        Schema::dropIfExists('user_sso_links');
     }
 };

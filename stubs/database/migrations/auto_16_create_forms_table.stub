@@ -14,6 +14,10 @@ return new class () extends Migration {
             $table->id();
             $table->string('title');
             $table->string('slug');
+            if (config('fila-cms.multitenancy')) {
+                $table->unsignedBigInteger(config('fila-cms.tenant_id_field'))->nullable();
+                $table->foreign(config('fila-cms.tenant_id_field'))->references('id')->on('tenants')->onDelete('cascade');
+            }
             $table->json('notification_emails')->nullable();
             $table->boolean('only_for_logged_in')->default(false);
             $table->string('confirmation_title')->nullable();
