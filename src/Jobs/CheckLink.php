@@ -43,10 +43,20 @@ class CheckLink implements ShouldQueue
             ])
             ->head($this->linkCheck->url);
 
+            
             $this->linkCheck->status_code = $response->status();
             $this->linkCheck->status_text = $response->reason();
             $this->linkCheck->timeout = $timeOut;
+
+            if ($response->status() == 403) {
+                // check if cf-mitigated
+                if ($response->getHeader('cf-mitigated') === 'challenge') {
+                    $this->linkCheck->status_code = 200;
+                }
+            }
+
             $this->linkCheck->save();
+
         } catch (\Illuminate\Http\Client\ConnectionException | \GuzzleHttp\Exception\TransferException $th) {
             $this->linkCheck->status_code = 404;
             $this->linkCheck->status_text = 'Not Found';
