@@ -39,7 +39,7 @@ class LinkChecker implements ShouldQueue
 
                 foreach ($links as $key => $link) {
                     // check if link has mailto
-                    if (Str::of($link)->startsWith('mailto:') === FALSE) {
+                    if (Str::of($link)->startsWith('mailto:') === false) {
                         $collectedLinks[] = LinkCheck::create([
                             'title'             => $record->title,
                             'origin_resource'   => $resource,

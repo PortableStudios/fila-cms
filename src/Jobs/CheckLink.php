@@ -43,7 +43,7 @@ class CheckLink implements ShouldQueue
             ])
             ->head($this->linkCheck->url);
 
-            
+
             $this->linkCheck->status_code = $response->status();
             $this->linkCheck->status_text = $response->reason();
             $this->linkCheck->timeout = $timeOut;
