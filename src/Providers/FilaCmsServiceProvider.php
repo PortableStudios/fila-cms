@@ -232,7 +232,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         // }
         // $this->publishes($publishedFiles, 'fila-cms-migrations');
         $this->publishes([
-            __DIR__ . '/../database/migrations/' => database_path('migrations/my-package'),
+            __DIR__ . '/../../database/migrations/' => database_path('migrations/my-package'),
         ], 'fila-cms-migrations');
 
         // use the vendor configuration file as fallback
