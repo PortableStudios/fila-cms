@@ -224,13 +224,13 @@ class FilaCmsServiceProvider extends ServiceProvider
         ], 'fila-cms-config');
 
         // Get all the migration stubs and publish them
-        $filePath = __DIR__.'/../../stubs/database/migrations/auto*.stub';
-        $files = glob($filePath);
-        $publishedFiles = [];
-        foreach ($files as $file) {
-            $publishedFiles[$file] = $this->getMigrationFileName(basename($file, '.stub') . '.php');
-        }
-        $this->publishes($publishedFiles, 'fila-cms-migrations');
+        // $filePath = __DIR__.'/../../stubs/database/migrations/auto*.stub';
+        // $files = glob($filePath);
+        // $publishedFiles = [];
+        // foreach ($files as $file) {
+        //     $publishedFiles[$file] = $this->getMigrationFileName(basename($file, '.stub') . '.php');
+        // }
+        // $this->publishes($publishedFiles, 'fila-cms-migrations');
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
