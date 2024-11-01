@@ -223,14 +223,6 @@ class FilaCmsServiceProvider extends ServiceProvider
             __DIR__ . '/../../config/fila-cms.php' => config_path('fila-cms.php'),
         ], 'fila-cms-config');
 
-        // Get all the migration stubs and publish them
-        // $filePath = __DIR__.'/../../stubs/database/migrations/auto*.stub';
-        // $files = glob($filePath);
-        // $publishedFiles = [];
-        // foreach ($files as $file) {
-        //     $publishedFiles[$file] = $this->getMigrationFileName(basename($file, '.stub') . '.php');
-        // }
-        // $this->publishes($publishedFiles, 'fila-cms-migrations');
         $this->publishes([
             __DIR__ . '/../../database/migrations/' => database_path('migrations'),
         ], 'fila-cms-migrations');
@@ -515,6 +507,12 @@ class FilaCmsServiceProvider extends ServiceProvider
 
 
     /**
+     * @deprecated
+     * 
+     * Feature is not needed and won't work as it creates migration files
+     * with dynamic naming, as such, test-cases will never work
+     * Deprecated by Jeremy Layson <jeremy.layson@portable.com.au>
+     * 
      * Returns existing migration file if found, else uses the current timestamp.
      */
     protected function getMigrationFileName(string $migrationFileName): string
