@@ -20,5 +20,8 @@ return new class () extends Migration {
      */
     public function down(): void
     {
+        Schema::table('pages', function (Blueprint $table) {
+            $table->longText('contents')->change();
+        });
     }
 };
