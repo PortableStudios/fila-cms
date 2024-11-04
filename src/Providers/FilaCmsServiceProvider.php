@@ -508,11 +508,11 @@ class FilaCmsServiceProvider extends ServiceProvider
 
     /**
      * @deprecated
-     * 
+     *
      * Feature is not needed and won't work as it creates migration files
      * with dynamic naming, as such, test-cases will never work
      * Deprecated by Jeremy Layson <jeremy.layson@portable.com.au>
-     * 
+     *
      * Returns existing migration file if found, else uses the current timestamp.
      */
     protected function getMigrationFileName(string $migrationFileName): string
