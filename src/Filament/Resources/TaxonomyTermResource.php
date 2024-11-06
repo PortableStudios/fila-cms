@@ -112,16 +112,23 @@ class TaxonomyTermResource extends AbstractResource
 
                             if ($hasTermWithContent) {
                                 Notification::make()
-                                ->danger()
-                                ->title('Unable to delete terms')
-                                ->body('One or more terms selected is currently in use')
-                                ->send();
+                                    ->danger()
+                                    ->title('Unable to delete terms')
+                                    ->body('One or more terms selected is currently in use')
+                                    ->send();
 
                                 $action->cancel();
                             }
                         }),
                 ]),
-            ]);
+            ])
+            ->reorderRecordsTriggerAction(
+                fn (Tables\Actions\Action $action, bool $isReordering) => $action
+                    ->button()
+                    ->label($isReordering ? 'Finish reordering' : 'Reorder terms'),
+            )
+            ->defaultSort('order')
+            ->reorderable('order', auth()->user()->can('manage taxonomies'));
     }
 
     public static function getRelations(): array
