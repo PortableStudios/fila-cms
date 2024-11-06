@@ -38,16 +38,18 @@ class LinkChecker implements ShouldQueue
                 $links = $this->extractLinks($content);
 
                 foreach ($links as $key => $link) {
-                    $collectedLinks[] = LinkCheck::create([
-                        'title'             => $record->title,
-                        'origin_resource'   => $resource,
-                        'edit_url'          => $resource::getUrl('edit', ['record' => $record->slug]),
-                        'url'               => $link,
-                        'status_code'       => 0, //initially assigned as 0 to indicate it hasn't been checked yet
-                        'timeout'           => 0,
-                        'batch_id'          => $batch,
-                    ]);
-
+                    // check if link has mailto
+                    if (Str::of($link)->startsWith('mailto:') === false) {
+                        $collectedLinks[] = LinkCheck::create([
+                            'title'             => $record->title,
+                            'origin_resource'   => $resource,
+                            'edit_url'          => $resource::getUrl('edit', ['record' => $record->slug]),
+                            'url'               => $link,
+                            'status_code'       => 0, //initially assigned as 0 to indicate it hasn't been checked yet
+                            'timeout'           => 0,
+                            'batch_id'          => $batch,
+                        ]);
+                    }
                 }
             });
         }
