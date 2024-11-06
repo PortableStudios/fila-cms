@@ -10,8 +10,11 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::table('pages', function (Blueprint $table) {
-            $table->json('contents')->change();
+        Schema::create('taxonomy_resources', function (Blueprint $table) {
+            $table->string('resource_class');
+            $table->foreignId('taxonomy_id')->constrained()->cascadeOnDelete();
+
+            $table->index(['resource_class', 'taxonomy_id']);
         });
     }
 
@@ -20,8 +23,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::table('pages', function (Blueprint $table) {
-            $table->longText('contents')->change();
-        });
+        Schema::dropIfExists('taxonomy_resources');
     }
 };
