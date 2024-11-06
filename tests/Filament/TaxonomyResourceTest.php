@@ -185,15 +185,9 @@ class TaxonomyResourceTest extends TestCase
         expect($taxonomy3->fresh()->order)->toBe(3);
 
         // Step 2: Reorder the terms
-        // TODO: This doesn't appear to work
         Livewire::test(
             TargetResource\Pages\ListTaxonomies::class
         )->call('reorderTable', ['3', '2', '1']);
-
-        // TODO: this mimics what the above function should do
-        $taxonomy1->update(['order' => 3]);
-        $taxonomy2->update(['order' => 2]);
-        $taxonomy3->update(['order' => 1]);
 
         // Step 3: Check the default order
         $taxonomies = Taxonomy::all();
