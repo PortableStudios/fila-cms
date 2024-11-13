@@ -38,6 +38,11 @@ class FormEntry extends Model
         return $this->belongsTo(Form::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(config('auth.providers.users.model'));
+    }
+
     public function displayHtml(): Attribute
     {
         return new Attribute(function () {
