@@ -96,6 +96,12 @@ class FormEntryResource extends AbstractResource
                 ->words(10);
         }
 
+        if ($form->only_for_logged_in) {
+            // show user who created it
+            $columns[] = Tables\Columns\ViewColumn::make('')
+                    ->label('Submitted By')
+                    ->view('fila-cms::tables.columns.created_by');
+        }
 
         $columns[] = Tables\Columns\ViewColumn::make('created_at')
                     ->label('Submitted Time')
