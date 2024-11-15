@@ -45,8 +45,14 @@ class FormEntry extends Model
 
     public function displayHtml(): Attribute
     {
+        /**
+         * Some of the implementation uses "newEvent" (training, for example)
+         * While others somehow breaks as they do not use this key
+         * Instead of finding all the areas and align them on one format to another
+         * I believe it's better to just accommodate both use cases for backward and forward compatibility
+         */
         return new Attribute(function () {
-            return FormBuilder::getDisplayFields($this->fields, $this->values['newEvent']);
+            return FormBuilder::getDisplayFields($this->fields, $this->values['newEvent'] ?? $this->values);
         });
     }
 }
