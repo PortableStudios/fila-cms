@@ -151,7 +151,7 @@ class LinkAction extends Action
 
     protected function getHref($data)
     {
-        switch($data['link_type']) {
+        switch ($data['link_type']) {
             case 'index-page':
                 $resourceClass = $data['reference_page'];
                 return route($resourceClass::getFrontendIndexRoute());
@@ -201,7 +201,7 @@ class LinkAction extends Action
         $className = FilaCms::getModelFromResource($source);
 
         if (!$className) {
-            if($source === FormResource::class) {
+            if ($source === FormResource::class) {
                 $query = Form::query();
             } else {
                 $query = Media::query()->where('is_folder', 0);
@@ -219,12 +219,12 @@ class LinkAction extends Action
         // If the URL is a route, we need to parse it to get the correct arguments
         try {
             $route = app('router')->getRoutes()->match(app('request')->create($url), 'GET');
-            if(count($route->parameters) == 0) {
+            if (count($route->parameters) == 0) {
                 $args['link_type'] = 'url';
                 $args['reference_text'] = $url;
                 return $args;
             }
-            if(isset($route->parameters['model'])) {
+            if (isset($route->parameters['model'])) {
                 $model = $route->parameters['model'];
                 $resource = FilaCms::getContentModelResource($model);
             } else {
@@ -233,12 +233,12 @@ class LinkAction extends Action
             }
             $args['reference_page'] = $resource;
 
-            if(isset($route->parameters['slug'])) {
+            if (isset($route->parameters['slug'])) {
                 $args['link_type'] = 'content';
                 $args['reference_content'] = $model::query()->where('slug', $route->parameters['slug'])->first()?->id;
-            } elseif(isset($route->parameters['media'])) {
+            } elseif (isset($route->parameters['media'])) {
                 $args['reference_media'] = $route->parameters['media'];
-                if(isset($route->parameters['mediaExtension'])) {
+                if (isset($route->parameters['mediaExtension'])) {
                     $args['link_type'] = 'media';
                 } else {
                     $args['link_type'] = 'download';
@@ -246,7 +246,7 @@ class LinkAction extends Action
             } else {
                 $args['link_type'] = 'index-page';
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $args['link_type'] = 'url';
             $args['reference_text'] = $url;
         }

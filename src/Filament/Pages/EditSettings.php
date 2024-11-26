@@ -67,7 +67,7 @@ class EditSettings extends Page implements HasForms
                     'value' => data_get($formData, $field->getName())
                 ];
                 $cacheKey = 'setting-' . $field->getName();
-                if(Cache::has($cacheKey)) {
+                if (Cache::has($cacheKey)) {
                     Cache::forget($cacheKey);
                 }
             }
@@ -76,7 +76,7 @@ class EditSettings extends Page implements HasForms
         Setting::upsert($records, ['key'], ['value']);
 
         // If the stop words have changed, kick off a reindex
-        if($oldStopWords !== Setting::get('search.stop_words')) {
+        if ($oldStopWords !== Setting::get('search.stop_words')) {
             $user = auth()->user();
             ReindexSearch::dispatch($user);
             Notification::make()

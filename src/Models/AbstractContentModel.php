@@ -224,7 +224,7 @@ abstract class AbstractContentModel extends Model
     {
         return new Attribute(function () {
             $resource = static::$resourceName;
-            if($resource::getFrontendRoutePrefix() == '') {
+            if ($resource::getFrontendRoutePrefix() == '') {
                 return '/' . $this->slug;
             } else {
                 return route(static::$resourceName::getFrontendShowRoute(), $this->slug);

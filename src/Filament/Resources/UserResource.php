@@ -78,13 +78,13 @@ class UserResource extends AbstractConfigurableResource
                 })
         ];
 
-        if(auth()->user()->can('impersonate users')) {
+        if (auth()->user()->can('impersonate users')) {
             $actions[] = Action::make('impersonate')
                 ->label('Impersonate')
                 ->icon('heroicon-s-eye')
                 ->action(function (Model $user) {
                     Auth::user()->impersonate($user);
-                    if($user->can('access filacms-backend')) {
+                    if ($user->can('access filacms-backend')) {
                         return redirect(route('filament.admin.pages.dashboard'));
                     } else {
                         return redirect('/');

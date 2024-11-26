@@ -20,13 +20,13 @@ class FormEntryFactory extends Factory
         $fields = FormFactory::getFields();
         $values = [];
 
-        foreach($fields as $field) {
+        foreach ($fields as $field) {
             $fieldName = data_get($field, 'data.' . FormBuilder::$fieldId);
-            if(!$fieldName) {
+            if (!$fieldName) {
                 continue;
             }
 
-            if($fieldName === 'Text Area') {
+            if ($fieldName === 'Text Area') {
                 $values[$fieldName] = $this->faker->sentence;
 
             } else {

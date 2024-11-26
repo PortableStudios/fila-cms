@@ -54,7 +54,7 @@ class FormBuilder extends Builder
         $fields = [];
         foreach ($fieldData as $key => $field) {
 
-            if($readOnly) {
+            if ($readOnly) {
                 $field['data']['required'] = false;
             }
 
@@ -92,7 +92,7 @@ class FormBuilder extends Builder
                 ->readOnly()
                 ->required()
                 ->afterStateHydrated(function (TextInput $component, $state) use ($fieldId) {
-                    if(empty($state)) {
+                    if (empty($state)) {
                         $component->state($fieldId);
                     }
                 });
