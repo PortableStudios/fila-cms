@@ -51,7 +51,7 @@ abstract class AbstractFormBlock extends Block
             $field->readOnly();
         }
         $field->label($fieldData['field_name'] ?? $fieldData['field_id'] ?? '-');
-        if(!empty($fieldData['field_id'])) {
+        if (!empty($fieldData['field_id'])) {
             $field->statePath($fieldData['field_id']);
         }
 

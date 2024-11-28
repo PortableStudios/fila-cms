@@ -14,7 +14,7 @@ trait HasSlug
     protected function scopeSlugQuery($query, $slug)
     {
         $query = $query->where('slug', $slug);
-        if($this->id) {
+        if ($this->id) {
             $query = $query->where('id', '!=', $this->id);
         }
         return $query;

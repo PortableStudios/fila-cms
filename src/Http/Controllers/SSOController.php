@@ -21,7 +21,7 @@ class SSOController extends Controller
         $driver = preg_match("/login\/(.*)/", Route::current()->uri(), $matches) ? $matches[1] : null;
 
         $socialiteDriver = $driver;
-        if(Str::lower($socialiteDriver) === 'linkedin') {
+        if (Str::lower($socialiteDriver) === 'linkedin') {
             $socialiteDriver = 'linkedin-openid';
         }
 
@@ -39,7 +39,7 @@ class SSOController extends Controller
         $driver = preg_match("/login\/(.*)\//", Route::current()->uri(), $matches) ? $matches[1] : null;
 
         $socialiteDriver = $driver;
-        if(Str::lower($socialiteDriver) === 'linkedin') {
+        if (Str::lower($socialiteDriver) === 'linkedin') {
             $socialiteDriver = 'linkedin-openid';
         }
 

@@ -23,7 +23,7 @@ class FormEntryExporter extends Exporter
         protected array $columnMap,
         protected array $options,
     ) {
-        if(isset($options['form'])) {
+        if (isset($options['form'])) {
             static::form($options['form']);
         }
     }

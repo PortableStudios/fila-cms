@@ -26,7 +26,7 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             // Only throw to Sentry if it's been configured
-            if(config('sentry.dsn')) {
+            if (config('sentry.dsn')) {
                 Integration::captureUnhandledException($e);
             }
         });

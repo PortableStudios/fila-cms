@@ -8,7 +8,6 @@ use Portable\FilaCms\Filament\Resources\PageResource;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Setting;
 use Portable\FilaCms\Models\Taxonomy;
-
 use Portable\FilaCms\Tests\TestCase;
 
 class SearchIndexTest extends TestCase

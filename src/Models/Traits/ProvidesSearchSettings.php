@@ -35,7 +35,7 @@ trait ProvidesSearchSettings
         try {
             $attrs = [];
             $taxes = TaxonomyResource::where('resource_class', static::$resourceName)->get();
-            foreach($taxes as $taxonomyResource) {
+            foreach ($taxes as $taxonomyResource) {
                 $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_');
                 $attrs[] = $fieldName;
             }
@@ -51,7 +51,7 @@ trait ProvidesSearchSettings
         try {
             $attrs = [];
             $taxes = TaxonomyResource::where('resource_class', static::$resourceName)->get();
-            foreach($taxes as  $taxonomyResource) {
+            foreach ($taxes as $taxonomyResource) {
                 $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_');
                 $attrs[] = $fieldName . '_ids';
             }

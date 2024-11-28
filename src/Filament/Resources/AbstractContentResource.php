@@ -734,7 +734,7 @@ class AbstractContentResource extends AbstractResource
                 }
                 $authors = Author::whereIn('id', $data['values'])->get()->pluck('display_name');
 
-                if(count($authors) === 0) {
+                if (count($authors) === 0) {
                     return null;
                 }
 

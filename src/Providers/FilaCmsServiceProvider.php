@@ -108,7 +108,7 @@ class FilaCmsServiceProvider extends ServiceProvider
         Event::listen(CommandFinished::class, CommandFinishedListener::class);
 
         // Force the Scout commands to be registered, in case we're running jobs syncronously
-        if(!$this->app->runningInConsole()) {
+        if (!$this->app->runningInConsole()) {
             $this->commands([
                 FlushCommand::class,
                 ImportCommand::class,
@@ -310,11 +310,11 @@ class FilaCmsServiceProvider extends ServiceProvider
             }
         }
 
-        if(config('settings.monitoring.sentry.dsn')) {
+        if (config('settings.monitoring.sentry.dsn')) {
             config(['sentry.dsn' => config('settings.monitoring.sentry.dsn')]);
         }
 
-        if(config('settings.monitoring.ohdear.enabled')) {
+        if (config('settings.monitoring.ohdear.enabled')) {
             config(['schedule-monitor.oh_dear.api_token' => config('settings.monitoring.ohdear.api_token')]);
             config(['schedule-monitor.oh_dear.site_id' => config('settings.monitoring.ohdear.site_id')]);
             config(['schedule-monitor.oh_dear.queue' => env('OH_DEAR_QUEUE', 'default')]);
@@ -480,7 +480,7 @@ class FilaCmsServiceProvider extends ServiceProvider
 
     protected function registerHealthChecks()
     {
-        if(app()->runningUnitTests()) {
+        if (app()->runningUnitTests()) {
             return;
         }
 
@@ -489,7 +489,7 @@ class FilaCmsServiceProvider extends ServiceProvider
             DatabaseCheck::new(),
         ];
         $meili = MeiliSearchCheck::new()->url(config('scout.meilisearch.host') . '/health');
-        if(config('scout.meilisearch.key')) {
+        if (config('scout.meilisearch.key')) {
             $meili = $meili->token(config('scout.meilisearch.key'));
         }
         $checks[] = $meili;
@@ -499,7 +499,7 @@ class FilaCmsServiceProvider extends ServiceProvider
             $checks[] = RedisCheck::new();
         }
 
-        if(config('queue.default') === 'redis') {
+        if (config('queue.default') === 'redis') {
             $checks[] = HorizonCheck::new();
         }
         Health::checks($checks);

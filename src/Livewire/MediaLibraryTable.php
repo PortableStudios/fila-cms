@@ -71,7 +71,7 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
 
     public function setParent($id)
     {
-        if(!Media::find($id)) {
+        if (!Media::find($id)) {
             $id = null;
         }
 
@@ -240,7 +240,7 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
 
     public function removeFormUploadedFile(string $statePath, string $fileKey): void
     {
-        foreach($this->getCachedForms() as $form) {
+        foreach ($this->getCachedForms() as $form) {
             foreach ($form->getComponents() as $component) {
                 if ($component instanceof BaseFileUpload && $component->getStatePath() === $statePath) {
                     $state = $form->getState();
@@ -276,7 +276,7 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
                     ->live()
                     ->afterStateUpdated(function (Get $get, Set $set, $state) {
                         $alts = collect($get('alts'));
-                        foreach($state as $key => $item) {
+                        foreach ($state as $key => $item) {
                             $arrItem = [
                                 'key' => $key,
                                 'tmppath' => $item->getFilename(),
@@ -284,7 +284,7 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
                                 'alt_text' => $item->getClientOriginalName(),
                             ];
                             $alt = $alts->where('key', $key)->first();
-                            if(!$alt) {
+                            if (!$alt) {
                                 $alts->push($arrItem);
                             }
                         }
@@ -315,9 +315,9 @@ class MediaLibraryTable extends Component implements HasForms, HasTable
                     ->reorderable(false)
             ])
             ->action(function (array $data) {
-                if(count($data['upload_media'])) {
+                if (count($data['upload_media'])) {
                     $alts = collect($data['alts']);
-                    foreach($data['upload_media'] as $item) {
+                    foreach ($data['upload_media'] as $item) {
                         $alt = $alts->where('tmppath', $item->getFilename())->first();
                         $alt = $alt ? $alt['alt_text'] : $item->getClientOriginalName();
                         $this->saveFile($item, $alt);

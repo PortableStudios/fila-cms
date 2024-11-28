@@ -99,7 +99,7 @@ class AddUserConcerns extends Command
             $userContents = $part1 . "\n\n    public function canAccessPanel(\$panel): bool\n    {\n        // This is required on Front and Back end.  Add more specific controls with authenticate middleware.\n        return true;\n    }\n\n" . $part2;
         }
 
-        if(!strpos($userContents, 'canImpersonate')) {
+        if (!strpos($userContents, 'canImpersonate')) {
             $part1End = strrpos($userContents, '}');
             $part1 = substr($userContents, 0, $part1End);
             $part2 = substr($userContents, $part1End);

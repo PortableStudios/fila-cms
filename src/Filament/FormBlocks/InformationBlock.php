@@ -31,7 +31,7 @@ class InformationBlock extends AbstractFormBlock
                 ->readOnly()
                 ->required()
                 ->afterStateHydrated(function (TextInput $component, $state) {
-                    if(empty($state)) {
+                    if (empty($state)) {
                         $component->state('Information');
                     }
                 }),

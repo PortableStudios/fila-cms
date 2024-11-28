@@ -99,7 +99,7 @@ class RelationshipBlock extends AbstractFormBlock
         }
 
         if ($search) {
-            if($titleField == 'display_name') {
+            if ($titleField == 'display_name') {
                 $query = $query->where('first_name', 'LIKE', '%' . $search . '%')->orWhere('last_name', 'LIKE', '%'. $search . '%');
             } else {
                 $query = $query->where($titleField, 'LIKE', '%' . $search . '%');

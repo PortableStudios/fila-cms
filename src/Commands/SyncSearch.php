@@ -19,7 +19,7 @@ class SyncSearch extends Command
         $this->call('scout:delete-all-indexes');
         $this->call('scout:sync-index-settings');
 
-        foreach(FilaCms::getRawContentModels() as $model => $resource) {
+        foreach (FilaCms::getRawContentModels() as $model => $resource) {
             $this->call('scout:import', ['model' => $model]);
         }
     }
