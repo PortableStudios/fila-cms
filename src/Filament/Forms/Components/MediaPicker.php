@@ -14,7 +14,7 @@ class MediaPicker extends Field implements HasExtraItemActions
     use ConcernsHasExtraItemActions;
 
     protected string $view = 'fila-cms::filament.forms.components.media-picker';
-    protected ?bool $isLive = true;
+    protected bool | Closure | null $isLive = true;
     protected ?bool $onlyImage = false;
 
     public function onlyImage(): static
