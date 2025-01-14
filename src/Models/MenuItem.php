@@ -54,7 +54,7 @@ class MenuItem extends Model
 
         static::addGlobalScope('authenticated', function (Builder $builder) {
             // if not authenticated
-            $builder->when(auth()->check() === false, function(Builder $query) {
+            $builder->when(auth()->check() === false, function (Builder $query) {
                 // do not query authenticated_only = 1
                 $query->where('authenticated_only', 0);
             });
