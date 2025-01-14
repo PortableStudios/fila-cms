@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
+use Illuminate\Database\Eloquent\Builder;
 
 class MenuItem extends Model
 {
@@ -22,6 +23,7 @@ class MenuItem extends Model
         'name',
         'type',
         'order',
+        'authenticated_only',
         'reference',
         'parent_id',
     ];
@@ -48,6 +50,14 @@ class MenuItem extends Model
             $count = MenuItem::where('menu_id', $item->menu_id)->max('order');
             $item->order = $count + 1;
             $item->save();
+        });
+
+        static::addGlobalScope('authenticated', function (Builder $builder) {
+            // if not authenticated
+            $builder->when(auth()->check() === false, function(Builder $query) {
+                // do not query authenticated_only = 1
+                $query->where('authenticated_only', 0);
+            });
         });
     }
 

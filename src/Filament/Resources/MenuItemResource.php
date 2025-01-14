@@ -56,17 +56,24 @@ class MenuItemResource extends AbstractResource
                             ->get()
                             ->pluck('name', 'id');
                     }),
-                Forms\Components\Select::make('type')
-                    ->options([
-                        'index-page' => 'Content Listing Page',
-                        'content' => 'Content Detail Page',
-                        'url'  => 'URL',
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Select::make('type')
+                            ->options([
+                                'index-page' => 'Content Listing Page',
+                                'content' => 'Content Detail Page',
+                                'url'  => 'URL',
+                            ])
+                            ->default('content')
+                            ->selectablePlaceholder(false)
+                            ->live()
+                            ->required(),
+                        Forms\Components\Toggle::make('authenticated_only')
+                            ->inline(false)
+                            ->label('Restrict to logged in users'),
                     ])
-                    ->default('content')
-                    ->selectablePlaceholder(false)
-                    ->columnSpan(2)
-                    ->live()
-                    ->required(),
+                    ->columnSpan(4)
+                    ->columns(2),
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Select::make('reference_page')
