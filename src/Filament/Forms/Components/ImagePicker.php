@@ -4,5 +4,5 @@ namespace Portable\FilaCms\Filament\Forms\Components;
 
 class ImagePicker extends MediaPicker
 {
-    protected ?bool $onlyImage = true;
+    protected bool | Closure | null $isLive = true;
 }
