@@ -26,6 +26,11 @@ class GenerateSitemap extends Command
         'media/{media}',
         's/{slug}',
         'link/{type}/{slug}',
+        'oh-dear-health-check-results',
+        'login/google',
+        'login/facebook',
+        'login/linkedin',
+        'impersonate'
     ];
 
     protected $exemptedMiddleware = [
