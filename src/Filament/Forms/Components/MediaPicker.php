@@ -14,7 +14,6 @@ class MediaPicker extends Field implements HasExtraItemActions
     use ConcernsHasExtraItemActions;
 
     protected string $view = 'fila-cms::filament.forms.components.media-picker';
-    protected ?bool $isLive = true;
     protected ?bool $onlyImage = false;
 
     public function onlyImage(): static
@@ -26,6 +25,7 @@ class MediaPicker extends Field implements HasExtraItemActions
 
     protected function setUp(): void
     {
+        $this->isLive = true;
         $this->registerActions([
             fn (MediaPicker $component): Action => $component->pickMediaAction(),
             fn (MediaPicker $component): Action => $component->clearMediaAction(),
