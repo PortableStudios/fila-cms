@@ -62,7 +62,7 @@ class GenerateSitemap extends Command
             }
 
             $configExemptedWords = config('fila-cms-sitemap.exempted_words');
-            $allExemptedWords = array_merge($this->exemptedWorods, $configExemptedWords);
+            $allExemptedWords = array_merge($this->exemptedWords, $configExemptedWords);
 
             foreach ($allExemptedWords as $word) {
                 if ($url->startsWith($word)) {
