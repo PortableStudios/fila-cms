@@ -1,6 +1,6 @@
 <?php
 
-namespace Portable\FilaCms\Tests\Unit;
+namespace Portable\FilaCms\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
