@@ -30,7 +30,9 @@ class GenerateSitemap extends Command
         'login/google',
         'login/facebook',
         'login/linkedin',
-        'impersonate'
+        'impersonate',
+        'http://localhost',
+        'http://127.0.0.1',
     ];
 
     protected $exemptedMiddleware = [
@@ -50,6 +52,8 @@ class GenerateSitemap extends Command
         $this->generateSlugs('');
 
         foreach ($routes as $key => $route) {
+            $url = Str::of($route->uri);
+
             $shouldInclude = true;
 
             // only GET routes
@@ -57,25 +61,37 @@ class GenerateSitemap extends Command
                 continue;
             }
 
-            foreach ($this->exemptedWords as $word) {
-                if (Str::of($route->uri)->startsWith($word)) {
+            $configExemptedWords = config('fila-cms-sitemap.exempted_words');
+            $allExemptedWords = array_merge($this->exemptedWorods, $configExemptedWords);
+
+            foreach ($allExemptedWords as $word) {
+                if ($url->startsWith($word)) {
                     $shouldInclude = false;
                     break;
                 }
             }
+            if (!$shouldInclude) continue;
 
-            foreach ($this->exemptedMiddleware as $middleware) {
+            $configExemptedMiddleware = config('fila-cms-sitemap.exempted_middleware');
+            $allExemptedMiddleware = array_merge($this->exemptedMiddleware, $configExemptedMiddleware);
+
+            foreach ($allExemptedMiddleware as $middleware) {
                 if (collect($route->gatherMiddleware())->search($middleware) !== false) {
                     $shouldInclude = false;
                     break;
                 }
             }
+            if (!$shouldInclude) continue;
 
-            if ($shouldInclude === false) {
-                continue;
+            // skip if URL is not from own
+            // double slash already means it's coming out of the website
+            if ($url->startsWith('\\') || $url->startsWith('http://') || $url->startsWith('https://')) {
+                if (!$url->startsWith(config('app.url'))) {
+                    continue;
+                }
             }
 
-            if (Str::of($route->uri)->contains('{slug}') == false) {
+            if ($url->contains('{slug}') == false) {
                 $filteredRoutes[] = [url($route->uri), now()->subDays(7)];
             }
         }
