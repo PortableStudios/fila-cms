@@ -70,7 +70,9 @@ class GenerateSitemap extends Command
                     break;
                 }
             }
-            if (!$shouldInclude) continue;
+            if (!$shouldInclude) {
+                continue;
+            }
 
             $configExemptedMiddleware = config('fila-cms-sitemap.exempted_middleware');
             $allExemptedMiddleware = array_merge($this->exemptedMiddleware, $configExemptedMiddleware);
@@ -81,7 +83,9 @@ class GenerateSitemap extends Command
                     break;
                 }
             }
-            if (!$shouldInclude) continue;
+            if (!$shouldInclude) {
+                continue;
+            }
 
             // skip if URL is not from own
             // double slash already means it's coming out of the website
