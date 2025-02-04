@@ -61,7 +61,7 @@ class GenerateSitemap extends Command
                 continue;
             }
 
-            $configExemptedWords = config('fila-cms-sitemap.exempted_words');
+            $configExemptedWords = config('fila-cms-sitemap.exempted_words', []);
             $allExemptedWords = array_merge($this->exemptedWords, $configExemptedWords);
 
             foreach ($allExemptedWords as $word) {
@@ -74,7 +74,7 @@ class GenerateSitemap extends Command
                 continue;
             }
 
-            $configExemptedMiddleware = config('fila-cms-sitemap.exempted_middleware');
+            $configExemptedMiddleware = config('fila-cms-sitemap.exempted_middleware', []);
             $allExemptedMiddleware = array_merge($this->exemptedMiddleware, $configExemptedMiddleware);
 
             foreach ($allExemptedMiddleware as $middleware) {
