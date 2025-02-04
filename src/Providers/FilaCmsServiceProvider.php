@@ -221,6 +221,7 @@ class FilaCmsServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../../config/fila-cms.php' => config_path('fila-cms.php'),
+            __DIR__ . '/../../config/fila-cms-sitemap.php' => config_path('fila-cms-sitemap.php'),
         ], 'fila-cms-config');
 
         $this->publishes([
