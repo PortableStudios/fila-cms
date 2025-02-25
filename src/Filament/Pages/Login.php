@@ -36,7 +36,7 @@ class Login extends FilamentLogin
         foreach ($providers as $provider) {
             if (config('settings.sso.' . $provider . '.client_id') && config('settings.sso.' . $provider . '.client_secret')) {
                 $ssoButtons[] = Action::make($provider)->label('Login with ' . ucfirst($provider))->action(function () use ($provider) {
-                    return redirect()->route('sso.login', ['provider' => $provider]);
+                    return redirect()->route('login.' . $provider);
                 });
             }
         }
