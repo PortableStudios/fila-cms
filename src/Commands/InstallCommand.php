@@ -33,7 +33,6 @@ class InstallCommand extends CommandsInstallCommand
 
         $this->callOrFail('fortify:install');
 
-        $this->callOrFail('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
         $this->callOrFail('vendor:publish', ['--tag' => "seo-migrations"]);
         $this->callOrFail('vendor:publish', ['--tag' => "seo-config"]);
         $this->callOrFail('vendor:publish', ['--tag' => "config"]);
