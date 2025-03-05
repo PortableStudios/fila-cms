@@ -9,6 +9,8 @@ class Page extends AbstractContentModel
 {
     use HasFactory;
 
+    protected $hasNoPrefix = true; // HasSlug trait
+
     protected $table = 'pages';
 
     protected static $resourceName = PageResource::class;
