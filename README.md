@@ -2,7 +2,7 @@
 
 # How to use
 
-Require the package using composer: `composer require portable/fila-cms:@dev`
+Require the package using composer: `composer require portable/fila-cms`
 
 ## Installation Command
 
