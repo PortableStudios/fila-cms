@@ -485,7 +485,9 @@ class FilaCmsServiceProvider extends ServiceProvider
         }
 
         $checks = [
-            UsedDiskSpaceCheck::new(),
+            UsedDiskSpaceCheck::new()
+                ->warnWhenUsedSpaceIsAbovePercentage(85)
+                ->failWhenUsedSpaceIsAbovePercentage(95),
             DatabaseCheck::new(),
         ];
         $meili = MeiliSearchCheck::new()->url(config('scout.meilisearch.host') . '/health');
