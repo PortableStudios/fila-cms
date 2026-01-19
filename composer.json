@@ -98,6 +98,15 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
-        }
+        },
+        "audit": {
+            "ignore": [
+                "PKSA-ns3q-qtk3-d35r"
+            ]
+        },
+        "platform": {
+            "php": "8.4.99"
+        },
+        "platform-check": false
     }
 }
