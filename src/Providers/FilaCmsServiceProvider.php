@@ -51,7 +51,7 @@ use Portable\FilaCms\Observers\AuthenticatableObserver;
 use Portable\FilaCms\Services\MediaLibrary;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
 use Spatie\Health\Checks\Checks\HorizonCheck;
-use Spatie\Health\Checks\Checks\MeiliSearchCheck;
+use Spatie\Health\Checks\Checks\MeilisearchCheck;
 use Spatie\Health\Checks\Checks\RedisCheck;
 use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
 use Spatie\Health\Facades\Health;
@@ -490,7 +490,7 @@ class FilaCmsServiceProvider extends ServiceProvider
                 ->failWhenUsedSpaceIsAbovePercentage(95),
             DatabaseCheck::new(),
         ];
-        $meili = MeiliSearchCheck::new()->url(config('scout.meilisearch.host') . '/health');
+        $meili = MeilisearchCheck::new()->url(config('scout.meilisearch.host') . '/health');
         if (config('scout.meilisearch.key')) {
             $meili = $meili->token(config('scout.meilisearch.key'));
         }
