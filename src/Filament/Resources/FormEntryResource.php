@@ -125,6 +125,7 @@ class FormEntryResource extends AbstractResource
         $columns = static::getColumns($table->getLivewire()->ownerRecord);
 
         return $table
+            ->defaultSort('created_at', 'desc')
             ->recordTitleAttribute('created_at')
             ->filters([
                 SelectFilter::make('status')
