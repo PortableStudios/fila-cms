@@ -76,11 +76,20 @@ class FormEntryResource extends AbstractResource
             $fieldName = Arr::get($field, 'data.field_name', null);
             $fieldId = Arr::get($field, 'data.' . $formBuilderFieldId, null);
 
-            $columns[] = Tables\Columns\TextColumn::make($fieldId)
+            $fieldKey = trim((string) ($fieldId ?: $fieldName));
+
+            // Skip if we have no usable key
+            if ($fieldKey === '') {
+                continue;
+            }
+
+            $columnName = 'field_' . md5($fieldKey);
+
+            $columns[] = Tables\Columns\TextColumn::make($columnName)
                 ->label($fieldName)
-                ->getStateUsing(function ($record) use ($fieldId) {
-                    $fieldId = trim($fieldId);
-                    $value = isset($record->values['newEvent'][$fieldId]) ? $record->values['newEvent'][$fieldId] : '';
+                ->getStateUsing(function ($record) use ($fieldKey) {
+                    $values = $record->values['newEvent'] ?? $record->values;
+                    $value = isset($values[$fieldKey]) ? $values[$fieldKey] : '';
                     if (is_array($value)) {
                         try {
                             $value = tiptap_converter()->asText($value);
@@ -90,8 +99,8 @@ class FormEntryResource extends AbstractResource
                     }
                     return $value;
                 })
-                ->searchable(true, function ($query, $search) use ($field) {
-                    $query->where('values->' . $field->getName(), 'like', '%' . $search . '%');
+                ->searchable(true, function ($query, $search) use ($fieldKey) {
+                    $query->where('values->' . $fieldKey, 'like', '%' . $search . '%');
                 })
                 ->words(10);
         }
@@ -130,7 +139,7 @@ class FormEntryResource extends AbstractResource
                 Tables\Actions\EditAction::make()->fillForm(function ($record) {
                     return [
                         'status' => $record->status,
-                        ...$record->values,
+                        ...($record->values['newEvent'] ?? $record->values),
                     ];
                 }),
                 Tables\Actions\DeleteAction::make(),
