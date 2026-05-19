@@ -105,6 +105,9 @@ trait HasTaxonomies
 
 
         TaxonomyResource::where('resource_class', static::$resourceName)->get()->each(function (TaxonomyResource $taxonomyResource) use (&$fields) {
+            if (!$taxonomyResource->taxonomy) {
+                return;
+            }
             $fieldName = Str::slug(Str::plural($taxonomyResource->taxonomy->name), '_');
             $this->casts[$fieldName] = DynamicTermList::class . ':' . $taxonomyResource->taxonomy_id;
             $this->casts[$fieldName . '_ids'] = DynamicTermIds::class . ':' . $taxonomyResource->taxonomy_id;

@@ -69,6 +69,10 @@ class Taxonomy extends Model
 
     public static function booted(): void
     {
+        static::deleting(function (Taxonomy $item) {
+            $item->resources()->delete();
+        });
+
         static::created(function (Taxonomy $item) {
             if (Schema::hasColumn('taxonomies', 'order')) {
                 // auto-add order with end of list
