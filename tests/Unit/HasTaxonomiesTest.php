@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Portable\FilaCms\Filament\Resources\PageResource;
 use Portable\FilaCms\Models\Page;
 use Portable\FilaCms\Models\Taxonomy;
-use Portable\FilaCms\Models\TaxonomyResource;
 use Portable\FilaCms\Tests\TestCase;
 
 class HasTaxonomiesTest extends TestCase
