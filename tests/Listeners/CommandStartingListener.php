@@ -59,7 +59,7 @@ class CommandStartingListener
         $admin->save();
         $admin->assignRole('Admin');
 
-        Process::path(app_path())->forever()->start('npm run dev');
+        Process::path(app_path())->forever()->start('pnpm run dev');
         PageFactory::new()->count(10)->create();
         $form = FormFactory::new()->create([
             'title' => 'Contact Us',

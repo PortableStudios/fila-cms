@@ -54,7 +54,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         File::ensureDirectoryExists(resource_path('css'));
         File::copy(getcwd() . '/resources/css/filacms.css', resource_path('css/filacms.css'));
         File::copy(getcwd() . '/package.json', resource_path('../package.json'));
-        Process::path(app_path())->run('npm run build');
+        Process::path(app_path())->run('pnpm run build');
 
         $this->artisan('db:seed', ['--class' => RoleAndPermissionSeeder::class]);
     }
