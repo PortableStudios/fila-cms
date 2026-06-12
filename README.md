@@ -40,6 +40,21 @@ This command will ask for field values present in your users table and automatic
 
 From the project directory, run `./vendor/bin/pest`
 
+## Frontend assets (pnpm)
+
+JS/CSS assets are managed with **pnpm** (v11+) on **Node 22+** — see the security rationale in
+`docs/superpowers/plans/2026-06-11-npm-to-pnpm-migration.md`. Do not use `npm`/`yarn`.
+
+```bash
+pnpm install --frozen-lockfile   # install deps (CI should use --frozen-lockfile)
+pnpm run dev                     # vite dev server
+pnpm run build                   # production build
+```
+
+The pinned package manager (`packageManager`) and `engines` constraints in `package.json` are
+enforced via `engine-strict=true` in `.npmrc`; security defaults (7-day `minimumReleaseAge`) live
+in `pnpm-workspace.yaml`.
+
 ## Interacting with the package
 
 During development, you may like to actually interact with the FilaCMS UI.  In your console, run
