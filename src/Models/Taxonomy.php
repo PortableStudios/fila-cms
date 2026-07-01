@@ -39,9 +39,18 @@ class Taxonomy extends Model
 
     protected $cascadeDeletes = ['terms'];
 
+    // Memoised so the backwards-compat guard doesn't hit information_schema on
+    // every query/hydration (Doctrine introspection is slow and memory-heavy).
+    protected static ?bool $hasOrderColumn = null;
+
+    protected static function hasOrderColumn(): bool
+    {
+        return static::$hasOrderColumn ??= Schema::hasColumn('taxonomies', 'order');
+    }
+
     public function terms()
     {
-        if (Schema::hasColumn('taxonomies', 'order')) {
+        if (static::hasOrderColumn()) {
             return $this->hasMany(TaxonomyTerm::class, 'taxonomy_id')->orderBy('order');
         }
         return $this->hasMany(TaxonomyTerm::class, 'taxonomy_id');
@@ -61,7 +70,7 @@ class Taxonomy extends Model
 
     public function newQuery(): Builder
     {
-        if (Schema::hasColumn('taxonomies', 'order')) {
+        if (static::hasOrderColumn()) {
             return parent::newQuery()->orderBy('order');
         }
         return parent::newQuery();
@@ -74,7 +83,7 @@ class Taxonomy extends Model
         });
 
         static::created(function (Taxonomy $item) {
-            if (Schema::hasColumn('taxonomies', 'order')) {
+            if (static::hasOrderColumn()) {
                 // auto-add order with end of list
                 $count = Taxonomy::max('order');
                 $item->order = $count + 1;

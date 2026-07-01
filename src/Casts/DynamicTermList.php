@@ -15,6 +15,14 @@ class DynamicTermList implements CastsAttributes
 
     public function get($model, $key, $value, $attributes)
     {
+        // Use the eager-loaded relation when present to avoid an N+1 query per
+        // taxonomy field on list views; fall back to a scoped query otherwise.
+        if ($model->relationLoaded('terms')) {
+            return $model->terms
+                ->where('taxonomy_id', $this->taxonomyId)
+                ->values();
+        }
+
         return $model->terms()->where('taxonomy_id', $this->taxonomyId)->get();
     }
 
