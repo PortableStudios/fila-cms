@@ -1,3 +1,8 @@
 # pnpm security baseline (see docs/superpowers/plans/2026-06-11-npm-to-pnpm-migration.md)
 # Refuse to install any dependency version less than 7 days old (10080 minutes).
 minimumReleaseAge: 10080
+
+# Force patched versions of transitive TipTap deps flagged for ReDoS/quadratic-complexity DoS.
+overrides:
+  markdown-it: '>=14.1.2'
+  linkify-it: '>=5.0.1'
