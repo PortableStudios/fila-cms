@@ -91,7 +91,7 @@
         ],
         "lint": [
             "@php vendor/bin/pint",
-            "@php vendor/bin/phpstan analyse"
+            "@php vendor/bin/phpstan analyse --memory-limit=1G"
         ],
         "test": [
             "@php vendor/bin/phpunit"

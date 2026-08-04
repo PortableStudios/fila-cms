@@ -15,7 +15,28 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+    # Pinned to match config.platform.php: some deps (symfony 8, mistralys/text-diff)
+    # require 8.4, so an unpinned runner tests an unsupported PHP version.
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.4'
+        extensions: gd, intl, iconv, sqlite3, pdo_sqlite, zip
+        coverage: none
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 11
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+        cache: pnpm
+    # tests/TestCase.php runs `pnpm run build` in setUp. Without pnpm present that
+    # silently no-ops (Process::run does not throw) and tests run without assets.
+    - name: Install JS dependencies
+      run: pnpm install --frozen-lockfile
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --ignore-platform-reqs
     - name: Start Meilisearch

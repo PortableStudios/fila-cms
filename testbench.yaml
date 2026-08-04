@@ -31,6 +31,13 @@ migrations:
 seeders:
   - Workbench\Database\Seeders\DatabaseSeeder
 
+# fila-cms:install publishes migrations into the skeleton on every test run, and
+# Laravel 11+ re-timestamps them, so leftovers stack up and the next run fails with
+# duplicate table/column errors. The skeleton ships no migrations of its own.
+purge:
+  files:
+    - database/migrations/*.php
+
 workbench:
   start: "/"
   install: true
