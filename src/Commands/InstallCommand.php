@@ -31,7 +31,11 @@ class InstallCommand extends CommandsInstallCommand
 
         $this->info('Installed Filament Base.  Installing Spatie Permissions');
 
-        $this->callOrFail('fortify:install');
+        // Laravel 11+ re-timestamps published migrations, so re-running fortify:install
+        // would stack a second two-factor migration and break `migrate`.
+        if (empty(File::glob(database_path('migrations/*_add_two_factor_columns_to_users_table.php')))) {
+            $this->callOrFail('fortify:install');
+        }
 
         $this->callOrFail('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
         $this->callOrFail('vendor:publish', ['--tag' => "seo-migrations"]);

@@ -22,6 +22,12 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Laravel 11+ flushes factory state after every test, so this must be re-registered each time.
+        Factory::guessFactoryNamesUsing(function (string $modelName) {
+            return (string) '\\Portable\\FilaCms\\Tests\\Factories\\' . (class_basename($modelName)) . 'Factory';
+        });
+
         if (static::$hasInstalled) {
             return;
         }
@@ -45,10 +51,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             ->expectsQuestion('Would you like to add the required trait to your App\\Models\\User model?(Y/n)', 'Y')
             ->expectsOutputToContain('Finished')
             ->assertExitCode(0);
-
-        Factory::guessFactoryNamesUsing(function (string $modelName) {
-            return (string) '\\Portable\\FilaCms\\Tests\\Factories\\' . (class_basename($modelName)) . 'Factory';
-        });
 
         File::copy(getcwd() . '/vite.config.js', resource_path('../vite.config.js'));
         File::ensureDirectoryExists(resource_path('css'));
