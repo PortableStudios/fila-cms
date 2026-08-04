@@ -8,6 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 PHP namespace roots (PSR-4): `Portable\FilaCms\` → `src/`, `Portable\FilaCms\Database\` → `database/`, `Portable\FilaCms\Tests\` → `tests/`, `Workbench\App\` → `workbench/app/`.
 
+**Requires PHP ^8.4 and Laravel ^12.61.1** (Filament 3). Laravel 10/11 are EOL and unsupported. Laravel 13 is blocked on the Filament plugin ecosystem — `awcodes/filament-tiptap-editor` has no Filament 4/5 release, so moving up means replacing the editor layer.
+
 ## Commands
 
 ### PHP / Laravel
@@ -18,7 +20,7 @@ PHP namespace roots (PSR-4): `Portable\FilaCms\` → `src/`, `Portable\FilaCms\D
 ./vendor/bin/phpunit                        # equivalent (composer "test" script)
 composer lint                               # pint (PSR-12) + phpstan (larastan, level in phpstan.neon)
 ./vendor/bin/pint                           # auto-fix code style only
-./vendor/bin/phpstan analyse                # static analysis only
+./vendor/bin/phpstan analyse --memory-limit=1G   # static analysis only (OOMs at the default 128M)
 ./vendor/bin/testbench serve                # run the CMS locally at http://localhost:8000/admin
 ```
 Local admin login when serving: `admin@test.com` / `password`. For mail testing, run MailHog (`docker run -p 8025:8025 -p 1025:1025 mailhog/mailhog`) and view at http://localhost:8025.
