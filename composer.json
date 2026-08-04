@@ -66,6 +66,9 @@
         "pestphp/pest": "^2.34",
         "pestphp/pest-plugin-laravel": "^2.4"
     },
+    "conflict": {
+        "guzzlehttp/guzzle": "<7.15.2"
+    },
     "autoload-dev": {
         "psr-4": {
             "Workbench\\App\\": "workbench/app/",

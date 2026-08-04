@@ -2,7 +2,16 @@
 # Refuse to install any dependency version less than 7 days old (10080 minutes).
 minimumReleaseAge: 10080
 
+# brace-expansion 2.1.4 is younger than minimumReleaseAge; excluded so the DoS fix can land.
+# Drop this exclusion once 2.1.4 is older than the window.
+minimumReleaseAgeExclude:
+  - brace-expansion
+
 # Force patched versions of transitive TipTap deps flagged for ReDoS/quadratic-complexity DoS.
 overrides:
   markdown-it: '>=14.1.2'
   linkify-it: '>=5.0.1'
+  # Build-chain DoS / arbitrary .map file disclosure advisories.
+  postcss: '>=8.5.23'
+  # 2.x line only — minimatch declares ^2.0.1, so the 5.x major would be a semver violation.
+  brace-expansion: '^2.1.4'
