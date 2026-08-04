@@ -8,3 +8,12 @@ parameters:
 
     # The level 9 is the highest level
     level: 6
+
+    # Point larastan at this package's own migrations. Left to itself it scans the testbench
+    # skeleton's *published* migrations, which testbench.yaml's purge glob empties during
+    # composer install — so CI reported 91 undefined-property errors that a local run, with the
+    # skeleton still populated from a test run, did not. Schema scanning is off for the same
+    # reason: it would make results depend on a transient database.
+    disableSchemaScan: true
+    databaseMigrationsPath:
+        - database/migrations
