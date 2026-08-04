@@ -52,7 +52,7 @@ class MenuResourceTest extends TestCase
     public function test_can_create_record(): void
     {
         $name = $this->faker->firstName;
-        $note = $this->faker->words(2);
+        $note = $this->faker->words(2, true);
 
         Livewire::test(MenuResource\Pages\CreateMenu::class)
             ->fillForm([

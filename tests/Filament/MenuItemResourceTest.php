@@ -133,7 +133,9 @@ class MenuItemResourceTest extends TestCase
 
     public function test_page_url()
     {
-        $page = Page::factory()->create();
+        // Must be published: PageFactory randomises is_draft, and PublishedScope hides drafts
+        // from the find() inside MenuItem::url, which would make this assertion flaky.
+        $page = Page::factory()->isPublished()->create();
         $menu = Menu::factory()->create();
         $data = MenuItem::factory()->create([
             'menu_id' => $menu->id,
