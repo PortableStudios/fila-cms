@@ -28,6 +28,7 @@
         }
     },
     "require": {
+        "php": "^8.4",
         "filament/filament": "^3.2",
         "awcodes/filament-tiptap-editor": "^3.4",
         "mistralys/text-diff": "^2.1",
