@@ -414,9 +414,17 @@ class PageResourceTest extends TestCase
 
         $prefix = Str::start(Str::finish(PageResource::getFrontendRoutePrefix(), '/'), '/');
 
+        // PageResource has no route prefix, so contentRoutes() registers one route per existing
+        // slug at boot rather than a catch-all. This page was created after boot, so re-register
+        // to get the route a real request would have.
+        FilaCms::contentRoutes();
+
+        // Restrict the page, otherwise there is nothing for the role middleware to forbid.
+        $model->roles()->attach($adminRole);
+
         $this->get($prefix . $model->slug)->assertForbidden();
 
-        $model->roles()->delete();
+        $model->roles()->detach();
         $this->get($prefix . $model->slug)->assertSuccessful();
     }
 
