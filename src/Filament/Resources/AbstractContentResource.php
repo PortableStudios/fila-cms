@@ -191,12 +191,14 @@ class AbstractContentResource extends AbstractResource
                     StatusBadge::make('status')
                         ->live()
                         ->badge()
-                        ->color(fn (string $state): mixed => match ($state) {
+                        // State is null before the record exists (create form).
+                        ->color(fn (?string $state): mixed => match ($state) {
                             'Draft' => 'info',
                             'Pending' => 'warning',
                             'Published' => 'success',
                             'Expired' => 'danger',
                             'Deleted' => \Filament\Support\Colors\Color::Indigo,
+                            default => 'gray',
                         })
                         ->default('Draft'),
                 ])
@@ -329,7 +331,8 @@ class AbstractContentResource extends AbstractResource
                                 'noindex, nofollow' => 'No Index, No Follow',
                             ])
                             ->disabled(function (Get $get, Set $set) {
-                                if (count($get('data.roleRestrictions.role_id', true)) > 0) {
+                                // Null while the repeater is absent (e.g. on create).
+                                if (count($get('data.roleRestrictions.role_id', true) ?? []) > 0) {
                                     $set('robots', 'noindex, nofollow');
                                     return true;
                                 }
