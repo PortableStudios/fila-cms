@@ -25,6 +25,9 @@ jobs:
       run: composer install --prefer-dist --no-progress --ignore-platform-reqs
     - name: Laravel Pint
       run: php vendor/bin/pint --test
+    # Baselined, so this enforces no *new* findings. OOMs at the default 128M.
+    - name: PHPStan
+      run: php vendor/bin/phpstan analyse --memory-limit=1G
 
   security-audit:
     runs-on: ubuntu-latest
@@ -37,10 +40,9 @@ jobs:
         php-version: '8.4'
         extensions: gd, intl, iconv, sqlite3, pdo_sqlite, zip
         coverage: none
+    # Version comes from the packageManager field; passing it here too is a hard error.
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
-      with:
-        version: 11
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
