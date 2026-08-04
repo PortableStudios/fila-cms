@@ -2263,12 +2263,6 @@ parameters:
 			path: src/Filament/Resources/UserResource.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between bool and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 2
-			path: src/Filament/Resources/UserResource.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$small_thumbnail\.$#'
 			identifier: property.notFound
 			count: 1
