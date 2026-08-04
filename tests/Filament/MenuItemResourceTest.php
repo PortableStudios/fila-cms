@@ -4,7 +4,11 @@ namespace Portable\FilaCms\Tests\Filament;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
+use Orchestra\Testbench\Attributes\DefineRoute;
+use Portable\FilaCms\Filament\Resources\FormResource;
+use Portable\FilaCms\Filament\Resources\PageResource;
 use Portable\FilaCms\Filament\Resources\MenuResource\Pages\EditMenu;
 use Portable\FilaCms\Filament\Resources\MenuResource\RelationManagers\ItemsRelationManager;
 use Portable\FilaCms\Models\Form;
@@ -85,19 +89,46 @@ class MenuItemResourceTest extends TestCase
         ]);
     }
 
+    /** Registered during app setup, so the route name lookup includes it. */
+    protected function defineFormIndexRoute($router)
+    {
+        $router->get('/form-listing', fn () => '')->name(FormResource::getFrontendIndexRoute());
+    }
+
+    #[DefineRoute('defineFormIndexRoute')]
     public function test_index_url()
     {
+        $indexRoute = FormResource::getFrontendIndexRoute();
+
         $menu = Menu::factory()->create();
         $data = MenuItem::factory()->create([
             'menu_id' => $menu->id,
             'type' => 'index-page',
-            'reference_page' => \Portable\FilaCms\Filament\Resources\PageResource::class,
+            'reference_page' => FormResource::class,
         ]);
 
-        $resourceClass = $data->reference_page;
-        $route = route($resourceClass::getFrontendIndexRoute());
+        $this->assertEquals(route($indexRoute), $data->url);
+    }
 
-        $this->assertEquals($route, $data->url);
+    /**
+     * PageResource registers no frontend routes (empty prefix) and FormResource opts out of
+     * an index route, yet both are offered as menu item targets. Resolving the url used to
+     * throw RouteNotFoundException, 500ing every page that rendered the menu.
+     */
+    public function test_index_url_without_a_registered_route()
+    {
+        $menu = Menu::factory()->create();
+
+        foreach ([PageResource::class, FormResource::class] as $resourceClass) {
+            $data = MenuItem::factory()->create([
+                'menu_id' => $menu->id,
+                'type' => 'index-page',
+                'reference_page' => $resourceClass,
+            ]);
+
+            $this->assertFalse(Route::has($resourceClass::getFrontendIndexRoute()));
+            $this->assertEquals('#', $data->url);
+        }
     }
 
     public function test_page_url()
@@ -107,14 +138,12 @@ class MenuItemResourceTest extends TestCase
         $data = MenuItem::factory()->create([
             'menu_id' => $menu->id,
             'type' => 'content',
-            'reference_page' => \Portable\FilaCms\Filament\Resources\PageResource::class,
+            'reference_page' => PageResource::class,
             'reference_content' => $page->id
         ]);
 
-        $resourceClass = $data->reference_page;
-        $route = route($resourceClass::getFrontendShowRoute(), $page->slug);
-
-        $this->assertEquals($route, $data->url);
+        // PageResource has an empty frontend prefix, so pages live at the site root.
+        $this->assertEquals('/' . $page->slug, $data->url);
     }
 
     public function test_form_url()
