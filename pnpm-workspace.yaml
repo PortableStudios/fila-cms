@@ -7,11 +7,11 @@ minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - brace-expansion
 
-# Force patched versions of transitive TipTap deps flagged for ReDoS/quadratic-complexity DoS.
+# Force patched versions of transitive deps flagged for DoS / file-disclosure advisories.
+# All are caret-pinned: an open-ended '>=' would also satisfy the next major and force it on
+# consumers that declare a caret range on the current one.
 overrides:
-  markdown-it: '>=14.1.2'
-  linkify-it: '>=5.0.1'
-  # Build-chain DoS / arbitrary .map file disclosure advisories.
-  postcss: '>=8.5.23'
-  # 2.x line only — minimatch declares ^2.0.1, so the 5.x major would be a semver violation.
+  markdown-it: '^14.1.2'
+  linkify-it: '^5.0.1'
+  postcss: '^8.5.23'
   brace-expansion: '^2.1.4'
