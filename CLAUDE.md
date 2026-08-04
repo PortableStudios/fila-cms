@@ -25,7 +25,7 @@ composer lint                               # pint (PSR-12) + phpstan (larastan,
 ```
 Local admin login when serving: `admin@test.com` / `password`. For mail testing, run MailHog (`docker run -p 8025:8025 -p 1025:1025 mailhog/mailhog`) and view at http://localhost:8025.
 
-Tests use SQLite in-memory and `RefreshDatabase`. `tests/TestCase.php` runs the full `fila-cms:install` flow **once per process** (`$hasInstalled` guard) and then runs `pnpm run build` — so the JS toolchain must be installed for tests to pass.
+Tests use SQLite in-memory and `RefreshDatabase`. `tests/TestCase.php` runs the full `fila-cms:install` flow **once per process** (`$hasInstalled` guard). It does **not** build assets: the vite build targets a host app (the skeleton's published tailwind config resolves `./vendor` relative to itself, which doesn't exist inside our own vendor dir), so `TestCase` calls `withoutVite()` and no JS toolchain is needed to run the suite.
 
 ### Frontend assets (pnpm — never npm/yarn)
 Node 22+ (`.nvmrc` = 22.19.0) and pnpm 11+ are enforced via `engine-strict=true` in `.npmrc`.
@@ -36,7 +36,7 @@ pnpm run dev                     # vite dev server
 ```
 Security baseline: `pnpm-workspace.yaml` sets `minimumReleaseAge: 10080` (refuse deps younger than 7 days). Rationale: `docs/superpowers/plans/2026-06-11-npm-to-pnpm-migration.md`.
 
-> Note: per global instructions, do not launch dev/serve/watch processes — provide instructions only. Asset *builds* (`pnpm run build`) are fine and are required for tests.
+> Note: per global instructions, do not launch dev/serve/watch processes — provide instructions only. Asset *builds* (`pnpm run build`) are fine, but only work from a host app — they are not needed for the test suite.
 
 ## Architecture
 
