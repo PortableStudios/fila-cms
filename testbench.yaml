@@ -47,11 +47,9 @@ workbench:
     commands: true
     components: true
     views: true
-  build: [
+  build:
     - cache:clear
-  ]
-  assets: [
+  assets:
     - laravel-assets
     - filament-views
-  ]
   sync: []

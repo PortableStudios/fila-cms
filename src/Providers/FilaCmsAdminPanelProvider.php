@@ -100,11 +100,17 @@ class FilaCmsAdminPanelProvider extends PanelProvider
 
     protected function getPlugins(): array
     {
-        $pluginClasses = config('fila-cms.admin_plugins');
+        $pluginClasses = config('fila-cms.admin_plugins', []);
+        $plugins = [];
+
         // resource-lock v3 reads its settings through the plugin instead of config, so the
-        // panel must register it. Registered here rather than in config so already-published
-        // host configs pick it up too.
-        $plugins = [ResourceLockPlugin::make()];
+        // panel must register it. Added here rather than in config so already-published host
+        // configs pick it up — but skipped when a host lists it, since registering twice
+        // appends its resource twice.
+        if (! in_array(ResourceLockPlugin::class, $pluginClasses, true)) {
+            $plugins[] = ResourceLockPlugin::make();
+        }
+
         foreach ($pluginClasses as $pluginClass) {
             $plugins[] = new $pluginClass();
         }
