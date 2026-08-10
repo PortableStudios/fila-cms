@@ -2,3 +2,4 @@
 vendor/*
 meili_data/*
 .phpunit.result.cache
+/docs/superpowers/*
