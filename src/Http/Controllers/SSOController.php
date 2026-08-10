@@ -2,9 +2,11 @@
 
 namespace Portable\FilaCms\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
@@ -13,6 +15,14 @@ use Portable\FilaCms\Models\UserSsoLink;
 
 class SSOController extends Controller
 {
+    /** Provider error codes that mean the user declined at the consent screen. */
+    protected const CANCELLED = [
+        'access_denied',            // Facebook, Google
+        'user_denied',              // Facebook, via error_reason
+        'user_cancelled_login',     // LinkedIn
+        'user_cancelled_authorize', // LinkedIn
+    ];
+
     /**
      * Show the profile for a given user.
      */
@@ -37,6 +47,12 @@ class SSOController extends Controller
     public function handleProviderCallback(LoginResponse $loginResponse)
     {
         $driver = preg_match("/login\/(.*)\//", Route::current()->uri(), $matches) ? $matches[1] : null;
+
+        // Cancelling the provider's consent screen sends the user back here with an
+        // error and no code; asking Socialite for a token would then fail hard.
+        if (!request()->filled('code')) {
+            return $this->handleMissingCode($driver);
+        }
 
         $socialiteDriver = $driver;
         if (Str::lower($socialiteDriver) === 'linkedin') {
@@ -82,5 +98,42 @@ class SSOController extends Controller
         Auth::login($ssoLink->user);
 
         return $loginResponse->toResponse(request());
+    }
+
+    /**
+     * Send the user back where they started with an explanation, rather than
+     * asking the provider to exchange an authorization code we never received.
+     */
+    protected function handleMissingCode(?string $driver): RedirectResponse
+    {
+        $label = Str::ucfirst($driver ?: 'social');
+        $error = $this->callbackParam('error');
+        $reason = $this->callbackParam('error_reason');
+
+        $cancelled = in_array($error, static::CANCELLED, true)
+            || in_array($reason, static::CANCELLED, true);
+
+        // Only a provider-reported failure is worth a log line; a bare hit on the
+        // callback is a bot or a stale bookmark, and logging those invites a flood.
+        if ($error !== null && !$cancelled) {
+            Log::warning('SSO callback reported an error instead of an authorization code', [
+                'driver' => $driver,
+                'error' => $error,
+                'error_description' => $this->callbackParam('error_description', 200),
+            ]);
+        }
+
+        return redirect()->route(Auth::check() ? 'user-profile-information.show' : 'login')
+            ->with('error', $cancelled
+                ? $label . ' login was cancelled.'
+                : 'We could not complete your ' . $label . ' login. Please try again.');
+    }
+
+    /** Callback params are attacker-controlled, so ignore anything but a plain, bounded string. */
+    protected function callbackParam(string $key, int $limit = 100): ?string
+    {
+        $value = request()->query($key);
+
+        return is_string($value) ? Str::limit($value, $limit) : null;
     }
 }
