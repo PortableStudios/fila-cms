@@ -41,11 +41,17 @@ class Taxonomy extends Model
 
     // Memoised so the backwards-compat guard doesn't hit information_schema on
     // every query/hydration (Doctrine introspection is slow and memory-heavy).
-    protected static ?bool $hasOrderColumn = null;
+    // Only a positive result is cached: "column missing" can simply mean the
+    // migration hasn't run yet, and caching that disables ordering permanently.
+    protected static bool $hasOrderColumn = false;
 
     protected static function hasOrderColumn(): bool
     {
-        return static::$hasOrderColumn ??= Schema::hasColumn('taxonomies', 'order');
+        if (static::$hasOrderColumn) {
+            return true;
+        }
+
+        return static::$hasOrderColumn = Schema::hasColumn('taxonomies', 'order');
     }
 
     public function terms()

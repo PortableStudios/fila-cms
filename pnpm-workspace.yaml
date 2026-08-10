@@ -2,7 +2,16 @@
 # Refuse to install any dependency version less than 7 days old (10080 minutes).
 minimumReleaseAge: 10080
 
-# Force patched versions of transitive TipTap deps flagged for ReDoS/quadratic-complexity DoS.
+# brace-expansion 2.1.4 is younger than minimumReleaseAge; excluded so the DoS fix can land.
+# Drop this exclusion once 2.1.4 is older than the window.
+minimumReleaseAgeExclude:
+  - brace-expansion
+
+# Force patched versions of transitive deps flagged for DoS / file-disclosure advisories.
+# All are caret-pinned: an open-ended '>=' would also satisfy the next major and force it on
+# consumers that declare a caret range on the current one.
 overrides:
-  markdown-it: '>=14.1.2'
-  linkify-it: '>=5.0.1'
+  markdown-it: '^14.1.2'
+  linkify-it: '^5.0.1'
+  postcss: '^8.5.23'
+  brace-expansion: '^2.1.4'

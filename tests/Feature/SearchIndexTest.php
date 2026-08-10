@@ -48,7 +48,7 @@ class SearchIndexTest extends TestCase
         $this->assertEquals($flightySearch['query'], 'flighty');
 
         $stopWords = ['parrots'];
-        Setting::set('settings.search.stop_words', json_encode($stopWords));
+        Setting::set('search.stop_words', json_encode($stopWords));
 
         $flightyParrotSearch = Page::search('flighty parrots')->raw();
         $this->assertEquals($flightyParrotSearch['query'], 'flighty');

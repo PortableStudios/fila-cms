@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Route;
 use Overtrue\LaravelVersionable\Versionable;
 use Overtrue\LaravelVersionable\VersionStrategy;
 use Illuminate\Database\Eloquent\Builder;
@@ -82,7 +83,17 @@ class MenuItem extends Model
             $resourceClass = $this->reference_page;
             switch ($this->type) {
                 case 'index-page':
-                    return route($resourceClass::getFrontendIndexRoute());
+                    $indexRoute = $resourceClass::getFrontendIndexRoute();
+
+                    // The named route may not exist: a resource can opt out of a frontend
+                    // index (FormResource), and one with an empty prefix registers no
+                    // frontend routes at all (PageResource). Both are offered in the menu
+                    // item form, and route() would 500 every page rendering the menu.
+                    if (! Route::has($indexRoute)) {
+                        return '#';
+                    }
+
+                    return route($indexRoute);
                 case 'content':
                     $model = ($resourceClass::getModel())::find($this->reference_content);
                     $prefix = $resourceClass::getFrontendRoutePrefix();

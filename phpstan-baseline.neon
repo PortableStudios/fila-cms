@@ -1,0 +1,3925 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Portable\\FilaCms\\Actions\\Fortify\\ResetUserPassword\:\:reset\(\) has parameter \$input with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Actions/Fortify/ResetUserPassword.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Actions/Fortify/UpdateUserProfileInformation.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Actions/Fortify/UpdateUserProfileInformation.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Auth\\MustVerifyEmail\:\:forceFill\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Actions/Fortify/UpdateUserProfileInformation.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Actions\\Fortify\\UpdateUserProfileInformation\:\:updateVerifiedUser\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Actions/Fortify/UpdateUserProfileInformation.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$input$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/Actions/Fortify/UpdateUserProfileInformation.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:terms\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Casts/DynamicTermIds.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Casts\\DynamicTermIds implements generic interface Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes but does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Casts/DynamicTermIds.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Casts\\DynamicTermIds\:\:__construct\(\) has parameter \$taxonomyId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Casts/DynamicTermIds.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Casts\\DynamicTermIds\:\:\$taxonomyId has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Casts/DynamicTermIds.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$terms\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Casts/DynamicTermList.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:terms\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Casts/DynamicTermList.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Casts\\DynamicTermList implements generic interface Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes but does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Casts/DynamicTermList.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Casts\\DynamicTermList\:\:__construct\(\) has parameter \$taxonomyId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Casts/DynamicTermList.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Casts\\DynamicTermList\:\:\$taxonomyId has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Casts/DynamicTermList.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\AddUserConcerns\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Commands/AddUserConcerns.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Form\:\:\$url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Argument of an invalid type Illuminate\\Routing\\RouteCollectionInterface supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\GenerateSitemap\:\:generateSitemap\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\GenerateSitemap\:\:generateSitemap\(\) has parameter \$routes with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\GenerateSitemap\:\:generateSlugs\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\GenerateSitemap\:\:generateSlugs\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\GenerateSitemap\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Parameter \#2 \$enable of function xmlwriter_set_indent expects bool, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Commands\\GenerateSitemap\:\:\$exemptedMiddleware has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Commands\\GenerateSitemap\:\:\$exemptedWords has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 2
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 2
+			path: src/Commands/GenerateSitemap.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\InstallCommand\:\:callOrFail\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Commands/InstallCommand.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\InstallCommand\:\:callOrFail\(\) has parameter \$args with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Commands/InstallCommand.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\InstallCommand\:\:callOrFail\(\) has parameter \$command with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Commands/InstallCommand.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\InstallCommand\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Commands/InstallCommand.php
+
+		-
+			message: '#^Function text not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: src/Commands/MakeContents.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\MakeContents\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Commands/MakeContents.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\MakeUser\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Commands/MakeUser.php
+
+		-
+			message: '#^Parameter \#1 \$string of method Illuminate\\Console\\Command\:\:info\(\) expects string, object given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Commands/MakeUser.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Commands\\SyncSearch\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Commands/SyncSearch.php
+
+		-
+			message: '#^Trait Portable\\FilaCms\\Contracts\\HasLogin is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Contracts/HasLogin.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$created_user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Events/ContentCreating.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$is_draft\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Events/ContentCreating.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$publish_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Events/ContentCreating.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$updated_user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Events/ContentCreating.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$created_user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Events/ContentUpdating.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$is_draft\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Events/ContentUpdating.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$publish_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Events/ContentUpdating.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$updated_user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Events/ContentUpdating.php
+
+		-
+			message: '#^Call to an undefined static method class\-string\|object\:\:getFilterableAttributes\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Call to an undefined static method class\-string\|object\:\:getSortableAttributes\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Class Schmeits\\FilamentCharacterCounter\\Forms\\Components\\Textarea referenced with incorrect case\: Schmeits\\FilamentCharacterCounter\\Forms\\Components\\TextArea\.$#'
+			identifier: class.nameCase
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$length \(int\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 2
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:contentRoutes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:formRoutes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:getContentModelResource\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:getContentModelResource\(\) has parameter \$modelClass with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:getContentModels\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:getFormBlock\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:getModelFromResource\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:getModelFromResource\(\) has parameter \$resource with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:getRawContentModels\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:getSettings\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:getSettingsFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:imageThumbnail\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:imageThumbnail\(\) has parameter \$height with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:imageThumbnail\(\) has parameter \$width with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:maxTextArea\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:maxTextInput\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:profileRoutes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:purifyHtml\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:purifyHtml\(\) has parameter \$html with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:registerSetting\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:search\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:search\(\) has parameter \$term with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:setMeilisearchConfigs\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:shortUrlRoutes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:ssoRoutes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:systemUser\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:thumbnail\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:thumbnail\(\) has parameter \$size with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\FilaCms\:\:tipTapEditor\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\FilaCms\:\:\$contentModels has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\FilaCms\:\:\$contentResources has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\FilaCms\:\:\$settings has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/FilaCms.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$Seo\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Actions/CloneAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$cloneables\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Actions/CloneAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:roles\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Filament/Actions/CloneAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:seo\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/Actions/CloneAction.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Database\\Eloquent\\Model\:\:getResourceName\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Filament/Actions/CloneAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\CloneAction\:\:pickData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Actions/CloneAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\CloneAction\:\:pickData\(\) has parameter \$fields with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Actions/CloneAction.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/Filament/Actions/CloneAction.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\Actions\\CloneAction\:\:\$currentFile has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/Actions/CloneAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Portable\\FilaCms\\Models\\Media\>\|Portable\\FilaCms\\Models\\Media\:\:\$url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Contracts\\HasForms\:\:dispatch\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Illuminate\\Routing\\RouteCollectionInterface\:\:match\(\) invoked with 2 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:getContentSources\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:getHref\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:getHref\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:modelDisplay\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:modelDisplay\(\) has parameter \$source with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:modelDisplay\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:modelQuery\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:modelQuery\(\) has parameter \$source with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:modelSearch\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:modelSearch\(\) has parameter \$search with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:modelSearch\(\) has parameter \$source with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:parseArguments\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\LinkAction\:\:parseArguments\(\) has parameter \$args with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Actions/LinkAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Portable\\FilaCms\\Models\\Media\>\|Portable\\FilaCms\\Models\\Media\:\:\$url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Actions/MediaAction.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Contracts\\HasForms\:\:dispatch\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/Actions/MediaAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\MediaAction\:\:getFormFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Actions/MediaAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Actions\\MediaAction\:\:getFormFields\(\) has parameter \$component with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Actions/MediaAction.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\Actions\\MediaAction\:\:\$currentFile has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/Actions/MediaAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Blocks\\AccordionBlock\:\:getFormSchema\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Blocks/AccordionBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Blocks\\RelatedResourceBlock\:\:getContents\(\) has parameter \$get with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Blocks/RelatedResourceBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Blocks\\RelatedResourceBlock\:\:getContents\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Blocks/RelatedResourceBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Blocks\\RelatedResourceBlock\:\:getExcludeIds\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Blocks/RelatedResourceBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Blocks\\RelatedResourceBlock\:\:getExcludeIds\(\) has parameter \$get with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Blocks/RelatedResourceBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Blocks\\RelatedResourceBlock\:\:getFormSchema\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Blocks/RelatedResourceBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Blocks\\RelatedResourceBlock\:\:getSourceModel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Blocks/RelatedResourceBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Blocks\\RelatedResourceBlock\:\:getSourceModel\(\) has parameter \$source with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Blocks/RelatedResourceBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Blocks\\RelatedResourceBlock\:\:getSources\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Blocks/RelatedResourceBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Exports\\FormEntryExporter\:\:form\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Exports/FormEntryExporter.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:applyRequirementFields\(\) has parameter \$fieldData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:createField\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:createField\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:createField\(\) has parameter \$readOnly with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:displayHtml\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:displayHtml\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:displayValue\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:displayValue\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:getChildren\(\) has parameter \$schema with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:getChildren\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:getField\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:getField\(\) has parameter \$readOnly with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:getFieldDefinitions\(\) has parameter \$schema with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:getFieldDefinitions\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:getSchema\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\FormBlocks\\AbstractFormBlock\:\:\$componentClass has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/FormBlocks/AbstractFormBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:inline\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:multiple\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:required\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:searchable\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractOptionsBlock\:\:applyRequirementFields\(\) has parameter \$fieldData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractOptionsBlock\:\:createField\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractOptionsBlock\:\:createField\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractOptionsBlock\:\:createField\(\) has parameter \$readOnly with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractOptionsBlock\:\:displayValue\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractOptionsBlock\:\:displayValue\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractOptionsBlock\:\:getOptions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractOptionsBlock\:\:getOptions\(\) has parameter \$optionsArray with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractOptionsBlock\:\:getRequirementFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractOptionsBlock\:\:getSchema\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/AbstractOptionsBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:tel\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/FormBlocks/AbstractTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractTextBlock\:\:applyRequirementFields\(\) has parameter \$fieldData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/AbstractTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractTextBlock\:\:createField\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/AbstractTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractTextBlock\:\:createField\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractTextBlock\:\:createField\(\) has parameter \$readOnly with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/AbstractTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractTextBlock\:\:getRequirementFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/AbstractTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractTextBlock\:\:getSchema\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/AbstractTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\AbstractTextBlock\:\:getTypeSelector\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/AbstractTextBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:required\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/FormBlocks/CheckboxBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\CheckboxBlock\:\:applyRequirementFields\(\) has parameter \$fieldData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/CheckboxBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\CheckboxBlock\:\:getRequirementFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/CheckboxBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\CheckboxBlock\:\:getSchema\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/CheckboxBlock.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\FormBlocks\\CheckboxBlock\:\:\$componentClass has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/FormBlocks/CheckboxBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\CheckboxListBlock\:\:getRequirementFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/CheckboxListBlock.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\FormBlocks\\CheckboxListBlock\:\:\$componentClass has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/FormBlocks/CheckboxListBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\ColumnBlock\:\:createField\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/ColumnBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\ColumnBlock\:\:createField\(\) has parameter \$readOnly with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/ColumnBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\ColumnBlock\:\:displayHtml\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/ColumnBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\ColumnBlock\:\:displayHtml\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/ColumnBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\ColumnBlock\:\:getChildren\(\) has parameter \$schema with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/ColumnBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\ColumnBlock\:\:getChildren\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Filament/FormBlocks/ColumnBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\ColumnBlock\:\:getFieldDefinitions\(\) has parameter \$schema with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/ColumnBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\ColumnBlock\:\:getFieldDefinitions\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Filament/FormBlocks/ColumnBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\ColumnBlock\:\:getSchema\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/ColumnBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\DateTimeInputBlock\:\:createField\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/DateTimeInputBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\DateTimeInputBlock\:\:createField\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/DateTimeInputBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\DateTimeInputBlock\:\:createField\(\) has parameter \$readOnly with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/DateTimeInputBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\DateTimeInputBlock\:\:getDateRequirementFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/DateTimeInputBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\DateTimeInputBlock\:\:getSchema\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/DateTimeInputBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\DateTimeInputBlock\:\:getTypeSelector\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/DateTimeInputBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\DateTimeInputBlock\:\:getTypeSelector\(\) has parameter \$me with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/DateTimeInputBlock.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\FormBlocks\\DateTimeInputBlock\:\:\$componentClass has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/FormBlocks/DateTimeInputBlock.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\FormBlocks\\DateTimeInputBlock\:\:\$date_type has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/FormBlocks/DateTimeInputBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:displayHtml\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:displayHtml\(\) has parameter \$fieldDefs with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:displayHtml\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getChildren\(\) has parameter \$schema with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getChildren\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getDisplayFields\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getDisplayFields\(\) has parameter \$fieldValues with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getFieldDefinitions\(\) has parameter \$schema with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getFieldDefinitions\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getFields\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getFields\(\) has parameter \$readOnly with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getFormInputValue\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getFormInputValue\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:getFormInputValue\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\FormBlocks\\FormBuilder\:\:\$fieldId has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/FormBlocks/FormBuilder.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\InformationBlock\:\:createField\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/InformationBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\InformationBlock\:\:createField\(\) has parameter \$readOnly with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/InformationBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\InformationBlock\:\:displayHtml\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/InformationBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\InformationBlock\:\:displayHtml\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/InformationBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\InformationBlock\:\:displayValue\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/InformationBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\InformationBlock\:\:displayValue\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/InformationBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\InformationBlock\:\:getSchema\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/InformationBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RadioBlock\:\:getRequirementFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/RadioBlock.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\FormBlocks\\RadioBlock\:\:\$componentClass has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/FormBlocks/RadioBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:multiple\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:required\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:searchable\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Called ''pluck'' on Laravel collection, but could have been retrieved as a query\.$#'
+			identifier: larastan.noUnnecessaryCollectionCall
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:applyRequirementFields\(\) has parameter \$fieldData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:createField\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:createField\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:createField\(\) has parameter \$readOnly with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:displayValue\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:displayValue\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getModelClass\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getModelClass\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getOptions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getOptions\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getOptionsQuery\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getOptionsQuery\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getOptionsQuery\(\) has parameter \$search with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getRelationshipOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getRequirementFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getSchema\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getTitleField\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RelationshipBlock\:\:getTitleField\(\) has parameter \$modelClass with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RelationshipBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RichTextBlock\:\:createField\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/RichTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RichTextBlock\:\:createField\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RichTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RichTextBlock\:\:createField\(\) has parameter \$readOnly with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RichTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RichTextBlock\:\:displayValue\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RichTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RichTextBlock\:\:displayValue\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/RichTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\RichTextBlock\:\:getTypeSelector\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/RichTextBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\SelectBlock\:\:getRequirementFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/SelectBlock.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\FormBlocks\\SelectBlock\:\:\$componentClass has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/FormBlocks/SelectBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:rows\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/FormBlocks/TextAreaBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\TextAreaBlock\:\:applyRequirementFields\(\) has parameter \$field with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/TextAreaBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\TextAreaBlock\:\:applyRequirementFields\(\) has parameter \$fieldData with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/FormBlocks/TextAreaBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\TextAreaBlock\:\:getRequirementFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/FormBlocks/TextAreaBlock.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\FormBlocks\\TextAreaBlock\:\:getTypeSelector\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/FormBlocks/TextAreaBlock.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\FormBlocks\\TextAreaBlock\:\:\$componentClass has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/FormBlocks/TextAreaBlock.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\FormBlocks\\TextInputBlock\:\:\$componentClass has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/FormBlocks/TextInputBlock.php
+
+		-
+			message: '#^Call to an undefined method Filament\\Forms\\Components\\Component\:\:isRequired\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Filament/Forms/Components/AddressInput.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Forms\\Components\\AddressInput\:\:getCountries\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Forms/Components/AddressInput.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Forms\\Components\\AddressInput\:\:getCountry\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Forms/Components/AddressInput.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Forms\\Components\\AddressInput\:\:getCountry\(\) has parameter \$state with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Forms/Components/AddressInput.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Forms\\Components\\AddressInput\:\:getName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Forms/Components/AddressInput.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Forms\\Components\\AddressInput\:\:getStates\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Forms/Components/AddressInput.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Forms\\Components\\AddressInput\:\:getStates\(\) has parameter \$country with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Forms/Components/AddressInput.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\Forms\\Components\\AddressInput\:\:\$name has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/Forms/Components/AddressInput.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Portable\\FilaCms\\Models\\Media\>\|Portable\\FilaCms\\Models\\Media\:\:\$is_image\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Forms/Components/MediaPicker.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Portable\\FilaCms\\Models\\Media\>\|Portable\\FilaCms\\Models\\Media\:\:\$small_thumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Forms/Components/MediaPicker.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Forms\\Components\\MediaPicker\:\:clearMediaAction\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Forms/Components/MediaPicker.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Forms\\Components\\MediaPicker\:\:currentMedia\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Forms/Components/MediaPicker.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Forms\\Components\\MediaPicker\:\:hasMedia\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Forms/Components/MediaPicker.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Forms\\Components\\MediaPicker\:\:pickMediaAction\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Forms/Components/MediaPicker.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Filament\\Pages\\EditSettings\:\:\$form\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Filament/Pages/EditSettings.php
+
+		-
+			message: '#^Call to an undefined static method Portable\\FilaCms\\Filament\\Pages\\EditSettings\:\:getPluralModelLabel\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Filament/Pages/EditSettings.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\Pages\\EditSettings\:\:\$data type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Pages/EditSettings.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Filament/Pages/EditSettings.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Filament/Pages/EditSettings.php
+
+		-
+			message: '#^Variable \$tabs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: src/Filament/Pages/EditSettings.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Pages\\Login\:\:getSSOActions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Pages/Login.php
+
+		-
+			message: '#^Call to an undefined static method Portable\\FilaCms\\Filament\\Pages\\UserSettings\:\:getPluralModelLabel\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Filament/Pages/UserSettings.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\Pages\\UserSettings\:\:\$qrCode has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/Pages/UserSettings.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\Pages\\UserSettings\:\:\$twoFactor type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Pages/UserSettings.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractConfigurableResource\:\:getReflection\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractConfigurableResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractConfigurableResource\:\:getTableColumns\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractConfigurableResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractConfigurableResource\:\:makeColumn\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractConfigurableResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractConfigurableResource\:\:makeColumn\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Resources/AbstractConfigurableResource.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\Resources\\AbstractConfigurableResource\:\:\$reflectionObject has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/Resources/AbstractConfigurableResource.php
+
+		-
+			message: '#^Access to an undefined property Filament\\Forms\\Contracts\\HasForms\:\:\$data\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$authors\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$contents\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$excerpt\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$seo\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$createdBy\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Author\:\:\$display_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Page\:\:\$excerpt\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\TaxonomyResource\:\:\$taxonomy\.$#'
+			identifier: property.notFound
+			count: 3
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:seo\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getAuthorFilter\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getContentTab\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getCreateAuthorForm\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getFrontendIndexComponent\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getFrontendIndexRoute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getFrontendRoutePrefix\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getFrontendShowComponent\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getFrontendShowRoute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getMainTabs\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getRoleRestrictionFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getSeoFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getSidebar\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getSidebarFieldSection\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getSidebarInfoSection\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getTaxonomyFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:getVanityURLFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:registerIndexRoute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\:\:registerShowRoute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Using nullsafe property access on non\-nullable type Illuminate\\Database\\Eloquent\\Model\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: src/Filament/Resources/AbstractContentResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/CreateAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\CreateAbstractContentResource\:\:checkIfSlugExists\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/CreateAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\CreateAbstractContentResource\:\:checkIfSlugExists\(\) has parameter \$modelName with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/CreateAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\CreateAbstractContentResource\:\:checkIfSlugExists\(\) has parameter \$slug with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/CreateAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\CreateAbstractContentResource\:\:generateSlug\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/CreateAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\CreateAbstractContentResource\:\:generateSlug\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/CreateAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\CreateAbstractContentResource\:\:mutateFormDataBeforeSave\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/CreateAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\CreateAbstractContentResource\:\:mutateFormDataBeforeSave\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/CreateAbstractContentResource.php
+
+		-
+			message: '#^Cannot access property \$id on Illuminate\\Database\\Eloquent\\Model\|int\|string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/EditAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\EditAbstractContentResource\:\:checkIfSlugExists\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/EditAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\EditAbstractContentResource\:\:checkIfSlugExists\(\) has parameter \$modelName with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/EditAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\EditAbstractContentResource\:\:checkIfSlugExists\(\) has parameter \$slug with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/EditAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\EditAbstractContentResource\:\:generateSlug\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/EditAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AbstractContentResource\\Pages\\EditAbstractContentResource\:\:generateSlug\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Resources/AbstractContentResource/Pages/EditAbstractContentResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\AuthorResource\:\:getFormFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/AuthorResource.php
+
+		-
+			message: '#^Access to an undefined property Filament\\Forms\\Contracts\\HasForms\:\:\$ownerRecord\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/FormEntryResource.php
+
+		-
+			message: '#^Access to an undefined property Filament\\Tables\\Contracts\\HasTable\:\:\$ownerRecord\.$#'
+			identifier: property.notFound
+			count: 3
+			path: src/Filament/Resources/FormEntryResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\FormEntryResource\:\:getColumns\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Resources/FormEntryResource.php
+
+		-
+			message: '#^Call to an undefined static method Filament\\Actions\\Exports\\Exporter\:\:form\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Filament/Resources/FormEntryResource/Actions/ExportBulkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\FormEntryResource\\Actions\\ExportBulkAction\:\:ownerRecord\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/FormEntryResource/Actions/ExportBulkAction.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\Resources\\FormEntryResource\\Actions\\ExportBulkAction\:\:\$_ownerRecord has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/Resources/FormEntryResource/Actions/ExportBulkAction.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\FormResource\:\:getEntriesDefinition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/FormResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\FormResource\:\:getEntriesDefinition\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Resources/FormResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\FormResource\:\:getFormDefinition\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/FormResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\FormResource\:\:getFrontendIndexRoute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/FormResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\FormResource\:\:getFrontendRoutePrefix\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/FormResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\FormResource\:\:getFrontendShowRoute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/FormResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\FormResource\:\:registerIndexRoute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/FormResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\FormResource\:\:registerShowRoute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/FormResource.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:failed\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/Resources/LinkCheckResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\LinkCheckResource\:\:getFailedCount\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/LinkCheckResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/LinkCheckResource/Pages/ListLinkChecks.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:unscanned\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/Resources/LinkCheckResource/Pages/ListLinkChecks.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Database\\Eloquent\\Model\:\:latestBatch\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Filament/Resources/LinkCheckResource/Pages/ListLinkChecks.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\LinkCheckResource\\Pages\\ListLinkChecks\:\:executeScan\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/LinkCheckResource/Pages/ListLinkChecks.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\LinkCheckResource\\Pages\\ListLinkChecks\:\:getLastScan\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/LinkCheckResource/Pages/ListLinkChecks.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\LinkCheckResource\\Pages\\ListLinkChecks\:\:lastScanStatus\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/LinkCheckResource/Pages/ListLinkChecks.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Filament\\Resources\\LinkCheckResource\\Pages\\ListLinkChecks\:\:\$lastBatch has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Filament/Resources/LinkCheckResource/Pages/ListLinkChecks.php
+
+		-
+			message: '#^Access to an undefined property Filament\\Forms\\Contracts\\HasForms\:\:\$ownerRecord\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$children\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Called ''pluck'' on Laravel collection, but could have been retrieved as a query\.$#'
+			identifier: larastan.noUnnecessaryCollectionCall
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Cannot access property \$id on Illuminate\\Database\\Eloquent\\Model\|string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\MenuItemResource\:\:getContentSources\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\MenuItemResource\:\:getContents\(\) has parameter \$get with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\MenuItemResource\:\:getContents\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\MenuItemResource\:\:getSourceModel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\MenuItemResource\:\:getSourceModel\(\) has parameter \$source with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\MenuItemResource\:\:getSources\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Relation ''parent'' is not found in Portable\\FilaCms\\Models\\MenuItem model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: src/Filament/Resources/MenuItemResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\MenuResource\\RelationManagers\\ItemsRelationManager\:\:getResource\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/MenuResource/RelationManagers/ItemsRelationManager.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\PageResource\:\:getFrontendRoutePrefix\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/PageResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\PageResource\:\:registerIndexRoute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/PageResource.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\PageResource\\Pages\\ListPages\:\:applySearchToTableQuery\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Filament/Resources/PageResource/Pages/ListPages.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\PageResource\\Pages\\ListPages\:\:applySearchToTableQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Filament/Resources/PageResource/Pages/ListPages.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Taxonomy\:\:\$terms\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/TaxonomyResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/TaxonomyResource/Pages/CreateTaxonomy.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:resources\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/Resources/TaxonomyResource/Pages/CreateTaxonomy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/TaxonomyResource/Pages/EditTaxonomy.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:resources\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Filament/Resources/TaxonomyResource/Pages/EditTaxonomy.php
+
+		-
+			message: '#^Cannot access property \$id on Illuminate\\Database\\Eloquent\\Model\|int\|string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Filament/Resources/TaxonomyResource/Pages/EditTaxonomy.php
+
+		-
+			message: '#^Relation ''taxonomyables'' is not found in Portable\\FilaCms\\Models\\TaxonomyTerm model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: src/Filament/Resources/TaxonomyResource/Pages/EditTaxonomy.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Filament\\Resources\\TaxonomyResource\\RelationManagers\\TermsRelationManager\:\:getResource\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Filament/Resources/TaxonomyResource/RelationManagers/TermsRelationManager.php
+
+		-
+			message: '#^Access to an undefined property Filament\\Forms\\Contracts\\HasForms\:\:\$ownerRecord\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/TaxonomyTermResource.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\TaxonomyTerm\:\:\$taxonomyables\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Resources/TaxonomyTermResource.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:terms\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Filament/Resources/TaxonomyTermResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Filament/Resources/UserResource.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:can\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/Resources/UserResource.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:hasEnabledTwoFactorAuthentication\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Filament/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$small_thumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filament/Tables/Columns/ThumbnailColumn.php
+
+		-
+			message: '#^Access to an undefined property Laravel\\Socialite\\Contracts\\User\:\:\$refreshToken\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Http/Controllers/SSOController.php
+
+		-
+			message: '#^Access to an undefined property Laravel\\Socialite\\Contracts\\User\:\:\$token\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Http/Controllers/SSOController.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\UserSsoLink\:\:\$user\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Http/Controllers/SSOController.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Http\\Controllers\\SSOController\:\:handleProviderCallback\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Http/Controllers/SSOController.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Http\\Controllers\\SSOController\:\:redirectToProvider\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Http/Controllers/SSOController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:hasPermissionTo\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Http/Middleware/FilaCmsAuthenticate.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/Http/Middleware/FilaCmsAuthenticate.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Workbench\\App\\Models\\User and ''hasEnabledTwoFactor…'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Http/Middleware/TwoFactorMiddleware.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Http\\Client\\Response\:\:getHeader\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Jobs/CheckLink.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Jobs\\LinkChecker\:\:extractLinks\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Jobs/LinkChecker.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Jobs\\LinkChecker\:\:extractLinks\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Jobs/LinkChecker.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Jobs\\LinkChecker\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Jobs/LinkChecker.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Listeners/AuthenticationListener.php
+
+		-
+			message: '#^Call to an undefined method Laravel\\Scout\\Engines\\MeilisearchEngine\:\:index\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Listeners/CommandFinishedListener.php
+
+		-
+			message: '#^Parameter \#1 \$user of class Portable\\FilaCms\\Notifications\\WelcomeNotification constructor expects Illuminate\\Contracts\\Auth\\Authenticatable, Illuminate\\Contracts\\Auth\\MustVerifyEmail given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Listeners/UserVerifiedListener.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Livewire\\ContentResourceList\:\:\$form\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\ContentResourceList\:\:getFilters\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\ContentResourceList\:\:getResultsQuery\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\ContentResourceList\:\:getViewData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\ContentResourceList\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\ContentResourceList\:\:submit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceList\:\:\$data type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceList\:\:\$message has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceList\:\:\$model has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceList\:\:\$queryString has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceList\:\:\$view has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/ContentResourceList.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:\$form\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Call to an undefined method Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:getResultsQuery\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:getViewData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:mount\(\) has parameter \$slug with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:submit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:\$data type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:\$message has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:\$model has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:\$queryString has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:\$record has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\ContentResourceShow\:\:\$view has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/ContentResourceShow.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Livewire\\FormShow\:\:\$form\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Livewire/FormShow.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\FormShow\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/FormShow.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\FormShow\:\:submitForm\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/FormShow.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\FormShow\:\:\$data type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Livewire/FormShow.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\FormShow\:\:\$record has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/FormShow.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\FormShow\:\:\$submitted has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/FormShow.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\FormShow\:\:\$view has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/FormShow.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Media\:\:\$currentParent\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Media\:\:\$displaySize\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Media\:\:\$uploaded_user\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:breadcrumbs\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:getEditForm\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:getMediaPreviewHtml\(\) has parameter \$size with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:getTableColumns\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:mount\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:mount\(\) has parameter \$jsKey with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:setFile\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:setFile\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:setParent\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:setParent\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:uniqueFilename\(\) has parameter \$disk with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:uniqueFilename\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:uniqueFilename\(\) has parameter \$path with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:\$cookieKey has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:\$current_file has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:\$current_parent has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Livewire\\MediaLibraryTable\:\:\$jsKey has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 3
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Unable to resolve the template type TSubject in call to static method Illuminate\\Support\\Str\:\:replace\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 3
+			path: src/Livewire/MediaLibraryTable.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$authors\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$contents\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$createdBy\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$deleted_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$display_author\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$expire_at\.$#'
+			identifier: property.notFound
+			count: 4
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$is_draft\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$publish_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\TaxonomyResource\:\:\$taxonomy\.$#'
+			identifier: property.notFound
+			count: 3
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Anonymous function has an unused use \$fields\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:withAllStatuses\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:authorable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:authors\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:bootHasSlug\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:bootHasTaxonomies\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:createdBy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:displayAuthor\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:excerpt\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:getFilterableAttributes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:getFilterableTaxonomies\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:getNewSlug\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:getResourceName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:getSearchableAttributes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:getSearchableTaxonomies\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:getSortableAttributes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:getVersionUserId\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:initializeHasTaxonomies\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:persistVirtualTaxonomies\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:roles\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\MorphToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:scopeSlugQuery\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:scopeSlugQuery\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:scopeSlugQuery\(\) has parameter \$slug with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:scopeWithAllStatuses\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:scopeWithDrafts\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:scopeWithExpired\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:scopeWithPending\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:scopeWithPublished\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:search\(\) return type with generic class Laravel\\Scout\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:shortDescription\(\) has parameter \$length with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:shortDescription\(\) has parameter \$omission with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:shortUrls\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:status\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:taxonomies\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:taxonomyable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:terms\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:undirtyVirtualAttributes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:undirtyVirtualAttributes\(\) has parameter \$creating with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:updatedBy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\AbstractContentModel\:\:url\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$_saveTaxonomyFields has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$_taxonomies has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$_virtualTaxonomyFields has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$excerptField has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$filterableAttributes has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$resourceName has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$searchableAttributes has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$sortableAttributes has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$versionStrategy has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\AbstractContentModel\:\:\$versionable has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Unable to resolve the template type TRelatedModel in call to method Illuminate\\Database\\Eloquent\\Model\:\:belongsTo\(\)$#'
+			identifier: argument.templateType
+			count: 2
+			path: src/Models/AbstractContentModel.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Models\\Author uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Author.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Author\:\:displayName\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Author.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Author\:\:search\(\) return type with generic class Laravel\\Scout\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Author.php
+
+		-
+			message: '#^Property ''display_name'' does not exist in model\.$#'
+			identifier: rules.modelAppends
+			count: 1
+			path: src/Models/Author.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\Author\:\:\$versionStrategy has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/Author.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\Author\:\:\$versionable has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/Author.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Authorable\:\:author\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Authorable.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Models\\Form uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:bootHasSlug\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:entries\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:getNewSlug\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:routeNotificationForMail\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:routeNotificationForMail\(\) has parameter \$notification with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:scopeSlugQuery\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:scopeSlugQuery\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:scopeSlugQuery\(\) has parameter \$slug with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:search\(\) return type with generic class Laravel\\Scout\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:url\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Form\:\:user\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\Form\:\:\$resourceName has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Unable to resolve the template type TRelatedModel in call to method Illuminate\\Database\\Eloquent\\Model\:\:belongsTo\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Models/Form.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\FormEntry\:\:displayHtml\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/FormEntry.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\FormEntry\:\:form\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/FormEntry.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\FormEntry\:\:user\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/FormEntry.php
+
+		-
+			message: '#^Unable to resolve the template type TRelatedModel in call to method Illuminate\\Database\\Eloquent\\Model\:\:belongsTo\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Models/FormEntry.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Models\\LinkCheck uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/LinkCheck.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\LinkCheck\:\:batchComplete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/LinkCheck.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\LinkCheck\:\:batchStatus\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/LinkCheck.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\LinkCheck\:\:batchStatus\(\) has parameter \$batchId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/LinkCheck.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\LinkCheck\:\:failedCount\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/LinkCheck.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\LinkCheck\:\:failedCount\(\) has parameter \$batchId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/LinkCheck.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\LinkCheck\:\:latestBatch\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/LinkCheck.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\LinkCheck\:\:scopeFailed\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/LinkCheck.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\LinkCheck\:\:scopeSuccess\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/LinkCheck.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\LinkCheck\:\:scopeUnscanned\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/LinkCheck.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Media\:\:\$children\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Models/Media.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Media\:\:\$url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:children\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:currentParent\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:displaySize\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:folderImage\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:isImage\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:mediumThumbnail\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:move\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:move\(\) has parameter \$newName with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:move\(\) has parameter \$newParent with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:smallThumbnail\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:uploadImage\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Media\:\:url\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Parameter \#1 \$bytes of method CodeInc\\HumanReadableFileSize\\HumanReadableFileSize\:\:compute\(\) expects int, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Models/Media.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Models\\Menu uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Menu.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Menu\:\:children\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Menu.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Menu\:\:items\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Menu.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\Menu\:\:\$versionStrategy has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/Menu.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\Menu\:\:\$versionable has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/Menu.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\MenuItem\:\:\$reference_content\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\MenuItem\:\:\$reference_page\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Models\\MenuItem uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\MenuItem\:\:children\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\MenuItem\:\:menu\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\MenuItem\:\:parent\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\MenuItem\:\:referenceContent\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\MenuItem\:\:referencePage\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\MenuItem\:\:referenceText\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\MenuItem\:\:url\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Property ''reference_content'' does not exist in model\.$#'
+			identifier: rules.modelAppends
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Property ''reference_page'' does not exist in model\.$#'
+			identifier: rules.modelAppends
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Property ''reference_text'' does not exist in model\.$#'
+			identifier: rules.modelAppends
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\MenuItem\:\:\$versionStrategy has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\MenuItem\:\:\$versionable has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/MenuItem.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Models\\Page uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Page.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\Page\:\:\$resourceName has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/Page.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<TModel of Illuminate\\Database\\Eloquent\\Model\>\:\:withPublished\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Models/Scopes/PublishedScope.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Setting\:\:cacheKey\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Setting.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Setting\:\:get\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Setting.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Setting\:\:get\(\) has parameter \$key with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/Setting.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Setting\:\:set\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Setting.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Setting\:\:set\(\) has parameter \$key with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/Setting.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Setting\:\:set\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/Setting.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Models\\ShortUrl uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/ShortUrl.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\ShortUrl\:\:shortable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/ShortUrl.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Taxonomy\:\:\$resources\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/Taxonomy.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Models\\Taxonomy uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Taxonomy.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Taxonomy\:\:newQuery\(\) should return Illuminate\\Database\\Eloquent\\Builder\<static\(Portable\\FilaCms\\Models\\Taxonomy\)\> but returns Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\.$#'
+			identifier: return.type
+			count: 2
+			path: src/Models/Taxonomy.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Taxonomy\:\:resources\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Taxonomy.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Taxonomy\:\:taxonomyResources\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/Taxonomy.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Taxonomy\:\:terms\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Taxonomy.php
+
+		-
+			message: '#^Property ''taxonomy_resources'' does not exist in model\.$#'
+			identifier: rules.modelAppends
+			count: 1
+			path: src/Models/Taxonomy.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\Taxonomy\:\:\$cascadeDeletes has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/Taxonomy.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\Taxonomy\:\:\$versionStrategy has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/Taxonomy.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\Taxonomy\:\:\$versionable has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/Taxonomy.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\TaxonomyResource\:\:taxonomy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/TaxonomyResource.php
+
+		-
+			message: '#^Class Portable\\FilaCms\\Models\\TaxonomyTerm uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/TaxonomyTerm.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\TaxonomyTerm\:\:parent\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/TaxonomyTerm.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\TaxonomyTerm\:\:taxonomy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/TaxonomyTerm.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\TaxonomyTerm\:\:taxonomyables\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/TaxonomyTerm.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\TaxonomyTerm\:\:\$versionStrategy has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/TaxonomyTerm.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Models\\TaxonomyTerm\:\:\$versionable has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Models/TaxonomyTerm.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\Taxonomyable\:\:taxonomy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/Taxonomyable.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\UserLogin\:\:user\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/UserLogin.php
+
+		-
+			message: '#^Unable to resolve the template type TRelatedModel in call to method Illuminate\\Database\\Eloquent\\Model\:\:belongsTo\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Models/UserLogin.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Models\\UserSsoLink\:\:user\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/UserSsoLink.php
+
+		-
+			message: '#^Unable to resolve the template type TRelatedModel in call to method Illuminate\\Database\\Eloquent\\Model\:\:belongsTo\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Models/UserSsoLink.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\FormEntry\:\:\$form\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Notifications/FormSubmittedNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\FormSubmittedNotification\:\:shouldSend\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Notifications/FormSubmittedNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\FormSubmittedNotification\:\:shouldSend\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Notifications/FormSubmittedNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\FormSubmittedNotification\:\:via\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Notifications/FormSubmittedNotification.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$url$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/Notifications/FormSubmittedNotification.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>notification_emails" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/Notifications/FormSubmittedNotification.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\FormEntry\:\:\$form\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Notifications/FormSubmittedSenderNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\FormSubmittedSenderNotification\:\:shouldSend\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Notifications/FormSubmittedSenderNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\FormSubmittedSenderNotification\:\:shouldSend\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Notifications/FormSubmittedSenderNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\FormSubmittedSenderNotification\:\:via\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Notifications/FormSubmittedSenderNotification.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$url$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/Notifications/FormSubmittedSenderNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\ScanCompleteNotification\:\:toDatabase\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Notifications/ScanCompleteNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\WelcomeNotification\:\:buildMailMessage\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Notifications/WelcomeNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\WelcomeNotification\:\:toMail\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Notifications/WelcomeNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\WelcomeNotification\:\:toMail\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Notifications/WelcomeNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\WelcomeNotification\:\:via\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Notifications/WelcomeNotification.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Notifications\\WelcomeNotification\:\:via\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Notifications/WelcomeNotification.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to static method Illuminate\\Support\\Arr\:\:where\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Observers/AuthenticatableObserver.php
+
+		-
+			message: '#^Access to an undefined property Portable\\FilaCms\\Models\\Setting\:\:\$cacheKey\.$#'
+			identifier: property.notFound
+			count: 5
+			path: src/Observers/SettingObserver.php
+
+		-
+			message: '#^Call to function is_null\(\) with bool will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: src/Providers/FilaCmsAdminPanelProvider.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Providers\\FilaCmsAdminPanelProvider\:\:getPlugins\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Providers/FilaCmsAdminPanelProvider.php
+
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 1
+			path: src/Providers/FilaCmsServiceProvider.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Providers\\FilaCmsServiceProvider\:\:boot\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Providers/FilaCmsServiceProvider.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Providers\\FilaCmsServiceProvider\:\:bootLinkedInSocialite\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Providers/FilaCmsServiceProvider.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Providers\\FilaCmsServiceProvider\:\:loadSettings\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Providers/FilaCmsServiceProvider.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Providers\\FilaCmsServiceProvider\:\:registerHealthChecks\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Providers/FilaCmsServiceProvider.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Providers\\FilaCmsServiceProvider\:\:registerSettingsFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Providers/FilaCmsServiceProvider.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Providers/FilaCmsServiceProvider.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Providers/FilaCmsServiceProvider.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\Socialite\\FilaCmsLinkedInProvider\:\:\$scopes type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Socialite/FilaCmsLinkedInProvider.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\TiptapExtensions\\DummyParser\:\:\$name has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/TiptapExtensions/DummyParser.php
+
+		-
+			message: '#^Property Portable\\FilaCms\\TiptapExtensions\\DummyParser\:\:\$priority has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/TiptapExtensions/DummyParser.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Versionable\\FilaCmsDiff\:\:getStatistics\(\) has parameter \$differOptions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Versionable/FilaCmsDiff.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Versionable\\FilaCmsDiff\:\:getStatistics\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Versionable/FilaCmsDiff.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Versionable\\FilaCmsDiff\:\:render\(\) has parameter \$differOptions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Versionable/FilaCmsDiff.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Versionable\\FilaCmsDiff\:\:render\(\) has parameter \$renderOptions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Versionable/FilaCmsDiff.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Versionable\\FilaCmsDiff\:\:render\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Versionable/FilaCmsDiff.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Versionable\\FilaCmsVersion\:\:diff\(\) has parameter \$differOptions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Versionable/FilaCmsVersion.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Versionable\\FilaCmsVersion\:\:diff\(\) has parameter \$renderOptions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Versionable/FilaCmsVersion.php
+
+		-
+			message: '#^Method Portable\\FilaCms\\Versionable\\FilaCmsVersion\:\:versionable\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\MorphTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Versionable/FilaCmsVersion.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: src/Versionable/FilaCmsVersion.php
