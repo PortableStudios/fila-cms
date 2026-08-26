@@ -12,6 +12,9 @@ class InstallCommand extends CommandsInstallCommand
 
     protected $description = 'Install Fila CMS';
 
+    /** Filename Fortify publishes for its 2FA migration; used to detect a prior install. */
+    private const FORTIFY_TWO_FACTOR_MIGRATION = '*_add_two_factor_columns_to_users_table.php';
+
     protected function callOrFail($command, $args = [])
     {
         $result = $this->call($command, $args);
@@ -33,7 +36,7 @@ class InstallCommand extends CommandsInstallCommand
 
         // Laravel 11+ re-timestamps published migrations, so re-running fortify:install
         // would stack a second two-factor migration and break `migrate`.
-        if (empty(File::glob(database_path('migrations/*_add_two_factor_columns_to_users_table.php')))) {
+        if (empty(File::glob(database_path('migrations/' . self::FORTIFY_TWO_FACTOR_MIGRATION)))) {
             $this->callOrFail('fortify:install');
         }
 
