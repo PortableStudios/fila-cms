@@ -114,7 +114,6 @@ class TaxonomyResourceTest extends TestCase
                 'taxonomy_resources' => array_keys(FilaCms::getContentModels())
             ])
             ->call('save')
-            ->dumpSession()
             ->assertHasNoFormErrors();
 
         $data->refresh();

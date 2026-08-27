@@ -1,5 +1,11 @@
 #
 
+# Requirements
+
+- PHP ^8.4
+- Laravel ^12.61.1 (Laravel 10 and 11 are EOL and no longer supported)
+- Node 22+ and pnpm 11+ to build the frontend assets
+
 # How to use
 
 Require the package using composer: `composer require portable/fila-cms:@dev`

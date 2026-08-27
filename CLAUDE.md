@@ -8,6 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 PHP namespace roots (PSR-4): `Portable\FilaCms\` → `src/`, `Portable\FilaCms\Database\` → `database/`, `Portable\FilaCms\Tests\` → `tests/`, `Workbench\App\` → `workbench/app/`.
 
+**Requires PHP ^8.4 and Laravel ^12.61.1** (Filament 3). Laravel 10/11 are EOL and unsupported. Laravel 13 is blocked on the Filament plugin ecosystem — `awcodes/filament-tiptap-editor` has no Filament 4/5 release, so moving up means replacing the editor layer.
+
 ## Commands
 
 ### PHP / Laravel
@@ -18,12 +20,12 @@ PHP namespace roots (PSR-4): `Portable\FilaCms\` → `src/`, `Portable\FilaCms\D
 ./vendor/bin/phpunit                        # equivalent (composer "test" script)
 composer lint                               # pint (PSR-12) + phpstan (larastan, level in phpstan.neon)
 ./vendor/bin/pint                           # auto-fix code style only
-./vendor/bin/phpstan analyse                # static analysis only
+./vendor/bin/phpstan analyse --memory-limit=1G   # static analysis only (OOMs at the default 128M)
 ./vendor/bin/testbench serve                # run the CMS locally at http://localhost:8000/admin
 ```
 Local admin login when serving: `admin@test.com` / `password`. For mail testing, run MailHog (`docker run -p 8025:8025 -p 1025:1025 mailhog/mailhog`) and view at http://localhost:8025.
 
-Tests use SQLite in-memory and `RefreshDatabase`. `tests/TestCase.php` runs the full `fila-cms:install` flow **once per process** (`$hasInstalled` guard) and then runs `pnpm run build` — so the JS toolchain must be installed for tests to pass.
+Tests use SQLite in-memory and `RefreshDatabase`. `tests/TestCase.php` runs the full `fila-cms:install` flow **once per process** (`$hasInstalled` guard). It does **not** build assets: the vite build targets a host app (the skeleton's published tailwind config resolves `./vendor` relative to itself, which doesn't exist inside our own vendor dir), so `TestCase` calls `withoutVite()` and no JS toolchain is needed to run the suite.
 
 ### Frontend assets (pnpm — never npm/yarn)
 Node 22+ (`.nvmrc` = 22.19.0) and pnpm 11+ are enforced via `engine-strict=true` in `.npmrc`.
@@ -34,7 +36,7 @@ pnpm run dev                     # vite dev server
 ```
 Security baseline: `pnpm-workspace.yaml` sets `minimumReleaseAge: 10080` (refuse deps younger than 7 days). Rationale: `docs/superpowers/plans/2026-06-11-npm-to-pnpm-migration.md`.
 
-> Note: per global instructions, do not launch dev/serve/watch processes — provide instructions only. Asset *builds* (`pnpm run build`) are fine and are required for tests.
+> Note: per global instructions, do not launch dev/serve/watch processes — provide instructions only. Asset *builds* (`pnpm run build`) are fine, but only work from a host app — they are not needed for the test suite.
 
 ## Architecture
 

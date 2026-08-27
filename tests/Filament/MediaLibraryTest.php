@@ -23,7 +23,12 @@ class MediaLibraryTest extends TestCase
 
     public function test_root_folders(): void
     {
+        // Without seeding there are no root folders, and assertCanSeeTableRecords() on an empty
+        // collection asserts nothing at all.
+        Artisan::call('db:seed', ['--class' => RootMediaFoldersSeeder::class]);
+
         $rootFolders = Media::whereNull('parent_id')->get();
+        $this->assertNotEmpty($rootFolders);
 
         Livewire::test(MediaLibraryTable::class)
             ->assertCanSeeTableRecords($rootFolders);
@@ -60,18 +65,18 @@ class MediaLibraryTest extends TestCase
 
         // Remove existing image in storage, if any
         $disk = Storage::disk(config('filesystems.default'));
-        if ($disk->exists($subfolder->filepath . '/test.jpg')) {
-            $disk->delete($subfolder->filepath . '/test.jpg');
+        if ($disk->exists($subfolder->filepath . '/test.png')) {
+            $disk->delete($subfolder->filepath . '/test.png');
         }
 
         Livewire::test(MediaLibraryTable::class)
             ->call('setParent', $subfolder->id)
             ->callTableAction('upload', null, [
-                'upload_media' => UploadedFile::fake()->image('test.jpg'),
+                'upload_media' => UploadedFile::fake()->image('test.png'),
                 'alt_text' => 'Test Upload'
             ]);
 
-        $newFile = Media::where('filename', 'test.jpg')->first();
+        $newFile = Media::where('filename', 'test.png')->first();
         $this->assertNotNull($newFile);
     }
 }

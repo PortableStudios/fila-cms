@@ -23,30 +23,42 @@ class ContentRoleMiddleware
         foreach ($contentModels as $modelClass => $resourceClass) {
             $prefix = $resourceClass::getFrontendRoutePrefix();
 
-            if (Str::of($path)->startsWith($prefix . '/')) {
-                $slug = Str::of($path)->replace($prefix . '/', '');
-                $model = (new $modelClass())->where('slug', $slug)->first();
-
-                if (is_null($model) === false) {
-                    $roles = $model->roles()->get()->pluck(['name']);
-
-                    if ($roles->count() === 0) {
-                        break;
-                    }
-
-                    if ($roles->count() > 0 && $request->user() === null) {
-                        abort(403);
-                    }
-
-                    $roleNames = $request->user()->getRoleNames();
-                    $intersect = $roles->intersect($roleNames);
-
-                    if ($intersect->count() === 0) {
-                        abort(403);
-                    }
+            // A prefix-less resource serves content from the root, so its slug is the whole
+            // path. request()->path() has no leading slash, so the old startsWith($prefix.'/')
+            // check never matched those and their role restrictions went unenforced.
+            if ($prefix === '') {
+                if (Str::of($path)->contains('/')) {
+                    continue;
                 }
+                $slug = $path;
+            } elseif (Str::of($path)->startsWith($prefix . '/')) {
+                $slug = (string) Str::of($path)->replace($prefix . '/', '');
+            } else {
+                continue;
+            }
+
+            $model = (new $modelClass())->where('slug', $slug)->first();
+
+            // Another content type may own this path; keep looking rather than bailing out.
+            if (is_null($model)) {
+                continue;
+            }
+
+            $roles = $model->roles()->get()->pluck(['name']);
+
+            if ($roles->count() === 0) {
                 break;
             }
+
+            if ($request->user() === null) {
+                abort(403);
+            }
+
+            if ($roles->intersect($request->user()->getRoleNames())->count() === 0) {
+                abort(403);
+            }
+
+            break;
         }
 
         return $next($request);

@@ -6,7 +6,6 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Process;
 use Orchestra\Testbench\Attributes\WithMigration;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 use Portable\FilaCms\Database\Seeders\RoleAndPermissionSeeder;
@@ -22,6 +21,17 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // The package's vite build targets a host app: the skeleton's published tailwind config
+        // resolves ./vendor relative to itself, which doesn't exist inside our own vendor dir. So
+        // assets are never built here and views using @vite would fail on a missing manifest.
+        $this->withoutVite();
+
+        // Laravel 11+ flushes factory state after every test, so this must be re-registered each time.
+        Factory::guessFactoryNamesUsing(function (string $modelName) {
+            return (string) '\\Portable\\FilaCms\\Tests\\Factories\\' . (class_basename($modelName)) . 'Factory';
+        });
+
         if (static::$hasInstalled) {
             return;
         }
@@ -46,15 +56,13 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             ->expectsOutputToContain('Finished')
             ->assertExitCode(0);
 
-        Factory::guessFactoryNamesUsing(function (string $modelName) {
-            return (string) '\\Portable\\FilaCms\\Tests\\Factories\\' . (class_basename($modelName)) . 'Factory';
-        });
-
         File::copy(getcwd() . '/vite.config.js', resource_path('../vite.config.js'));
         File::ensureDirectoryExists(resource_path('css'));
         File::copy(getcwd() . '/resources/css/filacms.css', resource_path('css/filacms.css'));
+        // vite.config.js lists these as entries; without them the build fails and any test
+        // rendering a frontend view dies on a missing manifest.
+        File::copyDirectory(getcwd() . '/resources/js', resource_path('js'));
         File::copy(getcwd() . '/package.json', resource_path('../package.json'));
-        Process::path(app_path())->run('pnpm run build');
 
         $this->artisan('db:seed', ['--class' => RoleAndPermissionSeeder::class]);
     }
