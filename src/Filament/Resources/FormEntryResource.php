@@ -87,9 +87,9 @@ class FormEntryResource extends AbstractResource
 
             $columns[] = Tables\Columns\TextColumn::make($columnName)
                 ->label($fieldName)
-                ->getStateUsing(function ($record) use ($fieldKey) {
+                ->getStateUsing(function ($record) use ($fieldKey, $fieldName) {
                     $values = $record->values['newEvent'] ?? $record->values;
-                    $value = isset($values[$fieldKey]) ? $values[$fieldKey] : '';
+                    $value = static::getEntryValue($record, (array) $values, $fieldKey, $fieldName);
                     if (is_array($value)) {
                         try {
                             $value = tiptap_converter()->asText($value);
@@ -119,10 +119,86 @@ class FormEntryResource extends AbstractResource
         return $columns;
     }
 
+    /**
+     * Resolve a submitted value for a field in the current form definition.
+     *
+     * Entries key their values by field_id when the form had one at submission time and by
+     * field_name otherwise, so a definition that has since lost its field_ids can no longer
+     * address older entries. Fall back to the entry's own field snapshot, which still holds
+     * the id the value was stored under.
+     *
+     * @param  array<string, mixed>  $values
+     */
+    protected static function getEntryValue(FormEntry $record, array $values, string $fieldKey, ?string $fieldName): mixed
+    {
+        foreach ([$fieldKey, $fieldName] as $key) {
+            $key = trim((string) $key);
+
+            if ($key !== '' && array_key_exists($key, $values)) {
+                return $values[$key];
+            }
+        }
+
+        $snapshotId = static::getSnapshotFieldId($record, $fieldName);
+
+        return $snapshotId !== null ? ($values[$snapshotId] ?? '') : '';
+    }
+
+    /** Find the field_id this entry stored a field under, matching the snapshot on field_name. */
+    protected static function getSnapshotFieldId(FormEntry $record, ?string $fieldName): ?string
+    {
+        $fieldName = trim((string) $fieldName);
+
+        if ($fieldName === '' || empty($record->fields)) {
+            return null;
+        }
+
+        foreach (FormBuilder::getFieldDefinitions($record->fields) as $field) {
+            if (trim((string) Arr::get($field, 'data.field_name')) !== $fieldName) {
+                continue;
+            }
+
+            $snapshotId = trim((string) Arr::get($field, 'data.' . FormBuilder::$fieldId));
+
+            return $snapshotId === '' ? null : $snapshotId;
+        }
+
+        return null;
+    }
+
+    /**
+     * Build the edit modal state, keyed by the state path each field currently uses
+     * (its field_id when the definition has one, otherwise its field_name).
+     *
+     * @return array<string, mixed>
+     */
+    protected static function getEntryFormState(ModelsForm $form, FormEntry $record): array
+    {
+        $values = (array) ($record->values['newEvent'] ?? $record->values);
+        $state = $values;
+
+        foreach (FormBuilder::getFieldDefinitions($form->fields) as $field) {
+            $fieldName = Arr::get($field, 'data.field_name');
+            $fieldId = Arr::get($field, 'data.' . FormBuilder::$fieldId);
+
+            $statePath = trim((string) ($fieldId ?: $fieldName));
+
+            if ($statePath === '') {
+                continue;
+            }
+
+            $state[$statePath] = static::getEntryValue($record, $values, $statePath, $fieldName);
+        }
+
+        return $state;
+    }
+
     public static function table(Table $table): Table
     {
 
-        $columns = static::getColumns($table->getLivewire()->ownerRecord);
+        $ownerRecord = $table->getLivewire()->ownerRecord;
+
+        $columns = static::getColumns($ownerRecord);
 
         return $table
             ->defaultSort('created_at', 'desc')
@@ -137,10 +213,10 @@ class FormEntryResource extends AbstractResource
                     ])
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->fillForm(function ($record) {
+                Tables\Actions\EditAction::make()->fillForm(function ($record) use ($ownerRecord) {
                     return [
                         'status' => $record->status,
-                        ...($record->values['newEvent'] ?? $record->values),
+                        ...static::getEntryFormState($ownerRecord, $record),
                     ];
                 }),
                 Tables\Actions\DeleteAction::make(),
