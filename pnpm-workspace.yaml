@@ -2,7 +2,16 @@
 # Refuse to install any dependency version less than 7 days old (10080 minutes).
 minimumReleaseAge: 10080
 
-# Force patched versions of transitive deps flagged for DoS / file-disclosure advisories.
+# Version-pinned exemptions from minimumReleaseAge. Tiptap 2.27.3 is the 2.x security backport of
+# GHSA-cp6q-959q-f8rh; the only other patched release is 3.30.4, and Tiptap 3 is unreachable while
+# awcodes/filament-tiptap-editor ships a Tiptap 2 editor. Pinned to the exact versions so the
+# 7-day gate still applies to every later tiptap release. Drop once 2.27.3 clears the gate.
+minimumReleaseAgeExclude:
+  - '@tiptap/core@2.27.3'
+  - '@tiptap/pm@2.27.3'
+  - '@tiptap/extension-character-count@2.27.3'
+
+# Force patched versions of transitive deps flagged in security advisories.
 # Each floor is the advisory's first fixed version, so the lowest version the range admits is
 # already safe. Caret-pinned rather than '>=': an open-ended range would also satisfy the next
 # major and force it on consumers that declare a caret range on the current one.
@@ -12,3 +21,13 @@ overrides:
   postcss: '^8.5.23'        # GHSA-fxqj-rqcc-2cmp, GHSA-r28c-9q8g-f849
   brace-expansion: '^2.1.4' # GHSA-rgw5-rvv9-x895, GHSA-mh99-v99m-4gvg
   nanoid: '^3.3.18'         # GHSA-2v37-7h3g-55p8
+  browserslist: '^4.28.7'   # GHSA-73wf-gq98-2v4g, GHSA-c83g-rgw3-j3cx
+  postcss-selector-parser: '^6.1.3' # GHSA-w9m9-85wc-3x92 (6.x line; 7.x fix is 7.1.3)
+
+# GHSA-cp6q-959q-f8rh names 3.30.4 as its only fix, but 2.27.3 is the 2.x backport of the same
+# mergeAttributes() '__proto__' guard, so the pinned 2.27.3 above is patched even though audit
+# still matches it against the advisory's '<3.30.4' range. Remove once that range is corrected
+# upstream, or when Tiptap 3 becomes reachable (see the Laravel 13 note in CLAUDE.md).
+auditConfig:
+  ignoreGhsas:
+    - GHSA-cp6q-959q-f8rh
