@@ -16,8 +16,8 @@ overrides:
   postcss-selector-parser: '^6.1.3' # GHSA-w9m9-85wc-3x92 (6.x line; 7.x fix is 7.1.3)
 
 # GHSA-cp6q-959q-f8rh names 3.30.4 as its only fix, but 2.27.3 is the 2.x backport of the same
-# mergeAttributes() '__proto__' guard, so the 2.27.3 pinned in package.json is patched even though audit
-# still matches it against the advisory's '<3.30.4' range. Remove once that range is corrected
+# mergeAttributes() '__proto__' guard, so the 2.27.3 pinned in package.json is patched even though
+# audit still matches it against the advisory's '<3.30.4' range. Remove once that range is corrected
 # upstream, or when Tiptap 3 becomes reachable (see the Laravel 13 note in CLAUDE.md).
 auditConfig:
   ignoreGhsas:
