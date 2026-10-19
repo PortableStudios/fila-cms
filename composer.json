@@ -68,7 +68,8 @@
         "pestphp/pest-plugin-laravel": "^3.0"
     },
     "conflict": {
-        "guzzlehttp/guzzle": "<7.15.2"
+        "guzzlehttp/guzzle": "<7.15.2",
+        "league/commonmark": "<2.10.2"
     },
     "autoload-dev": {
         "psr-4": {
