@@ -25,6 +25,8 @@
         "@alpinejs/anchor": "^3.13.8",
         "@alpinejs/collapse": "^3.13.8",
         "@alpinejs/focus": "^3.13.8",
-        "@tiptap/extension-character-count": "^2.4.0"
+        "@tiptap/core": "^2.27.3",
+        "@tiptap/extension-character-count": "^2.27.3",
+        "@tiptap/pm": "^2.27.3"
     }
 }

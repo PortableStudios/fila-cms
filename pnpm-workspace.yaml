@@ -12,3 +12,10 @@ overrides:
   postcss: '^8.5.23'        # GHSA-fxqj-rqcc-2cmp, GHSA-r28c-9q8g-f849
   brace-expansion: '^2.1.4' # GHSA-rgw5-rvv9-x895, GHSA-mh99-v99m-4gvg
   nanoid: '^3.3.18'         # GHSA-2v37-7h3g-55p8
+  browserslist: '^4.28.7'   # GHSA-73wf-gq98-2v4g, GHSA-c83g-rgw3-j3cx
+  postcss-selector-parser: '^6.1.3' # GHSA-w9m9-85wc-3x92
+  prosemirror-view: '^1.42.3' # GHSA-c8x8-7fp4-3x9w
+
+auditConfig:
+  ignoreGhsas:
+    - GHSA-cp6q-959q-f8rh # risk-accepted: our @tiptap/core 2.27.3 has the backported fix; the editor bundle shipped by awcodes/filament-tiptap-editor does not, but it is admin-only and we never call mergeAttributes
