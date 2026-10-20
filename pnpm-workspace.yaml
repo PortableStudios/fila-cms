@@ -7,15 +7,20 @@ minimumReleaseAge: 10080
 # already safe. Caret-pinned rather than '>=': an open-ended range would also satisfy the next
 # major and force it on consumers that declare a caret range on the current one.
 overrides:
-  markdown-it: '^14.2.0'    # GHSA-6v5v-wf23-fmfq
+  markdown-it: '^14.3.2'    # GHSA-6v5v-wf23-fmfq, GHSA-r7fv-28h4-cvq7, GHSA-253c-mchw-3w2r
   linkify-it: '^5.0.2'      # GHSA-v245-v573-v5vm
   postcss: '^8.5.23'        # GHSA-fxqj-rqcc-2cmp, GHSA-r28c-9q8g-f849
-  brace-expansion: '^2.1.4' # GHSA-rgw5-rvv9-x895, GHSA-mh99-v99m-4gvg
+  brace-expansion: '^2.1.7' # GHSA-rgw5-rvv9-x895, GHSA-mh99-v99m-4gvg, GHSA-qhr7-859c-m2p7, GHSA-6j4f-fj2g-mc7p, GHSA-q2hr-2g5m-vwhr
   nanoid: '^3.3.18'         # GHSA-2v37-7h3g-55p8
   browserslist: '^4.28.7'   # GHSA-73wf-gq98-2v4g, GHSA-c83g-rgw3-j3cx
   postcss-selector-parser: '^6.1.3' # GHSA-w9m9-85wc-3x92
   prosemirror-view: '^1.42.3' # GHSA-c8x8-7fp4-3x9w
+  source-map-js: '^1.2.2'   # GHSA-68fv-2mgg-jv7q
 
 auditConfig:
   ignoreGhsas:
     - GHSA-cp6q-959q-f8rh # risk-accepted: our @tiptap/core 2.27.3 has the backported fix; the editor bundle shipped by awcodes/filament-tiptap-editor does not, but it is admin-only and we never call mergeAttributes
+    - GHSA-gfr2-rv44-r23c # temporary: fix is markdown-it 14.3.3, blocked by minimumReleaseAge until 2026-10-23; then set the override to ^14.3.3 and drop this and the next line
+    - GHSA-vfgh-jcmw-g37q # temporary: as above
+    - GHSA-rj75-hqrm-r3gf # risk-accepted: postcss-selector-parser fix is 7.1.6 only, tailwind 3 needs ^6; build-time parsing of our own CSS
+    - GHSA-vfj7-8cjw-p6xm # risk-accepted: braces has no patched release (3.0.3 latest); build-time globbing of our own config paths. Revisit when 3.0.4 ships
